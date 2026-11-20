@@ -44,6 +44,7 @@ All scripts are short and self-contained. They need Python 3 with `numpy`; some 
 | `strategy/rational_diagonal_gameforms.py` | All 18,138 non-dictatorial two-player game forms with three strategies and three outcomes. Takes some minutes | Proposition 9 |
 | `strategy/sequential_veto.py` | Veto-then-pick procedure: the diagonal survives Nash-style rationality but not sequential rationality | *Cycles, Twists and Walls* §7 |
 | `consistency/convexity_check.py` | Winner regions in the simplex of vote shares: Borda and plurality are convex (consistent); Condorcet methods fail only at profiles with a cycle; instant runoff fails also without cycles | *Map*, gluing as convexity |
+| `consistency/blocking_any_n.py` | The explicit blocking construction for three to six candidates: at every profile without a Condorcet winner, any choice of winner is undone by a mixture | *Map*, Young–Levenglick for any number of candidates |
 | `consistency/cycle_assignment_check.py` | No profile with a majority cycle can be assigned to any candidate by a consistent Condorcet extension | *Map*, Young–Levenglick for three candidates |
 | `exploratory/condorcet_island.py` | Interactive: where a third candidate produces a cycle in a spatial model, as a function of zoom and voter arrangement | exploratory |
 | `exploratory/island_phase_map.py` | Area and direction of the cycle region over the parameters of the spatial model | exploratory |
