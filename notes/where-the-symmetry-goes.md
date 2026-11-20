@@ -52,7 +52,7 @@ A first sorting of known theorems and paradoxes by where the symmetry goes: (i) 
 | Gibbard–Satterthwaite | single winners, strategic voters | (ii) | strategy-proofness forces the break onto one voter |
 | Balinski–Young | integer seat numbers | (ii) | rounding to integers breaks proportionality somewhere; randomised apportionment satisfies quota in expectation, a move to (iii) |
 | Kemeny | total orders | (ii), break chosen by the profile | cycles are broken at their cheapest edges; consistent for rankings, not for winners |
-| Borda / Hodge gradient | scores | projection discarding the cycles | the cyclic part is removed rather than placed; at a pure Condorcet profile all candidates tie, the trivial fixed point |
+| Borda / Hodge gradient | scores (weak orders) | (iii), discrete | the cyclic part is sent to complete indifference, the fixed point among weak orders (observation 5) |
 | Young–Levenglick; Moulin's no-show theorem | single winners, variable electorate | (i) then (ii), with gluing | a Condorcet extension keeps the pairwise cycle and then breaks it per profile; no such break is compatible across electorates |
 | Sen's liberal paradox | social preference | (ii) per pair, then (i) | individual rights are local dictators on pairs; together with Pareto they produce a cycle |
 | Gibbard 1977 | lotteries | (iii) | strategy-proof random rules are mixtures of unilateral and duple rules; with ex post efficiency, random dictatorship |
@@ -68,15 +68,15 @@ A first sorting of known theorems and paradoxes by where the symmetry goes: (i) 
 2. *Mixed cases are the two-family theorems.* The results combining placements — Young–Levenglick, the no-show theorem, Sen — are exactly those identified in *A Map of Voting Paradoxes* as incompatibilities between two families of criteria. They arise when a symmetry kept in one place must be broken in a way that is also required to glue in another.
 3. *The fixed point is the average of the breaks.* Random dictatorship is the uniform mixture of all dictatorships, and Gibbard's strategy-proof random rules are mixtures of unilateral and duple rules: the (iii) solutions are built as averages over (ii) solutions. The fixed point of the symmetry on the space of rules is the barycentre of the rules that break it.
 4. *Exits from (i) and (ii) lead to (iii).* Chichilnisky's obstruction disappears on the filled disc; Balinski–Young's in expectation; Moulin's dilemma with lotteries. In each case the exit is convexification.
-5. *Projection is a fourth move.* Borda neither keeps nor breaks the cyclic symmetry; it discards the part of the data that carries it. Whether this deserves a place of its own, or is a degenerate case of (iii), is open.
+5. *Projection is a discrete form of (iii).* Borda neither keeps nor breaks the cyclic symmetry visibly; it discards the part of the data that carries it. On a profile that consists only of a cyclic component, every candidate receives the same Borda score, and the output is complete indifference. Among weak orders, complete indifference is the one ranking fixed by every renaming of the alternatives, the counterpart of the uniform lottery among lotteries. So Borda sends the symmetric part of a profile to the fixed point of a target that keeps the symmetry, which is placement (iii), with weak orders in place of lotteries. Borda does not thereby escape Arrow's theorem, which also allows weak orders as outputs: it violates independence of irrelevant alternatives.
+6. *Consistency and the Condorcet principle ask for an unbeaten candidate.* The blocking construction in *A Map of Voting Paradoxes* shows that a consistent Condorcet extension would have to elect, at every profile, a candidate whom no one beats. At a profile without a Condorcet winner, assigning to each candidate one that beats it defines a map of the candidates into themselves without a fixed point. The impossibility is the absence of a fixed point of this map, which is the form of the obstruction in Lawvere's theorem and in the bounded-line argument of *Cycles, Twists and Walls*.
 
 ## 7. Open questions
 
 1. State the trichotomy of Section 2 as a theorem: for aggregation maps that commute with a group acting on alternatives, classify targets by whether the group acts freely, trivially, or with a fixed point, and identify the corresponding impossibility in each case.
 2. The sorting in Section 6 suggests that Arrow and Gibbard–Satterthwaite are pure cases of (ii) and that the two-family theorems combine placements. Can the combined cases be characterised as those in which a symmetry break must also satisfy a gluing condition?
 3. Formulate the composed-voter recursion: a hierarchy of aggregations, each with a symmetry-breaking or randomising step, and conditions under which the whole is coherent.
-4. Is projection (Borda, discarding the cyclic part of the data) a fourth placement or a degenerate form of (iii)?
-5. Make Section 5 precise: for sequential voting in random order with private preferences, is the best reply computable given a prior over preferences, and what replaces the diagonal argument?
+4. Make Section 5 precise: for sequential voting in random order with private preferences, is the best reply computable given a prior over preferences, and what replaces the diagonal argument?
 
 ## References
 

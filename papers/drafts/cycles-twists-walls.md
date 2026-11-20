@@ -179,6 +179,8 @@ Straightforwardness is the condition under which no participant needs to model a
 
 Dictatorial and two-outcome game forms admit none, as Theorem 8 requires.
 
+The search uses strict preferences for all players, and this restriction is what gives the rational-opponent version content. Gibbard's preference orderings allow ties. If the opponents may be indifferent among all outcomes, every strategy is a best reply for them, any profile r(b) is played by rational opponents, and the rational-opponent version reduces to Lemma 7. The open question is therefore whether opponents with *strict* preferences always suffice.
+
 *Verification.* Exhaustive search. ∎
 
 An example under Borda with two voters: voter 1 prefers a to b to c, voter 2 prefers b to c to a. To each of the six ballots of voter 1, voter 2 has a best reply against which voter 1 would have done better with a different ballot. The situation is matching pennies embedded in the rule.
@@ -239,7 +241,7 @@ Chance in the outcome therefore removes the barrier of Theorem 8 only at the pri
 
 **Open problems.**
 
-1. *Rational diagonal in general.* Does every non-dictatorial simultaneous game form with at least three outcomes admit a rational diagonal? No counterexample exists among two-player forms with three strategies each.
+1. *Rational diagonal in general.* Does every non-dictatorial simultaneous game form with at least three outcomes admit a rational diagonal with opponents holding strict preferences? (With indifferent opponents it reduces to Lemma 7.) No counterexample exists among two-player forms with three strategies each.
 2. *Randomised strategists.* What form of Theorem 8, if any, holds when strategists randomise? The existence of mixed equilibria suggests that the barrier becomes one of computing or coordinating on an equilibrium.
 3. *More alternatives.* For n > 3, is orientation reversal on the surfaces of Livson, Pritam and Prokopenko again located exactly at the contradictory objects, and how do cycles on sub-triples enter?
 4. *One statement for both loops.* Find a formulation, presumably of Lawvere type, of which the Liar (negation, parity) and the Condorcet cycle (shift, integers) are instances, with reduction mod 2 as a map between them.
