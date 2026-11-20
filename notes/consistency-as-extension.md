@@ -43,6 +43,14 @@ Brandl, Brandt and Seedig also show that consistency over electorates and consis
 
 **The cycle inside a maximal lottery.** For a majority cycle a ≻ b ≻ c ≻ a with margins m_ab, m_bc, m_ca, the maximal lottery gives each candidate a probability proportional to the margin of the comparison not involving it: p_a : p_b : p_c = m_bc : m_ca : m_ab. (Each candidate then has expected margin zero against the lottery.) The reversed cycle with the same magnitudes gives the same lottery. Maximal lotteries thus keep the strengths of the cyclic comparisons, which Borda discards, and lose only their direction, which no neutral outcome can carry (*Where the Symmetry Goes*, observation 5).
 
+## 3a. Why maximal lotteries glue, and why deterministic rules cannot also respect clones
+
+**Gluing as a convex condition.** Write M(p) for the matrix of pairwise majority margins of the shares p; it is linear in p. A lottery q is maximal for M if it does at least as well as every candidate, that is, qᵀM ≥ 0 in every coordinate. For fixed q this is a system of linear inequalities in M. If q is maximal for M(p) and for M(p′), it is therefore maximal for every mixture t·M(p) + (1 − t)·M(p′) = M(t p + (1 − t) p′). That is population-consistency, in one line. The condition "x is the winner" of a Condorcet extension has no such form: it would have to read "x is unbeaten", and at a profile with a cycle no candidate is. Maximal lotteries replace an unsatisfiable condition by one that is always satisfiable (by the minimax theorem) and convex in the profile.
+
+**Positions versus comparisons.** Brandl, Brandt and Seedig show that no deterministic rule satisfies both consistency over electorates and consistency with respect to clones. In the terms used here the reason is visible for symmetric rules. By Young's theorem, symmetric and consistent deterministic rules are scoring rules: they give points by *position* in a ranking. Inserting a clone inserts a position, and shifts the positions, hence the scores, of every candidate ranked below it; the coordinate system the scores are written in changes when the set of alternatives is refined. Pairwise comparisons do not depend on positions: introducing clones of x leaves the comparison between any two other candidates unchanged. So the two axes of *A Map of Voting Paradoxes* correspond to two kinds of data: position-based data are linear in voters and can be glued, but are not invariant under refining the alternatives; comparison-based data are invariant under that refinement, but a deterministic decision based on them cannot be glued. Maximal lotteries use comparison-based data and replace the decision by a convex optimality condition, and so have both.
+
+This is an explanation of the incompatibility for symmetric rules, not a new proof of the theorem, which is more general.
+
 ## 4. Reading
 
 Taken together:
@@ -58,8 +66,8 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 ## 5. Open questions
 
 1. Express the obstruction of Section 2 as an invariant of the arrangement of Condorcet regions around the cycle region, for three and for more candidates.
-2. Is there an analogue of the blocking lemma for clone consistency, explaining in the same terms why it is incompatible with consistency over electorates for deterministic rules?
-3. Characterise how far maximal lotteries are from strategy-proofness, and compare them with random dictatorship as a fallback for consensus procedures.
+2. Section 3a explains the incompatibility of consistency over electorates and over clones for symmetric deterministic rules through positions and comparisons. Is there a blocking-type argument that covers the non-symmetric case as well?
+3. Characterise how far maximal lotteries are from strategy-proofness, and compare them with random dictatorship as a fallback for consensus procedures. A related point concerns adding alternatives. When voters' utilities decrease concavely with distance in a space of positions, every voter prefers a candidate placed at the mean position of a lottery to the lottery itself (Jensen's inequality). A compromise therefore always exists against a lottery fallback, even where no position beats every other, as in McKelvey's theorem. Successive compromises can then be expected to move the remaining cycle into a small central region rather than remove it. The cost of a final lottery would then shrink with the size of that region. Whether deliberately sustained cycles can prevent this, and how far random removal deters them, are open.
 4. Does the pattern "resolved by a fixed point, reappearing one level up" continue: is there a natural third level beyond aggregation and strategy?
 
 ## References
