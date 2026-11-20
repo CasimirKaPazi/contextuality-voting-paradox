@@ -16,7 +16,7 @@ The impossibility theorems of social choice share a common form with the Liar pa
 
 **Still required.** An honest sheaf formulation with sub-electorates as the cover; a statement of Young–Levenglick as an obstruction in that formulation, ideally cohomological; the relation between the electorate-indexed and the alternative-indexed versions (consistency versus IIA).
 
-**Documents.** *A Map of Voting Paradoxes*; *Two Kinds of Loop*; Sections 3–4 of *Cycles, Twists and Walls*.
+**Documents.** *Consistency as an Extension Problem* (the current formulation: consistency as convexity in vote-share space, the Condorcet winner as a partial assignment whose consistent extension across the cycle region is impossible, and a table of which combinations of symmetry, gluing and cycle sensitivity are possible, with maximal lotteries as the unique rule achieving all three); *A Map of Voting Paradoxes*; *Two Kinds of Loop*; Sections 3–4 of *Cycles, Twists and Walls*.
 
 ### B. Where the symmetry goes (the question that follows)
 

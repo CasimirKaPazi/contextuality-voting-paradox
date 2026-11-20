@@ -20,6 +20,7 @@ The guiding observation is that all of these have the same form: local pieces th
 |---|---|
 | `roadmap.md` | Threads, status, suggested order |
 | `map-of-voting-paradoxes.md` | Families of paradoxes, links between them, consistency as convexity and as a gluing condition |
+| `consistency-as-extension.md` | Consistency as convexity; the Condorcet winner as a partial assignment that cannot be extended consistently across the cycle region; symmetry, gluing and cycle sensitivity, deterministic versus lotteries (maximal lotteries) |
 | `where-the-symmetry-goes.md` | Three placements of the symmetry, composed voters, agreeing for different reasons |
 | `two-kinds-of-loop.md` | Condorcet cycles (integer winding) versus the Liar (parity), the Klein bottle seam, strategy and computability |
 | `ladder-of-lost-properties.md` | Speculative: the normed division algebras and Hopf fibrations as a frame for successive breakdowns of aggregation |
