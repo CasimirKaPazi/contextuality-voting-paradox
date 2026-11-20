@@ -22,6 +22,8 @@ So the partial assignment has no consistent extension across any point of the cy
 
 **Relation to contextuality.** The form is that of a local-to-global problem: data defined consistently on parts of a space that admit no global consistent extension. Two differences from the sheaf-theoretic setting of Abramsky and Brandenburger should be kept in view. The condition here is closure under mixing (convexity), not agreement on overlaps of a cover; and the obstruction is a fixed-point-free map of the candidates rather than a cohomology class. For three candidates there is a visible topology: each of the two cycle cones has three faces, and across them lie the regions R_a, R_b, R_c in cyclic order, the direction of the cycle. Whether the obstruction can be expressed as an invariant of this arrangement — the winding again — is open.
 
+For Arrow's theorem, Rajsbaum and Raventós-Pujol show that the answer cannot be a property of the underlying space alone. They give two domains of profiles that are homeomorphic, one of which admits a unanimous, non-dictatorial aggregation satisfying independence of irrelevant alternatives while the other does not, and a counterexample to the conjecture that such aggregation is possible exactly when the associated complex is contractible. The labels of the vertices, that is, which pair of alternatives each comparison belongs to, are essential. In the language of contextuality, the obstruction depends on the cover (which sets are contexts) and not only on the space covered. An invariant of the hole in the present problem, if there is one, should likewise be an invariant of the arrangement of regions together with their labels.
+
 ## 3. Symmetry, gluing and cycles
 
 Three properties are in play:
@@ -77,6 +79,7 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 - Fishburn, P. C. (1984). Probabilistic social choice based on simple voting comparisons. *Review of Economic Studies* 51, 683–692.
 - Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
 - Gibbard, A. (1978). Straightforwardness of game forms with lotteries as outcomes. *Econometrica* 46, 595–614.
+- Rajsbaum, S. and Raventós-Pujol, A. (2025). A combinatorial topology approach to Arrow's impossibility theorem. *Social Choice and Welfare*. doi:10.1007/s00355-025-01609-7.
 - Smith, J. H. (1973). Aggregation of preferences with variable electorate. *Econometrica* 41, 1027–1041.
 - von Neumann, J. (1928). Zur Theorie der Gesellschaftsspiele. *Mathematische Annalen* 100, 295–320.
 - Young, H. P. (1975). Social choice scoring functions. *SIAM Journal on Applied Mathematics* 28, 824–838.

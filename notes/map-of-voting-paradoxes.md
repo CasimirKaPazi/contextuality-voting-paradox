@@ -31,7 +31,7 @@ In each family a consistency requirement can be stated. Each is a requirement th
 | Paradox / criterion | What happens | Formal core |
 |---|---|---|
 | Spoiler effect; independence of irrelevant alternatives (IIA) | adding or removing a losing candidate changes the winner | Arrow: IIA, Pareto, transitivity ⇒ dictator. Abramsky: IIA is naturality of the aggregation map |
-| Independence of clones | adding a near-copy of a candidate changes the winner | Tideman†; satisfied by Schulze, ranked pairs, IRV; failed by Borda, plurality. Clones add no cycles among themselves; what they distort is the linear side (Borda is inflated by teams), so clone independence sits with the pairwise rules |
+| Independence of clones | adding a near-copy of a candidate changes the winner | Tideman 1987; satisfied by Schulze, ranked pairs (completely in the variant of Zavist and Tideman 1989), IRV; failed by Borda, plurality. Clones add no cycles among themselves; what they distort is the linear side (Borda is inflated by teams), so clone independence sits with the pairwise rules |
 | Chernoff / contraction consistency | the winner of a large menu is not the winner of a smaller menu containing it | choice-function rationality (Sen's α)† |
 | Reversal paradoxes | reversing all ballots does not reverse the outcome | Saari's reversal symmetry†; satisfied by Borda among scoring rules |
 
@@ -39,7 +39,7 @@ In each family a consistency requirement can be stated. Each is a requirement th
 
 | Paradox / criterion | What happens | Formal core |
 |---|---|---|
-| Consistency (reinforcement) | a candidate wins in two separate electorates but not in their union | Smith 1973, Young 1975†: anonymity, neutrality, consistency (with continuity) characterise scoring rules. Young and Levenglick 1978: no Condorcet extension satisfies reinforcement (for three candidates, every Condorcet extension fails it with at least eight voters; Brandt, Dong and Peters) |
+| Consistency (reinforcement) | a candidate wins in two separate electorates but not in their union | Smith 1973, Young 1975: anonymity, neutrality, consistency (with continuity) characterise scoring rules. Young and Levenglick 1978: no Condorcet extension satisfies reinforcement (for three candidates, every Condorcet extension fails it with at least eight voters; Brandt, Dong and Peters) |
 | No-show paradox (participation) | a voter is better off staying at home | Moulin 1988: no Condorcet extension satisfies participation (from four alternatives and a sufficient number of voters†); for three candidates the homogeneous Condorcet extensions avoiding it are exactly refinements of maximin (Brandt, Dong, Peters) |
 | Simpson's paradox | a relation that holds in every subgroup reverses in the union | the statistical form of grouping dependence |
 | Referendum paradox / districting | district majorities differ from the popular majority | non-associativity of majority (see *A Ladder of Lost Properties*) |
@@ -53,7 +53,7 @@ In each family a consistency requirement can be stated. Each is a requirement th
 | Paradox / criterion | What happens | Formal core |
 |---|---|---|
 | Manipulability | a voter gains by misreporting | Gibbard 1973, Satterthwaite 1975; Theorem 8 of *Cycles, Twists and Walls* |
-| Non-monotonicity | ranking a candidate higher makes them lose (IRV) | Muller–Satterthwaite 1977†: strong monotonicity with Pareto on three or more alternatives ⇒ dictator |
+| Non-monotonicity | ranking a candidate higher makes them lose (IRV) | Muller–Satterthwaite 1977: strong monotonicity with Pareto on three or more alternatives ⇒ dictator |
 | Later-no-harm / later-no-help | adding a lower preference hurts or helps an earlier one | Woodall's criteria†; mutually incompatible with Condorcet consistency |
 | Burial and compromise | strategic ranking of a rival lower, or a favourite lower | from a sincere Condorcet winner, burial requires creating a cycle (Proposition 6 of *Cycles, Twists and Walls*); within an existing cycle it can also work through the tie-breaking |
 
@@ -61,15 +61,15 @@ In each family a consistency requirement can be stated. Each is a requirement th
 
 | Paradox | What happens | Formal core |
 |---|---|---|
-| Agenda dependence | sequential pairwise votes yield different winners under different agendas | arises only when majority has a cycle; McKelvey 1976†: in spatial voting without a Condorcet winner, an agenda setter can reach almost any outcome |
-| Path independence | choosing from parts of a menu and then among the winners differs from choosing from the whole | Plott 1973† |
+| Agenda dependence | sequential pairwise votes yield different winners under different agendas | arises only when majority has a cycle; McKelvey 1976: in spatial voting without a Condorcet winner, an agenda setter can reach almost any outcome |
+| Path independence | choosing from parts of a menu and then among the winners differs from choosing from the whole | Plott 1973 |
 | Iterative voting cycles | best-reply dynamics fail to settle | Meir et al.; rule-dependent |
 
 ### 2.6 Level of aggregation varies
 
 | Paradox | What happens | Formal core |
 |---|---|---|
-| Multiple elections paradox | the combination that wins issue by issue receives no votes at all | Brams, Kilgour, Zwicker 1998† |
+| Multiple elections paradox | the combination that wins issue by issue receives no votes at all | Brams, Zwicker and Kilgour 1998 |
 | Apportionment paradoxes (Alabama, population, new states) | rounding seats to integers produces non-monotone allocations | Balinski–Young 1982†: no apportionment method both stays within quota and avoids the population paradox |
 | Liberal paradox | individual rights over personal matters conflict with Pareto | Sen 1970 |
 
@@ -145,20 +145,21 @@ The mechanism needs four roles — a first choice that harms the second, a secon
 
 - Arrow, K. J. (1963). *Social Choice and Individual Values*, 2nd ed.
 - Balinski, M. L. and Young, H. P. (1982). *Fair Representation*. Yale University Press.†
-- Brams, S. J., Kilgour, D. M. and Zwicker, W. S. (1998). The paradox of multiple elections. *Social Choice and Welfare* 15, 211–236.†
+- Brams, S. J., Zwicker, W. S. and Kilgour, D. M. (1998). The paradox of multiple elections. *Social Choice and Welfare* 15, 211–236.
 - Brandt, F., Dong, C. and Peters, D. (2024). Condorcet-consistent choice among three candidates. arXiv:2411.19857.
 - Dietrich, F. and List, C. (2007). Arrow's theorem in judgment aggregation. *Social Choice and Welfare* 29, 19–33.
 - Fishburn, P. C. and Brams, S. J. (1983). Paradoxes of preferential voting. *Mathematics Magazine* 56, 207–214.†
 - Jiang, X., Lim, L.-H., Yao, Y. and Ye, Y. (2011). Statistical ranking and combinatorial Hodge theory. *Mathematical Programming* 127, 203–244.
 - McKelvey, R. D. (1976). Intransitivities in multidimensional voting models and some implications for agenda control. *Journal of Economic Theory* 12, 472–482.
 - Moulin, H. (1988). Condorcet's principle implies the no show paradox. *Journal of Economic Theory* 45, 53–64.
-- Muller, E. and Satterthwaite, M. A. (1977). The equivalence of strong positive association and strategy-proofness. *Journal of Economic Theory* 14, 412–418.†
+- Muller, E. and Satterthwaite, M. A. (1977). The equivalence of strong positive association and strategy-proofness. *Journal of Economic Theory* 14, 412–418.
 - Nurmi, H. On the relevance of theoretical results to voting system choice (discussion of consistency and Kemeny).
-- Plott, C. R. (1973). Path independence, rationality, and social choice. *Econometrica* 41, 1075–1091.†
-- Saari, D. G. (2000). Mathematical structure of voting paradoxes I, II. *Economic Theory* 15, 1–53 and 55–102.†
+- Plott, C. R. (1973). Path independence, rationality, and social choice. *Econometrica* 41, 1075–1091.
+- Saari, D. G. (2000). Mathematical structure of voting paradoxes I, II. *Economic Theory* 15, 1–53 and 55–102.
 - Saari, D. G. (2011). Geometry of voting. In K. Arrow, A. Sen and K. Suzumura (eds.), *Handbook of Social Choice and Welfare* II, ch. 27, Elsevier.
 - Sen, A. (1970). The impossibility of a Paretian liberal. *Journal of Political Economy* 78, 152–157.
-- Smith, J. H. (1973). Aggregation of preferences with variable electorate. *Econometrica* 41, 1027–1041.†
-- Tideman, T. N. (1987). Independence of clones as a criterion for voting rules. *Social Choice and Welfare* 4, 185–206.†
-- Young, H. P. (1975). Social choice scoring functions. *SIAM Journal on Applied Mathematics* 28, 824–838.†
+- Smith, J. H. (1973). Aggregation of preferences with variable electorate. *Econometrica* 41, 1027–1041.
+- Zavist, T. M. and Tideman, T. N. (1989). Complete independence of clones in the ranked pairs rule. *Social Choice and Welfare* 6, 167–173.
+- Tideman, T. N. (1987). Independence of clones as a criterion for voting rules. *Social Choice and Welfare* 4, 185–206.
+- Young, H. P. (1975). Social choice scoring functions. *SIAM Journal on Applied Mathematics* 28, 824–838.
 - Young, H. P. and Levenglick, A. (1978). A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35, 285–300.
