@@ -22,9 +22,9 @@ The impossibility theorems of social choice share a common form with the Liar pa
 
 **Claim.** Aggregation into a rigid total order must dispose of a fixed-point-free symmetry of the profile. The symmetry ends up in the output (a paradox), in the rule (a dictator, tie-breaker or agenda), or in a fixed point that is not a single alternative (a lottery). Incompatible combinations of criteria are different decisions about where it goes.
 
-**In hand.** The elementary observation at the Condorcet profile; the three placements and their mathematical backing (rigidity of finite orders, Lawvere, Brouwer, Kakutani, Scott); a classification of known theorems by placement (see the table in *Where the Symmetry Goes*); the recursion for voters who are themselves composed.
+**In hand.** The elementary observation at the Condorcet profile; the three placements and their mathematical backing (rigidity of finite orders, Lawvere, Brouwer, Kakutani, Scott); a classification of known theorems by placement (see the table in *Where the Symmetry Goes*); the recursion for voters who are themselves composed. The pointwise form of the trichotomy: by the isotropy lemma, a neutral rule must send each profile to an output fixed by its stabiliser, and the three placements are the cases "an admissible fixed output exists", "only an inadmissible one exists", "none exists". This recovers, by computation on small cases, the known existence conditions for anonymous and neutral rules (Moulin; Bubboloni and Gori).
 
-**Still required.** A precise theorem: for aggregation maps commuting with a group action on alternatives (and voters), classify targets by how the group acts on them and derive the corresponding impossibility in each case; check whether the known theorems are recovered.
+**Still required.** The global form: the theorems with a dictator (Arrow, Gibbard–Satterthwaite, Chichilnisky) are obstructions along loops, not at points. An equivariant obstruction theory for rules with a locality condition, with the winding and the degrees as classes, and integer versus real classes separating a forced break from a fixed point.
 
 **Documents.** *Where the Symmetry Goes*; Section 8 of *Cycles, Twists and Walls*.
 

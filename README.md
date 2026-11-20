@@ -48,12 +48,13 @@ All scripts are short and self-contained. They need Python 3 with `numpy`; some 
 | `consistency/blocking_any_n.py` | The explicit blocking construction for three to six candidates: at every profile without a Condorcet winner, any choice of winner is undone by a mixture | *Map*, Young–Levenglick for any number of candidates |
 | `consistency/participation_check.py` | Participation along ballot segments in vote-share space for maximin, Black and Borda with three and four candidates; maximin fails only from four candidates on. Takes about a minute | *Map*, no-show mechanism |
 | `consistency/cycle_assignment_check.py` | No profile with a majority cycle can be assigned to any candidate by a consistent Condorcet extension | *Map*, Young–Levenglick for three candidates |
+| `symmetry/isotropy_check.py` | Stabilisers of all anonymous profiles for small numbers of alternatives and voters; the condition "every stabiliser fixes an admissible output" reproduces the existence conditions for anonymous, neutral rules with single winners, Pareto-optimal winners and rankings. Takes about twenty seconds | *Where the Symmetry Goes* §7 |
 | `exploratory/condorcet_island.py` | Interactive: where a third candidate produces a cycle in a spatial model, as a function of zoom and voter arrangement | exploratory |
 | `exploratory/island_phase_map.py` | Area and direction of the cycle region over the parameters of the spatial model | exploratory |
 
 ## Related work
 
-The notes build on, among others: Livson, Prokopenko and Pritam on Arrow and Gödel and on the non-orientable topology of Condorcet's paradox; Abramsky and co-authors on contextuality and on Arrow's theorem in categorical form; Gibbard (1973, 1977, 1978); Young and Levenglick; Moulin; Saari's geometry of voting; Jiang, Lim, Yao and Ye on combinatorial Hodge theory and ranking; McKelvey on intransitivity in spatial voting; Binmore, Anderlini, and Nachbar and Zame on non-computable strategies. Full references are given in each document. References marked † in the notes were cited from memory and have not yet been checked against the originals.
+The notes build on, among others: Livson, Prokopenko and Pritam on Arrow and Gödel and on the non-orientable topology of Condorcet's paradox; Abramsky and co-authors on contextuality and on Arrow's theorem in categorical form; Gibbard (1973, 1977, 1978); Young and Levenglick; Moulin; Saari's geometry of voting; Jiang, Lim, Yao and Ye on combinatorial Hodge theory and ranking; McKelvey on intransitivity in spatial voting; Binmore, Anderlini, and Nachbar and Zame on non-computable strategies; Baryshnikov and Root, and Rajsbaum and Raventós-Pujol, on topological proofs of the Gibbard–Satterthwaite and Arrow theorems. Full references are given in each document. References marked † in the notes were cited from memory and have not yet been checked against the originals.
 
 ## Authors
 
