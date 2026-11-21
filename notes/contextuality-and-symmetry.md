@@ -25,7 +25,34 @@ The script `scripts/symmetry/arrow_as_csp.py` computes the solutions for N = 2 a
 - **Symmetric local rule.** On a single issue, the unique anonymous, neutral and positively responsive rule is majority (May). Applied on every issue, it violates the constraint at the Condorcet profile, where every share is 2/3.
 - **Symmetric fractional assignment.** Assign to each variable not a bit but the share itself. This is consistent in every context: the profile is itself a distribution over admissible triples with exactly these marginals. The distribution is the one obtained by choosing a voter at random and taking that voter's ranking, so this fractional solution is random dictatorship, the average of the N integral solutions (computed).
 
-These are the three placements of *Where the Symmetry Goes*, now for rules and the voters' permutations instead of outcomes and renamings of alternatives. Majority keeps the symmetry locally and fails to glue (i). The dictators glue and break the symmetry (ii). Random dictatorship keeps the symmetry and glues, at the price of being fractional (iii).
+These are the three placements of *Where the Symmetry Goes*, now for rules and the voters' permutations instead of outcomes and renamings of alternatives. Majority keeps the symmetry locally and fails to glue (i). The dictators glue and break the symmetry (ii). Random dictatorship keeps the symmetry and glues, at the price of being fractional (iii). Section 2a shows that it is not the only fractional solution.
+
+## 2a. Lottery-valued rules are empirical models
+
+A *random social welfare function* assigns to each profile a lottery over rankings. It satisfies probabilistic independence of irrelevant alternatives if the probability that x is placed above y depends only on the voters' comparisons of x and y. It is Paretian if a comparison on which all voters agree is followed with probability one (Barberà and Sonnenschein). In the scenario of Section 1 such a rule is exactly an *empirical model* in the sense of Abramsky and Brandenburger. It gives a distribution over joint outcomes in each context, namely the lottery at that profile, supported on admissible outcomes, and its marginal on each variable is the same in every context containing it. Probabilistic independence of irrelevant alternatives is the no-signalling condition.
+
+The model is non-contextual if it is the image of one distribution over global assignments. Every global assignment in the support must then satisfy every constraint and unanimity, so by Arrow's theorem it is a dictatorship. **The non-contextual random rules are therefore the mixtures of dictatorships.** Their marginals are additive: the probability that x is placed above y is the total weight of the voters who prefer x to y. A rule whose marginals are not additive is contextual, whatever joint lotteries it uses.
+
+Barberà and Sonnenschein showed that a Paretian random rule with probabilistic independence is described by a power function on coalitions, which in general is subadditive, not additive. In the present terms, the gap between subadditive and additive power is the gap between contextual and non-contextual models. *(Reading of a known characterisation.)*
+
+The gap is not empty. The following is computed with `scripts/symmetry/probabilistic_arrow.py`.
+
+- **Two voters.** Every rule has additive marginals (three to five alternatives). On each pair this follows from complementarity: the probabilities of a comparison and of its reverse add to one, so the powers of the two voters add to one. The computation shows in addition that the split of power is the same on every pair.
+- **Three or more voters.** There are rules with non-additive marginals. The simplest is the **coin rule**. A pair on which all voters agree is ranked as they agree; every other pair gets probability ½, with the lotteries chosen jointly so that the outcome is always a ranking.
+  - Such lotteries exist for every unanimity order with three and four alternatives (checked for all), and with five alternatives on all sampled profiles.
+  - With six alternatives they fail at a few unanimity orders. There the linear-ordering polytope has facets beyond the triangle inequalities.
+
+The coin rule is anonymous, neutral, Paretian and independent in probability, and it is contextual: its power function gives every proper coalition ½.
+
+This refines placement (iii). Random dictatorship, the symmetric fractional point of Section 2, is non-contextual: it is the average of the breaks, a mixture of integral solutions. The coin rule is symmetric, fractional and contextual: no mixture of integral solutions produces it.
+
+The two differ visibly at the Condorcet profile abc, bca, cab:
+- **Random dictatorship** puts probability 2/3 on each majority comparison and so keeps the direction of the cycle.
+- **The coin rule** puts ½ on each comparison, realised by the uniform lottery over all six rankings. It erases the direction, as Borda does (*Where the Symmetry Goes*, observation 5).
+
+*(Observation on small cases, not a theorem.)*
+
+For the agreement-type theorems the comparison runs differently. Young and Levenglick's problem has no deterministic solution at all, so a lottery-valued solution, such as the maximal lotteries, which are consistent over electorates and elect a Condorcet winner when there is one, cannot be a mixture of deterministic solutions. Written as a scenario with electorates as contexts, it would be contextual in the same sense. That scenario has not been written down here: consistency is a gluing condition across electorates, not a constraint inside each context, so the formulation is not immediate.
 
 ## 3. Agreement and symmetry breaking
 
@@ -52,7 +79,7 @@ On this reading, the observation that the exits from impossibility are convexifi
 
 ## 5. Where earlier statements sit
 
-**Binary encoding.** *Cycles, Twists and Walls*, remark (a) of Section 3, says that recording only the winner of each pair makes a Condorcet cycle a constraint violation and not contextuality. That concerns a single profile. Over the network of all profiles, with independence of irrelevant alternatives as non-contextuality, the symmetric aggregation problem is contextual in the constraint sense of Section 3. The two statements concern different scenarios. The unbounded line of Proposition 3 places the obstruction in the value space of one profile; the network here places it in the space of rules.
+**Binary encoding.** *Cycles, Twists and Walls*, remark (a) of Section 3, says that recording only the winner of each pair makes a Condorcet cycle a constraint violation and not contextuality. That concerns a single profile. Over the network of all profiles, with independence of irrelevant alternatives as non-contextuality, the symmetric aggregation problem is contextual in the constraint sense of Section 3, and Section 2a gives random rules, such as the coin rule, that are contextual in the probabilistic sense of Abramsky and Brandenburger. The two statements concern different scenarios. The unbounded line of Proposition 3 places the obstruction in the value space of one profile; the network here places it in the space of rules.
 
 **Two directions of non-contextuality.** The roadmap asked how consistency over electorates relates to independence of irrelevant alternatives. In the present terms, independence says that aggregation commutes with restricting a profile to a subset of alternatives: the decision on a pair is computed from the restriction to that pair. Consistency says that aggregation respects joining electorates: winners shared by the parts are the winners of the whole. One is a locality condition in the direction of alternatives, the other a gluing condition in the direction of voters. Together they resemble the two axioms of a sheaf. The two axes of *A Map of Voting Paradoxes* (linearity in voters, pairwise structure) are these two directions. *(Interpretation; not yet a theorem.)*
 
@@ -60,7 +87,7 @@ On this reading, the observation that the exits from impossibility are convexifi
 
 ## 6. Open questions
 
-1. *A contextual fraction for aggregation.* Every profile's shares are realised fractionally by random dictatorship. How much of a profile's pairwise data can be accounted for by integral symmetric rules, in the sense of Abramsky, Barbosa and Mansfield's contextual fraction, and does this quantity relate to the strength of the cyclic component (the curl of the Hodge decomposition)?
+1. *A contextual fraction for aggregation.* By Section 2a, a Paretian random rule with probabilistic independence has a well-defined contextual fraction in the sense of Abramsky, Barbosa and Mansfield: the largest weight of a mixture of dictatorships that fits inside it, subtracted from one. How does it relate to the subadditivity of Barberà and Sonnenschein's power function, is the coin rule maximally contextual among symmetric rules, and is there a non-additive rule for every number of alternatives?
 2. *Relaxing locality in steps.* Rules that look at more than one pair, such as Borda, which uses each voter's full ranking, are contextual in the sense of Section 1. Stronger relaxations than the basic LP (the Sherali–Adams hierarchy) correspond to consistency over larger sets of variables. Is there a hierarchy of rules seeing k issues at a time, matching the levels of the relaxation, with Saari's intensity form of independence as an early level?
 3. *Agreement-type theorems in topological form.* If Young–Levenglick is of agreement type, is there a Sperner-type proof of it, as there is an index-type proof of Arrow's theorem?
 4. *Neutral versus non-neutral.* The bridge of Section 4 uses polymorphisms that apply the same rule to every issue, that is, neutral rules. Arrow's theorem allows different rules on different issues. The multi-sorted version of the bridge should be stated and checked.
@@ -71,6 +98,7 @@ On this reading, the observation that the exits from impossibility are convexifi
 - Abramsky, S., Barbosa, R. S. and Mansfield, S. (2017). Contextual fraction as a measure of contextuality. *Physical Review Letters* 119, 050504.
 - Abramsky, S. and Brandenburger, A. (2011). The sheaf-theoretic structure of non-locality and contextuality. *New Journal of Physics* 13, 113036.
 - Abramsky, S., Gottlob, G. and Kolaitis, P. G. (2013). Robust constraint satisfaction and local hidden variables in quantum mechanics. *IJCAI 2013*, 440–446.
+- Barberà, S. and Sonnenschein, H. (1978). Preference aggregation with randomized social orderings. *Journal of Economic Theory* 18, 244–254.
 - Brandt, F., Dong, C. and Peters, D. (2024). Condorcet-consistent choice among three candidates. arXiv:2411.19857.
 - Castañeda, A., Herlihy, M. and Rajsbaum, S. (2012). An equivariance theorem with applications to renaming. *LATIN 2012*, LNCS 7256. arXiv:1102.4946.
 - Dokow, E. and Holzman, R. (2010). Aggregation of binary evaluations. *Journal of Economic Theory* 145, 495–511.
