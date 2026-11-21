@@ -27,9 +27,11 @@ the outcome a ranking. The script checks, for each unanimity order that occurs,
 whether a lottery over rankings with these marginals exists (exhaustively for
 m <= 4, on random profiles for m = 5, 6).
 
-Part 4 (more alternatives). For four alternatives and two or three voters, no
-fully compatible unanimous family puts mass on rankings that no voter holds; with
-at most three voters this forces the mixture of dictatorships. Theorem 5 of Four Levels proves
+Part 4 (four alternatives). Up to four voters, every fully compatible unanimous family
+is a mixture of dictatorships, in three steps: (1) no mass outside the voters' rankings;
+(2) at all but a few profiles the triple marginals, which Theorem 5 of Four Levels fixes,
+then determine the lottery; (3) at the remaining profiles, full compatibility with a
+profile that differs in one voter's ranking fixes it. Theorem 5 of Four Levels proves
 the three-alternative case for any number of voters.
 
 Part 3 (full compatibility). Probabilistic independence only asks that each
@@ -42,7 +44,7 @@ mixture of dictatorships, lotteries included, and (b) for N = 2, 3, 4 whether
 the coin rule admits a fully compatible choice of lotteries (it does only for
 N = 2).
 """
-from itertools import product, permutations, combinations
+from itertools import combinations_with_replacement, product, permutations, combinations
 import random
 import numpy as np
 from scipy.optimize import linprog
@@ -219,39 +221,32 @@ def coin_fully_compatible(N):
 
 
 def full_compat_support(m, N):
-    """Part 4. Largest total mass, summed over profiles, that a fully compatible unanimous
-    family can put on rankings that no voter holds. Contexts are profiles of m alternatives;
-    two profiles with the same columns on a set E of pairs must induce the same joint
-    distribution on E.
+    """Part 4, step 1. Largest total mass that a fully compatible unanimous family can put
+    on rankings that no voter holds, summed over profiles.
 
-    The feasible set and the objective are invariant under permuting the voters and
-    renaming the alternatives, so the maximum is attained at an invariant model; the
-    linear program is therefore set up on orbits of (profile, ranking) pairs, and the
-    compatibility constraints are imposed for one set of pairs per orbit of such sets.
-
-    Zero means every model is supported on the voters' rankings. With at most three
-    voters this forces the mixture of dictatorships: two distinct rankings differ on some
-    pair, so with three or fewer distinct rankings the pairwise probabilities determine
-    the weight on each."""
+    The feasible set and this objective are invariant under permuting the voters and
+    renaming the alternatives, so the maximum is attained at a model invariant under both.
+    For an anonymous model a profile is a multiset of rankings, and full compatibility says
+    that multisets with the same multiset of restrictions to a set E of pairs have the same
+    joint law on E. The program is set up on orbits of (multiset, ranking) under renaming,
+    with one set E per orbit of such sets."""
     import scipy.sparse as sp
     alts = range(m)
     pairs = list(combinations(alts, 2))
     R = list(permutations(alts)); nR = len(R)
     Ridx = {r: i for i, r in enumerate(R)}
     T = np.array([[int(r.index(a) < r.index(b)) for a, b in pairs] for r in R])
-    profs = np.array(list(product(range(nR), repeat=N))); P = len(profs)
+    profs = list(combinations_with_replacement(range(nR), N)); P = len(profs)
+    pid = {q: i for i, q in enumerate(profs)}
+    pa = np.array(profs)
     perms_alt = list(permutations(alts))
-    rmap = [np.array([Ridx[tuple(pi[x] for x in r)] for r in R]) for pi in perms_alt]
     lab = np.full((P, nR), np.iinfo(np.int64).max, dtype=np.int64)
-    wts = nR ** np.arange(N)[::-1]
-    for ra in rmap:
-        for sv in permutations(range(N)):
-            q = ra[profs][:, list(sv)]
-            np.minimum(lab, ((q * wts).sum(1))[:, None] * nR + ra[None, :], out=lab)
+    for pi in perms_alt:
+        ra = np.array([Ridx[tuple(pi[x] for x in r)] for r in R])
+        qi = np.array([pid[tuple(x)] for x in np.sort(ra[pa], axis=1)])
+        np.minimum(lab, qi[:, None] * nR + ra[None, :], out=lab)
     _, orb = np.unique(lab, return_inverse=True)
     orb = orb.reshape(P, nR); nv = orb.max() + 1
-    cols = np.stack([(T[profs][:, :, e] * (2 ** np.arange(N))).sum(1)
-                     for e in range(len(pairs))], 1)
 
     def rowsum(mask):
         ts = np.nonzero(mask)[0]
@@ -260,32 +255,82 @@ def full_compat_support(m, N):
 
     blocks, rhs = [rowsum(np.ones(nR, bool))], [np.ones(P)]
     for e in range(len(pairs)):
-        for k, want in ((0, 1), (2 ** N - 1, 0)):
-            M = rowsum(T[:, e] == want)[cols[:, e] == k]
+        bits = T[pa][:, :, e]
+        for allv, want in ((0, 1), (1, 0)):
+            M = rowsum(T[:, e] == want)[np.all(bits == allv, axis=1)]
             blocks.append(M); rhs.append(np.zeros(M.shape[0]))
-    seen, reps = set(), []
+    seen = set()
     for size in range(1, len(pairs)):
         for E in combinations(range(len(pairs)), size):
             c = min(tuple(sorted(tuple(sorted((pi[pairs[e][0]], pi[pairs[e][1]]))) for e in E))
                     for pi in perms_alt)
-            if c not in seen:
-                seen.add(c); reps.append(E)
-    for E in reps:
-        key = np.zeros(P, dtype=np.int64)
-        for e in E:
-            key = key * (2 ** N) + cols[:, e]
-        _, first, inv = np.unique(key, return_index=True, return_inverse=True)
-        rep = first[inv]; sel = rep != np.arange(P)
-        for val in product((0, 1), repeat=len(E)):
-            mask = np.all(T[:, list(E)] == np.array(val), axis=1)
-            if mask.any():
-                M = rowsum(mask)
-                blocks.append(M[sel] - M[rep[sel]]); rhs.append(np.zeros(int(sel.sum())))
+            if c in seen:
+                continue
+            seen.add(c)
+            pat = (T[:, list(E)] * (2 ** np.arange(len(E)))).sum(1)
+            first, rep = {}, np.empty(P, dtype=np.int64)
+            for k, q in enumerate(profs):
+                rep[k] = first.setdefault(tuple(sorted(pat[list(q)])), k)
+            sel = rep != np.arange(P)
+            for val in range(2 ** len(E)):
+                if (pat == val).any():
+                    M = rowsum(pat == val)
+                    blocks.append(M[sel] - M[rep[sel]]); rhs.append(np.zeros(int(sel.sum())))
     A = sp.vstack(blocks).tocsr()
-    outside = np.array([[t not in set(p) for t in range(nR)] for p in profs])
+    outside = np.array([[t not in q for t in range(nR)] for q in profs])
     c = -np.bincount(orb[outside], minlength=nv).astype(float)
     res = linprog(c, A_eq=A, b_eq=np.concatenate(rhs), bounds=(0, 1), method="highs")
     return max(0.0, -res.fun)
+
+
+def triple_separation(m, N):
+    """Part 4, steps 2 and 3. Given step 1, a model at a profile is a distribution on the
+    voters' distinct rankings whose triple marginals are those of the mixture of
+    dictatorships (Theorem 5 applied to each triple). Step 2: count the profiles at which
+    these marginals do not determine such a distribution. Step 3: for each of them, check
+    that every remaining direction is killed by full compatibility with a profile that
+    differs in one voter's ranking, shares the columns on some set E of pairs, and is
+    determined by step 2. Returns (number of undetermined multisets, number not resolved)."""
+    alts = range(m)
+    pairs = list(combinations(alts, 2))
+    R = list(permutations(alts))
+    triples = list(combinations(alts, 3))
+
+    def tri_matrix(D):
+        return np.array([[int(sorted(tr, key=R[t].index) == list(sg)) for t in D]
+                         for tr in triples for sg in permutations(tr)])
+
+    def separated(prof):
+        D = sorted(set(prof))
+        return np.linalg.matrix_rank(tri_matrix(D)) == len(D)
+
+    bits = [[int(r.index(a) < r.index(b)) for a, b in pairs] for r in R]
+    undetermined = unresolved = 0
+    for q in combinations_with_replacement(range(len(R)), N):
+        if separated(q):
+            continue
+        undetermined += 1
+        D = sorted(set(q))
+        _, sv, vt = np.linalg.svd(tri_matrix(D))
+        K = vt[np.sum(sv > 1e-9):]                       # directions not fixed by triples
+        rows = []
+        for k in range(N):
+            for r2 in range(len(R)):
+                if r2 == q[k]:
+                    continue
+                q2 = q[:k] + (r2,) + q[k + 1:]
+                if not separated(q2):
+                    continue
+                E = [e for e in range(len(pairs)) if bits[r2][e] == bits[q[k]][e]]
+                for size in range(1, len(E) + 1):
+                    for F in combinations(E, size):
+                        for val in product((0, 1), repeat=size):
+                            ind = np.array([int(all(bits[t][f] == v for f, v in zip(F, val)))
+                                            for t in D])
+                            rows.append(K @ ind)
+        if not rows or np.linalg.matrix_rank(np.array(rows), tol=1e-9) < K.shape[0]:
+            unresolved += 1
+    return undetermined, unresolved
 
 def main():
     print("Part 1: largest deviation of a rule's marginals from additive power")
@@ -303,9 +348,11 @@ def main():
               f"{full_compatibility_gap(N):.3f}")
     for N in (2, 3, 4):
         print(f"  m=3 N={N}: coin rule admits fully compatible lotteries: {coin_fully_compatible(N)}")
-    print("Part 4: full compatibility with more alternatives (mass outside the voters' rankings)")
-    for m, N in [(3, 2), (3, 3), (4, 2), (4, 3)]:
-        print(f"  m={m} N={N}: {full_compat_support(m, N):.3f}")
+    print("Part 4: full compatibility with four alternatives")
+    for m, N in [(3, 3), (4, 2), (4, 3), (4, 4)]:
+        und, unres = triple_separation(m, N)
+        print(f"  m={m} N={N}: mass outside the voters' rankings {full_compat_support(m, N):.3f}; "
+              f"profiles not fixed by triples {und}, of which not resolved by one-voter changes {unres}")
 
 
 if __name__ == "__main__":
