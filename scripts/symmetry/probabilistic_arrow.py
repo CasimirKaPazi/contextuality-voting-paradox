@@ -27,6 +27,11 @@ the outcome a ranking. The script checks, for each unanimity order that occurs,
 whether a lottery over rankings with these marginals exists (exhaustively for
 m <= 4, on random profiles for m = 5, 6).
 
+Part 4 (more alternatives). For four alternatives and two voters, no fully
+compatible unanimous family puts mass on rankings that no voter holds; with two
+voters this forces the mixture of dictatorships. Theorem 5 of Four Levels proves
+the three-alternative case for any number of voters.
+
 Part 3 (full compatibility). Probabilistic independence only asks that each
 pair's probability depend on that pair's column (weak compatibility). An
 empirical model in the sense of Abramsky and Brandenburger also requires two
@@ -213,6 +218,60 @@ def coin_fully_compatible(N):
     return res.status == 0
 
 
+def full_compat_support(m, N):
+    """Part 4. Largest total mass, summed over profiles, that a fully compatible unanimous
+    family can put on rankings that no voter holds. Contexts are profiles of m alternatives;
+    two profiles with the same columns on a set E of pairs must induce the same joint
+    distribution on E. Zero means every model is supported on the voters' rankings, which
+    for two voters forces the mixture of dictatorships."""
+    import scipy.sparse as sp
+    pairs = list(combinations(range(m), 2))
+    R = list(permutations(range(m)))
+    T = []
+    for r in R:
+        q = {x: i for i, x in enumerate(r)}
+        T.append(tuple(int(q[a] < q[b]) for a, b in pairs))
+    nT = len(T)
+    profs = list(product(range(nT), repeat=N))
+    cols = [tuple(tuple(T[v][e] for v in pr) for e in range(len(pairs))) for pr in profs]
+    rows, cs, vals, b = [], [], [], []
+
+    def add(entries, rhs):
+        r = len(b)
+        for c, v in entries:
+            rows.append(r); cs.append(c); vals.append(v)
+        b.append(rhs)
+
+    for pi in range(len(profs)):
+        add([(pi * nT + t, 1) for t in range(nT)], 1)
+        for e in range(len(pairs)):
+            k = sum(cols[pi][e])
+            if k in (0, N):
+                want = 1 if k == N else 0
+                add([(pi * nT + t, 1) for t in range(nT) if T[t][e] != want], 0)
+    for size in range(1, len(pairs)):
+        for E in combinations(range(len(pairs)), size):
+            g = {}
+            for pi in range(len(profs)):
+                g.setdefault(tuple(cols[pi][e] for e in E), []).append(pi)
+            for ps in g.values():
+                if len(ps) < 2:
+                    continue
+                for val in product((0, 1), repeat=size):
+                    ts = [t for t in range(nT) if tuple(T[t][e] for e in E) == val]
+                    for pi in ps[1:]:
+                        add([(ps[0] * nT + t, 1) for t in ts] + [(pi * nT + t, -1) for t in ts], 0)
+    nv = len(profs) * nT
+    A = sp.csr_matrix((vals, (rows, cs)), shape=(len(b), nv))
+    c = np.zeros(nv)
+    for pi, pr in enumerate(profs):
+        for t in range(nT):
+            if t not in pr:
+                c[pi * nT + t] = -1
+    res = linprog(c, A_eq=A, b_eq=np.array(b), bounds=(0, 1), method="highs")
+    return max(0.0, -res.fun)
+
+
 def main():
     print("Part 1: largest deviation of a rule's marginals from additive power")
     for m, N in [(3, 2), (3, 3), (3, 4), (4, 2), (4, 3), (5, 2)]:
@@ -229,6 +288,9 @@ def main():
               f"{full_compatibility_gap(N):.3f}")
     for N in (2, 3, 4):
         print(f"  m=3 N={N}: coin rule admits fully compatible lotteries: {coin_fully_compatible(N)}")
+    print("Part 4: full compatibility with more alternatives (mass outside the voters' rankings)")
+    for m, N in [(3, 2), (3, 3), (4, 2)]:
+        print(f"  m={m} N={N}: {full_compat_support(m, N):.3f}")
 
 
 if __name__ == "__main__":
