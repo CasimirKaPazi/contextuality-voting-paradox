@@ -83,6 +83,15 @@ The script `scripts/consistency/ex_post_consistency.py` checks the lemma by line
 
 Arrow's problem behaves differently (*Contextuality and Symmetry*, Section 2a). Empirical models exist there (random dictatorship, the coin rule), and only the global sections are restricted, to dictatorships. Maximal lotteries escape Young and Levenglick's obstruction by changing what a value is: the lottery is a point of the simplex, glued as a value, ex ante. The draw that turns it into a winner cannot be consistent. *(Interpretation.)*
 
+**The same split for participation.** Moulin's no-show theorem (Condorcet principle and participation are incompatible for deterministic rules) divides in the same way.
+
+- **Ex post.** The winners without and with an added voter can be drawn jointly so that the added voter never gets a worse winner. On a ranking, such a draw exists exactly when the lottery with the voter stochastically dominates the lottery without (first-order dominance with respect to the voter's ranking, SD). This is SD-participation, in which voting must yield an outcome the voter weakly SD-prefers to the outcome of abstaining. Brandt, Geist and Peters showed that Moulin's theorem remains true in this form: no rule that elects every Condorcet winner satisfies it.
+- **Ex ante.** The two lotteries are compared as wholes, by independent draws: voting is not worse if a draw from the lottery with the voter beats a draw from the lottery without at least as often as the reverse (pairwise comparison, PC). Brandl, Brandt and Hofbauer showed that maximal lotteries satisfy participation in this sense.
+
+The script checks the equivalence of SD dominance with the existence of a monotone joint draw. On random profiles it finds that maximal lotteries violate SD-participation, already with three candidates, and never violate PC-participation. In the three-candidate violations a voter who ranks a candidate first can lower that candidate's probability by joining: in a cycle, a candidate's maximal-lottery probability is proportional to the margin of the comparison that does not involve it, and the new voter can weaken that margin.
+
+So both two-family theorems of the electorate direction, Young–Levenglick and the no-show theorem, hold for every rule that respects the Condorcet principle when they are read as statements about joint draws of winners, and are avoided by maximal lotteries when read as statements about lotteries as wholes. *(The two readings are standard in probabilistic social choice; grouping them as ex post and ex ante is interpretation.)*
+
 **Consequence for a random fallback.** A procedure that ends in a lottery can be consistent ex ante and elect a Condorcet winner when there is one, but the realised winner is not consistent across electorates. This is the same ex ante/ex post distinction that appears in Gibbard (1978) for efficiency. *(Interpretation.)*
 
 ## 4. Reading
@@ -102,13 +111,15 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 1. Express the obstruction of Section 2 as an invariant of the arrangement of Condorcet regions around the cycle region, for three and for more candidates.
 2. Section 3a explains the incompatibility of consistency over electorates and over clones for symmetric deterministic rules through positions and comparisons. Is there a blocking-type argument that covers the non-symmetric case as well?
 3. Characterise how far maximal lotteries are from strategy-proofness, and compare them with random dictatorship as a fallback for consensus procedures. A related point concerns adding alternatives. When voters' utilities decrease concavely with distance in a space of positions, every voter prefers a candidate placed at the mean position of a lottery to the lottery itself (Jensen's inequality). A compromise therefore always exists against a lottery fallback, even where no position beats every other, as in McKelvey's theorem. Successive compromises can then be expected to move the remaining cycle into a small central region rather than remove it. The cost of a final lottery would then shrink with the size of that region. Whether deliberately sustained cycles can prevent this, and how far random removal deters them, are open.
-4. Is there an ex ante / ex post split of the same kind for participation (Moulin's no-show theorem), with a version for lotteries that holds ex ante and fails ex post for every rule that respects the Condorcet principle?
+4. Section 3b reads consistency and participation ex ante and ex post. Is there a single formulation, a scenario whose contexts are electorates and their extensions, in which both are constraints and the Condorcet principle is a boundary condition, so that both theorems become the statement that the scenario has no empirical model?
 5. Does the pattern "resolved by a fixed point, reappearing one level up" continue: is there a natural third level beyond aggregation and strategy?
 
 ## References
 
+- Brandl, F., Brandt, F. and Hofbauer, J. (2019). Welfare maximization entices participation. *Games and Economic Behavior* 114, 308–314. arXiv:1508.03538.
 - Brandl, F., Brandt, F. and Seedig, H. G. (2016). Consistent probabilistic social choice. *Econometrica* 84, 1839–1880. arXiv:1503.00694.
 - Brandt, F., Dong, C. and Peters, D. (2024). Condorcet-consistent choice among three candidates. arXiv:2411.19857.
+- Brandt, F., Geist, C. and Peters, D. (2017). Optimal bounds for the no-show paradox via SAT solving. *Mathematical Social Sciences* 90, 18–27.
 - Fishburn, P. C. (1984). Probabilistic social choice based on simple voting comparisons. *Review of Economic Studies* 51, 683–692.
 - Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
 - Gibbard, A. (1978). Straightforwardness of game forms with lotteries as outcomes. *Econometrica* 46, 595–614.

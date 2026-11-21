@@ -24,6 +24,15 @@ that elects a Condorcet winner with certainty.
 
 Part 3 checks that random dictatorship (probability = share of first places),
 which is linear in the shares, satisfies the inequality.
+
+Part 4 does the same for participation. Ex post: the winners without and with
+an added voter can be drawn jointly so that the added voter never gets a worse
+winner; on a ranking this is first-order stochastic dominance (SD) of the
+lottery with the voter over the lottery without (checked by linear
+programming). Maximal lotteries violate it on random profiles, as every rule
+that elects every Condorcet winner must (Brandt, Geist and Peters 2017). Ex
+ante: compared by independent draws (pairwise comparison, PC), voting is never
+worse (Brandl, Brandt and Hofbauer 2019); checked on the same random cases.
 """
 from itertools import permutations, product
 import numpy as np
@@ -132,6 +141,60 @@ def main():
             t = rng.random()
             ok &= criterion(first @ p, first @ q, first @ (t * p + (1 - t) * q))
         print(f"  n={n}: holds on 1000 random triples: {ok}")
+    participation()
+
+
+def sd_dominates(L1, L0, rank):
+    c1 = np.cumsum([L1[a] for a in rank])
+    c0 = np.cumsum([L0[a] for a in rank])
+    return bool(np.all(c1 >= c0 - 1e-9))
+
+
+def monotone_draw_exists(L1, L0, rank):
+    m = len(rank)
+    pos = {a: i for i, a in enumerate(rank)}
+    cells = [(x, z) for x in range(m) for z in range(m) if pos[z] <= pos[x]]
+    A, b = [], []
+    for a in range(m):
+        A.append([1.0 if c[0] == a else 0.0 for c in cells]); b.append(L0[a])
+        A.append([1.0 if c[1] == a else 0.0 for c in cells]); b.append(L1[a])
+    res = linprog(np.zeros(len(cells)), A_eq=np.array(A), b_eq=np.array(b),
+                  bounds=[(0, None)] * len(cells), method="highs")
+    return res.status == 0
+
+
+def pc_advantage(L1, L0, rank):
+    """P(draw from L1 beats draw from L0) - P(the reverse), independent draws."""
+    pos = {a: i for i, a in enumerate(rank)}
+    return sum(L1[a] * L0[b] - L0[a] * L1[b]
+               for a in range(len(rank)) for b in range(len(rank)) if pos[a] < pos[b])
+
+
+def participation():
+    print("Part 4: participation, ex post (SD) and ex ante (PC)")
+    agree = 0
+    for _ in range(500):
+        L0, L1 = rng.dirichlet(np.ones(4)), rng.dirichlet(np.ones(4))
+        rank = list(rng.permutation(4))
+        if rng.random() < 0.5:
+            L1 = 0.5 * L1 + 0.5 * L0; L1[rank[0]] += 0.05; L1 /= L1.sum()
+        agree += sd_dominates(L1, L0, rank) == monotone_draw_exists(L1, L0, rank)
+    print(f"  SD dominance <=> joint draw in which voting never hurts: {agree}/500 agree")
+    for n in (3, 4):
+        orders = list(permutations(range(n)))
+        sd_fail, worst_pc = 0, 1.0
+        for _ in range(3000):
+            p = rng.dirichlet(np.ones(len(orders)) * 0.3)
+            k = rng.integers(len(orders))
+            eps = 10 ** rng.uniform(-3, -0.5)
+            q = (p + eps * np.eye(len(orders))[k]) / (1 + eps)
+            L0 = maximal_lottery(margins(p, orders, n))
+            L1 = maximal_lottery(margins(q, orders, n))
+            rank = list(orders[k])
+            sd_fail += not sd_dominates(L1, L0, rank)
+            worst_pc = min(worst_pc, pc_advantage(L1, L0, rank))
+        print(f"  n={n}, maximal lotteries, 3000 random additions of a voter: "
+              f"SD-participation fails {sd_fail} times; smallest PC advantage of voting {worst_pc:.1e}")
 
 
 if __name__ == "__main__":
