@@ -6,7 +6,7 @@
 
 ## Abstract
 
-It is often suggested that the impossibility theorems of social choice (Arrow, Gibbard–Satterthwaite) belong to the same family as the Liar paradox, Gödel's incompleteness and the halting problem. We make part of this precise and mark where it fails. First, we treat a Condorcet cycle as a local-to-global problem in the sense of sheaf-theoretic contextuality and show that the answer depends on the shape of the space in which alternatives are placed: on a bounded line no valid model exists, on a circle the cycle is consistent, and only on an unbounded line is the cycle contextual. Its obstruction is an integer winding number, where the Liar's is a parity. Second, we locate the non-orientability found by Livson, Pritam and Prokopenko: on the three-alternative Klein bottle, orientation reverses exactly at the seam formed by the Condorcet cycle, where the two directions of winding are identified. Third, we show that strategy carries a genuine halting-type obstruction: by Gibbard's 1973 theorem and a diagonal argument, every game form with at least three outcomes is either dictatorial or leaves some voter without any program that always computes a best reply. The static impossibility (Arrow) is a finite contradiction; the dynamic one (Gibbard) is a computability barrier. Randomisation removes the obstruction at each level, at a price: by Gibbard's 1978 theorem, a non-dictatorial procedure with lotteries as outcomes either retains the computability barrier or is inefficient ex ante. Results are elementary; several are verified by exhaustive computation on small cases, some are checked in the Lean proof assistant, and open problems are stated.
+It is often suggested that the impossibility theorems of social choice (Arrow, Gibbard–Satterthwaite) belong to the same family as the Liar paradox, Gödel's incompleteness and the halting problem. We make part of this precise and mark where it fails. First, we treat a Condorcet cycle as a local-to-global problem in the sense of sheaf-theoretic contextuality and show that the answer depends on the shape of the space in which alternatives are placed: on a bounded line no valid model exists, on a circle the cycle is consistent, and only on an unbounded line is the cycle contextual. Its obstruction is an integer winding number, where the Liar's is a parity. Second, we locate the non-orientability found by Livson, Pritam and Prokopenko: on the three-alternative Klein bottle, orientation reverses exactly at the seam formed by the Condorcet cycle, where the two directions of winding are identified. Third, we show that strategy carries a genuine halting-type obstruction: by Gibbard's 1973 theorem and a diagonal argument, every game form with at least three outcomes is either dictatorial or leaves some voter without any program that always computes a best reply. The static impossibility (Arrow) is a finite contradiction; the dynamic one (Gibbard) is a computability barrier. Randomisation removes the obstruction at each level, at a price: by Gibbard's 1978 theorem, a non-dictatorial procedure with lotteries as outcomes either retains the computability barrier or is inefficient ex ante. Results are elementary; several are verified by exhaustive computation on small cases, most of the proved statements, including Gibbard's 1973 theorem and the dichotomy, are checked in the Lean proof assistant, and open problems are stated.
 
 ## 1. Introduction
 
@@ -48,11 +48,13 @@ Three value spaces are considered:
 
 ## 3. The value space decides the nature of the obstruction
 
-Let T contain a directed cycle a₁ ≻ a₂ ≻ … ≻ aₙ ≻ a₁, n ≥ 3.
+Let T contain a directed cycle a₁ ≻ a₂ ≻ … ≻ aₙ ≻ a₁, n ≥ 3. Proposition 1 needs less: a set C of alternatives in which every member is beaten in T by some member.
 
-**Proposition 1 (bounded line).** No compatible model on a bounded line realises T.
+**Proposition 1 (bounded line).** If every alternative in a non-empty set C is beaten in T by some alternative in C, no compatible model on a bounded line realises T on C.
 
-*Proof.* Suppose one does. By compatibility each alternative aᵢ on the cycle has a well-defined non-empty set Mᵢ of allowed values. Let m be the maximum of M₁ ∪ … ∪ Mₙ, attained in Mᵢ. Consider the context {aᵢ₋₁, aᵢ} (indices mod n), in which aᵢ₋₁ ≻ aᵢ. Since m ∈ Mᵢ, some allowed pair has aᵢ at m, and then aᵢ₋₁ is at a value strictly above m, which belongs to Mᵢ₋₁. This contradicts maximality. ∎
+*Proof.* Suppose one does. For a ∈ C choose a′ ∈ C with a′ ≻ a in T. By compatibility each alternative a in C has a well-defined non-empty set M_a of allowed values. Let m be the maximum of the union of these sets, attained in M_a. In the context {a′, a}, since m ∈ M_a, some allowed pair has a at m, and then a′ is at a value strictly above m, which belongs to M_a′. This contradicts maximality. ∎
+
+For a finite set C the hypothesis is the same as containing a cycle, but the proof never uses that the cycle closes up: only that the map a ↦ a′ exists. The formal proof (`lean/ValueSpaces.lean`) is stated in this form, for any set of alternatives and any finite chain of values.
 
 So on a bounded line the cycle is not "locally fine, globally impossible": the local pieces already fail to agree on their overlaps. Whatever occupies the top must be beaten by something higher.
 
@@ -72,7 +74,7 @@ This is the rock–paper–scissors arrangement. On a circle there is nothing pa
 
 (b) *A classical bound.* For three alternatives and any profile, the fractions of voters satisfy p(a ≻ b) + p(b ≻ c) + p(c ≻ a) ≤ 2, since each linear order satisfies at most two of the three statements. This is an instance of Boole's conditions of possible experience (a logical Bell inequality). The profile {abc, bca, cab} attains the bound with 2/3 on each pair. Majority rounds each 2/3 to 1 and so produces the value 3. The profile itself is a consistent global object — a distribution over linear orders. The contradiction is created by deciding each pair separately and deterministically.
 
-(c) *Reading through Lawvere.* Lawvere's theorem implies that self-application into a space is obstructed when the space has a self-map without fixed points. On the unbounded line, "one step up" has none. On a bounded line, "one step up, stopping at the top" always has one. Proposition 1 is that fixed point. *(Interpretation.)*
+(c) *Reading through Lawvere.* Lawvere's theorem implies that self-application into a space is obstructed when the space has a self-map without fixed points. On the unbounded line, "one step up" has none. On a bounded line, "one step up, stopping at the top" always has one. Proposition 1 is that fixed point, and in the general form above its hypothesis is exactly a map a ↦ a′ of the alternatives into themselves without a fixed point. The same hypothesis, "everything is beaten by something", is all that the incompatibility of consistency with the Condorcet principle uses (*Consistency as an Extension Problem*; `lean/Consistency.lean`). *(Interpretation.)*
 
 ## 4. The winding number
 
@@ -144,9 +146,9 @@ Fix the number of voters. The set of profiles is divided into regions according 
 
 *Proof.* The members of S already rank z above x, so no change of their ballots increases the number of voters ranking z above x. Since x beats z, it still does. ∎
 
-This fact is known in the literature on Condorcet methods. Its consequence is that under any rule electing the Condorcet winner when one exists, a manipulation starting from a sincere Condorcet winner can succeed only by producing a profile without one: the manipulators make x lose to some third alternative ("burying" x) and rely on the resolution of the resulting cycle. Manipulation from a sincere winner is the act of moving a profile across a wall. Within a profile that already has a cycle, manipulation can also work without crossing a wall, by steering how the rule's tie-breaking resolves the cycle; the cycle is the region from which strategy cannot be excluded.
+This fact is known in the literature on Condorcet methods. The proof does not use that ballots are strict; the formal version (`lean/Burial.lean`) allows ties and any numbers of voters and alternatives. Its consequence is that under any rule electing the Condorcet winner when one exists, a manipulation starting from a sincere Condorcet winner can succeed only by producing a profile without one: the manipulators make x lose to some third alternative ("burying" x) and rely on the resolution of the resulting cycle. Manipulation from a sincere winner is the act of moving a profile across a wall. Within a profile that already has a cycle, manipulation can also work without crossing a wall, by steering how the rule's tie-breaking resolves the cycle; the cycle is the region from which strategy cannot be excluded.
 
-**Observation (the symmetry break is forced).** Let a rule be anonymous (it ignores the names of voters) and neutral (it commutes with renaming alternatives), and consider the profile {abc, bca, cab}. The cyclic renaming a → b → c → a maps this profile to itself, with the three ballots exchanged among the voters. An anonymous and neutral rule must therefore return an outcome fixed by the renaming. No alternative is fixed by it. Hence no deterministic rule on three alternatives and three voters is both anonymous and neutral. The renaming does fix exactly one lottery, the uniform one. Moulin (1983) determined in general for which numbers of voters and alternatives anonymous, neutral and deterministic rules exist.
+**Observation (the symmetry break is forced).** Let a rule be anonymous (it ignores the names of voters) and neutral (it commutes with renaming alternatives), and consider the profile {abc, bca, cab}. The cyclic renaming a → b → c → a maps this profile to itself, with the three ballots exchanged among the voters. An anonymous and neutral rule must therefore return an outcome fixed by the renaming. No alternative is fixed by it. Hence no deterministic rule on three alternatives and three voters is both anonymous and neutral. The argument uses only the two symmetries involved, invariance under rotating the three voters and commuting with the cyclic renaming, and the formal version (`lean/ProfileFacts.lean`) assumes only these. The renaming does fix exactly one lottery, the uniform one. Moulin (1983) determined in general for which numbers of voters and alternatives anonymous, neutral and deterministic rules exist.
 
 Geometrically: the cyclic symmetry rotates the cycle, and a deterministic outcome is a projection onto a single alternative, which no rotation leaves in place. Every deterministic rule therefore contains a choice that breaks the symmetry — a tie-breaking order, an agenda, a status quo, the cut of Section 4 — and this choice is made from outside the profile. Only the centre of the disc, the uniform lottery, is symmetric.
 
@@ -170,6 +172,8 @@ A voting rule on a finite electorate is a finite table. The preceding results co
 
 The lemma is checked in Lean in an abstract form (`lean/Diagonal.lean`). Programs enter only through what they output on each input, and the single computational assumption is that for every map f from ballots to counter-profiles there is an input on which the other programs run the strategist and answer with f of its output. No fixed-point theorem of computability is needed, and halting matters only because the strategist might not halt. The depth of Theorem 8 therefore lies in Gibbard's theorem, not in the diagonal step.
 
+Gibbard's theorem itself is formalised as well (`lean/Gibbard73.lean`), following his Section 3 with his definitions: orderings that may contain ties, outcomes that are the range of the game form, finitely many outcomes and players, strategy sets of any size. Its input, Arrow's theorem in the form Gibbard uses, is `lean/Arrow.lean`. Theorem 8 then follows from the two in a few lines (`lean/Dichotomy.lean`), so the dichotomy is checked from Gibbard's definitions to the conclusion.
+
 **Theorem 8.** Let g be a game form with at least three possible outcomes. Either g is dictatorial, or some player at some preference has no universally correct strategist.
 
 *Proof.* If g is not dictatorial it is not straightforward, so some player at some preference lacks a dominant strategy. Apply Lemma 7. ∎
@@ -189,7 +193,7 @@ Dictatorial and two-outcome game forms admit none, as Theorem 8 requires.
 
 The search uses strict preferences for all players, and this restriction is what gives the rational-opponent version content. Gibbard's preference orderings allow ties. If the opponents may be indifferent among all outcomes, every strategy is a best reply for them, any profile r(b) is played by rational opponents, and the rational-opponent version reduces to Lemma 7. The open question is therefore whether opponents with *strict* preferences always suffice.
 
-*Verification.* Exhaustive search. ∎
+*Verification.* Exhaustive search. For the four rules, the witnesses found by the search (the preferences and a counter-profile for each ballot of the first voter) are checked in Lean (`lean/RationalDiagonal.lean`); the game-form count would also need a proof that the enumeration is complete, and is not formalised. ∎
 
 An example under Borda with two voters: voter 1 prefers a to b to c, voter 2 prefers b to c to a. To each of the six ballots of voter 1, voter 2 has a best reply against which voter 1 would have done better with a different ballot. The situation is matching pennies embedded in the rule.
 
@@ -229,24 +233,31 @@ Chance in the outcome therefore removes the barrier of Theorem 8 only at the pri
 
 *Arrow and Gödel.* Livson and Prokopenko's Self-Reference Systems relate Arrow's theorem to incompleteness through diagonalisation; their sequel shows that total cycles are forced; the paper with Pritam gives the orientability formulation. Sections 4–5 add the distinction between integer and parity obstructions and the location of the orientation reversal. Jiang, Lim, Yao and Ye's combinatorial Hodge decomposition and Saari's profile coordinates are the real-valued, established forms of the decomposition behind Section 4. Tanaka relates Arrow's theorem to Brouwer's; Baryshnikov and Chichilnisky give topological proofs and obstructions of a different kind; Baryshnikov and Root (2024) give a topological proof of the Gibbard–Satterthwaite theorem, in which each voter carries one oriented cycle of the profile space and the dictator is the one voter of degree one. Rajsbaum and Raventós-Pujol prove Arrow's theorem with the index lemma, a discrete form of the winding number. Their output complex is the annulus of Section 5 with the two Condorcet cycles left as holes; the integer obstruction of Section 4 appears as a balance of windings over the boundary circles of the profile complex; and their version of the pivotal-voter argument closes a cycle of weak inequalities between pivotal voters, the counterpart of Proposition 1 with ≤ in place of <. They also show that contractibility of the space of profiles is not the reason for the impossibility, that the labels of the complex are essential, and they place Arrow's theorem with the symmetry-breaking tasks of distributed computing rather than with the agreement tasks. Chichilnisky's obstruction, by contrast, concerns the non-existence of a continuous symmetric aggregation; it depends on the number of voters and is distinct from the one here.
 
+*Levels of obstruction.* The companion draft *Four Levels of Obstruction in Social Choice* uses the three value spaces of Section 3 as the template for a hierarchy of obstructions, local inconsistency, contextuality, symmetry breaking and consistency, and places Young–Levenglick, the no-show theorem and Arrow's theorem in it.
+
 *Contextuality.* Abramsky and Brandenburger's framework, the cohomological invariants of Abramsky, Mansfield, Barbosa and of Carù, the general theory of disagreement of Abramsky and Carù, and the logical Bell inequalities of Abramsky and Hardy are all formulated for finite outcome sets. Abramsky's categorical account of Arrow's theorem notes a common structure with contextuality without a reduction; Section 3 explains part of the distance. Zeng and Zahn apply the framework to individual choice. Kishida recasts contextuality as a semantics of logical paradoxes, which is the natural place to look for a common frame.
 
 *Computability.* Besides Binmore, Anderlini and Nachbar–Zame on games, and Mihara on infinite electorates, there is a large literature on the complexity of computing manipulations (starting with Bartholdi, Tovey and Trick), which concerns the difficulty of a well-defined finite problem and is distinct from Theorem 8.
 
 ## 10. Status and open problems
 
-| Statement | Status |
-|---|---|
-| Propositions 1–4 (value spaces, winding) | proved here, elementary |
-| Proposition 5 and corollary (seam) | proved by computation, three alternatives; checked in Lean |
-| Realised case (sphere, its quotient by reversal; gluing only the cycle faces gives no surface) | proved by computation; checked in Lean |
-| Proposition 6 (burial) | proved, known |
-| Observation in Section 6 (no anonymous, neutral deterministic rule at the Condorcet profile) | proved, elementary; general case Moulin 1983 |
-| Symmetry breaks as competing fixed points, regress | interpretation |
-| Lemma 7, Theorem 8 (dichotomy) | proved here from Gibbard 1973 and a standard diagonal argument; Lemma 7 checked in Lean in abstract form; we have not found the combination stated elsewhere |
-| Proposition 9 (rational diagonal), sequential example | computed, small cases |
-| Theorem 10 (lotteries: regress or ex ante inefficiency) | proved here from Gibbard 1978 and Lemma 7 |
-| Common Lawvere frame; static versus dynamic diagonal; reading of random fallback | interpretation |
+| Statement | Status | Lean |
+|---|---|---|
+| Propositions 1–4 (value spaces, winding) | proved here, elementary; Proposition 1 in the general form "everything is beaten" | `ValueSpaces.lean`, any length of cycle |
+| Proposition 5 and corollary (seam) | proved combinatorially, three alternatives | `Nerve.lean` |
+| Realised case (sphere, its quotient by reversal; gluing only the cycle faces gives no surface) | proved combinatorially | `Nerve.lean` |
+| Proposition 6 (burial) | proved, known; holds with ties | `Burial.lean` |
+| Observation in Section 6 (no anonymous, neutral deterministic rule at the Condorcet profile) | proved, elementary; general case Moulin 1983 | `ProfileFacts.lean`, with only the two symmetries used |
+| Symmetry breaks as competing fixed points, regress | interpretation | |
+| Lemma 7 | proved here | `Diagonal.lean` |
+| Gibbard (1973) | cited | `Gibbard73.lean`, with `Arrow.lean` |
+| Theorem 8 (dichotomy) | proved here from Gibbard 1973 and Lemma 7; we have not found the combination stated elsewhere | `Dichotomy.lean` |
+| Proposition 9 (rational diagonal) | computed, small cases | `RationalDiagonal.lean`, certificates for the four rules |
+| Sequential example (veto then pick) | computed | `RationalDiagonal.lean`, the count 12 of 36 |
+| Theorem 10 (lotteries: regress or ex ante inefficiency) | proved here from Gibbard 1978 and Lemma 7 | not formalised |
+| Common Lawvere frame; static versus dynamic diagonal; reading of random fallback | interpretation | |
+
+The two topological steps outside the formal checks are those named in Section 5: that a coherent orientation of the triangles is orientability, and the classification of surfaces.
 
 **Open problems.**
 
