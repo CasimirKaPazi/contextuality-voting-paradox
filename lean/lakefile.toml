@@ -11,4 +11,5 @@ name = "Voting"
 srcDir = "."
 roots = ["Diagonal", "Condorcet", "Nerve", "ValueSpaces", "Burial", "RationalDiagonal",
          "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy", "Lotteries", "NonTight",
-         "ProbLine", "CircleTournaments"]
+         "ProbLine", "CircleTournaments", "LoopsOfRelations",
+         "ProbabilisticArrow"]
