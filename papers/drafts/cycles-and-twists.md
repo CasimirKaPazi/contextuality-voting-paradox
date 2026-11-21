@@ -168,7 +168,7 @@ The two topological steps outside the formal checks are those named in Section 5
 **Open problems.**
 
 1. *More alternatives.* For n > 3, is orientation reversal on the surfaces of Livson, Pritam and Prokopenko again located exactly at the contradictory objects, and how do cycles on sub-triples enter?
-2. *One statement for both loops.* Find a formulation, presumably of Lawvere type, of which the Liar (negation, parity) and the Condorcet cycle (shift, integers) are instances, with reduction mod 2 as a map between them. The repository note *The Switch Between Fixed Point and No Fixed Point* collects the literature on how such switches happen.
+2. *One statement for both loops.* Find a formulation, presumably of Lawvere type, of which the Liar (negation, parity) and the Condorcet cycle (shift, integers) are instances, with reduction mod 2 as a map between them. The repository note *The Switch Between Fixed Point and No Fixed Point* collects the literature on how such switches happen. A first answer is in the note *Loops of Relations*: both are loops whose holonomy lies in a group, of order two for the Liar and of infinite order for the Condorcet cycle, and reduction mod 2 is a homomorphism between them. On finite value sets every contextual loop closes on a finite cover, which is why the infinite-order case needs an unbounded value space.
 3. *Room for every tournament.* The circle fits exactly the tournaments of skew-symmetric sign rank 2. Is there, for each rank, a value space with a symmetry playing the role of the circle, so that every tournament is placed consistently in a space of the right dimension?
 
 ## References
