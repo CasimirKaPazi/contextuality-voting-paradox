@@ -1,0 +1,8 @@
+name = "voting"
+defaultTargets = ["Voting"]
+
+[[lean_lib]]
+name = "Voting"
+srcDir = "."
+roots = ["Diagonal", "Condorcet", "Nerve", "ValueSpaces", "Burial", "RationalDiagonal",
+         "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy"]
