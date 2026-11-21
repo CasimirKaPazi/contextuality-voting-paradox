@@ -19,7 +19,7 @@ The same four cases appear as the Hopf fibrations and, through Adams' theorem, a
 
 Each normed division algebra comes with a Hopf fibration: its unit elements form the fibre, its projective line the base. Real: a two-point fibre over a circle (the double cover). Complex: a circle over the 2-sphere. Quaternionic: a 3-sphere over the 4-sphere. Octonionic: a 7-sphere over the 8-sphere. None of these bundles has a global section. A consistent choice of a point in every fibre is impossible, which is the same form as contextuality and the paradoxes: locally possible, globally obstructed. In this picture the fibre, the unit elements of the algebra, is the symmetry, and the obstruction to a global section is the paradox or hole. Adams' theorem limits such structures to these four.
 
-The first two rungs match the two obstructions of *Cycles, Twists and Walls*:
+The first two rungs match the two obstructions of *Cycles and Twists*:
 
 - **Real:** the double cover of the circle. Going around once exchanges the two sheets; the class lies in ℤ/2. This is the shape of the Liar.
 - **Complex:** circle bundles over the 2-sphere are classified by an integer, obtained by gluing two discs along the equator with a map of given winding number. The winding number of a Condorcet cycle is of this kind, with the cycle as the equator.
@@ -32,7 +32,7 @@ Collective choice shows a sequence of breakdowns of the same kinds. The dimensio
 
 | Step | Property lost | Social choice phenomenon | Status of the analogy |
 |---|---|---|---|
-| 1 | ordering | pairwise majorities need not form a ranking (Condorcet cycles); the obstruction is a winding number, a rotation | precise: see *Cycles, Twists and Walls* |
+| 1 | ordering | pairwise majorities need not form a ranking (Condorcet cycles); the obstruction is a winding number, a rotation | precise: see *Cycles and Twists* |
 | 2 | commutativity | **agenda dependence**: under sequential pairwise voting, the order in which comparisons are taken can determine the winner | qualitative |
 | 3 | associativity | **grouping dependence**: the majority of district majorities can differ from the overall majority and from the result of another grouping (Ostrogorski's and Anscombe's paradoxes; districting) | qualitative, promising |
 | 4 | division | possibly: two non-trivial electorates whose union is exactly balanced, so that each cancels the other | speculative |

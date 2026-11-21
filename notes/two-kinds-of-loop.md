@@ -57,7 +57,7 @@ So there are two loop obstructions:
 
 ## 5. Where the Klein bottle comes from
 
-Strict preferences over three alternatives form an annulus whose two boundary circles are the two Condorcet cycles (winding +1 and −1). Livson, Pritam and Prokopenko treat a cycle as one contradictory object — "every alternative is preferred to itself" — identified with its own reverse. Gluing the two boundary circles along their reference orientations gives a Klein bottle (Theorem 4 of their paper). With cycles realised as faces, the real projective plane arises by identifying every strict order with its reverse on the resulting sphere (Theorem 5; identifying only the two cycle faces does not give a surface, see *Cycles, Twists and Walls*, §5).
+Strict preferences over three alternatives form an annulus whose two boundary circles are the two Condorcet cycles (winding +1 and −1). Livson, Pritam and Prokopenko treat a cycle as one contradictory object — "every alternative is preferred to itself" — identified with its own reverse. Gluing the two boundary circles along their reference orientations gives a Klein bottle (Theorem 4 of their paper). With cycles realised as faces, the real projective plane arises by identifying every strict order with its reverse on the resulting sphere (Theorem 5; identifying only the two cycle faces does not give a surface, see *Cycles and Twists*, §5).
 
 A computation on the annulus (six triangles, one per strict order) settles how orientation behaves. Of the six possible ways of gluing the two rims, three give a torus and three a Klein bottle. The annulus itself is orientable, and in every Klein gluing **each seam edge flips orientation**, while in every torus gluing none does. Therefore:
 

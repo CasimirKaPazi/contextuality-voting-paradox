@@ -21,7 +21,7 @@ In each family a consistency requirement can be stated. Each is a requirement th
 
 | Paradox | What happens | Formal core |
 |---|---|---|
-| Condorcet cycle | pairwise majorities form a cycle | no ranking extends the pairwise data; obstruction is a winding number (see *Cycles, Twists and Walls*) |
+| Condorcet cycle | pairwise majorities form a cycle | no ranking extends the pairwise data; obstruction is a winding number (see *Cycles and Twists*) |
 | Discursive dilemma / doctrinal paradox | majority on premises and on a conclusion are inconsistent | judgment aggregation; List–Pettit impossibility†; Arrow follows as a special case (Dietrich–List 2007) |
 | Ostrogorski paradox | a party wins the majority on a majority of issues while losing on every issue, or similar reversals | issue-wise versus package-wise majority (overlaps with 2.6) |
 | Anscombe paradox | a majority of voters is on the losing side on a majority of issues | issue-wise majority aggregated over voters |
@@ -52,10 +52,10 @@ In each family a consistency requirement can be stated. Each is a requirement th
 
 | Paradox / criterion | What happens | Formal core |
 |---|---|---|
-| Manipulability | a voter gains by misreporting | Gibbard 1973, Satterthwaite 1975; Theorem 8 of *Cycles, Twists and Walls* |
+| Manipulability | a voter gains by misreporting | Gibbard 1973, Satterthwaite 1975; Theorem 3 of *Walls and Strategy* |
 | Non-monotonicity | ranking a candidate higher makes them lose (IRV) | Muller–Satterthwaite 1977: strong monotonicity with Pareto on three or more alternatives ⇒ dictator |
 | Later-no-harm / later-no-help | adding a lower preference hurts or helps an earlier one | Woodall's criteria†; mutually incompatible with Condorcet consistency |
-| Burial and compromise | strategic ranking of a rival lower, or a favourite lower | from a sincere Condorcet winner, burial requires creating a cycle (Proposition 6 of *Cycles, Twists and Walls*); within an existing cycle it can also work through the tie-breaking |
+| Burial and compromise | strategic ranking of a rival lower, or a favourite lower | from a sincere Condorcet winner, burial requires creating a cycle (Proposition 1 of *Walls and Strategy*); within an existing cycle it can also work through the tie-breaking |
 
 ### 2.5 Order of procedure varies
 
@@ -88,7 +88,7 @@ Several of the strongest theorems are not impossibilities within one family but 
 
 The family most often in tension with the others is the pairwise one: rules built from pairwise majorities (Condorcet extensions) fail the electorate family; rules built from linear counts (scoring rules) satisfy the electorate family and fail the Condorcet criterion.
 
-**The components of a profile.** Saari decomposes profiles of three candidates into *basic* components, on which all standard methods agree; *reversal* components, which pairwise comparisons do not see and which account for all differences between the tallies of different positional rules; and *Condorcet* components, the cyclic parts that pairwise majorities see and that Borda ignores. A sharper form for the pairwise data is the combinatorial Hodge decomposition of Jiang, Lim, Yao and Ye 2011: pairwise comparison data on a graph decompose orthogonally into a gradient part (a consistent ranking, recovered by least squares), a curl part (local cycles on triangles) and a harmonic part (global cycles not visible on any triangle). On complete ranking data the gradient part is the Borda count, and their HodgeRank generalises Borda to incomplete data; Kemeny's rule corresponds to fitting signs of score differences instead of the differences themselves. Condorcet cycles live in the non-gradient parts. The winding number of *Cycles, Twists and Walls* is an integer form of the same cohomological fact. This is the most direct existing link between voting and topology on the static side, and it should be cited in that draft.
+**The components of a profile.** Saari decomposes profiles of three candidates into *basic* components, on which all standard methods agree; *reversal* components, which pairwise comparisons do not see and which account for all differences between the tallies of different positional rules; and *Condorcet* components, the cyclic parts that pairwise majorities see and that Borda ignores. A sharper form for the pairwise data is the combinatorial Hodge decomposition of Jiang, Lim, Yao and Ye 2011: pairwise comparison data on a graph decompose orthogonally into a gradient part (a consistent ranking, recovered by least squares), a curl part (local cycles on triangles) and a harmonic part (global cycles not visible on any triangle). On complete ranking data the gradient part is the Borda count, and their HodgeRank generalises Borda to incomplete data; Kemeny's rule corresponds to fitting signs of score differences instead of the differences themselves. Condorcet cycles live in the non-gradient parts. The winding number of *Cycles and Twists* is an integer form of the same cohomological fact. This is the most direct existing link between voting and topology on the static side, and it should be cited in that draft.
 
 ## 4. Patterns (interpretation)
 
@@ -114,7 +114,7 @@ Every profile with a cycle therefore defeats every Condorcet extension, which is
 
 **Any number of candidates.** The construction does not use the number of candidates. Let x be any profile without a Condorcet winner, with any number of candidates, and suppose a Condorcet extension elects a at x. Since a is not a Condorcet winner, some candidate c beats a in x. Let y give a share ½ + δ/2 to the ranking (a, c, then the others) and ½ − δ/2 to (c, a, then the others). In y, a is the Condorcet winner, and c beats every other candidate unanimously. Choose t = ½ / (1 + w), where w ≥ 0 is the largest margin by which c loses to any other candidate in x, and δ = ½ t·m_ca(x) / (1 − t). Then in the mixture t x + (1 − t) y, c beats a by ½ t·m_ca(x) > 0 and beats every other candidate by at least ½. So c is the Condorcet winner of the mixture, although a wins both parts. (Checked numerically for three to six candidates.)
 
-So for a Condorcet extension, consistency fails at *every* profile without a Condorcet winner, whatever the rule does there. The reason is short: consistency together with the Condorcet principle would require the rule to elect a candidate whom nobody beats, and at such a profile every candidate is beaten by someone. This is the same structure as the bounded-line argument of *Cycles, Twists and Walls* (Proposition 1): whatever is placed on top must have something above it. The vote shares here are continuous; for finite electorates the mixture requires sufficiently many voters, consistent with the thresholds found by Brandt, Dong and Peters.
+So for a Condorcet extension, consistency fails at *every* profile without a Condorcet winner, whatever the rule does there. The reason is short: consistency together with the Condorcet principle would require the rule to elect a candidate whom nobody beats, and at such a profile every candidate is beaten by someone. This is the same structure as the bounded-line argument of *Cycles and Twists* (Proposition 1): whatever is placed on top must have something above it. The vote shares here are continuous; for finite electorates the mixture requires sufficiently many voters, consistent with the thresholds found by Brandt, Dong and Peters.
 
 Moulin's no-show theorem does not follow from the same construction: participation adds a single voter, a vanishing share, while the blocking profile y must carry substantial weight.
 

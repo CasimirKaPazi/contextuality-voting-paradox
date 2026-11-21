@@ -10,7 +10,7 @@ The impossibility theorems of social choice share a common form with the Liar pa
 - symmetry breaking: global solutions exist but none is symmetric, as in Arrow's theorem;
 - consistency.
 
-These are the levels of sheaf-theoretic contextuality with symmetry breaking added, and they match the bounded line, unbounded line and circle of *Cycles, Twists and Walls*.
+These are the levels of sheaf-theoretic contextuality with symmetry breaking added, and they match the bounded line, unbounded line and circle of *Cycles and Twists*.
 
 The threads below develop different parts of this picture. Two of them carry the general description; the others are applications, special cases or speculative extensions.
 
@@ -28,7 +28,7 @@ The threads below develop different parts of this picture. Two of them carry the
 
 **Still required.** A sheaf formulation with sub-electorates as the cover that goes beyond the scenario of triples; a statement of Young–Levenglick as an obstruction in that formulation, ideally cohomological; the relation between the electorate-indexed and the alternative-indexed versions (consistency versus IIA), of which *Contextuality and Symmetry* gives a first reading (locality in the direction of alternatives, gluing in the direction of voters).
 
-**Documents.** *Consistency as an Extension Problem* (the current formulation: consistency as convexity in vote-share space, the Condorcet winner as a partial assignment whose consistent extension across the cycle region is impossible, and a table of which combinations of symmetry, gluing and cycle sensitivity are possible, with maximal lotteries as the unique rule achieving all three); *A Map of Voting Paradoxes*; *Two Kinds of Loop*; Sections 3–4 of *Cycles, Twists and Walls*.
+**Documents.** *Consistency as an Extension Problem* (the current formulation: consistency as convexity in vote-share space, the Condorcet winner as a partial assignment whose consistent extension across the cycle region is impossible, and a table of which combinations of symmetry, gluing and cycle sensitivity are possible, with maximal lotteries as the unique rule achieving all three); *A Map of Voting Paradoxes*; *Two Kinds of Loop*; Sections 3–4 of *Cycles and Twists*.
 
 ### B. Where the symmetry goes (the question that follows)
 
@@ -38,17 +38,17 @@ The threads below develop different parts of this picture. Two of them carry the
 
 **Still required.** The global form: the theorems with a dictator (Arrow, Gibbard–Satterthwaite, Chichilnisky) are obstructions along loops, not at points. An equivariant obstruction theory for rules with a locality condition, with the winding and the degrees as classes, and integer versus real classes separating a forced break from a fixed point.
 
-**Documents.** *Where the Symmetry Goes*; *Contextuality and Symmetry*; Section 8 of *Cycles, Twists and Walls*; the draft *Four Levels of Obstruction in Social Choice*.
+**Documents.** *Where the Symmetry Goes*; *Contextuality and Symmetry*; Section 4 of *Walls and Strategy*; the draft *Four Levels of Obstruction in Social Choice*.
 
 ## Further threads
 
-### C. Cycles, twists and walls
+### C. Cycles and twists
 
-The integer winding obstruction of Condorcet cycles versus the parity obstruction of the Liar; the location of non-orientability at the seam of the Klein bottle; walls in profile space; the dichotomy between dictatorship and non-computable best replies (Gibbard 1973 with a diagonal lemma), and its lottery version (Gibbard 1978). The most complete draft. Still required: reference check, extension to more than three alternatives, review by a reader from social choice. *Document: Cycles, Twists and Walls.*
+The integer winding obstruction of Condorcet cycles versus the parity obstruction of the Liar; the location of non-orientability at the seam of the Klein bottle; the realised case as the sphere divided by preference reversal. Propositions 1–5 are checked in Lean. Still required: extension to more than three alternatives, review by a reader from topology or social choice. *Document: Cycles and Twists.*
 
 ### D. Strategy as a halting problem
 
-Could be separated from C as a game-theory and computability paper: Theorems 8 and 10, the rational-opponent diagonal (verified on small cases), and the boundary set by sequential moves with visible votes. Still required: a general proof of the rational-opponent version, the case of randomised strategists, and the case of sequential voting in random order with private preferences.
+Walls in profile space; the dichotomy between dictatorship and non-computable best replies (Gibbard 1973 with a diagonal lemma, Theorem 3, checked in Lean from Gibbard's definitions), its lottery version (Gibbard 1978, Theorem 5), the rational-opponent diagonal (verified on small cases, with Lean certificates for four rules), and the boundary set by sequential moves with visible votes. Still required: a general proof of the rational-opponent version, the case of randomised strategists, and the case of sequential voting in random order with private preferences. *Document: Walls and Strategy.*
 
 ### E. A ladder of lost properties
 
@@ -60,7 +60,7 @@ A voting rule combining a gradient signal (score differences) with pairwise marg
 
 ### G. Positioning consensus with a random fallback
 
-Theorem 10 of C gives a formal frame: the random fallback avoids the strategic regress at the cost of ex ante efficiency; deliberation recovers efficiency and carries the regress. This positions the CORE mechanism relative to Gibbard's theorems and to the proportional consensus of Heitzig, Simmons and Constantino.
+Theorem 5 of *Walls and Strategy* gives a formal frame: the random fallback avoids the strategic regress at the cost of ex ante efficiency; deliberation recovers efficiency and carries the regress. This positions the CORE mechanism relative to Gibbard's theorems and to the proportional consensus of Heitzig, Simmons and Constantino.
 
 ## Suggested order
 

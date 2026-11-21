@@ -10,7 +10,7 @@ Impossibility theorems of social choice are usually stated as the incompatibilit
 
 ## 1. Introduction
 
-The companion paper *Cycles, Twists and Walls* places a Condorcet cycle in three value spaces. On a bounded line no compatible model exists. On an unbounded line a compatible model exists without a global placement. On a circle the cycle is placed evenly and nothing is wrong. Those three outcomes are levels of a hierarchy familiar from contextuality (Abramsky and Brandenburger): failure of local consistency, contextuality, and consistency.
+The companion paper *Cycles and Twists* places a Condorcet cycle in three value spaces. On a bounded line no compatible model exists. On an unbounded line a compatible model exists without a global placement. On a circle the cycle is placed evenly and nothing is wrong. Those three outcomes are levels of a hierarchy familiar from contextuality (Abramsky and Brandenburger): failure of local consistency, contextuality, and consistency.
 
 Social choice needs one more level, between contextuality and consistency. Arrow's problem has global solutions, the dictatorships, and what fails is that none of them treats the voters alike. This is a failure of symmetry, not of gluing. Distributed computing draws the same line between agreement tasks, impossible even when processes may use their identities, and symmetry-breaking tasks, trivial unless anonymity is required (Castañeda, Herlihy and Rajsbaum; Rajsbaum and Raventós-Pujol place Arrow's theorem on the symmetry-breaking side).
 
@@ -41,9 +41,9 @@ The proposition makes two readings exact. The fixed point of a symmetry acting o
 
 ## 3. The template: one cycle in three value spaces
 
-Take alternatives as variables, values in a set O with a relation "placed above", and as contexts the pairs, each requiring the winner of the pair in a tournament T to be placed above the loser (*Cycles, Twists and Walls*, Section 2). Let G be the cyclic renaming of a cycle a₁ ≻ … ≻ aₙ ≻ a₁, acting on the circle by rotation.
+Take alternatives as variables, values in a set O with a relation "placed above", and as contexts the pairs, each requiring the winner of the pair in a tournament T to be placed above the loser (*Cycles and Twists*, Section 2). Let G be the cyclic renaming of a cycle a₁ ≻ … ≻ aₙ ≻ a₁, acting on the circle by rotation.
 
-| Value space | Result in *Cycles, Twists and Walls* | Level |
+| Value space | Result in *Cycles and Twists* | Level |
 |---|---|---|
 | bounded line | no compatible model (Proposition 1) | 1 |
 | unbounded line | compatible model, no global section (Proposition 3) | 2 |
@@ -73,7 +73,7 @@ In each case the proof has the shape of the bounded line: whatever candidate rec
 
 ## 5. Levels 2 and 3: Arrow's scenario
 
-**The scenario.** Read the three pairs of three alternatives around the triangle; a ranking is a triple of bits, not all equal (*Cycles, Twists and Walls*, Section 5). For N voters take as variables the social decision on each pair for each pattern of the voters' bits on that pair, and as contexts the profiles. Two profiles share a variable when they agree on a pair. Requiring each variable to take one value in every context containing it is independence of irrelevant alternatives, the non-contextuality assumption of Kochen and Specker in this setting. Unanimity is the boundary condition, and G is the group of permutations of the voters. This is the formulation of aggregators as polymorphisms (Dokow and Holzman; Szegedy and Xu), and as a complex it is the input complex of Rajsbaum and Raventós-Pujol.
+**The scenario.** Read the three pairs of three alternatives around the triangle; a ranking is a triple of bits, not all equal (*Cycles and Twists*, Section 5). For N voters take as variables the social decision on each pair for each pattern of the voters' bits on that pair, and as contexts the profiles. Two profiles share a variable when they agree on a pair. Requiring each variable to take one value in every context containing it is independence of irrelevant alternatives, the non-contextuality assumption of Kochen and Specker in this setting. Unanimity is the boundary condition, and G is the group of permutations of the voters. This is the formulation of aggregators as polymorphisms (Dokow and Holzman; Szegedy and Xu), and as a complex it is the input complex of Rajsbaum and Raventós-Pujol.
 
 **Global sections.** The global sections are the dictatorships (Arrow; computed for two and three voters). They form one orbit of G, and none is symmetric: the scenario is at level 3.
 
@@ -104,14 +104,14 @@ When can the symmetry be kept without fractions? For constraint languages the an
 
 ## 7. Relation to other work
 
-The hierarchy below the new level is that of Abramsky and Brandenburger, and the link between constraint satisfaction and local hidden variables is due to Abramsky, Gottlob and Kolaitis. Aggregation as polymorphisms is due to Dokow and Holzman and to Szegedy and Xu. Rajsbaum and Raventós-Pujol give a combinatorial-topology proof of Arrow's theorem by the index lemma and place it among symmetry-breaking tasks, and Felber, Hummes Flores and Rincon Galeana characterise task solvability by global sections of a task sheaf. On the probabilistic side, the results used are those of Barberà and Sonnenschein, Brandl, Brandt and Seedig, Brandl, Brandt and Hofbauer, and Brandt, Geist and Peters. Group-theoretic existence conditions for anonymous and neutral rules are due to Moulin, Bubboloni and Gori, and Doğan and Giritligil. The companion paper *Cycles, Twists and Walls* treats the topology of the cycle and the computability of strategy.
+The hierarchy below the new level is that of Abramsky and Brandenburger, and the link between constraint satisfaction and local hidden variables is due to Abramsky, Gottlob and Kolaitis. Aggregation as polymorphisms is due to Dokow and Holzman and to Szegedy and Xu. Rajsbaum and Raventós-Pujol give a combinatorial-topology proof of Arrow's theorem by the index lemma and place it among symmetry-breaking tasks, and Felber, Hummes Flores and Rincon Galeana characterise task solvability by global sections of a task sheaf. On the probabilistic side, the results used are those of Barberà and Sonnenschein, Brandl, Brandt and Seedig, Brandl, Brandt and Hofbauer, and Brandt, Geist and Peters. Group-theoretic existence conditions for anonymous and neutral rules are due to Moulin, Bubboloni and Gori, and Doğan and Giritligil. The companion papers *Cycles and Twists* and *Walls and Strategy* treat the topology of the cycle and the computability of strategy.
 
 ## 8. Status and open problems
 
 | Statement | Status | Check |
 |---|---|---|
 | Proposition 1 (division) | proved here, elementary | |
-| Value spaces at levels 1, 2, 4 | proved (*Cycles, Twists and Walls*) | `lean/ValueSpaces.lean` |
+| Value spaces at levels 1, 2, 4 | proved (*Cycles and Twists*) | `lean/ValueSpaces.lean` |
 | Theorem 2 (consistent Condorcet extensions elect no beaten candidate) | proved; sharpens Young and Levenglick | `lean/Consistency.lean` |
 | Lemma 3 (joint draw), Theorem 4 | proved here | `scripts/consistency/ex_post_consistency.py` |
 | Participation at level 1 | cited (Brandt, Geist and Peters), equivalence with joint draws proved here | same script |
@@ -152,5 +152,5 @@ The hierarchy below the new level is that of Abramsky and Brandenburger, and the
 - Rajsbaum, S. and Raventós-Pujol, A. (2025). A combinatorial topology approach to Arrow's impossibility theorem. *Social Choice and Welfare*. doi:10.1007/s00355-025-01609-7.
 - Szegedy, M. and Xu, Y. (2015). Impossibility theorems and the universal algebraic toolkit. arXiv:1506.01315.
 - Young, H. P. and Levenglick, A. (1978). A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35, 285–300.
-- *Cycles, Twists and Walls* (companion draft, this repository).
+- *Cycles and Twists*; *Walls and Strategy* (companion drafts, this repository).
 - *A Map of Voting Paradoxes*, *Consistency as an Extension Problem*, *Where the Symmetry Goes*, *Contextuality and Symmetry* (working notes, this repository).

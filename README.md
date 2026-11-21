@@ -12,6 +12,8 @@ The guiding observation is that all of these have the same form: local pieces th
 - [`notes/map-of-voting-paradoxes.md`](notes/map-of-voting-paradoxes.md) — the known voting paradoxes, grouped by what is varied, with the theorems that connect them. Includes the elementary argument that no Condorcet extension is consistent, and that the obstruction is the majority cycle itself acting on the possible ways of breaking it.
 - [`notes/where-the-symmetry-goes.md`](notes/where-the-symmetry-goes.md) — aggregation into a ranking must dispose of a symmetry; it ends up in the output (a paradox), in the rule (a dictator or tie-breaker), or in a fixed point (a lottery). Includes a table sorting known results by placement.
 
+- [`papers/drafts/`](papers/drafts/) — three short drafts: *Cycles and Twists* (the topology of a Condorcet cycle), *Walls and Strategy* (why best replies cannot be computed from inside) and *Four Levels of Obstruction in Social Choice* (local inconsistency, contextuality, symmetry breaking, consistency).
+
 ## Contents
 
 ### Notes (`notes/`)
@@ -30,7 +32,8 @@ The guiding observation is that all of these have the same form: local pieces th
 
 | File | Content |
 |---|---|
-| `cycles-twists-walls.md` | *Cycles, Twists and Walls.* Value spaces and the winding number; non-orientability at the seam; walls in profile space; Gibbard's theorems combined with a diagonal argument (every non-dictatorial game form with at least three outcomes leaves some voter without a computable best reply); randomisation and its price |
+| `cycles-and-twists.md` | *Cycles and Twists.* Value spaces and the winding number; the Liar as the same loop over a different cover; non-orientability at the seam of the Klein bottle; the projective plane as the sphere divided by preference reversal |
+| `walls-and-strategy.md` | *Walls and Strategy.* Walls in profile space and burial; Gibbard's theorems combined with a diagonal argument: every non-dictatorial game form with at least three outcomes has a voter for whom no program always computes a best reply; rational opponents; sequential moves; with lotteries, regress or ex ante inefficiency; consequence for a random fallback |
 | `levels-of-obstruction.md` | *Four Levels of Obstruction in Social Choice.* Local inconsistency, contextuality, symmetry breaking, consistency; the three value spaces as the template; Young–Levenglick and the no-show theorem at the first level when read for joint draws of winners; Arrow's scenario at the third, moved to the second by dividing by the voters' permutations; exits by changing what counts as a value |
 
 ### Scripts (`scripts/`)
@@ -39,13 +42,13 @@ All scripts are short and self-contained. They need Python 3 with `numpy`; some 
 
 | Script | What it checks | Used in |
 |---|---|---|
-| `topology/condorcet_gluing.py` | The six ways of gluing the two Condorcet cycles of the three-alternative annulus: three give a torus, three a Klein bottle; global reversal alone gives a torus | *Two Kinds of Loop*, *Cycles, Twists and Walls* §5 |
-| `topology/seam_check.py` | In every Klein bottle gluing, orientation flips at every seam edge; in every torus gluing, at none | *Cycles, Twists and Walls*, Proposition 5 |
-| `contextuality/condorcet_contextuality.py` | A Condorcet cycle has no valid model on a finite line, is consistent on a circle, and is strongly contextual only on an unbounded line; a choice-based encoding cannot tell cycles from orders | *Cycles, Twists and Walls* §3 |
-| `strategy/rational_diagonal.py` | The diagonal argument with opponents rational in the actual play, for plurality, Borda, instant runoff and Black's rule (two and three voters). Takes some minutes | Proposition 9 |
-| `strategy/rational_diagonal_controls.py` | Controls (dictatorial and two-outcome rules give no cases) and a worked Borda example | Proposition 9 |
-| `strategy/rational_diagonal_gameforms.py` | All 18,138 non-dictatorial two-player game forms with three strategies and three outcomes. Takes some minutes | Proposition 9 |
-| `strategy/sequential_veto.py` | Veto-then-pick procedure: the diagonal survives Nash-style rationality but not sequential rationality | *Cycles, Twists and Walls* §7 |
+| `topology/condorcet_gluing.py` | The six ways of gluing the two Condorcet cycles of the three-alternative annulus: three give a torus, three a Klein bottle; global reversal alone gives a torus | *Two Kinds of Loop*, *Cycles and Twists* §5 |
+| `topology/seam_check.py` | In every Klein bottle gluing, orientation flips at every seam edge; in every torus gluing, at none | *Cycles and Twists*, Proposition 5 |
+| `contextuality/condorcet_contextuality.py` | A Condorcet cycle has no valid model on a finite line, is consistent on a circle, and is strongly contextual only on an unbounded line; a choice-based encoding cannot tell cycles from orders | *Cycles and Twists* §3 |
+| `strategy/rational_diagonal.py` | The diagonal argument with opponents rational in the actual play, for plurality, Borda, instant runoff and Black's rule (two and three voters). Takes some minutes | *Walls and Strategy*, Proposition 4 |
+| `strategy/rational_diagonal_controls.py` | Controls (dictatorial and two-outcome rules give no cases) and a worked Borda example | *Walls and Strategy*, Proposition 4 |
+| `strategy/rational_diagonal_gameforms.py` | All 18,138 non-dictatorial two-player game forms with three strategies and three outcomes. Takes some minutes | *Walls and Strategy*, Proposition 4 |
+| `strategy/sequential_veto.py` | Veto-then-pick procedure: the diagonal survives Nash-style rationality but not sequential rationality | *Walls and Strategy* §3 |
 | `consistency/convexity_check.py` | Winner regions in the simplex of vote shares: Borda and plurality are convex (consistent); Condorcet methods fail only at profiles with a cycle; instant runoff fails also without cycles | *Map*, gluing as convexity |
 | `consistency/blocking_any_n.py` | The explicit blocking construction for three to six candidates: at every profile without a Condorcet winner, any choice of winner is undone by a mixture | *Map*, Young–Levenglick for any number of candidates |
 | `consistency/participation_check.py` | Participation along ballot segments in vote-share space for maximin, Black and Borda with three and four candidates; maximin fails only from four candidates on. Takes about a minute | *Map*, no-show mechanism |
@@ -63,19 +66,19 @@ Lean 4 files that check statements from the notes and the draft. They use only c
 
 | File | What it proves | Used in |
 |---|---|---|
-| `ValueSpaces.lean` | Propositions 1–4 for cycles of any length: no model on a bounded line (assuming only that every alternative is beaten by some alternative), a placement on a circle of n points, the unbounded-line model compatible without global section, and the winding number | *Cycles, Twists and Walls* §3–4 |
-| `Condorcet.lean` | The Condorcet profile has a majority cycle and no Condorcet winner; each of the 216 profiles of three voters on three alternatives has a Condorcet winner or a full cycle; exactly 12 have a cycle | background to *Cycles, Twists and Walls* §3 |
-| `ProfileFacts.lean` | The bound p(a ≻ b) + p(b ≻ c) + p(c ≻ a) ≤ 2 for any profile, ties allowed, attained by the Condorcet profile; no deterministic rule on three alternatives and three voters is invariant under rotating the voters and commutes with the cyclic renaming | *Cycles, Twists and Walls* §3, §6 |
-| `Nerve.lean` | The complex of strict orders on three alternatives is an annulus bounded by the two cycles; of the six gluings of its boundary circles, the three along the reference orientations are non-orientable and the other three orientable, and under the former every seam edge joins triangles with disagreeing orientations; filling in both cycles gives a closed orientable surface of Euler characteristic 2, on which reversing every preference is a free, orientation-reversing symmetry; identifying only the two cycle faces gives no surface | *Cycles, Twists and Walls* §5 |
-| `Burial.lean` | Proposition 6 for any numbers of voters and alternatives, ballots with ties allowed | *Cycles, Twists and Walls* §6 |
+| `ValueSpaces.lean` | Propositions 1–4 for cycles of any length: no model on a bounded line (assuming only that every alternative is beaten by some alternative), a placement on a circle of n points, the unbounded-line model compatible without global section, and the winding number | *Cycles and Twists* §3–4 |
+| `Condorcet.lean` | The Condorcet profile has a majority cycle and no Condorcet winner; each of the 216 profiles of three voters on three alternatives has a Condorcet winner or a full cycle; exactly 12 have a cycle | background to *Cycles and Twists* §3 |
+| `ProfileFacts.lean` | The bound p(a ≻ b) + p(b ≻ c) + p(c ≻ a) ≤ 2 for any profile, ties allowed, attained by the Condorcet profile; no deterministic rule on three alternatives and three voters is invariant under rotating the voters and commutes with the cyclic renaming | *Cycles and Twists* §3; *Walls and Strategy* §2 |
+| `Nerve.lean` | The complex of strict orders on three alternatives is an annulus bounded by the two cycles; of the six gluings of its boundary circles, the three along the reference orientations are non-orientable and the other three orientable, and under the former every seam edge joins triangles with disagreeing orientations; filling in both cycles gives a closed orientable surface of Euler characteristic 2, on which reversing every preference is a free, orientation-reversing symmetry; identifying only the two cycle faces gives no surface | *Cycles and Twists* §5 |
+| `Burial.lean` | Burial (Proposition 1 of *Walls and Strategy*) for any numbers of voters and alternatives, ballots with ties allowed | *Walls and Strategy* §2 |
 | `Consistency.lean` | A consistent Condorcet extension never elects an alternative that another beats by majority (finite electorates, ties allowed, explicit counter-electorate); hence none exists at a profile where every alternative is beaten | *Consistency as an Extension Problem*; *Map of Voting Paradoxes* |
-| `Diagonal.lean` | Lemma 7 in abstract form: without a dominant ballot, no strategist is universally correct against opponents that can run it. The only computational assumption is that the opponents can apply any map to the strategist's output | *Cycles, Twists and Walls* §7 |
+| `Diagonal.lean` | Lemma 2 in abstract form: without a dominant ballot, no strategist is universally correct against opponents that can run it. The only computational assumption is that the opponents can apply any map to the strategist's output | *Walls and Strategy* §3 |
 | `Arrow.lean` | Arrow's theorem in the form used by Gibbard (1973): orderings with ties, unanimity, pairwise determination, at least three outcomes | input to `Gibbard73.lean` |
-| `Gibbard73.lean` | Gibbard (1973): every straightforward game form with at least three possible outcomes is dictatorial, following Gibbard's Section 3 and his definitions | *Cycles, Twists and Walls* §7 |
-| `Dichotomy.lean` | Theorem 8: every game form with at least three outcomes is dictatorial or has a player and an ordering for which no strategist is universally correct | *Cycles, Twists and Walls* §7 |
-| `RationalDiagonal.lean` | Proposition 9 for plurality, Borda, instant runoff and Black's rule with two and three voters, by checking certificates found by search; the count 12 of 36 in the veto-then-pick example | *Cycles, Twists and Walls* §7 |
+| `Gibbard73.lean` | Gibbard (1973): every straightforward game form with at least three possible outcomes is dictatorial, following Gibbard's Section 3 and his definitions | *Walls and Strategy* §3 |
+| `Dichotomy.lean` | Theorem 3: every game form with at least three outcomes is dictatorial or has a player and an ordering for which no strategist is universally correct | *Walls and Strategy* §3 |
+| `RationalDiagonal.lean` | Proposition 4 for plurality, Borda, instant runoff and Black's rule with two and three voters, by checking certificates found by search; the count 12 of 36 in the veto-then-pick example | *Walls and Strategy* §3 |
 
-What the files leave to standard topology: that a coherent orientation of the triangles is the same as orientability, and the classification of surfaces, which names the resulting surfaces (torus, Klein bottle, sphere, projective plane). What is not formalised: the count over all 18,138 two-player game forms, whose formal version would also need a proof that the enumeration is complete, and Theorem 10, which needs probability.
+What the files leave to standard topology: that a coherent orientation of the triangles is the same as orientability, and the classification of surfaces, which names the resulting surfaces (torus, Klein bottle, sphere, projective plane). What is not formalised: the count over all 18,138 two-player game forms, whose formal version would also need a proof that the enumeration is complete, and Theorem 5 of *Walls and Strategy*, which needs probability.
 
 ## Related work
 
