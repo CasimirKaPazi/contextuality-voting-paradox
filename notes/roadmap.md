@@ -64,10 +64,13 @@ Theorem 6 of *Walls and Strategy* gives a formal frame: the random fallback avoi
 
 ## Suggested order
 
-1. Sharpen A conceptually: the sheaf formulation with sub-electorates as contexts.
-2. Ask B on top of A: where does the symmetry go when gluing fails?
-3. Bring C and D to a reviewable state, as they are the most complete.
-4. E, F and G as time allows.
+1. Formal checks of the newer results, after the current work on tight game forms: Theorem 5 of *Four Levels*, Propositions 1–3 of *Loops of Relations*, remark (d) of *Cycles and Twists* and the easy direction of its circle characterisation. All are short and use only finite sets and elementary probability.
+2. Theorem 5 for four or more alternatives: whether full compatibility forces the joint lottery once every triple is a mixture of dictatorships. A leaner formulation is needed to compute four alternatives with three voters.
+3. Bring C to submission. D follows once the tight forms move.
+4. Thread A: one scenario with electorates as contexts, in which consistency and participation are both constraints, as a step towards the sheaf formulation with sub-electorates as the cover.
+5. G (the bridge to CORE), then E and F.
+
+Thread B runs alongside, as questions from the other threads land there (holonomy sets, the equivariant obstruction theory).
 
 ## Related project documents
 
