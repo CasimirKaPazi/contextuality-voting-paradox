@@ -14,7 +14,9 @@ The impossibility theorems of social choice share a common form with the Liar pa
 
 **In hand.** An elementary proof, for vote shares and any number of candidates, that every Condorcet extension fails consistency at every profile without a Condorcet winner: electing any candidate is undone by mixing with a profile in which a candidate that beats it becomes the Condorcet winner. Consistency is convexity of winner regions. The map of paradoxes and its patterns; the Kemeny analysis; the plurality example in which a consistent rule elects a candidate on a profile where every pairwise comparison is tied; the observation that Condorcet cycles become contextual only on an unbounded value space; the Hodge and Saari decompositions as the real-valued structure of pairwise data.
 
-**Still required.** An honest sheaf formulation with sub-electorates as the cover; a statement of Young–Levenglick as an obstruction in that formulation, ideally cohomological; the relation between the electorate-indexed and the alternative-indexed versions (consistency versus IIA).
+**In hand (joining A and B).** Aggregation written as a constraint network: variables are the social decisions on each pair for each column of voters' bits, contexts are profiles, independence of irrelevant alternatives is non-contextuality of these decisions. Integral solutions are the dictators; symmetric ones do not exist; the symmetric fractional solution is random dictatorship. Agreement-type obstructions (no solution at all: Young–Levenglick, no-show) are distinguished from symmetry-breaking ones (solutions exist, none symmetric: Arrow, Gibbard–Satterthwaite), as in distributed computing; by Kun et al., the symmetry can be kept integrally exactly when the local-consistency relaxation is exact. See *Contextuality and Symmetry*.
+
+**Still required.** An honest sheaf formulation with sub-electorates as the cover; a statement of Young–Levenglick as an obstruction in that formulation, ideally cohomological; the relation between the electorate-indexed and the alternative-indexed versions (consistency versus IIA), of which *Contextuality and Symmetry* gives a first reading (locality in the direction of alternatives, gluing in the direction of voters).
 
 **Documents.** *Consistency as an Extension Problem* (the current formulation: consistency as convexity in vote-share space, the Condorcet winner as a partial assignment whose consistent extension across the cycle region is impossible, and a table of which combinations of symmetry, gluing and cycle sensitivity are possible, with maximal lotteries as the unique rule achieving all three); *A Map of Voting Paradoxes*; *Two Kinds of Loop*; Sections 3–4 of *Cycles, Twists and Walls*.
 
@@ -26,7 +28,7 @@ The impossibility theorems of social choice share a common form with the Liar pa
 
 **Still required.** The global form: the theorems with a dictator (Arrow, Gibbard–Satterthwaite, Chichilnisky) are obstructions along loops, not at points. An equivariant obstruction theory for rules with a locality condition, with the winding and the degrees as classes, and integer versus real classes separating a forced break from a fixed point.
 
-**Documents.** *Where the Symmetry Goes*; Section 8 of *Cycles, Twists and Walls*.
+**Documents.** *Where the Symmetry Goes*; *Contextuality and Symmetry*; Section 8 of *Cycles, Twists and Walls*.
 
 ## Further threads
 

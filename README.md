@@ -21,6 +21,7 @@ The guiding observation is that all of these have the same form: local pieces th
 | `roadmap.md` | Threads, status, suggested order |
 | `map-of-voting-paradoxes.md` | Families of paradoxes, links between them, consistency as convexity and as a gluing condition |
 | `consistency-as-extension.md` | Consistency as convexity; the Condorcet winner as a partial assignment that cannot be extended consistently across the cycle region; symmetry, gluing and cycle sensitivity, deterministic versus lotteries (maximal lotteries) |
+| `contextuality-and-symmetry.md` | Aggregation as a constraint network in which independence of irrelevant alternatives is non-contextuality; dictators as integral solutions, random dictatorship as the symmetric fractional one; agreement-type versus symmetry-breaking obstructions, as in distributed computing; the linear-programming bridge between keeping symmetry and gluing |
 | `where-the-symmetry-goes.md` | Three placements of the symmetry, composed voters, agreeing for different reasons |
 | `two-kinds-of-loop.md` | Condorcet cycles (integer winding) versus the Liar (parity), the Klein bottle seam, strategy and computability |
 | `ladder-of-lost-properties.md` | Speculative: the normed division algebras and Hopf fibrations as a frame for successive breakdowns of aggregation |
@@ -49,6 +50,7 @@ All scripts are short and self-contained. They need Python 3 with `numpy`; some 
 | `consistency/participation_check.py` | Participation along ballot segments in vote-share space for maximin, Black and Borda with three and four candidates; maximin fails only from four candidates on. Takes about a minute | *Map*, no-show mechanism |
 | `consistency/cycle_assignment_check.py` | No profile with a majority cycle can be assigned to any candidate by a consistent Condorcet extension | *Map*, Young–Levenglick for three candidates |
 | `symmetry/isotropy_check.py` | Stabilisers of all anonymous profiles for small numbers of alternatives and voters; the condition "every stabiliser fixes an admissible output" reproduces the existence conditions for anonymous, neutral rules with single winners, Pareto-optimal winners and rankings. Takes about twenty seconds | *Where the Symmetry Goes* §7 |
+| `symmetry/arrow_as_csp.py` | Arrow's problem for three alternatives as a constraint network: the unanimous solutions independent of irrelevant alternatives are exactly the dictators (two and three voters), none is anonymous, and the share assignment is a consistent fractional solution equal to random dictatorship | *Contextuality and Symmetry* §2 |
 | `exploratory/condorcet_island.py` | Interactive: where a third candidate produces a cycle in a spatial model, as a function of zoom and voter arrangement | exploratory |
 | `exploratory/island_phase_map.py` | Area and direction of the cycle region over the parameters of the spatial model | exploratory |
 
