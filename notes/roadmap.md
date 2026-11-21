@@ -44,7 +44,7 @@ The threads below develop different parts of this picture. Two of them carry the
 
 ### C. Cycles and twists
 
-The integer winding obstruction of Condorcet cycles versus the parity obstruction of the Liar; the location of non-orientability at the seam of the Klein bottle; the realised case as the sphere divided by preference reversal. Propositions 1–5 are checked in Lean. Still required: extension to more than three alternatives, review by a reader from topology or social choice. *Document: Cycles and Twists.*
+The integer winding obstruction of Condorcet cycles versus the parity obstruction of the Liar; the location of non-orientability at the seam of the Klein bottle; the realised case as the sphere divided by preference reversal. Propositions 1–5 are checked in Lean. Still required: extension to more than three alternatives, one statement covering both loops and the diagonal of thread D (a loop of contexts with an edge map per context, and three cases: no fixed point, fixed points of the square only, a fixed point), review by a reader from topology or social choice. *Documents: Cycles and Twists; The Switch Between Fixed Point and No Fixed Point (literature for the common statement: acyclicity, odd and even loops through negation, alternating fixpoints, partiality).*
 
 ### D. Strategy as a halting problem
 
