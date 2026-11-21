@@ -1,8 +1,14 @@
 name = "voting"
 defaultTargets = ["Voting"]
 
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.36.0"
+
 [[lean_lib]]
 name = "Voting"
 srcDir = "."
 roots = ["Diagonal", "Condorcet", "Nerve", "ValueSpaces", "Burial", "RationalDiagonal",
-         "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy", "Lotteries", "NonTight"]
+         "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy", "Lotteries", "NonTight",
+         "ProbLine", "CircleTournaments"]
