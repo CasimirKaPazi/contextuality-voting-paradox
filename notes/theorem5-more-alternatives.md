@@ -1,6 +1,6 @@
 # Theorem 5 for four, five and six alternatives
 
-*Working note. It extends Theorem 5 of* Four Levels of Obstruction in Social Choice *(empirical models of Arrow's scenario are mixtures of dictatorships) from three alternatives to four, five and six, for any finite number of voters. The proof is an induction on the number of alternatives whose step reduces, for each m, to finitely many exact checks; they are carried out for m = 4, 5, 6 by `scripts/symmetry/pin_certificate_m.py` from the rules in `scripts/symmetry/pin_rules.json`.*
+*Working note. It extends Theorem 5 of* Four Levels of Obstruction in Social Choice *(empirical models of Arrow's scenario are mixtures of dictatorships) from three alternatives to four, five and six, for any finite number of voters. The proof is an induction on the number of alternatives whose step reduces, for each m, to finitely many exact checks; they are carried out for m = 4, 5, 6 by `scripts/symmetry/pin_certificate_m.py` from the rules in `scripts/symmetry/pin_rules.json`. Section "Symmetry and uniform rules" records what is known towards all m.*
 
 ## Statement
 
@@ -35,14 +35,27 @@ The rules were found by randomised local search (`pin_search.py` for four altern
 
 A one-line instance of the mechanism, for the joint lottery of two disjoint pairs ab and cd with four alternatives: let every voter place c and d next to each other between a and b. The triple laws then put a and b at the extremes with probability 1, so "a above b and c above d" becomes "a on top of acd and c above d", whose probability is the weight of the voters in both columns.
 
+## Symmetry and uniform rules
+
+Towards all m, the question is whether rules can be chosen uniformly. Computations for tree shapes and for all shapes give the following picture (scripts `pin_kernel.py`, `pin_star_uniform.py`, `pin_updown.py`, `pin_greedy.py`).
+
+- **Symmetric completions cannot pin.** Grow a voter's ranking along a tree shape, inserting each alternative directly above or below its neighbour according to the bit. This rule commutes with reversing all preferences and with the shape's automorphisms. Its set of rankings is always closed, but never identified: some signed combination of its rankings is invisible to all (m − 1)-alternative laws. For stars this invisible part is exactly one-dimensional and is the *parity character*, the sign (−1)^(number of 1-bits) of the voter's pattern, for m = 4, 5, 6; for other trees the parity is always among the invisible combinations. The obstruction is a ℤ/2 class, the kind of holonomy the Liar has in *Loops of Relations*. Breaking the symmetry at a single insertion does not remove it.
+- **Breaking the reversal symmetry does.** For the star with centre a, the rule "leaves above a in a fixed order, then a, then leaves below a in the same order" is closed and identified for m = 4, 5, 6 and 7 (seven alternatives, 64 rankings). Up and down are treated alike as orders but not as mirror images, so reversal is broken while the renaming structure is kept. For trees, the rule "insert in breadth-first order from a root; an alternative above its neighbour goes directly above it, one below goes to the bottom" pins every tree with some root for m ≤ 6 (rooting at a in every case checked).
+- **A uniform rule for all shapes.** A voter's pattern on S is a partial order on the alternatives. Take its greedy linear extension for a fixed priority order of the alternatives (repeatedly place on top the highest-priority alternative that nothing remaining must exceed). For every shape with m = 4, 5, 6, some priority orders pin, and the share that fails decreases with m: for the hardest shape it is 18 of 24 for m = 4, at most 36 of 120 for m = 5, at most 128 of 720 for m = 6; for stars, and several other shapes, every priority order works.
+
+*Reading.* This is the pattern of *Where the Symmetry Goes* inside the proof: a completion that keeps the symmetry leaves a parity class unresolved, and pinning requires breaking it. *(Interpretation.)*
+
+What a proof for all m still needs: (D_m) in general, a choice of priority orders (or another uniform rule) with a proof of closure and identification, and a proof for the non-tree shapes.
+
 ## Remarks
 
 - Sets of fewer pairs do not suffice for determination: for five alternatives, laws on sets of three pairs leave a kernel of dimension 24 among the 120 rankings; for six, 394 of 720.
-- **All m.** The step goes through for every m for which (D_m) and (P_m) hold. Both held at once for m = 4, 5, 6 (for m = 6, nine shapes, each pinned within a few hundred random restarts). A proof of the theorem for all numbers of alternatives needs general arguments for (D_m) and for (P_m), or a uniform family of rules. For m = 7 the search is a matter of computation (5,040 rankings, sets of six pairs).
+- **All m.** The step goes through for every m for which (D_m) and (P_m) hold; both are verified for m = 4, 5, 6. For m = 7 the check is computation (5,040 rankings, sets of six pairs); the star is already done there by the uniform rule.
 - **Relation to weak compatibility.** Under weak compatibility (independence one pair at a time, as for Barberà and Sonnenschein's random social welfare functions) there are rules that are not mixtures of dictatorships, such as the coin rule, and McLennan obtains additive power only from six alternatives on. Under full compatibility the mixture is forced from three alternatives on: the gap between the two is signalling, not contextuality, at every m checked.
 
 ## Files
 
 - `scripts/symmetry/pin_certificate_m.py` and `scripts/symmetry/pin_rules.json`: the checks for m = 4, 5, 6;
 - `scripts/symmetry/pin_certificate.py`: the four-alternative case with explicit identities;
-- `scripts/symmetry/pin_search.py`, `scripts/symmetry/pinm_search.py`: the searches.
+- `scripts/symmetry/pin_search.py`, `scripts/symmetry/pinm_search.py`: the searches;
+- `scripts/symmetry/pin_kernel.py`, `pin_star_uniform.py`, `pin_tree_uniform.py`, `pin_updown.py`, `pin_greedy.py`, `rankmod.py`: the uniform rules and the parity obstruction.
