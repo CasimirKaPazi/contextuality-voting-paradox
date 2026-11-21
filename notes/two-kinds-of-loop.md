@@ -140,7 +140,7 @@ The same move resolves each layer:
 ## Open questions
 
 1. Prove the rational-opponent version of the dichotomy in Section 7 for all non-dictatorial simultaneous game forms with at least three outcomes (exhaustive search on small cases found no counterexample), and determine what survives when strategists may randomise.
-2. Extend the seam picture beyond three alternatives, using the appendix of Livson–Pritam–Prokopenko: is non-orientability still located exactly at the contradictory objects, and how do cycles on sub-triangles enter?
+2. Extend the seam picture beyond three alternatives, using the appendix of Livson–Pritam–Prokopenko: is non-orientability still located exactly at the contradictory objects, and how do cycles on sub-triangles enter? *Partly answered in Cycles and Twists, Proposition 6.* Livson, Pritam and Prokopenko reduce larger sets to triples. Built on all comparisons at once, the realised space is a projective space of dimension n(n − 1)/2 − 1. The parity persists for every n, but the space is orientable for four and five alternatives. The contradictory objects are the directed cycles of every length. The seam has no direct counterpart, since for n ≥ 4 the complex of strict orders is not a manifold.
 3. Find a formal frame in which the Liar (negation, mod 2) and Condorcet (shift, integers) are two instances of one Lawvere-type statement, with the mod-2 reduction as a map between them.
 4. Characterise which aggregation rules make the strategic regress terminate (halting) and which can loop, beyond the known iterative-voting results, and where a random fallback places a rule.
 
