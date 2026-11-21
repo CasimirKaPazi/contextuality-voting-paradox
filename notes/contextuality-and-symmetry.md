@@ -80,7 +80,7 @@ Collected, the results of this note and of *Consistency as an Extension Problem*
 | Level | What exists | Value spaces (*Cycles and Twists* §3) | Social choice |
 |---|---|---|---|
 | Local inconsistency | no empirical model | bounded line (Proposition 1): whatever is on top is beaten from above | Young–Levenglick read ex post: whatever candidate receives probability is blocked; the no-show theorem read ex post (with four or more alternatives; with three, maximin satisfies participation) |
-| Contextuality | empirical models, no global section | unbounded line (Proposition 3) | random dictatorship in the scenario divided by the voters' permutations (for two and three voters the only empirical model there) |
+| Contextuality | empirical models, no global section | unbounded line (Proposition 3), possibilistically only; probabilistically, the circle with a fourth alternative beating every member of a cycle (*Cycles and Twists*, after Proposition 2 and remark d) | random dictatorship in the scenario divided by the voters' permutations (for two and three voters the only empirical model there) |
 | Symmetry breaking | global sections, none symmetric | | Arrow (dictatorships), Gibbard–Satterthwaite, Moulin's condition for anonymous and neutral rules |
 | Consistency | a symmetric global section | circle (Proposition 2): the evenly spaced placement | for instance, scoring rules for consistency over electorates, at the price of the Condorcet principle |
 
