@@ -4,7 +4,15 @@
 
 ## The overall picture
 
-The impossibility theorems of social choice share a common form with the Liar paradox, incompleteness and the halting problem: local pieces that each make sense fail to fit into a consistent whole, and every attempt to force a fit either produces a contradiction, imposes an arbitrary choice, or introduces chance. The threads below develop different parts of this picture. Two of them carry the general description; the others are applications, special cases or speculative extensions.
+The impossibility theorems of social choice share a common form with the Liar paradox, incompleteness and the halting problem: local pieces that each make sense fail to fit into a consistent whole, and every attempt to force a fit either produces a contradiction, imposes an arbitrary choice, or introduces chance. In current form (*Contextuality and Symmetry*, Section 3a), the obstructions sort into four levels:
+- local inconsistency: no locally consistent model at all, for instance Young–Levenglick read for joint draws of winners;
+- contextuality: locally consistent models without a global one;
+- symmetry breaking: global solutions exist but none is symmetric, as in Arrow's theorem;
+- consistency.
+
+These are the levels of sheaf-theoretic contextuality with symmetry breaking added, and they match the bounded line, unbounded line and circle of *Cycles, Twists and Walls*.
+
+The threads below develop different parts of this picture. Two of them carry the general description; the others are applications, special cases or speculative extensions.
 
 ## Core threads
 

@@ -54,6 +54,14 @@ The two differ visibly at the Condorcet profile abc, bca, cab:
 
 For the agreement-type theorems the comparison runs differently. *Consistency as an Extension Problem*, Section 3b, writes Young and Levenglick's problem as a scenario with electorates in the contexts: the variables are the winners at the profiles, a context is two profiles with a mixture of them, and the constraint is consistency. Read as a joint draw of winners, a lottery-valued rule that elects every Condorcet winner gives no empirical model on this scenario at all. The obstruction there is a failure of local consistency, stronger than contextuality, while for Arrow's problem empirical models exist and only their global sections are restricted. Maximal lotteries avoid the obstruction by being consistent ex ante, as values in the simplex, not ex post.
 
+## 2b. The hidden variable is the symmetry break
+
+Random dictatorship is non-contextual: it has a hidden-variable model, and the hidden variable is the identity of the dictator. Draw a voter, then let every pair be decided by that voter. The hidden variable is a symmetry break: it singles out one voter.
+
+Now restrict the scenario to rules that treat voters alike. In this divided scenario the global assignments are the anonymous deterministic solutions, and there are none (Arrow's theorem with anonymity; computed for two and three voters in Section 2). Random dictatorship is still an empirical model of the divided scenario, since its probabilities depend on each column only through the number of ones in it. But it has no hidden-variable model there, since there is nothing to mix. It is strongly contextual in the divided scenario, as is every symmetric random rule, the coin rule included.
+
+So the same object is non-contextual or contextual depending on whether its hidden variables may break the symmetry. In that sense a symmetry-breaking obstruction is a contextuality obstruction whose only hidden variables are the breaks. The isotropy lemma of *Where the Symmetry Goes*, Section 7, says the same at a single profile: a neutral rule cannot output anything that its stabiliser moves, and a hidden variable that names a dictator is such an output. *(Interpretation of computed and cited facts.)*
+
 ## 3. Agreement and symmetry breaking
 
 "Fractional but not integral" is the constraint form of contextuality. In Abramsky's formulation, a scenario is contextual when local data that agree on overlaps admit no global assignment. Abramsky, Gottlob and Kolaitis relate local hidden variables to robust satisfiability of constraint networks. Here the fractional assignment is a family of distributions, one per context, with agreeing marginals, and the question is whether an integral assignment exists.
@@ -66,6 +74,19 @@ The aggregation problem then shows a distinction that distributed computing draw
 A symmetry-breaking problem is one that becomes contextual only after division by its symmetry. An agreement problem is contextual already. In distributed computing, consensus cannot be solved even by protocols that use process identities; the impossibility results for agreement tasks are proved by connectivity and Sperner-type arguments. Weak symmetry breaking is trivial if identities may be used, so the requirement of anonymity is part of the task. As Castañeda, Herlihy and Rajsbaum put it, <q>to rule out trivial solutions any protocol for WSB must be anonymous</q>, and the impossibility is proved with an equivariance argument and the index lemma. Arrow's theorem has the form of weak symmetry breaking: the non-dictatorship condition is what rules out the trivial solutions.
 
 The same distinction sorts theorems of social choice. Young and Levenglick's theorem has the agreement form. The incompatibility of the Condorcet principle with consistency over electorates holds for all rules, not only for symmetric ones (for three candidates, every Condorcet extension fails from eight voters; Brandt, Dong and Peters). No break of the cycle glues (*Consistency as an Extension Problem*, blocking lemma), so there is no global solution at all; read ex post, there is not even a locally consistent probabilistic one (ibid., Section 3b). Moulin's no-show theorem is of the same kind. Arrow's and the Gibbard–Satterthwaite theorems, and Moulin's condition for anonymous, neutral and resolute rules, have the symmetry-breaking form: solutions exist and none is symmetric. This refines observation 2 of *Where the Symmetry Goes*: the two-family theorems are the agreement-type obstructions, and the one-family theorems with a dictator are the symmetry-breaking ones. *(Interpretation.)*
+
+## 3a. A hierarchy of obstructions
+
+Collected, the results of this note and of *Consistency as an Extension Problem* sort the obstructions into four levels. They are the levels of Abramsky and Brandenburger's hierarchy, with symmetry breaking added between contextuality and consistency. They are also the three value spaces of *Cycles, Twists and Walls*, Section 3, with the circle split into two cases.
+
+| Level | What exists | Value spaces (*Cycles, Twists and Walls* §3) | Social choice |
+|---|---|---|---|
+| Local inconsistency | no empirical model | bounded line (Proposition 1): whatever is on top is beaten from above | Young–Levenglick read ex post: whatever candidate receives probability is blocked; the no-show theorem read ex post (with four or more alternatives; with three, maximin satisfies participation) |
+| Contextuality | empirical models, no global section | unbounded line (Proposition 3) | symmetric random rules in the scenario divided by the voters' permutations; the coin rule also in the full scenario |
+| Symmetry breaking | global sections, none symmetric | | Arrow (dictatorships), Gibbard–Satterthwaite, Moulin's condition for anonymous and neutral rules |
+| Consistency | a symmetric global section | circle (Proposition 2): the evenly spaced placement | for instance, scoring rules for consistency over electorates, at the price of the Condorcet principle |
+
+Exits move a problem down the table by changing what counts as a value. Maximal lotteries move Young–Levenglick from the first level to the last by reading consistency ex ante, with the lottery as a value. Random dictatorship moves Arrow's problem from the third level to a non-contextual model, at the price of a hidden variable that breaks the symmetry. *(Interpretation; the placements in the table are the computed and cited results above.)*
 
 ## 4. When can the symmetry be kept? The linear-programming bridge
 
