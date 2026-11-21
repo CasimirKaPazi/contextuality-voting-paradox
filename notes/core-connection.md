@@ -1,6 +1,6 @@
 # CORE and the Formal Results
 
-*Working note for thread G of the roadmap. It places the CORE mechanism (Consensus Or Random Exclusion; `papers/CORE_13.md`) against the results of* Four Levels of Obstruction in Social Choice, Walls and Strategy *and* Consistency as an Extension Problem. *Four connections are stated: a third characterisation of CORE's fallback, a reading of the draw as the hidden variable of random dictatorship, the exact place of CORE relative to Gibbard's theorems, and a reading of its bargaining in terms of fixed points. Proved statements, computed checks and interpretation are marked. The note ends with the material it would contribute to a follow-up to the CORE paper.*
+*Working note for thread G of the roadmap. It places the CORE mechanism (Consensus Or Random Exclusion; `papers/CORE_13.md`) against the results of* Four Levels of Obstruction in Social Choice, Walls and Strategy *and* Consistency as an Extension Problem. *Four connections are stated: a further characterisation of CORE's fallback, from aggregation, with the limit of what electorate conditions say about it; a reading of the draw as the hidden variable of random dictatorship together with an exact decomposition of what participants hold in the sequential variant; the exact place of CORE relative to Gibbard's theorems; and a reading of its bargaining in terms of fixed points. Proved statements, computed checks and interpretation are marked. The note ends with the material it would contribute to a follow-up to the CORE paper.*
 
 ## 1. CORE in brief
 
@@ -8,18 +8,20 @@ The participants deliberate toward a unanimously accepted proposal, possibly a l
 
 ## 2. The fallback from three directions
 
-CORE's paper justifies the fallback by Gibbard's (1977) characterisation, extended by Gibbard (1978), Hylland (1980) and Dutta, Peters and Sen: a strategy-proof rule that chooses an option everyone ranks first is a random dictatorship. The results of this repository give two further characterisations, which reach the same object from other sides.
+CORE's paper justifies the fallback by Gibbard's (1977) characterisation, extended by Gibbard (1978), Hylland (1980) and Dutta, Peters and Sen: a strategy-proof rule that chooses an option everyone ranks first is a random dictatorship. The results of this repository give one further characterisation, from aggregation, and examine the fallback from a third side, electorates, where the conditions turn out not to single it out.
 
 **From aggregation.** By Theorems 5 and 5′ of *Four Levels*, for three to six alternatives and any number of voters, every lottery over rankings that satisfies unanimity and full probabilistic independence of irrelevant alternatives (the joint lottery on any set of pairs depends only on the voters' comparisons on those pairs) is a mixture of dictatorships. If it is also anonymous, all weights are equal, so it is uniform random dictatorship (*Four Levels*, Division). Its winner, the top of the drawn voter's ranking, is CORE's fallback. So uniform random ballot is the winner distribution of the only anonymous lottery over rankings that respects unanimity and independence in this joint sense.
 
 Strategy-proofness and independence are different conditions, and the two characterisations are parallel rather than one. On the strategy side, weakening the condition from dominant strategies leaves Gibbard's mixtures of unilateral and duple rules. On the aggregation side, weakening full to pairwise independence leaves rules with subadditive power such as the coin rule (Barberà and Sonnenschein), and the gap between the two is signalling, not contextuality. McLennan (1980) connected additivity of power with strategy-proofness, and is the closest precedent for treating the two together.
 
-**From electorates.** Random ballot is affine in the vote shares. It therefore satisfies consistency read for joint draws of winners (*Consistency as an Extension Problem*, Section 3b) and participation read for joint draws, which is SD-participation: an added voter raises the probability of each initial segment of their own ranking. Both are checked on random profiles (`scripts/consistency/ex_post_consistency.py` for consistency; the computation behind this note for both). A fallback that elects every Condorcet winner can have neither (*Four Levels*, Theorem 4; Brandt, Geist and Peters). In the scenario of Section 3c, with joins and one-voter extensions as contexts, random ballot is a global section once the Condorcet principle is dropped.
+**From electorates.** Random ballot is affine in the vote shares. It therefore satisfies consistency read for joint draws of winners (*Consistency as an Extension Problem*, Section 3b) and participation read for joint draws, which is SD-participation: an added voter raises the probability of each initial segment of their own ranking. Both are checked on random profiles (`scripts/core/core_checks.py`, part 2). A fallback that elects every Condorcet winner can have neither (*Four Levels*, Theorem 4; Brandt, Geist and Peters). In the scenario of Section 3c, with joins and one-voter extensions as contexts, random ballot is a global section once the Condorcet principle is dropped.
+
+**The electorate conditions do not single out the fallback.** Every scoring rule with uniform tie-breaking satisfies them as well, and plurality and Borda also satisfy unanimity on first choices (checked on random profiles, `scripts/core/core_checks.py`, part 2). For consistency the reason is short. Let W_p be the set of candidates with the highest score at p. If a candidate wins at both p and q, the winners at p + q are exactly the candidates that win at both, since a score at p + q can reach the sum of the two maxima only for them. So L(p + q)(a) = 1/|W_p ∩ W_q|, which is at least 1/|W_p| + 1/|W_q| − 1; and if a does not win at both, the right-hand side is at most zero. Both conditions are linear in the lotteries for fixed profiles, so mixtures of these rules satisfy them too. The electorate side therefore leaves a convex family that runs from random ballot, which counts first choices in proportion, to plurality, which gives everything to the largest count, and further to rules that use the whole ranking. What separates random ballot within it is proportionality, each first choice getting at least its share, which is CORE's coalition floor and forces random ballot at once, or strategy-proofness, or independence over rankings (the first two columns of the table).
 
 | | strategy | aggregation | electorates |
 |---|---|---|---|
 | condition | strategy-proofness, unanimity | full independence, unanimity | consistency and participation for joint draws |
-| result | random dictatorship (Gibbard 1977; Hylland) | mixtures of dictatorships (*Four Levels*, Theorems 5, 5′; up to six alternatives) | satisfied by random ballot; impossible with the Condorcet principle |
+| result | random dictatorship (Gibbard 1977; Hylland) | mixtures of dictatorships (*Four Levels*, Theorems 5, 5′; up to six alternatives) | satisfied by random ballot, and also by every scoring rule; impossible with the Condorcet principle |
 | with anonymity | uniform random dictatorship | uniform random dictatorship | |
 
 **What CORE does with the dropped condition.** The fallback ignores the pairwise structure, which is how it escapes the level-1 obstructions. CORE reintroduces that structure only through unanimous improvement on the fallback, which is not a rule applied to a profile. A Condorcet winner can be agreed on under CORE only if everyone prefers it to the lottery, and then only as one of the options the bargaining may settle on; that it is a Condorcet winner plays no role. A Condorcet winner that some participant finds worse than the lottery cannot be enacted with certainty. Maximal lotteries, the other distinguished lottery (*Consistency as an Extension Problem*, Section 4), make the opposite choice: they keep the Condorcet principle and are consistent and participatory only for lotteries compared as wholes. *(The comparison is a reading of the cited and computed facts.)*
@@ -36,9 +38,38 @@ and the endowments e_i(S_0), e_i(S_1), … along any sequence of calls form a ma
 
 *Proof.* By induction on |S|: the removed participant is uniform on S, and given who was removed, by the induction hypothesis D is uniform on the rest; so each member of S is D with probability 1/|S|. The second statement is the definition of e_i(S) as the average over S. A conditional expectation of a fixed random variable along an increasing flow of information is a martingale. ∎
 
-The fair-call results of the CORE paper follow at once. Theorem 1 (a call leaves the expected endowment unchanged) is the martingale property for one step. Corollary 1.1 (any sequence of calls, decided in any way on what has happened) is optional stopping for a stopping time bounded by n − 1. Corollary 1.3 (the caller must stand in the draw) is the observation that exemption destroys the uniformity of D: the removals then carry information about who called, not only about D. In the extreme case of a participant who always calls and is exempt, D is that participant with certainty (computed for five participants). Proposition 5 (sortition preserves the benchmark) is the same statement for a uniform sample S: drawing S and then D uniformly within S leaves D uniform on everyone.
+The fair-call results of the CORE paper follow at once. Theorem 1 (a call leaves the expected endowment unchanged) is the martingale property for one step. Corollary 1.1 (any sequence of calls, decided in any way on what has happened) is optional stopping for a stopping time bounded by n − 1. Corollary 1.3 (the caller must stand in the draw) is the observation that exemption destroys the uniformity of D: the removals then carry information about who called, not only about D. In the extreme case of a participant who always calls and is exempt, D is that participant with certainty (computed for five participants, `scripts/core/core_checks.py`, part 1). Proposition 5 (sortition preserves the benchmark) is the same statement for a uniform sample S: drawing S and then D uniformly within S leaves D uniform on everyone.
 
 The proposition gives the veil of the CORE paper (Section 11) an exact form. Before an agreement, every participant faces the same unrevealed variable D. The one-shot variant reveals it all at once. The sequential variant reveals it by elimination, one non-dictator at a time, and lets those who remain renegotiate with what they have learned. That is why, in the sequential variant, holdings and benchmark come apart (Section 7 of the paper): the benchmark is the expected value of the ideal of D, a martingale whatever anyone does, while holdings depend on the agreements that smaller groups reach once they know that D is among them. The martingale is about the draw, not about what is enacted. *(Proposition proved here; the reading of the veil is interpretation.)*
+
+## 3a. Holdings: the endowment plus surpluses
+
+The martingale gives the benchmark. What participants actually hold in the sequential variant differs from it, and the difference has an exact form that does not depend on any theory of which agreements groups reach.
+
+Fix any behaviour of the groups: each group S of two or more participants, if the process reaches it, either agrees on some lottery or calls. Let h(S) be the vector of values, to all n participants, of the process from S on, and c(S) the value of a call at S, the average of h(S ∖ {j}) over the members j of S. Call s(S) = h(S) − c(S) the *surplus* of S over its own call; it is zero if S calls.
+
+**Proposition (decomposition of holdings).** For every participant i,
+
+  h_i(V) = e_i(V) + Σ_{S ⊆ V, |S| ≥ 2} s_i(S) / C(n, |S|),
+
+where C(n, k) is the binomial coefficient.
+
+*Proof.* Unfold h(V) = s(V) + c(V) and c(S) = average of h(S ∖ {j}) down to single participants, where h({j}) is the value of j's ideal. Each group S of size k is reached in this unfolding with the probability that uniform removals from V pass through S, which is 1/C(n, k), since the set left after n − k removals is a uniformly random set of size k. The single participants contribute the value of the ideal of D, whose expectation is e_i(V). ∎
+
+In the language of probability this is the Doob decomposition of the holdings with respect to the martingale of Section 3: the endowment is the martingale part, and the surpluses captured along the way are the rest. It is an identity, and holds whatever the groups do (checked on random instances, `scripts/core/core_checks.py`, part 3).
+
+Its consequences:
+
+- **One-shot variant.** Smaller groups never act, so h(V) = e(V) + s(V). A participant who accepts only agreements worth at least a call keeps the endowment, which is Theorem 4 of the CORE paper.
+- **Where the shifts come from.** If every participant accepts only agreements worth at least a call, then s_i(S) ≥ 0 for every group S containing i, and
+
+  h_i(V) ≥ e_i(V) + Σ_{S ∌ i} s_i(S) / C(n, |S|).
+
+  Every shortfall below the endowment comes from groups that formed without i, through the surplus they captured over their own call, as seen by i. The weights of the groups of size k that do not contain i add up to (n − k)/n, the probability that i has been removed by the time k participants are left.
+- **The examples of Section 7 of the CORE paper.** In the first, the pair of participants 2 and 3 agrees on D, with surplus (−105, 4, 4) over the pair's call; the other pairs reach no agreement. The decomposition gives the value of a call at the full group as (6.67, 3.33, 3.33) + (−105, 4, 4)/3 = (−28.33, 4.67, 4.67), the paper's table. In the second example the same term is positive for participant 1.
+- **The endowment is one possible holding.** The lottery a call would lead to is always acceptable, weakly, to every member of a group. If every group adopts exactly that, all surpluses vanish and everyone holds their endowment. The value shifts of the sequential variant are therefore the surpluses of smaller groups. They come from those groups agreeing on something better than their own fallback, which is the purpose of the sequential variant.
+
+The open equilibrium question of the CORE paper is thereby reduced to a question about the surpluses: which surplus vectors s(S) groups capture, and how they fall on participants outside the group. The selection-free part, the endowment, is separated from the selection-dependent part, the weighted sum. *(Proposition proved here; the reduction of the open question is a reformulation, not an answer.)*
 
 ## 4. Where CORE stands relative to Gibbard
 
@@ -64,8 +95,8 @@ So CORE uses two of the three switches between no fixed point and a fixed point:
 
 ## 6. Questions
 
-1. **The sequential equilibrium.** The CORE paper's main open problem is what participants hold in the sequential variant, which needs a rule for which agreement each smaller group reaches. In the language of thread A this is a family of data on the poset of sub-electorates, one continuation value per group, whose consistency across groups is not given. Is there a formulation in which the absence of a canonical selection is an obstruction of a definite level?
-2. **Characterisation of the winner lottery.** Section 2 characterises random ballot as the winner distribution of a ranking lottery. Is there a direct characterisation of the winner lottery by consistency and participation for joint draws, together with anonymity, neutrality and a condition replacing the Condorcet principle, such as unanimity on first choices?
+1. **The sequential equilibrium.** By Section 3a, what participants hold in the sequential variant is the endowment plus the weighted surpluses of the groups. Which surpluses groups capture is the remaining question. In the language of thread A the surpluses are data on the poset of sub-electorates, one vector per group, constrained only by the individual rationality of the members. Which families of surpluses arise from reasonable bargaining in every group, and how large the negative terms for non-members can be, are open; so is whether the absence of a canonical selection is an obstruction of a definite level.
+2. **Characterisation of the winner lottery.** *Answered negatively in Section 2:* consistency and participation for joint draws, with anonymity, neutrality and unanimity on first choices, leave a convex family containing every scoring rule with uniform tie-breaking. A characterisation of random ballot by conditions on winner lotteries alone needs proportionality or a condition of the strategic kind.
 3. **The call structure as a game.** Does the sequential call structure, with public calls and observed removals, admit an analysis by sequential rationality that removes part of the strategic remainder, as visible turns do in *Walls and Strategy*?
 4. **Fallbacks compared.** Section 2 gives one side of the comparison between random ballot and maximal lotteries as fallbacks. The other side, how manipulable each is when used as the fallback of a consensus procedure, is open.
 
@@ -75,6 +106,8 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 
 - the characterisation of the fallback from aggregation (Section 2), beside Gibbard's and Hylland's from strategy, and the electorate properties of random ballot;
 - the martingale proposition (Section 3), from which the fair-call results, the rule that callers stand in the draw and the sortition result follow, and the reading of the veil as the unrevealed draw;
+- the decomposition of holdings (Section 3a), which locates the value shifts of the sequential variant in the surpluses of the groups that form without a participant;
+- the negative answer on the electorate side (Section 2): consistency and participation alone do not single out the fallback;
 - CORE's exact place relative to Gibbard's theorems (Section 4), with the limit of what the theorems say about open deliberation;
 - whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call structure under sequential rationality.
 
