@@ -53,6 +53,38 @@ Brandl, Brandt and Seedig also show that consistency over electorates and consis
 
 This is an explanation of the incompatibility for symmetric rules, not a new proof of the theorem, which is more general.
 
+## 3b. Ex ante and ex post
+
+For a rule whose outcome is a lottery, consistency over electorates can be read in two ways.
+
+- **Ex ante** (population-consistency, Brandl, Brandt and Seedig): the lottery is the value. If two electorates have the same lottery, their union has it too. Maximal lotteries and random dictatorship satisfy this.
+- **Ex post**: the lottery is a random winner. The winners of two electorates and of their union can be drawn jointly, each with its own lottery as distribution, so that whenever the two parts elect the same candidate, the union elects that candidate too.
+
+**Lemma (joint draw).** For lotteries μ, ν and λ over the candidates, winners X ~ μ, Y ~ ν and Z ~ λ can be drawn jointly with "X = Y implies Z = X" exactly when λ(a) ≥ μ(a) + ν(a) − 1 for every candidate a.
+
+*Proof.* Necessity: the event X = Y = a has probability at least μ(a) + ν(a) − 1, and Z = a on it. Sufficiency: the numbers μ(a) + ν(a) add up to 2, so at most one candidate a has μ(a) + ν(a) > 1. Put d = max(0, μ(a) + ν(a) − 1) on X = Y = Z = a. The remaining masses μ − d·δ_a and ν − d·δ_a have total 1 − d, and each candidate b carries at most 1 − d of them together. That is the condition for drawing X and Y from them with X ≠ Y throughout. Draw Z from the remaining part of λ, which is non-negative because λ(a) ≥ d. ∎
+
+So a rule L is consistent ex post exactly when L(t p + (1 − t) q)(a) ≥ L(p)(a) + L(q)(a) − 1 for all shares p and q, all t and all candidates a. For deterministic rules this is ordinary consistency. Every rule whose lottery is an affine function of the shares satisfies it, random dictatorship among them.
+
+**Proposition.** No rule that elects a Condorcet winner with certainty when there is one is consistent ex post, whether deterministic or lottery-valued (vote shares, any number of candidates).
+
+*Proof.* Let p have no Condorcet winner, and let a be a candidate with L(p)(a) > 0. By the blocking lemma (Section 2), some c beats a at p, and there is a profile q in R_a and a mixture of p with q that lies in R_c. Then L(q)(a) = 1 and L(mixture)(a) = 0, and the inequality requires 0 ≥ L(p)(a). So L(p) gives probability zero to every candidate, which is impossible. ∎
+
+The script `scripts/consistency/ex_post_consistency.py` checks the lemma by linear programming on random cases, checks for maximal lotteries that every candidate in the support of the lottery at a profile with a cycle is blocked in this way, and checks the inequality for random dictatorship.
+
+| Rule | Condorcet principle | Consistent ex ante | Consistent ex post |
+|---|---|---|---|
+| scoring rules (deterministic) | no | yes | yes |
+| random dictatorship | no | yes | yes |
+| maximal lotteries | yes | yes | no |
+| any rule | yes | | no (Proposition) |
+
+**Reading in the language of contextuality.** Take as variables the winner at each profile, as contexts the triples consisting of two profiles and a mixture of them, as constraint the consistency condition, and as boundary condition the Condorcet principle. An ex post consistent lottery rule is then exactly an empirical model on this scenario: a joint distribution in each context whose marginal at each profile is the rule's lottery there. The Proposition says that the scenario admits no empirical model at all, not merely none with a global section. The obstruction is therefore not contextuality but a failure of local consistency. It has the form of Proposition 1 of *Cycles, Twists and Walls*: there, whatever occupies the top of a bounded line is beaten from above; here, whatever candidate receives probability is blocked by the region of a candidate who beats it.
+
+Arrow's problem behaves differently (*Contextuality and Symmetry*, Section 2a). Empirical models exist there (random dictatorship, the coin rule), and only the global sections are restricted, to dictatorships. Maximal lotteries escape Young and Levenglick's obstruction by changing what a value is: the lottery is a point of the simplex, glued as a value, ex ante. The draw that turns it into a winner cannot be consistent. *(Interpretation.)*
+
+**Consequence for a random fallback.** A procedure that ends in a lottery can be consistent ex ante and elect a Condorcet winner when there is one, but the realised winner is not consistent across electorates. This is the same ex ante/ex post distinction that appears in Gibbard (1978) for efficiency. *(Interpretation.)*
+
 ## 4. Reading
 
 Taken together:
@@ -70,7 +102,8 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 1. Express the obstruction of Section 2 as an invariant of the arrangement of Condorcet regions around the cycle region, for three and for more candidates.
 2. Section 3a explains the incompatibility of consistency over electorates and over clones for symmetric deterministic rules through positions and comparisons. Is there a blocking-type argument that covers the non-symmetric case as well?
 3. Characterise how far maximal lotteries are from strategy-proofness, and compare them with random dictatorship as a fallback for consensus procedures. A related point concerns adding alternatives. When voters' utilities decrease concavely with distance in a space of positions, every voter prefers a candidate placed at the mean position of a lottery to the lottery itself (Jensen's inequality). A compromise therefore always exists against a lottery fallback, even where no position beats every other, as in McKelvey's theorem. Successive compromises can then be expected to move the remaining cycle into a small central region rather than remove it. The cost of a final lottery would then shrink with the size of that region. Whether deliberately sustained cycles can prevent this, and how far random removal deters them, are open.
-4. Does the pattern "resolved by a fixed point, reappearing one level up" continue: is there a natural third level beyond aggregation and strategy?
+4. Is there an ex ante / ex post split of the same kind for participation (Moulin's no-show theorem), with a version for lotteries that holds ex ante and fails ex post for every rule that respects the Condorcet principle?
+5. Does the pattern "resolved by a fixed point, reappearing one level up" continue: is there a natural third level beyond aggregation and strategy?
 
 ## References
 
