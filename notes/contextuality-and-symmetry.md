@@ -44,7 +44,7 @@ The following is computed with `scripts/symmetry/probabilistic_arrow.py`, for th
 - **Weak compatibility.** With two voters every rule has additive marginals (three to five alternatives). From three voters on there are rules with non-additive marginals. The simplest is the **coin rule**: a pair on which all voters agree is ranked as they agree, every other pair gets probability ½, and the lotteries are chosen jointly so that the outcome is always a ranking. Such lotteries exist for every unanimity order with three and four alternatives (checked for all), and with five alternatives on all sampled profiles; with six they fail at a few unanimity orders, where the linear-ordering polytope has facets beyond the triangle inequalities. The coin rule is anonymous, neutral and Paretian, and its power function gives every proper coalition ½.
 - **The coin rule cannot be made fully compatible.** With three and four voters no choice of its lotteries agrees on shared pairs of columns. Its departure from the mixtures of dictatorships is therefore not contextuality but signalling: the lottery on two pairs depends on the voters' comparisons on the third.
 
-Barberà and Sonnenschein showed that a Paretian random rule with probabilistic independence is described by a power function on coalitions, which in general is subadditive, not additive. For three alternatives and up to three voters, the computation says that the gap between subadditive and additive power is exactly the gap between weak and full compatibility. *(Computed on small cases; the general statement is open.)*
+Barberà and Sonnenschein showed that a Paretian random rule with probabilistic independence is described by a power function on coalitions, which in general is subadditive, not additive. For three alternatives and up to three voters, the computation says that the gap between subadditive and additive power is exactly the gap between weak and full compatibility. *(Computed on small cases; the general statement is open.)* McLennan (1980) proved that power is additive when there are at least six alternatives; the coin rule's failure at six is that threshold seen from below. Pattanaik and Peleg (1986) obtain additivity from four alternatives for stochastic choice from feasible sets with regularity, and Nandeibam (2003) with nonimposition and monotonicity instead of the Pareto condition. Signalling systems such as the coin rule are treated by Dzhafarov and Kujala's contextuality-by-default.
 
 At the Condorcet profile abc, bca, cab the two rules differ visibly:
 - **Random dictatorship** puts probability 2/3 on each majority comparison and so keeps the direction of the cycle.
@@ -108,7 +108,7 @@ On this reading, the observation that the exits from impossibility are convexifi
 
 ## 6. Open questions
 
-1. *Full compatibility in general.* For three alternatives and up to three voters every empirical model on Arrow's scenario is a mixture of dictatorships. Does this hold for all numbers of voters and alternatives? And for weakly compatible rules, how does a measure of signalling relate to the subadditivity of Barberà and Sonnenschein's power function?
+1. *Full compatibility in general.* For three alternatives and up to three voters every empirical model on Arrow's scenario is a mixture of dictatorships. Does this hold for all numbers of voters and alternatives? From six alternatives on, McLennan's additivity fixes the pairwise probabilities; the joint lotteries remain. And for weakly compatible rules, how does a measure of signalling relate to the subadditivity of Barberà and Sonnenschein's power function?
 2. *Relaxing locality in steps.* Rules that look at more than one pair, such as Borda, which uses each voter's full ranking, are contextual in the sense of Section 1. Stronger relaxations than the basic LP (the Sherali–Adams hierarchy) correspond to consistency over larger sets of variables. Is there a hierarchy of rules seeing k issues at a time, matching the levels of the relaxation, with Saari's intensity form of independence as an early level?
 3. *Agreement-type theorems in topological form.* If Young–Levenglick is of agreement type, is there a Sperner-type proof of it, as there is an index-type proof of Arrow's theorem?
 4. *Neutral versus non-neutral.* The bridge of Section 4 uses polymorphisms that apply the same rule to every issue, that is, neutral rules. Arrow's theorem allows different rules on different issues. The multi-sorted version of the bridge should be stated and checked.
@@ -116,19 +116,23 @@ On this reading, the observation that the exits from impossibility are convexifi
 ## References
 
 - Abramsky, S. (2014). Contextual semantics: from quantum mechanics to logic, databases, constraints, and complexity. arXiv:1406.7386.
-- Abramsky, S., Barbosa, R. S. and Mansfield, S. (2017). Contextual fraction as a measure of contextuality. *Physical Review Letters* 119, 050504.
 - Abramsky, S. and Brandenburger, A. (2011). The sheaf-theoretic structure of non-locality and contextuality. *New Journal of Physics* 13, 113036.
+- Abramsky, S., Barbosa, R. S. and Mansfield, S. (2017). Contextual fraction as a measure of contextuality. *Physical Review Letters* 119, 050504.
 - Abramsky, S., Gottlob, G. and Kolaitis, P. G. (2013). Robust constraint satisfaction and local hidden variables in quantum mechanics. *IJCAI 2013*, 440–446.
 - Barberà, S. and Sonnenschein, H. (1978). Preference aggregation with randomized social orderings. *Journal of Economic Theory* 18, 244–254.
 - Brandt, F., Dong, C. and Peters, D. (2024). Condorcet-consistent choice among three candidates. arXiv:2411.19857.
 - Castañeda, A., Herlihy, M. and Rajsbaum, S. (2012). An equivariance theorem with applications to renaming. *LATIN 2012*, LNCS 7256. arXiv:1102.4946.
 - Dokow, E. and Holzman, R. (2010). Aggregation of binary evaluations. *Journal of Economic Theory* 145, 495–511.
+- Dzhafarov, E. N., Kujala, J. V. and Larsson, J.-Å. (2015). Contextuality in three types of quantum-mechanical systems. *Foundations of Physics* 45, 762–782.
 - Felber, S., Hummes Flores, B. and Rincon Galeana, H. (2025). A sheaf-theoretic characterization of tasks in distributed systems. arXiv:2503.02556.
 - Herlihy, M., Kozlov, D. and Rajsbaum, S. (2013). *Distributed Computing Through Combinatorial Topology*. Morgan Kaufmann.
 - Kochen, S. and Specker, E. P. (1967). The problem of hidden variables in quantum mechanics. *Journal of Mathematics and Mechanics* 17, 59–87.
 - Kun, G., O'Donnell, R., Tamaki, S., Yoshida, Y. and Zhou, Y. (2012). Linear programming, width-1 CSPs, and robust satisfaction. *ITCS 2012*.
 - May, K. O. (1952). A set of independent necessary and sufficient conditions for simple majority decision. *Econometrica* 20, 680–684.
+- McLennan, A. (1980). Randomized preference aggregation: additivity of power and strategy proofness. *Journal of Economic Theory* 22, 1–11.
 - Moulin, H. (1988). Condorcet's principle implies the no show paradox. *Journal of Economic Theory* 45, 53–64.
+- Nandeibam, S. (2003). A reexamination of additivity of power in randomized social preference. *Review of Economic Design* 8, 293–299.
+- Pattanaik, P. K. and Peleg, B. (1986). Distribution of power under stochastic social choice rules. *Econometrica* 54, 909–922.
 - Rajsbaum, S. and Raventós-Pujol, A. (2025). A combinatorial topology approach to Arrow's impossibility theorem. *Social Choice and Welfare*. doi:10.1007/s00355-025-01609-7.
 - Szegedy, M. and Xu, Y. (2015). Impossibility theorems and the universal algebraic toolkit. arXiv:1506.01315.
 - Young, H. P. and Levenglick, A. (1978). A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35, 285–300.
