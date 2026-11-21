@@ -7,6 +7,8 @@ rationality); calling is the case L_S = that lottery.  The worst value to i over
 behaviour is a linear program, G_i.  Variant: L_S must also be Pareto-efficient for the members
 of S (mixed-integer program, support of L_S inside the maximisers of a positive weighting).
 Compared with the endowment e_i and the paper's floor f_i against arbitrary others.
+Part 5: under strictly concave loss on a line, the weights w = A^-1 1 with A = [h(|q_k - q_m|)]
+are positive (the criterion for the random ballot to be Pareto-efficient for the members).
 """
 import itertools, sys
 import numpy as np
@@ -178,3 +180,16 @@ if __name__ == "__main__":
             n = int(rng.integers(2, 7)); U = line_instance(rng, n, n + int(rng.integers(1, 8)), kind)
             best = max(best, ballot_gain(U, tuple(range(n))))
         print(f"  {kind:20s} {best:.2e}")
+    print("Part 5, smallest min(w)/max|w| for w = A^-1 1, A = [h(|q_k - q_m|)], 4000 peak sets of 2 to 11 members")
+    hs = {"square root": np.sqrt, "power 0.3": lambda d: d**0.3, "power 0.99": lambda d: d**0.99,
+          "log(1 + 50 d)": lambda d: np.log1p(50*d), "1 - exp(-5 d)": lambda d: 1 - np.exp(-5*d),
+          "min(d, 0.3), not strictly concave": lambda d: np.minimum(d, 0.3)}
+    for name, h in hs.items():
+        worst = np.inf
+        for t in range(4000):
+            m = int(rng.integers(2, 12))
+            q = np.sort(rng.uniform(0, 1, m)) if t % 3 else np.sort(np.concatenate(
+                [rng.normal(c, 0.01, m // 2 + 1) for c in rng.uniform(0, 1, 2)]))[:m]
+            A = h(np.abs(q[:, None] - q[None, :]))
+            w = np.linalg.solve(A, np.ones(m)); worst = min(worst, w.min() / np.abs(w).max())
+        print(f"  {name:34s} {worst:.2e}")
