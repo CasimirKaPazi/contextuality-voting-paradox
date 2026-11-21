@@ -27,9 +27,9 @@ the outcome a ranking. The script checks, for each unanimity order that occurs,
 whether a lottery over rankings with these marginals exists (exhaustively for
 m <= 4, on random profiles for m = 5, 6).
 
-Part 4 (more alternatives). For four alternatives and two voters, no fully
-compatible unanimous family puts mass on rankings that no voter holds; with two
-voters this forces the mixture of dictatorships. Theorem 5 of Four Levels proves
+Part 4 (more alternatives). For four alternatives and two or three voters, no
+fully compatible unanimous family puts mass on rankings that no voter holds; with
+at most three voters this forces the mixture of dictatorships. Theorem 5 of Four Levels proves
 the three-alternative case for any number of voters.
 
 Part 3 (full compatibility). Probabilistic independence only asks that each
@@ -222,55 +222,70 @@ def full_compat_support(m, N):
     """Part 4. Largest total mass, summed over profiles, that a fully compatible unanimous
     family can put on rankings that no voter holds. Contexts are profiles of m alternatives;
     two profiles with the same columns on a set E of pairs must induce the same joint
-    distribution on E. Zero means every model is supported on the voters' rankings, which
-    for two voters forces the mixture of dictatorships."""
+    distribution on E.
+
+    The feasible set and the objective are invariant under permuting the voters and
+    renaming the alternatives, so the maximum is attained at an invariant model; the
+    linear program is therefore set up on orbits of (profile, ranking) pairs, and the
+    compatibility constraints are imposed for one set of pairs per orbit of such sets.
+
+    Zero means every model is supported on the voters' rankings. With at most three
+    voters this forces the mixture of dictatorships: two distinct rankings differ on some
+    pair, so with three or fewer distinct rankings the pairwise probabilities determine
+    the weight on each."""
     import scipy.sparse as sp
-    pairs = list(combinations(range(m), 2))
-    R = list(permutations(range(m)))
-    T = []
-    for r in R:
-        q = {x: i for i, x in enumerate(r)}
-        T.append(tuple(int(q[a] < q[b]) for a, b in pairs))
-    nT = len(T)
-    profs = list(product(range(nT), repeat=N))
-    cols = [tuple(tuple(T[v][e] for v in pr) for e in range(len(pairs))) for pr in profs]
-    rows, cs, vals, b = [], [], [], []
+    alts = range(m)
+    pairs = list(combinations(alts, 2))
+    R = list(permutations(alts)); nR = len(R)
+    Ridx = {r: i for i, r in enumerate(R)}
+    T = np.array([[int(r.index(a) < r.index(b)) for a, b in pairs] for r in R])
+    profs = np.array(list(product(range(nR), repeat=N))); P = len(profs)
+    perms_alt = list(permutations(alts))
+    rmap = [np.array([Ridx[tuple(pi[x] for x in r)] for r in R]) for pi in perms_alt]
+    lab = np.full((P, nR), np.iinfo(np.int64).max, dtype=np.int64)
+    wts = nR ** np.arange(N)[::-1]
+    for ra in rmap:
+        for sv in permutations(range(N)):
+            q = ra[profs][:, list(sv)]
+            np.minimum(lab, ((q * wts).sum(1))[:, None] * nR + ra[None, :], out=lab)
+    _, orb = np.unique(lab, return_inverse=True)
+    orb = orb.reshape(P, nR); nv = orb.max() + 1
+    cols = np.stack([(T[profs][:, :, e] * (2 ** np.arange(N))).sum(1)
+                     for e in range(len(pairs))], 1)
 
-    def add(entries, rhs):
-        r = len(b)
-        for c, v in entries:
-            rows.append(r); cs.append(c); vals.append(v)
-        b.append(rhs)
+    def rowsum(mask):
+        ts = np.nonzero(mask)[0]
+        r = np.repeat(np.arange(P), len(ts))
+        return sp.csr_matrix((np.ones(len(r)), (r, orb[:, ts].ravel())), shape=(P, nv))
 
-    for pi in range(len(profs)):
-        add([(pi * nT + t, 1) for t in range(nT)], 1)
-        for e in range(len(pairs)):
-            k = sum(cols[pi][e])
-            if k in (0, N):
-                want = 1 if k == N else 0
-                add([(pi * nT + t, 1) for t in range(nT) if T[t][e] != want], 0)
+    blocks, rhs = [rowsum(np.ones(nR, bool))], [np.ones(P)]
+    for e in range(len(pairs)):
+        for k, want in ((0, 1), (2 ** N - 1, 0)):
+            M = rowsum(T[:, e] == want)[cols[:, e] == k]
+            blocks.append(M); rhs.append(np.zeros(M.shape[0]))
+    seen, reps = set(), []
     for size in range(1, len(pairs)):
         for E in combinations(range(len(pairs)), size):
-            g = {}
-            for pi in range(len(profs)):
-                g.setdefault(tuple(cols[pi][e] for e in E), []).append(pi)
-            for ps in g.values():
-                if len(ps) < 2:
-                    continue
-                for val in product((0, 1), repeat=size):
-                    ts = [t for t in range(nT) if tuple(T[t][e] for e in E) == val]
-                    for pi in ps[1:]:
-                        add([(ps[0] * nT + t, 1) for t in ts] + [(pi * nT + t, -1) for t in ts], 0)
-    nv = len(profs) * nT
-    A = sp.csr_matrix((vals, (rows, cs)), shape=(len(b), nv))
-    c = np.zeros(nv)
-    for pi, pr in enumerate(profs):
-        for t in range(nT):
-            if t not in pr:
-                c[pi * nT + t] = -1
-    res = linprog(c, A_eq=A, b_eq=np.array(b), bounds=(0, 1), method="highs")
+            c = min(tuple(sorted(tuple(sorted((pi[pairs[e][0]], pi[pairs[e][1]]))) for e in E))
+                    for pi in perms_alt)
+            if c not in seen:
+                seen.add(c); reps.append(E)
+    for E in reps:
+        key = np.zeros(P, dtype=np.int64)
+        for e in E:
+            key = key * (2 ** N) + cols[:, e]
+        _, first, inv = np.unique(key, return_index=True, return_inverse=True)
+        rep = first[inv]; sel = rep != np.arange(P)
+        for val in product((0, 1), repeat=len(E)):
+            mask = np.all(T[:, list(E)] == np.array(val), axis=1)
+            if mask.any():
+                M = rowsum(mask)
+                blocks.append(M[sel] - M[rep[sel]]); rhs.append(np.zeros(int(sel.sum())))
+    A = sp.vstack(blocks).tocsr()
+    outside = np.array([[t not in set(p) for t in range(nR)] for p in profs])
+    c = -np.bincount(orb[outside], minlength=nv).astype(float)
+    res = linprog(c, A_eq=A, b_eq=np.concatenate(rhs), bounds=(0, 1), method="highs")
     return max(0.0, -res.fun)
-
 
 def main():
     print("Part 1: largest deviation of a rule's marginals from additive power")
@@ -289,7 +304,7 @@ def main():
     for N in (2, 3, 4):
         print(f"  m=3 N={N}: coin rule admits fully compatible lotteries: {coin_fully_compatible(N)}")
     print("Part 4: full compatibility with more alternatives (mass outside the voters' rankings)")
-    for m, N in [(3, 2), (3, 3), (4, 2)]:
+    for m, N in [(3, 2), (3, 3), (4, 2), (4, 3)]:
         print(f"  m={m} N={N}: {full_compat_support(m, N):.3f}")
 
 
