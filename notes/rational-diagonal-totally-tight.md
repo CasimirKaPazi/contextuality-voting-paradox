@@ -76,5 +76,5 @@ In `scripts/strategy/rational_diagonal/` (they import `diag2.py` and `recipes_co
 - Boros, E., Gurvich, V., Makino, K. and Papp, D. (2010). Acyclic, or totally tight, two-person game forms: characterization and main properties. *Discrete Mathematics* 310, 1135–1151. (Preprint: DIMACS Technical Report 2008-10.)
 - Canning, D. (1992). Rationality, computability, and Nash equilibrium. *Econometrica* 60, 877–888.
 - Edmonds, J. and Fulkerson, D. R. (1970). Bottleneck extrema. *Journal of Combinatorial Theory* 8, 299–306.
-- Gurvich, V. (1975). Solution of positional games in pure strategies. *USSR Computational Mathematics and Mathematical Physics* 15, 74–87.
+- Gurvich, V. A. (1975). Solution of positional games in pure strategies. *USSR Computational Mathematics and Mathematical Physics* 15(2), 74–87.
 - *Walls and Strategy* (draft, this repository).
