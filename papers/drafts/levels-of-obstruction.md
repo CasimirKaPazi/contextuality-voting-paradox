@@ -102,6 +102,8 @@ With B empty, unanimity gives q₁₂ = 0 and hence p₁(A) = 1 − p₃(complem
 
 The mixture of dictatorships with weights λ has the same single and pairwise probabilities. A distribution on the six admissible triples is determined by these, since with 000 and 111 excluded the remaining degree of freedom of a distribution on {0, 1}³ is fixed. So the two coincide at every profile. ∎
 
+The proof is checked in Lean, step by step, for any finite set of voters (`lean/ProbabilisticArrow.lean`). There full compatibility is encoded by letting each single and pairwise probability be a function of the relevant columns only.
+
 The proof uses full compatibility at exactly one point: q₁₂(A, B) is the same at the profiles with W* and W₀. A rule that is only weakly compatible may let this joint probability depend on the third column. The coin rule does so, and by the proof it must.
 
 For more alternatives, every triple of alternatives carries a fully compatible model of its own, which by Theorem 5 is a mixture of dictatorships. Triples sharing a pair have the same function on that pair, so the weights agree across all triples. Every marginal on a triple is therefore that of one mixture of dictatorships. A distribution over rankings of four or more alternatives is not determined by its marginals on triples, so this does not yet give the theorem for more alternatives. For four alternatives the theorem holds for up to four voters, by three steps checked by computation (`scripts/symmetry/probabilistic_arrow.py`, part 4).
@@ -151,14 +153,14 @@ The hierarchy below the new level is that of Abramsky and Brandenburger, and the
 | Lemma 3 (joint draw), Theorem 4 | proved here | `scripts/consistency/ex_post_consistency.py` |
 | Participation at level 1 | cited (Brandt, Geist and Peters), equivalence with joint draws proved here | same script |
 | Global sections of Arrow's scenario | cited (Arrow) | `scripts/symmetry/arrow_as_csp.py`, two and three voters |
-| Theorem 5: empirical models of Arrow's scenario are mixtures of dictatorships | proved here, three alternatives, any number of voters; four alternatives up to four voters, by computation in three steps | `scripts/symmetry/probabilistic_arrow.py` (three alternatives, two and three voters; four alternatives, up to four voters) |
+| Theorem 5: empirical models of Arrow's scenario are mixtures of dictatorships | proved here, three alternatives, any number of voters; four alternatives up to four voters, by computation in three steps | `lean/ProbabilisticArrow.lean` (three alternatives, any finite set of voters, following the proof step by step); `scripts/symmetry/probabilistic_arrow.py` (three alternatives, two and three voters; four alternatives, up to four voters) |
 | Coin rule: weakly but not fully compatible | computed | same script |
 | Isotropy lemma and recovered existence conditions | proved; conditions computed | `scripts/symmetry/isotropy_check.py`; `lean/ProfileFacts.lean` for one case |
 | Distributed-computing analogy, readings of exits | interpretation | |
 
 **Open problems.**
 
-1. Does Theorem 5 extend to four or more alternatives? The triple marginals are those of one mixture of dictatorships, and the question is whether full compatibility forces the joint lottery as well. It does for four alternatives and up to four voters. Steps 2 and 3 of the argument are local and also work for five voters; the missing piece is a proof of step 1, that every empirical model is supported on the voters' rankings. The proof of Theorem 5 is short and suitable for formal checking.
+1. Does Theorem 5 extend to four or more alternatives? The triple marginals are those of one mixture of dictatorships, and the question is whether full compatibility forces the joint lottery as well. It does for four alternatives and up to four voters. Steps 2 and 3 of the argument are local and also work for five voters; the missing piece is a proof of step 1, that every empirical model is supported on the voters' rankings.
 2. Place Gibbard–Satterthwaite precisely: its scenario, its empirical models, and whether random dictatorship is the only symmetric one.
 3. Give a single scenario with electorates and their extensions as contexts in which consistency and participation are both constraints, so that both level-1 theorems become the statement that it has no empirical model.
 4. Find a topological invariant for each level: winding numbers and degrees are integer invariants at level 3 (Baryshnikov and Root; Rajsbaum and Raventós-Pujol), and the bounded line suggests a fixed-point index at level 1.

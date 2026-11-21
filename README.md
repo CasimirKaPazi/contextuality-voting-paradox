@@ -65,7 +65,7 @@ All scripts are short and self-contained. They need Python 3 with `numpy`; some 
 
 ### Formal proofs (`lean/`)
 
-Lean 4 files that check statements from the notes and the draft. They use only core Lean, without Mathlib, and form one Lake project: run `lake build` in `lean/` (toolchain in `lean/lean-toolchain`). Finite statements are proved by computation (`decide`); the others by ordinary proofs.
+Lean 4 files that check statements from the notes and the drafts. They form one Lake project with Mathlib as dependency: run `lake build` in `lean/` (toolchain in `lean/lean-toolchain`). The older files use only core Lean; `ProbLine.lean`, `CircleTournaments.lean`, `LoopsOfRelations.lean` and `ProbabilisticArrow.lean` use Mathlib. Finite statements are proved by computation (`decide`); the others by ordinary proofs.
 
 | File | What it proves | Used in |
 |---|---|---|
@@ -82,6 +82,10 @@ Lean 4 files that check statements from the notes and the draft. They use only c
 | `Lotteries.lean` | Theorem 6 (lotteries as outcomes: regress or ex ante inefficiency) from Lemma 2, with Gibbard's 1978 Corollary 2 entering as an explicit hypothesis | *Walls and Strategy* §4 |
 | `RationalDiagonal.lean` | Proposition 4 for plurality, Borda, instant runoff and Black's rule with two and three voters, by checking certificates found by search; the count 12 of 36 in the veto-then-pick example | *Walls and Strategy* §3 |
 | `NonTight.lean` | Every two-player game form that is not tight admits a rational diagonal with strict preferences: player 1 ranks a set S it cannot force on top, player 2 has the reverse order | *Walls and Strategy*, Proposition 5 |
+| `ProbLine.lean` | Remark (d): if every alternative of a finite set is beaten by one in the set, no family of probability distributions on the real line realises this, even with only single-alternative marginals agreeing | *Cycles and Twists* §3 |
+| `CircleTournaments.lean` | A tournament placed on the circle is locally transitive; with four alternatives, one beating every member of a cycle has no placement on the circle but a compatible probabilistic model (uniform on seven points) | *Cycles and Twists* §3 |
+| `LoopsOfRelations.lean` | Propositions 1–3 of *Loops of Relations*: sections are fixed points of the monodromy; on finite value sets a compatible loop closes on a finite cover; with a free group action a section exists exactly when the holonomy set contains the identity, and the loop run k times has one exactly when the order of the holonomy divides k; an adversarial edge breaks every fixed point exactly when there is no universal fixed point | *Loops of Relations* |
+| `ProbabilisticArrow.lean` | Theorem 5: for three alternatives and any finite set of voters, every empirical model on Arrow's scenario is a mixture of dictatorships | *Four Levels* §5 |
 
 What the files leave to standard topology: that a coherent orientation of the triangles is the same as orientability, and the classification of surfaces, which names the resulting surfaces (torus, Klein bottle, sphere, projective plane). What is not formalised: the count over all 18,138 two-player game forms, whose formal version would also need a proof that the enumeration is complete, and Gibbard's 1978 Corollary 2, which `Lotteries.lean` assumes.
 

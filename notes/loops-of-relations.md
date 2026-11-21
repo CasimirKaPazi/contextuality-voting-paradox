@@ -41,6 +41,8 @@ Then x M x exactly when some element of the *holonomy set* H = Γ_{n−1} ⋯ Γ
 
 *Proof.* With a free action, h·x = x only for h = e. The k-fold cover has holonomy set H^k, so the second and third cases follow. ∎
 
+The three cases are one statement: the loop run k times has a global section exactly when the order of h divides k. This is the form checked in Lean (`lean/LoopsOfRelations.lean`, `prop2_cover`).
+
 The cases of the drafts:
 
 | Loop | G acting on V | Moves Γ_i | Holonomy | Case |
@@ -92,7 +94,7 @@ For loops whose edges are functions, existential and universal fixed points coin
 1. *Set-valued holonomy.* Ghrist and Cooperband treat visual paradoxes as torsors with a holonomy element. The Condorcet cycle on the line has a holonomy *set*, a cone in an ordered group. Is there a cohomology with coefficients in pairs (G, cone) whose class vanishes exactly when e ∈ H?
 2. *Beyond single loops.* The contexts of Arrow's scenario are triples, and their nerve is not a single loop. Atserias and Kolaitis reduce cyclic hypergraphs to modular counting around cycles. Do the levels of *Four Levels* reduce to the loops of Proposition 1 in the same way?
 3. *Universal fixed points on tight forms.* This is open problem 1 of *Walls and Strategy*, now stated as a fixed-point question. In which tight forms does every pair of strict preferences give some player a strategy that is a fixed point for every admissible reply of the opponent?
-4. *Formal check.* Propositions 1 to 3 are elementary and suitable for the Lean development, where Proposition 3 with A = B × C would restate `Diagonal.lean`.
+4. *Formal check.* Done: Propositions 1 to 3 are checked in `lean/LoopsOfRelations.lean`. The formal version puts all variables in one value type and takes each V_i as a subset of it. Proposition 2 is stated in two parts: a section exists exactly when the identity lies in the holonomy set, and, for single moves, the loop run k times has a section exactly when the order of the holonomy divides k. Proposition 3 with A = B × C is the diagonal lemma of `lean/Diagonal.lean`.
 
 ## References
 
