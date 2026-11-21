@@ -79,9 +79,9 @@ The script `scripts/consistency/ex_post_consistency.py` checks the lemma by line
 | maximal lotteries | yes | yes | no |
 | any rule | yes | | no (Proposition) |
 
-**Reading in the language of contextuality.** Take as variables the winner at each profile, as contexts the triples consisting of two profiles and a mixture of them, as constraint the consistency condition, and as boundary condition the Condorcet principle. An ex post consistent lottery rule is then exactly an empirical model on this scenario: a joint distribution in each context whose marginal at each profile is the rule's lottery there. The Proposition says that the scenario admits no empirical model at all, not merely none with a global section. The obstruction is therefore not contextuality but a failure of local consistency. It has the form of Proposition 1 of *Cycles and Twists*: there, whatever occupies the top of a bounded line is beaten from above; here, whatever candidate receives probability is blocked by the region of a candidate who beats it.
+**Reading in the language of contextuality.** Take as variables the winner at each profile, as contexts the triples consisting of two profiles and a mixture of them, as constraint the consistency condition, and as boundary condition the Condorcet principle. An ex post consistent lottery rule is then exactly a weakly compatible family on this scenario: a joint distribution in each context whose marginal at each profile is the rule's lottery there. (An empirical model would also have to agree on pairs of profiles shared by two contexts; see Section 3c.) The Proposition says that there is no such family, hence no empirical model at all, not merely none with a global section. The obstruction is therefore not contextuality but a failure of local consistency. It has the form of Proposition 1 of *Cycles and Twists*: there, whatever occupies the top of a bounded line is beaten from above; here, whatever candidate receives probability is blocked by the region of a candidate who beats it.
 
-Arrow's problem behaves differently (*Contextuality and Symmetry*, Section 2a). Empirical models exist there, and they are exactly the mixtures of dictatorships (computed for small cases). Maximal lotteries escape Young and Levenglick's obstruction by changing what a value is: the lottery is a point of the simplex, glued as a value, ex ante. The draw that turns it into a winner cannot be consistent. *(Interpretation.)*
+Arrow's problem behaves differently (*Contextuality and Symmetry*, Section 2a). Empirical models exist there, and they are exactly the mixtures of dictatorships (proved for three and four alternatives, *Four Levels*, Theorems 5 and 5′). Maximal lotteries escape Young and Levenglick's obstruction by changing what a value is: the lottery is a point of the simplex, glued as a value, ex ante. The draw that turns it into a winner cannot be consistent. *(Interpretation.)*
 
 **The same split for participation.** Moulin's no-show theorem (Condorcet principle and participation are incompatible for deterministic rules) divides in the same way.
 
@@ -91,6 +91,43 @@ Arrow's problem behaves differently (*Contextuality and Symmetry*, Section 2a). 
 The script checks the equivalence of SD dominance with the existence of a monotone joint draw. On random profiles it finds that maximal lotteries violate SD-participation, already with three candidates, and never violate PC-participation. In the three-candidate violations a voter who ranks a candidate first can lower that candidate's probability by joining: in a cycle, a candidate's maximal-lottery probability is proportional to the margin of the comparison that does not involve it, and the new voter can weaken that margin.
 
 So both two-family theorems of the electorate direction, Young–Levenglick and the no-show theorem, hold for every rule that respects the Condorcet principle when they are read as statements about joint draws of winners, and are avoided by maximal lotteries when read as statements about lotteries as wholes. *(The two readings are standard in probabilistic social choice; grouping them as ex post and ex ante is interpretation.)*
+
+## 3c. One scenario for consistency and participation
+
+The two readings of Section 3b fit into a single scenario. Take anonymous rules, so that a profile is a non-empty multiset of rankings, and as variables the winner W(p) at each profile p. There are contexts of two kinds:
+
+- **joins** {p, q, p + q} of two electorates and their union, with the constraint "W(p) = W(q) implies W(p + q) = W(p)";
+- **extensions** {p, p + v} by one voter with ballot v, with the constraint that this voter weakly prefers W(p + v) to W(p).
+
+The Condorcet principle is the boundary condition.
+
+**Proposition (reduction).** A weakly compatible family on this scenario, that is, a joint draw in each context whose marginal at each profile is the rule's lottery there, is the same as a family of lotteries L(p), one per profile, with
+
+- (J) L(p + q)(a) ≥ L(p)(a) + L(q)(a) − 1 for every join and every candidate a, and
+- (E) L(p + v) first-order stochastically dominates L(p) with respect to v, for every extension.
+
+Its deterministic members, the families of 0/1 lotteries, are the global sections. On the one-voter joins {p, v, p + v}, (E) implies the join constraint.
+
+*Proof.* For joins the condition is (J) by the joint-draw lemma. For extensions it is (E), since on a chain a monotone coupling exists exactly when the distributions are stochastically ordered (Strassen). In a one-voter join, W(v) is v's first choice t, since a single voter's first choice is the Condorcet winner of the one-voter profile, and the join constraint reads "W(p) = t implies W(p + v) = t". Every monotone draw for the extension {p, p + v} satisfies it: if v gets a winner at least as good as t, it gets t. ∎
+
+An empirical model in the sense of Abramsky and Brandenburger also requires the draws to agree where contexts share more than one variable. Here this happens in two ways. A one-voter join and its extension share p and p + v, and there the draw of the extension serves both. Two joins {p, q, p + q} and {p, p + q, 2p + q} share p and p + q, and agreement there is an additional condition that (J) does not express. So wherever (J) and (E) cannot be satisfied, the scenario has no empirical model. Where they can, whether the draws can also be made to agree is not checked here.
+
+The proof contains a small structural fact. On one-voter joins participation implies consistency. Participation is the step of a single voter, carrying the order of that voter's ballot. Consistency is the gluing of arbitrary electorates, which carries no order. In vote shares the same holds for deterministic homogeneous rules. Consistency makes every winning region convex. A region won by a therefore contains the segment from any of its points towards the vertex of a ballot that ranks a first, since that vertex lies in the region. This segment is the part of participation that concerns the voter's first choice. Participation adds the order for the remaining candidates.
+
+**Restrictions.** Restricted to the joins, the scenario is Young and Levenglick's problem read ex post, and it has no empirical model (Proposition of Section 3b, for vote shares). Restricted to the extensions, it is the no-show problem read ex post, which has no empirical model from four alternatives (Brandt, Geist and Peters). Both level-1 theorems are therefore statements about sub-scenarios of one scenario. The scenario itself has no empirical model whenever either sub-scenario has none.
+
+**Thresholds for three alternatives.** For electorates of at most n voters the conditions (J) and (E) form a finite linear program, and an integer program for deterministic rules. The script `scripts/consistency/electorate_scenario.py` decides them. For three alternatives it finds:
+
+| | joins only | extensions only | both |
+|---|---|---|---|
+| deterministic rules | no global section from 8 voters | a global section up to 12 voters | no global section from 8 voters |
+| lotteries, drawn jointly | no weakly compatible family from 9 voters | a model up to 12 voters | no weakly compatible family from 9 voters |
+
+The deterministic threshold for joins agrees with Brandt, Dong and Peters, who show that every Condorcet extension for three candidates violates consistency from eight voters and that refinements of maximin avoid it below; the computation reproduces this under anonymity. Drawing the winner from a lottery postpones the failure by exactly one voter, as far as weak compatibility is concerned; with eight voters the lotteries exist, and whether their draws can be made to agree on shared pairs of profiles is open. Participation alone can be satisfied for three alternatives, by refinements of maximin (Brandt, Dong and Peters), and adding it does not lower the thresholds. For four alternatives the computation reaches only four voters, where every version can be satisfied; the known thresholds there lie higher. Whether the two constraints together fail for smaller electorates than either alone, from four alternatives on, is open.
+
+**The ex ante reading.** In the version of the scenario in which lotteries are the values and are compared as wholes, with population-consistency on joins and participation for independent draws on extensions, maximal lotteries are a model for every electorate (Brandl, Brandt and Seedig; Brandl, Brandt and Hofbauer). The exit of Section 3b applies to the whole scenario at once.
+
+**Towards a sheaf formulation.** Electorates are ordered by inclusion. A join context is a cover of p + q by two disjoint sub-electorates, and an extension context is a covering relation of the order, one voter added. Consistency is a gluing condition along disjoint covers, and participation is a monotonicity condition along the minimal inclusions. The one-voter joins are where both kinds of context meet, and there the second implies the first. A sheaf formulation with sub-electorates as the cover would need covers by more than two parts and overlapping parts. Neither kind of context in this scenario has them. *(Interpretation.)*
 
 **Consequence for a random fallback.** A procedure that ends in a lottery can be consistent ex ante and elect a Condorcet winner when there is one, but the realised winner is not consistent across electorates. This is the same ex ante/ex post distinction that appears in Gibbard (1978) for efficiency. *(Interpretation.)*
 
@@ -111,7 +148,7 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 1. Express the obstruction of Section 2 as an invariant of the arrangement of Condorcet regions around the cycle region, for three and for more candidates.
 2. Section 3a explains the incompatibility of consistency over electorates and over clones for symmetric deterministic rules through positions and comparisons. Is there a blocking-type argument that covers the non-symmetric case as well?
 3. Characterise how far maximal lotteries are from strategy-proofness, and compare them with random dictatorship as a fallback for consensus procedures. A related point concerns adding alternatives. When voters' utilities decrease concavely with distance in a space of positions, every voter prefers a candidate placed at the mean position of a lottery to the lottery itself (Jensen's inequality). A compromise therefore always exists against a lottery fallback, even where no position beats every other, as in McKelvey's theorem. Successive compromises can then be expected to move the remaining cycle into a small central region rather than remove it. The cost of a final lottery would then shrink with the size of that region. Whether deliberately sustained cycles can prevent this, and how far random removal deters them, are open.
-4. Section 3b reads consistency and participation ex ante and ex post. Is there a single formulation, a scenario whose contexts are electorates and their extensions, in which both are constraints and the Condorcet principle is a boundary condition, so that both theorems become the statement that the scenario has no empirical model?
+4. Section 3b reads consistency and participation ex ante and ex post. Is there a single formulation, a scenario whose contexts are electorates and their extensions, in which both are constraints and the Condorcet principle is a boundary condition, so that both theorems become the statement that the scenario has no empirical model? *Answered in Section 3c*: both theorems are statements about sub-scenarios of one scenario, whose weakly compatible families reduce to lotteries with two families of linear conditions. For three alternatives the combination fails from the same electorate sizes as consistency alone. Open: whether from four alternatives on it fails for smaller electorates than either constraint alone, and a formulation with covers by more than two, overlapping sub-electorates.
 5. Does the pattern "resolved by a fixed point, reappearing one level up" continue: is there a natural third level beyond aggregation and strategy?
 
 ## References
@@ -125,6 +162,7 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 - Gibbard, A. (1978). Straightforwardness of game forms with lotteries as outcomes. *Econometrica* 46, 595–614.
 - Rajsbaum, S. and Raventós-Pujol, A. (2025). A combinatorial topology approach to Arrow's impossibility theorem. *Social Choice and Welfare*. doi:10.1007/s00355-025-01609-7.
 - Smith, J. H. (1973). Aggregation of preferences with variable electorate. *Econometrica* 41, 1027–1041.
+- Strassen, V. (1965). The existence of probability measures with given marginals. *Annals of Mathematical Statistics* 36, 423–439.
 - von Neumann, J. (1928). Zur Theorie der Gesellschaftsspiele. *Mathematische Annalen* 100, 295–320.
 - Young, H. P. (1975). Social choice scoring functions. *SIAM Journal on Applied Mathematics* 28, 824–838.
 - Young, H. P. and Levenglick, A. (1978). A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35, 285–300.
