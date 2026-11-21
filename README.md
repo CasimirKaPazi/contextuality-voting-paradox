@@ -30,6 +30,7 @@ The guiding observation is that all of these have the same form: local pieces th
 | `two-kinds-of-loop.md` | Condorcet cycles (integer winding) versus the Liar (parity), the Klein bottle seam, strategy and computability |
 | `rational-diagonal-totally-tight.md` | The rational diagonal on totally tight two-player game forms: settled for three and four outcomes by a search over finite summaries; method, structure of the cores, evidence beyond four outcomes |
 | `theorem5-more-alternatives.md` | Theorem 5′: for four, five and six alternatives and any number of voters, every empirical model of Arrow's scenario is a mixture of dictatorships; induction on the number of alternatives, each step by completing profiles so that the lottery is supported on a set of rankings fixed by its restrictions to one alternative fewer, with finitely many exact checks per step |
+| `core-connection.md` | CORE against the formal results: its fallback characterised from strategy, aggregation and electorates; the draw as the hidden variable of random dictatorship (fair calls as a martingale); exact place relative to Gibbard's theorems; bargaining as two switches to a fixed point; material for a follow-up to the CORE paper |
 | `ladder-of-lost-properties.md` | Speculative: the normed division algebras and Hopf fibrations as a frame for successive breakdowns of aggregation |
 
 ### Paper drafts (`papers/drafts/`)

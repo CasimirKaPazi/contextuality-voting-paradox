@@ -60,7 +60,7 @@ A voting rule combining a gradient signal (score differences) with pairwise marg
 
 ### G. Positioning consensus with a random fallback
 
-Theorem 6 of *Walls and Strategy* gives a formal frame: the random fallback avoids the strategic regress at the cost of ex ante efficiency; deliberation recovers efficiency and carries the regress. This positions the CORE mechanism relative to Gibbard's theorems and to the proportional consensus of Heitzig, Simmons and Constantino.
+Theorem 6 of *Walls and Strategy* gives a formal frame: the random fallback avoids the strategic regress at the cost of ex ante efficiency; deliberation recovers efficiency and carries the regress. This positions the CORE mechanism relative to Gibbard's theorems and to the proportional consensus of Heitzig, Simmons and Constantino. First pass in *CORE and the Formal Results*: CORE's fallback, uniform random ballot, is characterised from three directions (strategy-proofness by Gibbard and Hylland; full independence with unanimity and anonymity by *Four Levels*, Theorems 5 and 5′; consistency and participation for joint draws, which no Condorcet-respecting fallback has); the draw is the hidden variable of random dictatorship, and the paper's fair-call results are a martingale statement about it; Theorems 3 and 6 of *Walls and Strategy* make the paper's analogy with incompleteness exact for every formalisation of deliberation as a finite game form, not for open deliberation itself. The CORE paper stays a standalone introduction to the method; the new results are collected for a follow-up. *Documents: CORE and the Formal Results; papers/CORE_13.md.*
 
 ## Suggested order
 
@@ -68,7 +68,7 @@ Theorem 6 of *Walls and Strategy* gives a formal frame: the random fallback avoi
 2. Theorem 5 beyond three alternatives: done for four, five and six alternatives and any number of voters (*Four Levels*, Theorem 5′; working note *Theorem 5 for four, five and six alternatives*). The induction step completes each profile, with the columns on a set of m − 1 pairs kept, so that the lottery is supported on a small set of rankings fixed by its restrictions to m − 1 alternatives; for each m it reduces to finitely many exact checks, done for m ≤ 6 and checked independently. Open: a general argument for every m (seven alternatives would be a computation).
 3. C: content complete for now, with Proposition 6 (more alternatives) added; the repository is the publication. D: the totally tight forms with up to four outcomes are settled (Proposition 5′); general tight forms remain open.
 4. Thread A: one scenario with electorates as contexts, with consistency on joins and participation on one-voter extensions: done (*Consistency as an Extension Problem*, Section 3c). For three alternatives it fails from 8 voters (deterministic) and 9 (lotteries drawn jointly), exactly as consistency alone; participation adds nothing there. Open: four or more alternatives, agreement of draws on shared pairs of profiles, and covers by more than two overlapping sub-electorates, the step towards the sheaf formulation.
-5. G (the bridge to CORE), then E and F.
+5. G (the bridge to CORE): first pass done (*CORE and the Formal Results*). The results go into a follow-up to the CORE paper once settled, not into the paper itself. Next: the note's open questions (the sequential equilibrium as data on sub-electorates; the call structure under sequential rationality). Then E and F.
 
 Thread B runs alongside, as questions from the other threads land there (holonomy sets, the equivariant obstruction theory).
 
