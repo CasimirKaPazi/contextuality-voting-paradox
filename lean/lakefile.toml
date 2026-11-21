@@ -5,4 +5,4 @@ defaultTargets = ["Voting"]
 name = "Voting"
 srcDir = "."
 roots = ["Diagonal", "Condorcet", "Nerve", "ValueSpaces", "Burial", "RationalDiagonal",
-         "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy"]
+         "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy", "Lotteries"]
