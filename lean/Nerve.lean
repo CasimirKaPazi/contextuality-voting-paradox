@@ -177,6 +177,18 @@ theorem six_gluings :
     (gluings.all fun g => orientable g == !respectsReference g) = true := by
   decide +kernel
 
+/-- Where orientation is lost (Proposition 5 of *Cycles, Twists and Walls*).
+    Fix a coherent orientation of the annulus. Under a gluing that respects the
+    reference orientations, every seam edge joins two triangles whose
+    orientations disagree (the image edge is traversed the same way); under the
+    other three gluings, none does. -/
+theorem seam :
+    (gluings.all fun g => (allSigns 6).all fun s =>
+      !coherent tris s ||
+      ((allDir tris s).filter (fun e => inA e.1 e.2)).all fun e =>
+        (allDir tris s).contains (g.apply e.1, g.apply e.2) == respectsReference g) = true := by
+  decide +kernel
+
 /-! ### Realised cycles: the sphere N(V) and the projective plane -/
 
 /-- N(V): N(U) with both preference cycles filled in. -/
