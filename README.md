@@ -54,6 +54,18 @@ All scripts are short and self-contained. They need Python 3 with `numpy`; some 
 | `exploratory/condorcet_island.py` | Interactive: where a third candidate produces a cycle in a spatial model, as a function of zoom and voter arrangement | exploratory |
 | `exploratory/island_phase_map.py` | Area and direction of the cycle region over the parameters of the spatial model | exploratory |
 
+### Formal proofs (`lean/`)
+
+Small Lean 4 files that check finite and abstract statements from the notes. They use only core Lean, without Mathlib, and are checked with `lean <file>`; most proofs are by computation (`decide`).
+
+| File | What it proves | Used in |
+|---|---|---|
+| `Diagonal.lean` | Lemma 7 in abstract form: without a dominant ballot, no strategist is universally correct against opponents that can run it. The only computational assumption is that the opponents can apply any map to the strategist's output | *Cycles, Twists and Walls* §7 |
+| `Condorcet.lean` | The Condorcet profile has a majority cycle and no Condorcet winner; each of the 216 profiles of three voters on three alternatives has a Condorcet winner or a full cycle; exactly 12 have a cycle | background to *Cycles, Twists and Walls* §3 |
+| `Nerve.lean` | The complex of strict orders on three alternatives is an annulus bounded by the two cycles; of the six gluings of its boundary circles, the three along the reference orientations are non-orientable and the other three orientable; filling in both cycles gives a closed orientable surface of Euler characteristic 2, on which reversing every preference is a free, orientation-reversing symmetry; identifying only the two cycle faces gives no surface | *Cycles, Twists and Walls* §5 |
+
+What the files leave to standard topology: that a coherent orientation of the triangles is the same as orientability, and the classification of surfaces, which names the resulting surfaces (torus, Klein bottle, sphere, projective plane).
+
 ## Related work
 
 The notes build on, among others: Livson, Prokopenko and Pritam on Arrow and Gödel and on the non-orientable topology of Condorcet's paradox; Abramsky and co-authors on contextuality and on Arrow's theorem in categorical form; Gibbard (1973, 1977, 1978); Young and Levenglick; Moulin; Saari's geometry of voting; Jiang, Lim, Yao and Ye on combinatorial Hodge theory and ranking; McKelvey on intransitivity in spatial voting; Binmore, Anderlini, and Nachbar and Zame on non-computable strategies; Baryshnikov and Root, and Rajsbaum and Raventós-Pujol, on topological proofs of the Gibbard–Satterthwaite and Arrow theorems. Full references are given in each document. References marked † in the notes were cited from memory and have not yet been checked against the originals.

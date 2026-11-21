@@ -6,7 +6,7 @@
 
 ## Abstract
 
-It is often suggested that the impossibility theorems of social choice (Arrow, Gibbard–Satterthwaite) belong to the same family as the Liar paradox, Gödel's incompleteness and the halting problem. We make part of this precise and mark where it fails. First, we treat a Condorcet cycle as a local-to-global problem in the sense of sheaf-theoretic contextuality and show that the answer depends on the shape of the space in which alternatives are placed: on a bounded line no valid model exists, on a circle the cycle is consistent, and only on an unbounded line is the cycle contextual. Its obstruction is an integer winding number, where the Liar's is a parity. Second, we locate the non-orientability found by Livson, Pritam and Prokopenko: on the three-alternative Klein bottle, orientation reverses exactly at the seam formed by the Condorcet cycle, where the two directions of winding are identified. Third, we show that strategy carries a genuine halting-type obstruction: by Gibbard's 1973 theorem and a diagonal argument, every game form with at least three outcomes is either dictatorial or leaves some voter without any program that always computes a best reply. The static impossibility (Arrow) is a finite contradiction; the dynamic one (Gibbard) is a computability barrier. Randomisation removes the obstruction at each level, at a price: by Gibbard's 1978 theorem, a non-dictatorial procedure with lotteries as outcomes either retains the computability barrier or is inefficient ex ante. Results are elementary; several are verified by exhaustive computation on small cases, and open problems are stated.
+It is often suggested that the impossibility theorems of social choice (Arrow, Gibbard–Satterthwaite) belong to the same family as the Liar paradox, Gödel's incompleteness and the halting problem. We make part of this precise and mark where it fails. First, we treat a Condorcet cycle as a local-to-global problem in the sense of sheaf-theoretic contextuality and show that the answer depends on the shape of the space in which alternatives are placed: on a bounded line no valid model exists, on a circle the cycle is consistent, and only on an unbounded line is the cycle contextual. Its obstruction is an integer winding number, where the Liar's is a parity. Second, we locate the non-orientability found by Livson, Pritam and Prokopenko: on the three-alternative Klein bottle, orientation reverses exactly at the seam formed by the Condorcet cycle, where the two directions of winding are identified. Third, we show that strategy carries a genuine halting-type obstruction: by Gibbard's 1973 theorem and a diagonal argument, every game form with at least three outcomes is either dictatorial or leaves some voter without any program that always computes a best reply. The static impossibility (Arrow) is a finite contradiction; the dynamic one (Gibbard) is a computability barrier. Randomisation removes the obstruction at each level, at a price: by Gibbard's 1978 theorem, a non-dictatorial procedure with lotteries as outcomes either retains the computability barrier or is inefficient ex ante. Results are elementary; several are verified by exhaustive computation on small cases, some are checked in the Lean proof assistant, and open problems are stated.
 
 ## 1. Introduction
 
@@ -108,13 +108,13 @@ The two are loops of the same kind over different covers. Section 5 shows how on
 
 ## 5. Where non-orientability sits
 
-Livson, Pritam and Prokopenko model strict preferences on three alternatives by a simplicial complex: the six vertices are the strict comparisons x ≺ y, and three comparisons span a triangle when a single strict order contains them. The six orders give six triangles forming an annulus. Its two boundary circles are the two Condorcet cycles, the triples of comparisons with winding +1 and −1. They then treat a cycle as one contradictory object, in which every alternative is preferred to itself, and identify it with its reverse. Gluing the two boundary circles accordingly gives a Klein bottle; filling the cycle in as a face gives the real projective plane. Given Arrow's other conditions, they show that non-dictatorship corresponds to non-orientability.
+Livson, Pritam and Prokopenko model strict preferences on three alternatives by a simplicial complex: the six vertices are the strict comparisons x ≺ y, and three comparisons span a triangle when a single strict order contains them. The six orders give six triangles forming an annulus. Its two boundary circles are the two Condorcet cycles, the triples of comparisons with winding +1 and −1. They then treat a cycle as one contradictory object, in which every alternative is preferred to itself, and identify it with its reverse. Gluing the two boundary circles along their reference orientations gives a Klein bottle (their Theorem 4); with the cycles realised as faces the result is the real projective plane (their Theorem 5; see the remark on the realised case below). Given Arrow's other conditions, they show that non-dictatorship corresponds to non-orientability.
 
 We ask where on this surface orientation is lost.
 
 **Proposition 5 (computed).** The annulus is orientable. Of the six ways of identifying its two boundary circles by a bijection of vertices, three yield a torus and three a Klein bottle. Fix an orientation of the annulus. In each Klein bottle gluing, every edge of the seam joins two triangles whose orientations disagree; in each torus gluing, none does.
 
-*Verification.* Exhaustive computation on the six-triangle complex. ∎
+*Verification.* Exhaustive computation on the six-triangle complex, in Python (`scripts/topology/`) and as a proof by computation in Lean (`lean/Nerve.lean`). ∎
 
 **Corollary.** On the Klein bottle, a closed path of strict orders reverses orientation exactly when it crosses the seam an odd number of times.
 
@@ -128,7 +128,13 @@ Two remarks support this reading.
 
 The statement "non-orientability is winding mod 2" should not be read as an identity of invariants: winding belongs to a single tournament, orientation to a loop of them. The corollary is the correct form.
 
-The same reduction is visible in the homology of the surfaces. The annulus has first homology ℤ: one integer hole, around which the winding is counted. Gluing the two Condorcet cycles orientably gives the torus, with first homology ℤ ⊕ ℤ; gluing them with the reversal gives the Klein bottle, with ℤ ⊕ ℤ/2, so that one of the two integer classes has become a class of order two. Filling the identified cycle in as a face gives the real projective plane, whose first homology is ℤ/2 alone: no integer class remains, only parity. Unlike the torus, neither the Klein bottle nor the projective plane has a second integral homology class; neither bounds an inside.
+**The realised case.** Filling both cycles in as faces turns the annulus into a closed surface with six vertices, twelve edges and eight triangles, of Euler characteristic 2: a sphere. Reversing every preference (x ≺ y to y ≺ x) maps this sphere to itself, fixes no vertex, edge or triangle, and reverses orientation. The quotient is therefore a closed non-orientable surface of Euler characteristic 1, the real projective plane. This is the identification used in the proof of Livson, Pritam and Prokopenko's Theorem 5, which identifies antipodal points of the sphere. Their definition states less: it identifies only the subspaces that represent the cycles. Identifying only the two cycle faces, by any of the six bijections, does not give a surface, since each glued edge then lies in three triangles. The coordinate formulas in their appendix do not describe a free involution as printed: equation (6) folds the cylinder onto itself, and the fibres described in the proof, (θ, b) ↔ (−θ, −b), have fixed points. The antipodal identification described in words corresponds to (θ, b) ↦ (θ + π, −b). We read this as a gap in the statement of the construction, not in the result.
+
+The two theorems thus use different identifications. Behind the Klein bottle is the gluing of the two boundary circles along their reference orientations; behind the projective plane is the reversal of every preference on the whole sphere. Reversal applied only to the two boundary circles gives a torus.
+
+The facts in this remark and in Proposition 5 are checked combinatorially in `lean/Nerve.lean`. Two steps rest on standard topology outside the formal check: that a coherent orientation of the triangles is the same as orientability, and the classification of surfaces, which names a closed non-orientable surface of Euler characteristic 0 a Klein bottle and one of Euler characteristic 1 a projective plane.
+
+The same reduction is visible in the homology of the surfaces. The annulus has first homology ℤ: one integer hole, around which the winding is counted. Gluing the two Condorcet cycles orientably gives the torus, with first homology ℤ ⊕ ℤ; gluing them along their reference orientations gives the Klein bottle, with ℤ ⊕ ℤ/2, so that one of the two integer classes has become a class of order two. In the realised case, the sphere obtained by filling in both cycles has no first homology, and its quotient by preference reversal, the real projective plane, has first homology ℤ/2: a loop in it is a path from a strict order to its reverse, and only its parity survives. No integer class remains. Unlike the torus, neither the Klein bottle nor the projective plane has a second integral homology class; neither bounds an inside.
 
 ## 6. Walls
 
@@ -161,6 +167,8 @@ A voting rule on a finite electorate is a finite table. The preceding results co
 **Lemma 7.** If player i has no dominant strategy at P, then no strategist is universally correct for i at P.
 
 *Proof.* For each strategy b of i choose a profile r(b) of the others' strategies to which b is not a best reply; this exists because b is not dominant. Let M be any strategist for i. For each other player k let D_k be the program that runs M on the input it has received and, if M outputs b, outputs the k-th component of r(b). On the input consisting of M and the programs D_k: if M halts with b, the others play r(b) and b is not a best reply; if M does not halt, it fails. ∎
+
+The lemma is checked in Lean in an abstract form (`lean/Diagonal.lean`). Programs enter only through what they output on each input, and the single computational assumption is that for every map f from ballots to counter-profiles there is an input on which the other programs run the strategist and answer with f of its output. No fixed-point theorem of computability is needed, and halting matters only because the strategist might not halt. The depth of Theorem 8 therefore lies in Gibbard's theorem, not in the diagonal step.
 
 **Theorem 8.** Let g be a game form with at least three possible outcomes. Either g is dictatorial, or some player at some preference has no universally correct strategist.
 
@@ -230,11 +238,12 @@ Chance in the outcome therefore removes the barrier of Theorem 8 only at the pri
 | Statement | Status |
 |---|---|
 | Propositions 1–4 (value spaces, winding) | proved here, elementary |
-| Proposition 5 and corollary (seam) | computed, three alternatives |
+| Proposition 5 and corollary (seam) | proved by computation, three alternatives; checked in Lean |
+| Realised case (sphere, its quotient by reversal; gluing only the cycle faces gives no surface) | proved by computation; checked in Lean |
 | Proposition 6 (burial) | proved, known |
 | Observation in Section 6 (no anonymous, neutral deterministic rule at the Condorcet profile) | proved, elementary; general case Moulin 1983 |
 | Symmetry breaks as competing fixed points, regress | interpretation |
-| Lemma 7, Theorem 8 (dichotomy) | proved here from Gibbard 1973 and a standard diagonal argument; we have not found the combination stated elsewhere |
+| Lemma 7, Theorem 8 (dichotomy) | proved here from Gibbard 1973 and a standard diagonal argument; Lemma 7 checked in Lean in abstract form; we have not found the combination stated elsewhere |
 | Proposition 9 (rational diagonal), sequential example | computed, small cases |
 | Theorem 10 (lotteries: regress or ex ante inefficiency) | proved here from Gibbard 1978 and Lemma 7 |
 | Common Lawvere frame; static versus dynamic diagonal; reading of random fallback | interpretation |
