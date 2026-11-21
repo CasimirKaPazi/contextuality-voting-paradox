@@ -1,5 +1,5 @@
 /-
-  Proposition 6 of *Cycles, Twists and Walls* (burial): if x beats z by
+  Proposition 1 of *Walls and Strategy* (burial): if x beats z by
   majority, voters who already rank z above x cannot change that by changing
   their ballots. Any number of voters and alternatives.
   Uses only core Lean, no Mathlib.

@@ -1,5 +1,5 @@
 /-
-  Propositions 1–4 of *Cycles, Twists and Walls*: a preference cycle placed
+  Propositions 1–4 of *Cycles and Twists*: a preference cycle placed
   in three value spaces (bounded line, circle, unbounded line), and the
   winding number. General statements, any length of cycle.
   Uses only core Lean, no Mathlib.

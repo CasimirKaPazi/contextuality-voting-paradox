@@ -1,6 +1,7 @@
 /-
-  No consistent way to break a cycle (*Map of Voting Paradoxes*, section on
-  gluing), in a stronger form than stated there.
+  Theorem 2 of *Four Levels of Obstruction in Social Choice*: no consistent
+  way to break a cycle, in a stronger form than the vote-share version in
+  *A Map of Voting Paradoxes* (section on gluing).
 
   Main theorem (`elects_unbeaten`). Let a rule be a Condorcet extension and
   consistent (reinforcement), with any number of alternatives. Then at every

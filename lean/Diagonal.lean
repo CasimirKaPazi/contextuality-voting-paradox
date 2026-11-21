@@ -1,6 +1,6 @@
 /-
-  The diagonal lemma for strategic voting (Lemma 7 of the draft
-  "Cycles, twists and walls"), stated abstractly.
+  The diagonal lemma for strategic voting (Lemma 2 of *Walls and Strategy*;
+  the negative half of Canning 1992, Theorem 3), stated abstractly.
 
   Setting, seen from one voter i with a fixed preference:
   * `B`   : the voter's possible ballots,
@@ -43,9 +43,9 @@ def UniversallyCorrect (g : B → R → O) (pref : O → O → Prop)
 def CanSimulate (M : Env → Option B) (opp : Env → Option R) : Prop :=
   ∀ f : B → R, ∃ e : Env, opp e = (M e).map f
 
-/-- Lemma 7: without a dominant ballot, no strategist is universally correct
+/-- Lemma 2: without a dominant ballot, no strategist is universally correct
     against opponents that can simulate it. -/
-theorem lemma7 (g : B → R → O) (pref : O → O → Prop)
+theorem diagonal_lemma (g : B → R → O) (pref : O → O → Prop)
     (M : Env → Option B) (opp : Env → Option R)
     (noDom : ¬ ∃ b, Dominant g pref b)
     (sim : CanSimulate M opp) :

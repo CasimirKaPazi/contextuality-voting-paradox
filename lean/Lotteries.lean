@@ -1,12 +1,12 @@
 /-
-  Theorem 10 of *Cycles, Twists and Walls*: let g be a non-dictatorial game
+  Theorem 6 of *Walls and Strategy*: let g be a non-dictatorial game
   form with lotteries as outcomes. Then
   (i) some player at some utility scale has no universally correct
       strategist, or
   (ii) g is straightforward, and at some assignment of utility scales no
       profile of dominant strategies yields an ex ante Pareto optimal lottery.
 
-  Proved from Lemma 7 (`Diagonal.lemma7`) and Corollary 2 of Gibbard (1978),
+  Proved from Lemma 2 (`Diagonal.diagonal_lemma`) and Corollary 2 of Gibbard (1978),
   "Straightforwardness of game forms with lotteries as outcomes",
   Econometrica 46, 595–614. Corollary 2 is not formalized here; it enters as
   the explicit hypothesis `cor2`.
@@ -19,7 +19,7 @@
   outcomes are elements of a type L (in Gibbard: lotteries over a finite set V
   of alternatives), `sure x` is the lottery giving x for certain, utility
   scales form a type U, and `eu u p` is the expected utility of p on scale u,
-  with values in a type R carrying ≤ and <. The derivation of Theorem 10 uses
+  with values in a type R carrying ≤ and <. The derivation of Theorem 6 uses
   no property of these: all the arithmetic sits inside Corollary 2. The
   hypothesis `cor2` is Gibbard's theorem exactly when L, U, eu are lotteries,
   utility scales and expected utility over a finite set of at least three
@@ -69,8 +69,8 @@ def ParetoExAnte (G : LotteryGame V L U R I St) (us : I → U) (p : L) : Prop :=
 def ExAntePareto (G : LotteryGame V L U R I St) : Prop :=
   ∀ us : I → U, ∃ s : I → St, Fits G us s ∧ ParetoExAnte G us (G.g s)
 
-/-- Theorem 10. -/
-theorem theorem10 (G : LotteryGame V L U R I St)
+/-- Theorem 6 of *Walls and Strategy*. -/
+theorem lottery_dichotomy (G : LotteryGame V L U R I St)
     (cor2 : Straightforward G → ExAntePareto G → ∃ k, IsDictator G k)
     (hnd : ∀ k, ¬ IsDictator G k) :
     (∃ (k : I) (u : U), ∀ (Env : Type) (M : Env → Option St) (opp : Env → Option (I → St)),
@@ -87,7 +87,7 @@ theorem theorem10 (G : LotteryGame V L U R I St)
     obtain ⟨k, hk⟩ := cor2 hs (fun us => Classical.byContradiction fun h =>
       hc ⟨us, fun s hf hp => h ⟨s, hf, hp⟩⟩)
     exact hnd k hk
-  · -- (i): some player at some scale has no dominant strategy; apply Lemma 7
+  · -- (i): some player at some scale has no dominant strategy; apply Lemma 2
     left
     obtain ⟨u, k, hk⟩ : ∃ (u : U) (k : I), ∀ t : St, ¬ Dominant G u k t := by
       apply Classical.byContradiction
@@ -99,7 +99,7 @@ theorem theorem10 (G : LotteryGame V L U R I St)
       exact hc ⟨u, k, fun t hd => ht ⟨t, hd⟩⟩
     refine ⟨k, u, ?_⟩
     intro Env M opp hsim
-    apply Diagonal.lemma7 _ _ M opp _ hsim
+    apply Diagonal.diagonal_lemma _ _ M opp _ hsim
     rintro ⟨b, hb⟩
     apply hk b
     intro s

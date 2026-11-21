@@ -1,5 +1,6 @@
 /-
-  Rational diagonal for two-player game forms that are not tight.
+  Proposition 5 of *Walls and Strategy*: rational diagonal for two-player
+  game forms that are not tight.
 
   A two-player game form g (rows for player 1, columns for player 2) is tight
   if for every set S of outcomes, player 1 can force S or player 2 can force

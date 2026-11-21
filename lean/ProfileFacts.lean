@@ -1,8 +1,8 @@
 /-
-  Two short facts about profiles from *Cycles, Twists and Walls*:
-  * Remark 3(b): the classical bound p(a ≻ b) + p(b ≻ c) + p(c ≻ a) ≤ 2,
+  Two short facts about profiles from the companion drafts:
+  * *Cycles and Twists*, Section 3, remark (b): the classical bound p(a ≻ b) + p(b ≻ c) + p(c ≻ a) ≤ 2,
     for any profile, attained by the Condorcet profile;
-  * the observation of Section 6: no deterministic rule on three alternatives
+  * *Walls and Strategy*, observation in Section 2: no deterministic rule on three alternatives
     and three voters is anonymous and neutral.
   Uses only core Lean, no Mathlib.
 -/
@@ -37,7 +37,7 @@ theorem three_counts (P Q R : V → Bool)
 def sup (p : List (A → Nat)) (a b : A) : Nat :=
   countIf (fun r => decide (r a < r b)) p
 
-/-- Remark 3(b): no ballot satisfies all of a ≻ b, b ≻ c, c ≻ a, so over any
+/-- *Cycles and Twists*, Section 3, remark (b): no ballot satisfies all of a ≻ b, b ≻ c, c ≻ a, so over any
     profile the three pairwise supports add up to at most twice the number of
     voters. Holds also for ballots with ties. -/
 theorem boole_bound (p : List (A → Nat)) (a b c : A) :

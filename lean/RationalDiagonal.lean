@@ -1,6 +1,6 @@
 /-
-  Proposition 9 of *Cycles, Twists and Walls* (rational diagonal), checked
-  by certificates, and the veto-then-pick example of Section 7.
+  Proposition 4 of *Walls and Strategy* (rational diagonal), checked by
+  certificates, and the veto-then-pick example of its Section 3 (simultaneity).
   Uses only core Lean, no Mathlib.
 
   A game form *admits a rational diagonal* for voter 1 if there are strict
@@ -14,7 +14,7 @@
   and (2) for all six ballots b. This is the certificate method: finding a
   witness may be expensive, checking it is cheap.
 
-  The 18,138 two-player game forms of Proposition 9 are not included: the
+  The 18,138 two-player game forms of Proposition 4 are not included: the
   certificates would be easy, but proving that the list of game forms is
   complete would need its own enumeration argument.
 -/

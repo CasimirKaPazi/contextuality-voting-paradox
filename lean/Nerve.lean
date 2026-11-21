@@ -1,5 +1,6 @@
 /-
-  The topology of Condorcet's paradox for three alternatives, done
+  Section 5 of *Cycles and Twists* (Proposition 5 and the realised case):
+  the topology of Condorcet's paradox for three alternatives, done
   combinatorially (Livson, Pritam, Prokopenko, "The non-orientable topology
   of Condorcet's paradox", arXiv:2601.07283).
 
@@ -177,7 +178,7 @@ theorem six_gluings :
     (gluings.all fun g => orientable g == !respectsReference g) = true := by
   decide +kernel
 
-/-- Where orientation is lost (Proposition 5 of *Cycles, Twists and Walls*).
+/-- Where orientation is lost (Proposition 5 of *Cycles and Twists*).
     Fix a coherent orientation of the annulus. Under a gluing that respects the
     reference orientations, every seam edge joins two triangles whose
     orientations disagree (the image edge is traversed the same way); under the
