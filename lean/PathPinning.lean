@@ -19,8 +19,9 @@ above `a₁`.
 `t` has `a₁` above `a₂` above `a₃` with nothing else between `a₁` and `a₃`; `T` is everything
 except `a₂`; `U` contains `a₁`, `a₂`, `a₃`.
 
-Not formalised here: the restriction of an empirical model to fewer alternatives, the use of full
-compatibility to pass to the completed profile, and the existence of the completion.
+The rest of the induction (restriction of an empirical model to fewer alternatives, the use of
+full compatibility to pass to the completed profile, the construction of the completion) is in
+`ArrowGeneral.lean`, and the passage to the three-alternative case in `ArrowBase.lean`.
 -/
 
 namespace PathPinning
@@ -115,7 +116,7 @@ lemma three_cases (σ : Rk α) {a₁ a₂ a₃ : α} (h12 : a₁ ≠ a₂) (h23 
 
 /-- **Pinning lemma.** The probability of `t` is the total weight of the voters ranking `t`. -/
 theorem pin {ι : Type*} [Fintype ι]
-    (μ : Rk α → ℝ) (hμ : ∀ σ, 0 ≤ μ σ) (r : ι → Rk α) (w : ι → ℝ) (hw : ∀ k, 0 ≤ w k)
+    (μ : Rk α → ℝ) (hμ : ∀ σ, 0 ≤ μ σ) (r : ι → Rk α) (w : ι → ℝ) (_hw : ∀ k, 0 ≤ w k)
     {T U : Finset α} {a₁ a₂ a₃ : α} (hT : ∀ x, x ∈ T ↔ x ≠ a₂)
     (hU1 : a₁ ∈ U) (hU2 : a₂ ∈ U) (hU3 : a₃ ∈ U)
     (h12 : a₁ ≠ a₂) (h23 : a₂ ≠ a₃) (h13 : a₁ ≠ a₃)
