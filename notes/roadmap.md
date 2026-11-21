@@ -48,7 +48,7 @@ The integer winding obstruction of Condorcet cycles versus the parity obstructio
 
 ### D. Strategy as a halting problem
 
-Walls in profile space; the dichotomy between dictatorship and non-computable best replies (Gibbard 1973 with a diagonal lemma, Theorem 3, checked in Lean from Gibbard's definitions), its lottery version (Gibbard 1978, Theorem 5), the rational-opponent diagonal (verified on small cases, with Lean certificates for four rules), and the boundary set by sequential moves with visible votes. Still required: a general proof of the rational-opponent version, the case of randomised strategists, and the case of sequential voting in random order with private preferences. *Document: Walls and Strategy.*
+Walls in profile space; the dichotomy between dictatorship and non-computable best replies (Gibbard 1973 with a diagonal lemma, Theorem 3, checked in Lean from Gibbard's definitions), its lottery version (Gibbard 1978, Theorem 6, in Lean with Gibbard's Corollary 2 assumed), the rational-opponent diagonal (verified on small cases, with Lean certificates for four rules), and the boundary set by sequential moves with visible votes. The diagonal lemma is in substance Canning (1992), Theorem 3, and the rational diagonal is the absence of a strict Nash strategy in the sense of his Theorem 5. For two players, every form that is not tight admits a rational diagonal (Proposition 5, in Lean), so the open case is the tight forms. Still required: a proof for tight forms, the case of randomised strategists, and the case of sequential voting in random order with private preferences. *Document: Walls and Strategy.*
 
 ### E. A ladder of lost properties
 
@@ -60,7 +60,7 @@ A voting rule combining a gradient signal (score differences) with pairwise marg
 
 ### G. Positioning consensus with a random fallback
 
-Theorem 5 of *Walls and Strategy* gives a formal frame: the random fallback avoids the strategic regress at the cost of ex ante efficiency; deliberation recovers efficiency and carries the regress. This positions the CORE mechanism relative to Gibbard's theorems and to the proportional consensus of Heitzig, Simmons and Constantino.
+Theorem 6 of *Walls and Strategy* gives a formal frame: the random fallback avoids the strategic regress at the cost of ex ante efficiency; deliberation recovers efficiency and carries the regress. This positions the CORE mechanism relative to Gibbard's theorems and to the proportional consensus of Heitzig, Simmons and Constantino.
 
 ## Suggested order
 

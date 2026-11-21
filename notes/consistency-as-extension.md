@@ -100,7 +100,7 @@ Taken together:
 
 - A deterministic rule must choose between gluing and seeing cycles. Symmetric gluing forces linearity, and linear rules are blind to cycles. Seeing cycles forbids gluing, and determinism then forces an arbitrary break.
 - In lotteries, symmetry, gluing and cycle sensitivity are jointly possible. The reconciling rule is a fixed point: the equilibrium of the game in which the candidates play against each other with the majority margins as payoffs. The obstruction to gluing is removed by convexification, as the obstruction to a symmetric choice was.
-- What remains is strategy. Maximal lotteries are not strategy-proof; by Gibbard (1977) the only strategy-proof rules that are efficient ex post are random dictatorships, and by Gibbard (1978) and Theorem 5 of *Walls and Strategy*, avoiding the strategic regress costs ex ante efficiency. The obstruction moves one level up: from aggregating given preferences to reasoning about the preferences others will report.
+- What remains is strategy. Maximal lotteries are not strategy-proof; by Gibbard (1977) the only strategy-proof rules that are efficient ex post are random dictatorships, and by Gibbard (1978) and Theorem 6 of *Walls and Strategy*, avoiding the strategic regress costs ex ante efficiency. The obstruction moves one level up: from aggregating given preferences to reasoning about the preferences others will report.
 
 On this reading the problem is resolved at one level by a fixed point and reappears at the next, which is the recursive pattern the wider project expects. *(Interpretation.)*
 

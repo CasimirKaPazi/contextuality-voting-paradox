@@ -56,7 +56,7 @@ A first sorting of known theorems and paradoxes by where the symmetry goes: (i) 
 | Young–Levenglick; Moulin's no-show theorem | single winners, variable electorate | (i) then (ii), with gluing | a Condorcet extension keeps the pairwise cycle and then breaks it per profile; no such break is compatible across electorates |
 | Sen's liberal paradox | social preference | (ii) per pair, then (i) | individual rights are local dictators on pairs; together with Pareto they produce a cycle |
 | Gibbard 1977 | lotteries | (iii) | strategy-proof random rules are mixtures of unilateral and duple rules; with ex post efficiency, random dictatorship |
-| Gibbard 1978; Theorem 5 of *Walls and Strategy* | lotteries, utility scales | (iii) or regress | dominant strategies throughout cost ex ante efficiency; otherwise the strategic regress returns |
+| Gibbard 1978; Theorem 6 of *Walls and Strategy* | lotteries, utility scales | (iii) or regress | dominant strategies throughout cost ex ante efficiency; otherwise the strategic regress returns |
 | Theorem 3 of *Walls and Strategy* | strategies | (ii) or (i) at the level of reasoning | a dominant strategy is a fixed point; without one, the diagonal argument produces the regress |
 | Nash; reflective oracles | mixed strategies, probabilistic oracles | (iii) | Brouwer and Kakutani make self-reference consistent |
 
