@@ -32,7 +32,7 @@ The proof uses unanimity only through the case m = 3, and full compatibility at 
 - **The identity behind it.** At the completed profile, P(a₁ > a₂ > … > aₘ) = P(a₁ > a₃ > … > aₘ on all alternatives but a₂). The computations found exactly such one-term identities, for example P(a > b > c > d) = P(a > b > d) for four alternatives, before the general argument.
 - **Symmetry.** The completion breaks a symmetry: it fixes the orientation "a₃ above a₁" wherever the path leaves it open, and so is not invariant under reversing all preferences. Completions that keep that symmetry cannot pin: on the shapes computed, a rule that inserts each alternative directly next to its neighbour gives rankings whose (m − 1)-alternative laws never identify them; for stars the invisible part is exactly the parity character (−1)^(number of 1-bits) of the voter's pattern, a ℤ/2 class of the kind the Liar has in *Loops of Relations*. *Reading:* the pattern of *Where the Symmetry Goes* inside the proof, a symmetry-keeping completion leaves a parity class unresolved and pinning requires breaking it. *(Interpretation.)*
 - **Relation to weak compatibility.** Under weak compatibility (independence one pair at a time, as for Barberà and Sonnenschein's random social welfare functions) there are rules that are not mixtures of dictatorships, such as the coin rule, and McLennan obtains additive power only from six alternatives on. Under full compatibility the mixture is forced from three alternatives on, for every number of alternatives: the gap between the two is signalling, not contextuality.
-- **Formal check.** The proof is elementary and suitable for Lean, on top of `lean/ProbabilisticArrow.lean` (the case m = 3).
+- **Formal check.** Step 4 is checked in Lean (`lean/PathPinning.lean`), for any finite type of alternatives and voters, with the marginals on T and U and the completion as hypotheses. Not yet formalised: Step 1 (restriction of an empirical model to fewer alternatives, on top of `lean/ProbabilisticArrow.lean` for the case m = 3), the use of full compatibility in Step 2, and the existence of the completion in Step 3.
 
 ## Computational checks
 
@@ -40,6 +40,7 @@ Before the general argument, the induction step was verified exactly for m = 4, 
 
 ## Files
 
+- `lean/PathPinning.lean`: Step 4 in Lean;
 - `scripts/symmetry/path_proof_check.py`: linear-programming check of the argument;
 - `scripts/symmetry/pin_path_certificate.py`, `pin_path_greedy.py`: exact checks of the step, m ≤ 10;
 - `scripts/symmetry/pin_certificate.py`: the four-alternative case with the first rules found and explicit identities;
