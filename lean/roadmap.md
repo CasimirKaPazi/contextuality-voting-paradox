@@ -53,6 +53,7 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
    - This would make the computer proof of Proposition 5′ of *Walls and Strategy* rest on a checked reduction.
    - It is also the tool for general tight forms (thread D).
    - Effort: moderate. A certificate check of the cases with four outcomes is a separate, possibly heavy step.
+   - Status: the summary, its test, monotonicity and the update rule are in `SummaryAutomaton.lean`. Open: the certificate check of the search itself.
 
 ## 3. Later or large
 
