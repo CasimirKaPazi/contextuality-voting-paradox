@@ -48,7 +48,7 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
    - Proposition 3 (the random top two is contextual): a short counting argument.
    - Corollary 2 with Gibbard's (1977) characterisation entering as an explicit hypothesis, in the way `Lotteries.lean` treats Gibbard's 1978 Corollary 2.
    - Effort: small for both.
-   - Status: Proposition 3 is in `GSTopTwo.lean`. Open: Corollary 2 with Gibbard (1977) as a hypothesis.
+   - Status: Proposition 3 is in `GSTopTwo.lean`; Corollary 2, with Gibbard (1977) as the hypothesis `Gibbard1977`, and the uniqueness of random dictatorship among anonymous models are in `GSCorollary.lean`.
 7. **Soundness of the summary automaton** (note *The rational diagonal on totally tight game forms*, update-rule lemma).
    - The claim: whether a player lacks a strict Nash strategy depends only on the set of row summaries, and adding a constant row or column changes the set by the stated rule.
    - This would make the computer proof of Proposition 5′ of *Walls and Strategy* rest on a checked reduction.
