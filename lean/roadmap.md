@@ -27,6 +27,7 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
    - Then add Lemma 3 of *Four Levels*, the joint-draw criterion λ(a) ≥ μ(a) + ν(a) − 1, also stated in *Consistency as an Extension Problem*, Section 3b.
    - Used by consistency, participation and Gibbard–Satterthwaite.
    - Effort: small.
+   - Status: the necessary direction of Lemma 3 is in `JoinLotteries.lean`. Open: the sufficient direction (a transport argument of Hall type: an off-diagonal coupling exists when no candidate carries more than the total), and moving the couplings and kernels out of `JointDraws.lean`.
 
 ## 2. Results that complete a thread
 
@@ -35,12 +36,14 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
    - `Consistency.lean` already has the integer-electorate construction of Theorem 2.
    - Also needed later for the electorate scenario of *Consistency as an Extension Problem*, Section 3c, whose reduction proposition (conditions J and E) would follow.
    - Effort: moderate.
+   - Status: done in `JoinLotteries.lean`, for electorates as weighted lists (joins as unions, no anonymity or homogeneity assumed); it needs only the necessary direction of Lemma 3. Open: the reduction proposition, which needs both directions.
 5. **Isotropy lemma, general form** (*Where the Symmetry Goes*). Both directions:
    - a neutral rule maps a profile to an output fixed by its stabiliser;
    - an output fixed by the stabiliser of every orbit representative extends to a neutral rule.
    - `ProfileFacts.lean` has one instance. Mathlib's `MulAction` and orbits fit.
    - It is the pointwise form of level 3, and Item 1 would use it.
    - Effort: small to moderate.
+   - Status: done in `Isotropy.lean`, for any group action and any equivariant family of admissible outputs; no finiteness needed.
 6. **Gibbard–Satterthwaite placement, rest.**
    - Proposition 3 (the random top two is contextual): a short counting argument.
    - Corollary 2 with Gibbard's (1977) characterisation entering as an explicit hypothesis, in the way `Lotteries.lean` treats Gibbard's 1978 Corollary 2.
