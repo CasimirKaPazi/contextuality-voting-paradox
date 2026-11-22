@@ -1,6 +1,6 @@
 # The Global Form: Arrow's Theorem as a Degree
 
-*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, and the place of reversal are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`.
+*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where negative real degrees detect contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`.
 
 ## 1. Voter loops
 
@@ -68,20 +68,59 @@ For a mixture of dictatorships, the probability that moves during voter k's swit
 
 For a general rule the shares of the half path are taken at different contexts for different voters, and Lemma 1 makes only the closed loop invariant. Pivotal arguments use the half path because unanimity fixes both of its ends. The topological arguments use the closed loop because only it carries a class. *(Interpretation.)*
 
-## 7. Relation to the literature
+## 7. Strategy-proofness
+
+The same construction works for Gibbard–Satterthwaite. A rule now sends each profile to one alternative, and it is strategy-proof (SP) if no voter gains by misreporting. Unanimity is taken in the weak form that identical ballots give their common top. The outcomes a, b, c form a triangle, oriented a → b → c → a. Any two outcomes are adjacent, so the walk of the outcome along a voter loop always has a winding number. What strategy-proofness adds is the direction of each step.
+
+**Swap lemma.** If a voter swaps two adjacent alternatives in their ballot, raising y over x, an SP rule can change the outcome only from x to y. For a lottery-valued rule that is strategy-proof in the sense of stochastic dominance (SD-SP), the swap moves probability only from x to y, and leaves every other probability unchanged. *(Proved; standard. Strategy-proofness for both ballots leaves only the pair {x, y} where the two ballots disagree. For lotteries, the upper contour sets of the two ballots coincide except for the one cut between x and y. This is Gibbard's (1977) localisation and monotonicity.)*
+
+Along the loop abc → bac → bca → cba → cab → acb → abc, the six swaps raise b over a, c over a, c over b, a over b, a over c and b over c. The permitted moves of the outcome are therefore a → b, a → c, b → c, b → a, c → a and c → b. They go alternately forward and backward on the triangle.
+
+**Lemma 5 (invariance and sum).** For an SP rule, the degree of a voter does not depend on the context, and the degrees sum to the winding of the diagonal staircase. Under unanimity the sum is 1. *(Proved.)*
+- **Squares.** In a square of one step of voter i and one of voter j, the two steps of each voter swap the same pair in opposite directions, so their permitted moves go in opposite senses. At most two of the four moves go the same way. A closed walk on the triangle with net displacement at most 2 has winding 0.
+- **Staircase.** Successive swaps of the same pair by different voters can move the outcome at most once, from x to y, never back. So the staircase follows the tops of the diagonal rankings. The map that sends a ranking to its top takes the hexagon once around the triangle.
+
+**Lemma 6 (rigidity).** For an SP rule the degree is 0 or 1. It is 1 exactly when the outcome is the voter's top at every step of the loop. *(Proved.)* Winding 1 needs the three forward moves (at the first, third and fifth step) and no backward one, which places the outcome at the voter's top throughout. Winding −1 needs the three backward moves. That is impossible: after the backward move a → c at the second step, the outcome cannot be at b before the fourth step, because the only permitted move in between is b → c.
+
+**Proposition 3.** For three alternatives, an SP rule either gives every voter degree 0, or is the dictatorship of the one voter with degree 1. With unanimity it is a dictatorship. *(Proved, from Lemmas 5 and 6; the second part is the Gibbard–Satterthwaite theorem for three alternatives. Computed: all SP rules for one voter, 7 rules, and two voters, 17 rules.)* Unlike Arrow's case, no anti-dictator appears. Strategy-proofness fixes the direction in which the outcome may follow the voter, and IIA does not.
+
+**More alternatives.** The degree is used only on triples. The usual steps lead from there to all alternatives. *(Proved; standard.)*
+1. Strategy-proofness implies monotonicity: if y wins and no voter lowers y below anything, y still wins.
+2. Monotonicity with unanimity gives the Pareto condition: move x to the top and y to second for everyone.
+3. For a triple T, the rule restricted to profiles in which every voter ranks T in the top three, over fixed tails, is SP and unanimous on T. So it has a dictator.
+4. Changing the tails swaps only alternatives outside T, which cannot change an outcome in T, so the dictator does not depend on the tails.
+5. Triples sharing two alternatives have the same dictator: pass from one to the other by swapping the third alternatives below the shared pair.
+6. Monotonicity extends the dictator to all profiles: lift the dictator's top and the claimed winner to the top two places.
+
+**Real degrees.** For an SD-SP lottery the real degree is the expected winding, (1/3) times the sum over the six steps of the signed probability moved. By the swap lemma this is defined for every SD-SP rule. These are exactly the empirical models of *Gibbard–Satterthwaite as a Scenario* (Proposition 1 there), so no compatibility condition is needed, unlike Arrow's case. In a square, the two voters move probability along the directions e_y − e_x and e_v − e_u in the plane of lotteries, and the lottery returns to where it started. If the pairs differ, the directions are independent, so each voter's forward and backward moves cancel. If the pairs coincide, the displacements cancel directly. So the real degree is a class for every SD-SP rule, and the degrees sum to the staircase winding, which is 1 under unanimity. *(Proved. Computed by linear programming over all SD-SP rules for two and three voters: deviation below 10⁻¹⁵.)*
+
+What values occur:
+- **With unanimity**, by Gibbard (1977) the rule is a mixture of dictatorships, and the degrees are its weights, in [0, 1], summing to 1 (the linear programs give the same range). Anonymity makes them 1/n, random dictatorship, as in Section 4.
+- **Without unanimity, degrees can be negative.** The random top two (the voter's first or second choice, probability ½ each) has degree −½. At each backward step half of the probability moves backward, and the forward steps move nothing. This is the minimum over all SD-SP rules for one, two and three voters. *(Computed.)*
+
+**Proposition 4.** Every deterministic SP rule has degrees 0 or 1, so every mixture of them has degrees in [0, 1]. A negative degree therefore shows that a model is contextual. For one voter the converse holds: an SD-SP lottery is a mixture of deterministic SP rules exactly when its degree is non-negative. *(Proved for one voter; computed for two and three voters, where the polytope of SD-SP rules with all degrees non-negative has the same support function as the hull of the 17 and 60 deterministic SP rules in random directions.)*
+
+The one-voter proof uses the flows along the loop. Let α₁, …, α₆ be the probabilities moved at the six steps. Conservation of probability forces α₁ − α₄ = α₃ − α₆ = α₅ − α₂, and this common value D is the degree. If D ≥ 0, take:
+- the dictatorship with weight D;
+- the three rules "the voter's better of two", with weights α₄, α₆ and α₂, each moving once forward and once backward along its edge;
+- constants for the remaining probability, which is non-negative because each alternative can lose at most the probability it holds.
+
+So the contextuality of the random top two, which *Gibbard–Satterthwaite as a Scenario* shows by a linear program, is seen here as a degree outside the hull of the deterministic degrees. In Arrow's scenario the failure takes another form: the coin rule, which is not fully compatible, has no class at all. In the Gibbard–Satterthwaite scenario every model is compatible, and the obstruction is the sign of the degree. *(Interpretation.)*
+
+## 8. Relation to the literature
 
 - **Baryshnikov (1993)**: Arrow's theorem by the homology of a nerve. Baryshnikov and Root describe his computation as showing that the profile complex has, in dimension m − 2, the homology of a product of n spheres, and they reprove it. They obtain Gibbard–Satterthwaite through Muller–Satterthwaite: a monotone unanimous rule induces a simplicial map, and the pairing of each voter's class with the outcome class is 1 for a dictator and 0 otherwise.
 - **Okura (2024)**: the same structure with the relation "sum of the voters' maps on homology equals the diagonal". Lemma 2 is this relation for three alternatives.
 - **Rajsbaum and Raventós-Pujol**: an elementary proof by the index lemma on a colored triangulation, with pivotal voters as bivalent paths, and a characterisation of domain restrictions for two voters and three alternatives. **Lara, Rajsbaum and Raventós-Pujol** generalise this.
 
-Sections 1–3 are therefore not new in substance. They are a short form of the homological proof, with the hexagon as the space and the rigidity of Lemmas 3–4 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4 and 6 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′, the coin rule as a rule without a class, and the pivotal path as half of the loop.
+Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as witnesses of contextuality for strategy-proof lotteries, and the pivotal path as half of the loop.
 
-## 8. What the global form still needs
+## 9. What the global form still needs
 
-- **Gibbard–Satterthwaite as a degree.** Baryshnikov and Root's route goes through monotonicity. The scenario of *Gibbard–Satterthwaite as a Scenario* suggests a loop of one-ballot changes instead. For lotteries, the real degrees should be the weights of Gibbard's (1977) mixtures of unilaterals and duples under unanimity.
+- **Strategy-proof lotteries.** Proposition 4 for two or more voters, and for more alternatives, by proof; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977); the meaning of the negative degree of the random top two, whose lottery turns against the direction of the voter's own loop.
 - **An equivariant statement.** Degrees are a homomorphism from the voters' classes to the outcome class. Permuting the voters acts on the first, and reversal acts on both, with sign (−1)^(m−1) on the top class. The trichotomy of *Where the Symmetry Goes* should read as: an equivariant integer homomorphism exists (no obstruction), only a real one exists (a lottery), or none exists. This is not yet worked out beyond the voters' permutations.
 - **Degree for the electorate direction.** Young–Levenglick and the no-show theorem are agreement-type obstructions (thread A). Whether they carry a degree, or only a local inconsistency, is open.
-- Lemmas 1–4 are finite and elementary for each n, and a candidate for a Lean check.
+- Lemmas 1–6 are finite and elementary for each n, and a candidate for a Lean check.
 
 ## References
 
@@ -89,6 +128,7 @@ Sections 1–3 are therefore not new in substance. They are a short form of the 
 - Baryshnikov, Y. (1993). Unifying impossibility theorems: a topological approach. *Advances in Applied Mathematics* 14, 404–415.
 - Baryshnikov, Y. and Root, J. (2024). A topological proof of the Gibbard–Satterthwaite theorem. *Economics Letters* 234, 111447. arXiv:2309.03123.
 - Chichilnisky, G. (1980). Social choice and the topology of spaces of preferences. *Advances in Mathematics* 37, 165–176.
+- Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
 - Lara, I., Rajsbaum, S. and Raventós-Pujol, A. (2024). A generalization of Arrow's impossibility theorem through combinatorial topology. arXiv:2402.06024.
 - Okura, T. (2024). A topological proof of Terao's generalized Arrow's impossibility theorem. arXiv:2408.14263.
 - Rajsbaum, S. and Raventós-Pujol, A. (2022). A combinatorial topology approach to Arrow's impossibility theorem. PODC 2022; extended version MPRA paper 120023.
