@@ -58,3 +58,15 @@ rows for player 1, columns for player 2. Preferences are strict rankings.
   resistance minus total veto cards is 1 (no failure).
 - `trees.py seed count maxcells` — normal forms of random perfect-information
   game trees (no failure in 8,568 forms).
+
+## Survival of a working configuration (`absorption/`)
+
+Towards a hand proof for totally tight forms (note *The rational diagonal on
+totally tight game forms*, Section 7). Run from `absorption/`; `sg.py` imports
+`recipes_core.py` from the parent folder. `python3 collect.py k N` first, then
+the analyses with the same `k N`. `tr_absorb.cpp` checks on all reachable
+summaries that a line with a present outcome keeps a working configuration
+exactly when the new form is valid. `base_rule.py` checks the two base cases
+proved in the note. `positions.py` (stopping games) and `tr_positions.cpp` (all
+reachable summaries) check the position lemma: some working configuration that
+survives can be recognised by where the line's outcome sits in its orders.
