@@ -132,6 +132,37 @@ A configuration fails exactly when the tested player has a strategy against whic
 
 Geometrically, P ↦ rev P is the antipodal map of the permutohedron. P ↦ P* is the antipodal map of the facet on which a is on top, with the other outcomes forming the bottom block. In *The global form*, Section 8, the layer |S| = m − 1 of the stack of degrees lives on such facets. *(Interpretation; the connection is not worked out.)*
 
+**Towards a proof of the conjecture.** Fix P = (a, m₁, …, m_n, c), and write "above" and "below" for P.
+- *The saddle value.* By tightness the opposed game has an equilibrium. Its equilibria are saddle points, and they all have one outcome v. Every row's worst outcome is at or below v, and every column's best outcome is at or above v. Equality holds for some row and some column.
+- *v is a middle outcome.* If v = a, a saddle point's row holds only a, so i forces a. If v = c, its column holds only c, so o forces c. Write v = m_q.
+
+A test fails when the tested player has a strategy against which every best reply of the opponent is an equilibrium of its game. Call such a line *safe*. All four tests fail exactly when there are four safe lines:
+- r₁, a row of i, safe in the opposed game. Its worst cells are saddle points, so its worst outcome is v.
+- s₂, a column of o, safe in the opposed game. Its best outcome is v.
+- r₃, a row of i, safe in i's twin game. It is of one of two types:
+  - *type γ*: r₃ holds c, and its c-cells lie in columns without a;
+  - *type δ*: r₃ does not hold c. Its worst outcome is some m_j, and its m_j-cells lie in columns inside {m₁, …, m_j}.
+- s₄, a column of o, safe in o's twin game, of one of two types:
+  - *type α*: s₄ holds a, and its a-cells lie in rows without c;
+  - *type β*: s₄ does not hold a. Its best outcome is some m_l, and its m_l-cells lie in rows inside {m_l, …, m_n}.
+
+**Proved, for any number of outcomes:**
+1. j ≥ q and l ≤ q. No row's worst outcome is above v, and no column's best outcome is below it.
+2. No α together with γ. *Proof.* The common cell of r₃ and s₄ is not a: it would be an a-cell of s₄ in a row with c. It is not c either: it would be a c-cell of r₃ in a column with a. Take an a-cell of s₄, in a row r′ without c, and a c-cell of r₃, in a column s′ without a. The cell (r′, s′) is neither a nor c. On rows r₃, r′ and columns s₄, s′ the subform has no constant line. ∎ This generalises (F3).
+3. No r₁ together with β with l = q. *Proof.* r₁ lies at or above v, and s₄ lies at or below m_l = v. So their common cell is v. It is an m_l-cell of s₄, so r₁ lies inside {m_q, …, m_n}: r₁ is constant v. Then all its cells are saddle points. So no column holds an outcome above v, and a does not occur. ∎
+4. No s₂ together with δ with j = q. This is the mirror image of 3.
+
+With three outcomes, n = 1 forces j = l = q, and 1–4 are the proof of the chain lemma.
+
+What remains for n ≥ 2 are the cases in which r₃ is of type δ with j > q, or s₄ of type β with l < q: lines whose critical outcome lies strictly between v and an end of P. They occur in about 10% of the cases on stopping games with four outcomes, but never together with all three other safe lines.
+
+On stopping games with four and five outcomes, every remaining combination is excluded by one of a few further patterns, none of them proved. Here r₁ and s₂ are refined by whether r₁ holds a and whether s₂ holds c, and each pattern comes with its mirror image:
+- an r₁ without a never occurs together with an s₂ without c;
+- three patterns of three lines never occur: α, r₁ with a and s₂ without c; β with l < q, r₁ with a and s₂ without c; β with l < q, δ with j > q and r₁ with a;
+- one pattern needs all four lines: α, δ with j > q, r₁ with a and s₂ with c.
+
+Over the same samples, at least one of the two tests in the opposed game fails, and at least one of the two tests in the twin games. Every pattern of failures allowed by this and by the conjecture occurs.
+
 ## 8. Towards a hand proof: a working configuration survives
 
 A *configuration* is a triple (i, P, Q) with Q the reverse of P or P with its top moved to the bottom; configurations of forms with different outcome sets are compared on the outcomes present.
@@ -219,7 +250,9 @@ In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `k3_cegar.py`, `k3_schemas.py`, `k3_minimise.py` (in this order, after `collect.py 3 7`): the search for short implications, their closure under renaming outcomes, and the minimal set;
 - `k3_chain.py`: the chain lemma on random forms (totally tight or not) and on stopping games;
 - `k4_chainsearch.py`: the smallest family of shapes on stopping games with four outcomes;
-- `chain_k.py`, `tr_chain.cpp`: the chain conjecture on random forms with four to six outcomes, and on all reachable summaries; `./tr_chain k zsrot [file]` as for `tr_auto`.
+- `chain_k.py`, `tr_chain.cpp`: the chain conjecture on random forms with four to six outcomes, and on all reachable summaries; `./tr_chain k zsrot [file]` as for `tr_auto`;
+- `chain_pairs.py`: the proved pieces 1–4 towards the conjecture, and how often the remaining cases occur;
+- `chain_atoms.py`, `chain_triples.py`: the patterns of safe lines that never occur together, and the patterns of failing tests.
 
 ## References
 
