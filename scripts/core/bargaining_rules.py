@@ -83,7 +83,7 @@ def rule_point(name, A, d):
     raise ValueError(name)
 
 
-def holdings(U, name):
+def holdings(U, name, return_law=False):
     n, K = U.shape
     ideal = U.argmax(1)
     D = {frozenset([j]): np.eye(K)[ideal[j]] for j in range(n)}
@@ -95,7 +95,8 @@ def holdings(U, name):
             mem = sorted(S)
             x = rule_point(name, U[mem], U[mem] @ c)
             D[S] = c if x is None else x
-    return U @ D[frozenset(range(n))]
+    law = D[frozenset(range(n))]
+    return (U @ law, law) if return_law else U @ law
 
 
 def endowments(U):
