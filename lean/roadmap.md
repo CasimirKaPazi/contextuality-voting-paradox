@@ -15,10 +15,12 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
    - Then show that the existing models are instances: `ArrowGeneral.Model` for Arrow's scenario, and `JointDraws` with one voter's slice for Gibbard–Satterthwaite.
    - Value: every later placement becomes a theorem about one structure instead of a file with its own definitions.
    - Effort: moderate. The definitions are the work; the proofs are short.
+   - Status: definitions, "mixtures of global sections are models", "full implies weak compatibility" and Proposition 1 are in `Scenarios.lean`. The Gibbard–Satterthwaite instance is in `GSScenario.lean`. Open: the Arrow instance.
 2. **One encoding of rankings.**
    - `PathPinning.Rk` (Boolean strict total orders) and `JointDraws` (injective maps to ℕ) encode rankings differently.
    - A bridge lemma, or a single encoding with the swap lemmas, removes this seam before more files depend on it.
    - Effort: small to moderate.
+   - Status: done in `Rankings.lean`. `PathPinning.Rk` is the common encoding; the joint-draw theorem is stated for it (`prop1R`).
 3. **Lotteries and joint draws as a toolkit.**
    - Couplings, Markov kernels and their composition, and stochastic dominance.
    - Part of this exists inside `JointDraws.lean`; move it into its own file.
