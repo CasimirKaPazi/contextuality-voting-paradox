@@ -1,6 +1,6 @@
 # The Global Form: Arrow's Theorem as a Degree
 
-*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where negative real degrees detect contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`.
+*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where the negative parts of the real degrees measure contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`.
 
 ## 1. Voter loops
 
@@ -96,16 +96,32 @@ Along the loop abc → bac → bca → cba → cab → acb → abc, the six swap
 
 What values occur:
 - **With unanimity**, by Gibbard (1977) the rule is a mixture of dictatorships, and the degrees are its weights, in [0, 1], summing to 1 (the linear programs give the same range). Anonymity makes them 1/n, random dictatorship, as in Section 4.
-- **Without unanimity, degrees can be negative.** The random top two (the voter's first or second choice, probability ½ each) has degree −½. At each backward step half of the probability moves backward, and the forward steps move nothing. This is the minimum over all SD-SP rules for one, two and three voters. *(Computed.)*
+- **Without unanimity, degrees can be negative.** The random top two (the voter's first or second choice, probability ½ each) has degree −½. At each backward step half of the probability moves backward, and the forward steps move nothing. This is the minimum over all SD-SP rules, for any number of voters. *(Computed for one, two and three voters; proved in Propositions 4 and 5.)*
 
-**Proposition 4.** Every deterministic SP rule has degrees 0 or 1, so every mixture of them has degrees in [0, 1]. A negative degree therefore shows that a model is contextual. For one voter the converse holds: an SD-SP lottery is a mixture of deterministic SP rules exactly when its degree is non-negative. *(Proved for one voter; computed for two and three voters, where the polytope of SD-SP rules with all degrees non-negative has the same support function as the hull of the 17 and 60 deterministic SP rules in random directions.)*
+Every deterministic SP rule has degrees 0 or 1 (Lemma 6), so every mixture of them has degrees in [0, 1]. A negative degree therefore shows that a model is contextual. The converse holds, and the degree measures how far a model is from the mixtures.
 
-The one-voter proof uses the flows along the loop. Let α₁, …, α₆ be the probabilities moved at the six steps. Conservation of probability forces α₁ − α₄ = α₃ − α₆ = α₅ − α₂, and this common value D is the degree. If D ≥ 0, take:
-- the dictatorship with weight D;
-- the three rules "the voter's better of two", with weights α₄, α₆ and α₂, each moving once forward and once backward along its edge;
-- constants for the remaining probability, which is non-negative because each alternative can lose at most the probability it holds.
+**Proposition 4 (one voter).** For one voter and three alternatives, the SD-SP lotteries are exactly the mixtures of the seven deterministic SP rules and the random top two. The deterministic rules are the constants, the three rules "the better of a fixed pair" and the dictatorship. The degree D is at least −½. In every such mixture the random top two has weight at least −2D, and this bound is attained. *(Proved; computed: the vertices found by linear programs in random directions are these eight.)*
 
-So the contextuality of the random top two, which *Gibbard–Satterthwaite as a Scenario* shows by a linear program, is seen here as a degree outside the hull of the deterministic degrees. In Arrow's scenario the failure takes another form: the coin rule, which is not fully compatible, has no class at all. In the Gibbard–Satterthwaite scenario every model is compatible, and the obstruction is the sign of the degree. *(Interpretation.)*
+The proof uses the flows along the loop. Let α₁, …, α₆ ≥ 0 be the probabilities moved at the six steps. Conservation of probability forces α₁ − α₄ = α₃ − α₆ = α₅ − α₂, and this common value is D.
+- **If D ≥ 0**, take the dictatorship with weight D; the three "better of two" rules with weights α₄, α₆ and α₂, each moving once forward and once backward along its edge; and constants for the remaining probability. The constants get non-negative weight because each alternative can lose at most the probability it holds.
+- **If D < 0**, subtract the random top two with weight −2D. It moves ½ at each backward step and nothing at the forward ones. The backward flows suffice, since α₄ = α₁ − D ≥ −D and likewise α₆, α₂. The lotteries stay non-negative: at each ranking the top and the second each carry at least −D. The top still has to give up a backward flow before it can gain anything. The second has either just received a backward flow or is about to give one up. The remainder has degree 0 and falls under the first case. The same two observations bound the top and the second together by 1 at each ranking, so D ≥ −½.
+
+**Proposition 5 (any number of voters).** For three alternatives and any number of voters, the SD-SP lotteries are exactly the mixtures of the deterministic SP rules and the n random top twos, one per voter. A lottery rule is non-contextual, a mixture of deterministic SP rules, exactly when no degree is negative. Its contextual fraction is
+
+  CF = 2 × Σ_i max(0, −deg_i).
+
+The contextual fraction is the least weight of a contextual part in a decomposition into a non-contextual model and another model of the scenario (Abramsky, Barbosa and Mansfield). *(Proved, from Gibbard 1977 and Proposition 4. Computed: vertices for one and two voters; the fraction by linear programming on random mixtures for one, two and three voters.)*
+
+Proof:
+- **The mixtures.** By Gibbard, an SD-SP rule is a mixture of SP unilateral and SP duple rules.
+  - A duple on {x, y} gives x a probability that depends only on which voters prefer x to y, and does not decrease when more do. This follows from localisation and monotonicity. Such a function is a mixture of monotone yes-or-no functions, by thresholds, so the duple is a mixture of deterministic SP duples, each of degree 0.
+  - Grouping the unilateral components by voter gives one one-voter SD-SP rule per voter, weighted. A unilateral rule of one voter has degree 0 for every other voter.
+  - Proposition 4 then gives the mixtures. In such a mixture, voter i's degree is the weight of i's dictatorship minus half the weight of i's random top two.
+- **The fraction.** Take a decomposition into a non-contextual part, weight 1 − λ, and any model, weight λ. On the voters with negative degree, the degrees of the non-contextual part are non-negative. Those of any model sum to at least −½, because each vertex is negative for at most one voter, by ½. Hence λ ≥ 2 Σ_i max(0, −deg_i). Taking the random top twos with weights −2 deg_i for these voters attains the bound.
+
+The random top two is the average of two positional rules: the voter's top, of degree 1, and the voter's second choice, of degree −2. The voter's bottom has degree 1 again. The three degrees sum to 0, as they must, since the three positions together give every alternative once. Strategy-proofness admits the second choice only in this average, and the average is the one contextual vertex. *(Computed degrees; interpretation.)*
+
+So the contextuality of the random top two, which *Gibbard–Satterthwaite as a Scenario* shows by a linear program, is seen here as a degree outside the hull of the deterministic degrees, and its amount is measured by the degree. In Arrow's scenario the failure takes another form: the coin rule, which is not fully compatible, has no class at all. In the Gibbard–Satterthwaite scenario every model is compatible, and the obstruction is the sign of the degree. *(Interpretation.)*
 
 ## 8. Relation to the literature
 
@@ -113,17 +129,18 @@ So the contextuality of the random top two, which *Gibbard–Satterthwaite as a 
 - **Okura (2024)**: the same structure with the relation "sum of the voters' maps on homology equals the diagonal". Lemma 2 is this relation for three alternatives.
 - **Rajsbaum and Raventós-Pujol**: an elementary proof by the index lemma on a colored triangulation, with pivotal voters as bivalent paths, and a characterisation of domain restrictions for two voters and three alternatives. **Lara, Rajsbaum and Raventós-Pujol** generalise this.
 
-Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as witnesses of contextuality for strategy-proof lotteries, and the pivotal path as half of the loop.
+Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as the exact measure of contextuality for strategy-proof lotteries (the contextual fraction), and the pivotal path as half of the loop.
 
 ## 9. What the global form still needs
 
-- **Strategy-proof lotteries.** Proposition 4 for two or more voters, and for more alternatives, by proof; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977); the meaning of the negative degree of the random top two, whose lottery turns against the direction of the voter's own loop.
+- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, where a voter has a degree on every triple and the one-voter polytope has more vertices; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977).
 - **An equivariant statement.** Degrees are a homomorphism from the voters' classes to the outcome class. Permuting the voters acts on the first, and reversal acts on both, with sign (−1)^(m−1) on the top class. The trichotomy of *Where the Symmetry Goes* should read as: an equivariant integer homomorphism exists (no obstruction), only a real one exists (a lottery), or none exists. This is not yet worked out beyond the voters' permutations.
 - **Degree for the electorate direction.** Young–Levenglick and the no-show theorem are agreement-type obstructions (thread A). Whether they carry a degree, or only a local inconsistency, is open.
 - Lemmas 1–6 are finite and elementary for each n, and a candidate for a Lean check.
 
 ## References
 
+- Abramsky, S., Barbosa, R. S. and Mansfield, S. (2017). Contextual fraction as a measure of contextuality. *Physical Review Letters* 119, 050504.
 - Barberà, S. and Sonnenschein, H. (1978). Preference aggregation with randomized social orderings. *Journal of Economic Theory* 18, 244–254.
 - Baryshnikov, Y. (1993). Unifying impossibility theorems: a topological approach. *Advances in Applied Mathematics* 14, 404–415.
 - Baryshnikov, Y. and Root, J. (2024). A topological proof of the Gibbard–Satterthwaite theorem. *Economics Letters* 234, 111447. arXiv:2309.03123.

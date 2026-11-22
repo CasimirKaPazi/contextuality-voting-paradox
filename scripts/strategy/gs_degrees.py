@@ -23,6 +23,11 @@ Part 4: which SD-strategy-proof lotteries are mixtures of deterministic strategy
         degrees are all non-negative has the same support function as the convex hull of the
         deterministic rules in random directions: a model is non-contextual exactly when no degree is
         negative (computed, not proved).
+Part 5: the polytope of SD-strategy-proof lotteries. Its vertices, found by linear programs in random
+        directions, are the deterministic strategy-proof rules and one random top two per voter (one and
+        two voters). The contextual fraction (the least weight of a strategy-proof contextual part in a
+        decomposition) equals twice the sum of the negative degrees, on random mixtures for one to three
+        voters. The three positional rules "top", "second", "bottom" have degrees 1, -2, 1.
 Run: python3 gs_degrees.py   (numpy and scipy; about a minute)
 """
 from itertools import permutations, product
@@ -274,5 +279,57 @@ def part4(directions={1: 1000, 2: 500, 3: 150}, seed=2):
               f"{trials} random directions: {gap:.1e}")
 
 
+def top_two(n, k, nv, var, idx, profs):
+    v = np.zeros(nv)
+    for p in profs:
+        v[var(idx[p], p[k][0])] += .5; v[var(idx[p], p[k][1])] += .5
+    return v
+
+
+def contextual_fraction(p, V, A_ub, S):
+    """1 - largest total weight mu of deterministic rules such that p - mu V is a non-negative
+    multiple of an SD-strategy-proof lottery rule."""
+    k = len(V)
+    A = np.vstack([V.T, -(A_ub @ V.T)])
+    b = np.concatenate([p, -(A_ub @ p)])
+    res = linprog(-np.ones(k), A_ub=A, b_ub=b, A_eq=S @ V.T - np.ones((S.shape[0], k)), b_eq=S @ p - 1,
+                  bounds=(0, None), method="highs")
+    return 1 + res.fun
+
+
+def part5(seed=4):
+    rng = np.random.default_rng(seed)
+    pos = {name: walk_winding([r[t] for r in loop_from(HEX[0])]) for t, name in enumerate(("top", "second", "bottom"))}
+    print(f"Part 5, degrees of the positional rules: {pos}")
+    for n, trials in ((1, 3000), (2, 1500)):
+        profs, idx, nv, var, (A_ub, b_ub, A_eq, b_eq) = sdsp_system(n, False)
+        found = set()
+        for _ in range(trials):
+            res = linprog(rng.normal(size=nv), A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq, bounds=(0, 1),
+                          method="highs-ds")
+            found.add(tuple(np.round(res.x, 6)))
+        det = [v for v in found if all(abs(x) < 1e-9 or abs(x - 1) < 1e-9 for x in v)]
+        tts = {tuple(np.round(top_two(n, k, nv, var, idx, profs), 6)) for k in range(n)}
+        other = set(found) - set(det)
+        print(f"Part 5, {n} voter(s): {len(found)} vertices found, {len(det)} deterministic, the rest are the "
+              f"random top twos: {other == tts}")
+    for n, trials in ((1, 150), (2, 150), (3, 40)):
+        profs, idx, nv, var, (A_ub, b_ub, A_eq, b_eq) = sdsp_system(n, False)
+        rules = sp_rules(n)
+        V = np.zeros((len(rules), nv))
+        for r, f in enumerate(rules):
+            for p, x in f.items():
+                V[r, var(idx[p], x)] = 1
+        degs = np.array([degree_row(nv, var, idx, n, k, tuple([HEX[0]] * n)) for k in range(n)])
+        allv = np.vstack([V] + [top_two(n, k, nv, var, idx, profs) for k in range(n)])
+        S = A_eq[:len(profs)]
+        worst = 0.0
+        for _ in range(trials):
+            p = rng.dirichlet(np.ones(len(allv)) * 0.3) @ allv
+            worst = max(worst, abs(contextual_fraction(p, V, A_ub, S) + 2 * np.minimum(0, degs @ p).sum()))
+        print(f"Part 5, {n} voter(s): largest |contextual fraction - 2 x (sum of negative degrees)| on "
+              f"{trials} random mixtures: {worst:.1e}")
+
+
 if __name__ == "__main__":
-    part1(); part2(); part3(); part4()
+    part1(); part2(); part3(); part4(); part5()
