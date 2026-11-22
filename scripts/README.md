@@ -1,0 +1,82 @@
+# Scripts
+
+Computations that check statements of the notes and drafts on small cases. They need Python 3 with `numpy`; some also need `scipy` or `matplotlib`. Run them from their own directory, for example `cd consistency && python3 convexity_check.py`. Running times are given where they exceed a few seconds.
+
+Each script's docstring states what it checks. This file is the index; the notes and drafts name the scripts they rely on. Where a statement is also proved in Lean, the last column names the file (see [`../lean/README.md`](../lean/README.md)); the script then serves as an independent check or covers cases the proof does not state.
+
+## Consistency and participation (`consistency/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `convexity_check.py` | Winner regions in the simplex of vote shares: Borda and plurality are convex (consistent); Condorcet methods fail only at profiles with a cycle; instant runoff fails also without cycles | *Map*, gluing as convexity |  |
+| `blocking_any_n.py` | The explicit blocking construction for three to six candidates: at every profile without a Condorcet winner, any choice of winner is undone by a mixture | *Map*, Young–Levenglick for any number of candidates | `Consistency.lean` |
+| `participation_check.py` | Participation along ballot segments in vote-share space for maximin, Black and Borda with three and four candidates; maximin fails only from four candidates on. Takes about a minute | *Map*, no-show mechanism |  |
+| `ex_post_consistency.py` | Consistency of lottery-valued rules read as a joint draw of winners: the criterion λ(a) ≥ μ(a) + ν(a) − 1 against linear programming; maximal lotteries violate it at every profile with a cycle; random dictatorship satisfies it; for participation, SD dominance against joint draws, and maximal lotteries failing SD-participation but not PC-participation. Takes about twenty seconds | *Consistency as an Extension Problem* §3b | `JoinLotteries.lean` (the criterion, necessary direction) |
+| `electorate_scenario.py` | One scenario with joins (consistency) and one-voter extensions (participation) as contexts and the Condorcet principle as boundary condition, decided as a linear program (lotteries drawn jointly) and an integer program (deterministic rules) for electorates up to n voters: for three alternatives, joins fail from 8 voters (deterministic) and 9 (lotteries), extensions alone never up to 12, both together as joins alone | *Consistency as an Extension Problem* §3c |  |
+| `cycle_assignment_check.py` | No profile with a majority cycle can be assigned to any candidate by a consistent Condorcet extension | *Map*, Young–Levenglick for three candidates | `Consistency.lean` |
+
+## Contextuality (`contextuality/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `condorcet_contextuality.py` | A Condorcet cycle has no valid model on a finite line, is consistent on a circle, and is strongly contextual only on an unbounded line; a choice-based encoding cannot tell cycles from orders | *Cycles and Twists* §3 | `ValueSpaces.lean` (Propositions 1–4) |
+
+## CORE (`core/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `core_checks.py` | Checks for the note on CORE: the last participant is uniform under uniform removals and certain for an exempt caller who always calls; random ballot and scoring rules (plurality, Borda) satisfy consistency and participation for joint draws and unanimity on first choices; holdings equal the endowment plus the surpluses of the groups weighted by 1/C(n, \|S\|), on random instances and on the example of the CORE paper | *CORE and the Formal Results* |  |
+| `rational_floor.py` | The floor against individually rational groups in CORE's sequential variant, as a linear program (and with Pareto-efficient agreements, a mixed-integer program); comparison with the endowment and the paper's floor on random instances; on a line with losses proportional to distance the floor equals the endowment, and the cases where it does not (peaks not available, quadratic loss, the plane); under concave loss the random ballot of a group admits no individually rational improvement, and a numerical check that the weights A⁻¹1 that certify it are positive (proved in the note) | *CORE and the Formal Results*, Section 3b |  |
+| `curvature.py` | Who can agree when participants' losses differ in curvature (outcomes on a line): for concave and linear members, the random ballot can be improved exactly when both extreme members are linear, checked against linear programming; the inward construction and the three-member weights; improvability by composition of the group; who rational groups can push below the endowment, by curvature | *CORE and the Formal Results*, Section 3c |  |
+| `bargaining_rules.py` | CORE's sequential variant with one bargaining rule in every group (utilitarian, Kalai–Smorodinsky, Nash, Raiffa in one step and iterated), the group's call as disagreement point: on a line with linear loss every rule ends at the mean of the peaks; shifts against the endowment and the largest shortfall individual rationality allows, for unstructured utilities, the line with linear and quadratic loss, and the plane. Takes a few minutes | *CORE and the Formal Results*, Section 3d |  |
+
+## Strategy (`strategy/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `rational_diagonal.py` | The diagonal argument with opponents rational in the actual play, for plurality, Borda, instant runoff and Black's rule (two and three voters). Takes some minutes | *Walls and Strategy*, Proposition 4 | `RationalDiagonal.lean` (the certificates) |
+| `rational_diagonal_controls.py` | Controls (dictatorial and two-outcome rules give no cases) and a worked Borda example | *Walls and Strategy*, Proposition 4 |  |
+| `rational_diagonal_gameforms.py` | All 18,138 non-dictatorial two-player game forms with three strategies and three outcomes. Takes some minutes | *Walls and Strategy*, Proposition 4 |  |
+| `sequential_veto.py` | Veto-then-pick procedure: the diagonal survives Nash-style rationality but not sequential rationality | *Walls and Strategy* §3 | `RationalDiagonal.lean` (the count 12 of 36) |
+| `gs_scenario.py` | Linear programs over the empirical models of the Gibbard–Satterthwaite scenario with unanimity: only top choices, constant voter weights (three alternatives with two and three voters, four with two). Three voters take some minutes | note *Gibbard–Satterthwaite as a Scenario*, Section 3 |  |
+| `gs_joint_draws.py` | Joint draws versus SD-strategy-proofness: isolated pairs, the four-alternative example, the path construction of Proposition 1 | note *Gibbard–Satterthwaite as a Scenario*, Section 2 | `JointDraws.lean` (Proposition 1) |
+| `gs_degrees.py` | Degrees for strategy-proof rules, three alternatives: all deterministic strategy-proof rules for one and two voters (degrees 0 or 1, dictatorships exactly at degree 1); SD-strategy-proof lotteries for one to three voters by linear programming (degree independent of the context, summing to the staircase winding, in [0, 1] with unanimity, down to −½ without, at the random top two); non-negative degrees against mixtures of deterministic rules by support functions; vertices of the polytope (deterministic rules and random top twos) and the contextual fraction against the degrees. About a minute | *The Global Form*, Section 7 |  |
+| `degree_tower.py` | One voter, three and four alternatives: the rules "best of S" as affine coordinates for SD-strategy-proof lotteries, each coefficient equal to the degree on the face with S at the bottom; which layers can be negative; top degrees of positional rules (1, −2, 1 and 1, −3, 3, −1); neutral lotteries as completely monotone weight sequences (three to six alternatives) | *The Global Form*, Section 8 |  |
+| `gs_random_top_two.py` | The random top two: strategy-proof, not a mixture of deterministic strategy-proof rules | note *Gibbard–Satterthwaite as a Scenario*, Section 4 | `GSTopTwo.lean` |
+| `rational_diagonal/` | Totally tight two-player game forms with three and four outcomes: a search over finite summaries (one pair per strategy, updated by a rule when a constant row or column is added) covers all stopping games and all forms built on the irreducible cores; every non-dictatorial one has a rational diagonal with the opponent's order the reverse of the player's, or the player's with its top moved to the bottom. Python and C++ versions of the search, the validation against matrices, coverage checks for the cores, random tests with five and six outcomes | *Walls and Strategy*, Proposition 5′; *The rational diagonal on totally tight game forms* |  |
+
+## Symmetry and Arrow's scenario (`symmetry/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `isotropy_check.py` | Stabilisers of all anonymous profiles for small numbers of alternatives and voters; the condition "every stabiliser fixes an admissible output" reproduces the existence conditions for anonymous, neutral rules with single winners, Pareto-optimal winners and rankings. Takes about twenty seconds | *Where the Symmetry Goes* §7 | `Isotropy.lean` (the lemma) |
+| `arrow_as_csp.py` | Arrow's problem for three alternatives as a constraint network: the unanimous solutions independent of irrelevant alternatives are exactly the dictators (two and three voters), none is anonymous, and the share assignment is a consistent fractional solution equal to random dictatorship | *Contextuality and Symmetry* §2 |  |
+| `probabilistic_arrow.py` | Random rules with independence of irrelevant alternatives: with pairwise (weak) compatibility, two voters give only mixtures of dictatorships in the marginals, while from three voters on the coin rule (unanimity, otherwise ½ per pair) goes beyond them; it exists for three to five alternatives and fails for some profiles with six; with full compatibility on shared pairs of columns (empirical models in the sense of Abramsky and Brandenburger), every model is a mixture of dictatorships for two and three voters, and the coin rule admits no such choice of lotteries; with four alternatives and up to four voters every model is a mixture of dictatorships, in three computed steps (no mass outside the voters' rankings, by a linear program reduced by symmetry; triple marginals decide except at a few profiles; those are settled by changing one voter's ranking). Takes about three minutes | *Contextuality and Symmetry* §2a; *Four Levels* Theorems 5 and 5′ | `ProbabilisticArrow.lean`, `ArrowBase.lean` (Theorems 5 and 5′) |
+| `pin_certificate.py` | Exact check of the identities behind Theorem 5′ for four alternatives: the two completion rules match their patterns, their support closures are their eight rankings, the sixteen identities hold, and marginals on sets of three pairs have rank 24 | *Four Levels* Theorem 5′ | `ArrowGeneral.lean` (Theorem 5′) |
+| `pin_search.py` | The search that found the completion rules for four alternatives: linear programs over completions, with random tests of other weights | note *Theorem 5 for any number of alternatives* |  |
+| `pin_rules.json` | The completion rules for four, five and six alternatives, one per shape of m − 1 pairs touching all alternatives | *Four Levels* Theorem 5′ |  |
+| `pin_certificate_m.py` | Exact checks of the induction step for m = 4, 5, 6: determination by sets of m − 1 pairs, coverage of the shapes, and for each rule its patterns, closure and identification (ranks modulo a prime) | *Four Levels* Theorem 5′ | `ArrowGeneral.lean` (Theorem 5′) |
+| `pinm_search.py` | Randomised local search for completion rules, any number of alternatives, minimising the closure of the rule's rankings | note *Theorem 5 for any number of alternatives* |  |
+| `pin_independent_check.py` | Separate check of the same facts for m = 4, 5, 6, reading only the rules file: coverage of the shapes by brute-force relabelling, patterns, closure, identification and determination, with ranks in floating point and exactly modulo a second prime | *Four Levels* Theorem 5′ | `ArrowGeneral.lean` (Theorem 5′) |
+| `equality_criterion.py` | The Equality Criterion on random profiles, four alternatives: plurality, Borda, antiplurality, a symmetric positional rule, Minimax, maximal lotteries, random ballot, uniform random dictatorship; the tie-breaking argument for positional rules | *The Equality Criterion and Reversal* |  |
+| `path_proof_check.py` | Linear-programming check of the proof of Theorem 5′ for m = 4, 5, 6: with the completion of Step 3 and random weights, the probability of the target ranking is forced to the mixture's | note *Theorem 5 for any number of alternatives* | `ArrowGeneral.lean` (Theorem 5′) |
+| `pin_path_certificate.py`, `pin_path_greedy.py` | Exact checks of the induction step along paths for m ≤ 10: greedy completions, closure of the voters' rankings and identification of the target, modulo a prime | note *Theorem 5 for any number of alternatives* | `ArrowGeneral.lean` (Theorem 5′) |
+| `pin_greedy.py`, `pin_star_uniform.py`, `pin_tree_uniform.py`, `pin_updown.py`, `pin_kernel.py`, `rankmod.py` | Earlier searches for uniform completion rules on all shapes, and the parity character left invisible by completions that keep the reversal symmetry | note *Theorem 5 for any number of alternatives* |  |
+
+## Topology (`topology/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `condorcet_gluing.py` | The six ways of gluing the two Condorcet cycles of the three-alternative annulus: three give a torus, three a Klein bottle; global reversal alone gives a torus | *Two Kinds of Loop*, *Cycles and Twists* §5 | `Nerve.lean` |
+| `seam_check.py` | In every Klein bottle gluing, orientation flips at every seam edge; in every torus gluing, at none | *Cycles and Twists*, Proposition 5 | `Nerve.lean` |
+| `pivotal_path.py` | Voters switch from a unanimous ranking to its reverse one at a time: a dictatorship's social ranking makes the whole half turn during the dictator's switch; for a mixture of dictatorships all three comparisons pass ½ during the switch of the weighted median voter, at the even mixture of r and its reverse; from non-unanimous profiles the crossings differ | *Cycles and Twists*, Section 5 |  |
+| `voter_degrees.py` | Degrees of voters for three alternatives: all IIA rules into rankings for two and three voters (degree independent of the context, sum equal to the diagonal winding, non-zero exactly for dictators and anti-dictators); jumps of the social ranking under Borda, Copeland and plurality; real degrees by linear programming over joint draws along a loop, pinned to the weights for mixtures and depending on the context for the coin rule | *The Global Form* |  |
+| `circle_tournaments.py` | Every round (locally transitive) tournament up to eight alternatives has a placement on the circle, and up to five alternatives the placeable tournaments are exactly the locally transitive ones | *Cycles and Twists* §3 | `CircleTournaments.lean` (one direction, and the four-alternative example) |
+| `comparison_complexes.py` | The complexes of comparisons on n alternatives (sets in one strict order; sets without a reversed pair) and their quotients by reversal: homology of spheres and projective spaces for n ≤ 5 and n ≤ 4, the three-alternative annulus divided by reversal is a Möbius strip, and the four-alternative complex fails to be a homology manifold exactly where one alternative beats or is beaten by all others | *Cycles and Twists*, Proposition 6 |  |
+
+## Exploratory (`exploratory/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `condorcet_island.py` | Interactive: where a third candidate produces a cycle in a spatial model, as a function of zoom and voter arrangement | exploratory |  |
+| `island_phase_map.py` | Area and direction of the cycle region over the parameters of the spatial model | exploratory |  |

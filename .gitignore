@@ -1,2 +1,3 @@
 .lake/
 *.patch
+__pycache__/
