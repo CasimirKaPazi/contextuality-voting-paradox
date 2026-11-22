@@ -50,4 +50,5 @@ Before the general argument, the induction step was verified exactly for m = 4, 
 - `scripts/symmetry/path_proof_check.py`: linear-programming check of the argument;
 - `scripts/symmetry/pin_path_certificate.py`, `pin_path_greedy.py`: exact checks of the step, m ≤ 10;
 - `scripts/symmetry/pin_certificate.py`: the four-alternative case with the first rules found and explicit identities;
-- `scripts/symmetry/pin_certificate_m.py`, `pin_rules.json`, `pin_search.py`, `pinm_search.py`, `pin_kernel.py`, `pin_star_uniform.py`, `pin_tree_uniform.py`, `pin_updown.py`, `pin_greedy.py`, `rankmod.py`: the earlier searches, uniform rules and the parity obstruction (optional; the proof does not depend on them).
+- `scripts/symmetry/pin_certificate_m.py`, `pin_rules.json`: the earlier form of the check, with all shapes of m − 1 pairs (optional; the proof does not depend on it);
+- `scripts/symmetry/pin_kernel.py`, `pin_star_uniform.py`, `pin_tree_uniform.py`, `rankmod.py`: completions that keep the reversal symmetry, and the parity obstruction (optional). The searches that found the rules in `pin_rules.json` are no longer kept; they are in the history of the repository.

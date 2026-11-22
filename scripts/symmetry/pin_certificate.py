@@ -1,4 +1,4 @@
-"""Exact certificates for the pinning rules of pin_search.py.
+"""Exact certificates for the first pinning rules found for four alternatives (by a search over completions).
 
 For a rule (pattern of bits on S -> full ranking), let Omega be the set of rankings whose
 restriction to every triple occurs among the rule's rankings.  At the completed profile any
