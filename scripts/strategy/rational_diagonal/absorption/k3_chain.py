@@ -34,21 +34,22 @@ def chain(R):
             ok = rev(Ri, (a, e, c)) or rot(Ro, (c, a, e)) or rot(Ri, (a, c, e)) or rev(Ro, (c, e, a))
             fails += not ok
     return cases, fails
-random.seed(5); st = {"totally tight": [0, 0, 0], "not totally tight": [0, 0, 0]}
-while st["totally tight"][0] < 3000 or st["not totally tight"][0] < 3000:
-    n, m = random.randint(2, 6), random.randint(2, 6)
-    R = [[random.randrange(3) for _ in range(m)] for _ in range(n)]
-    # bias towards tightness: copy neighbours often
-    for _ in range(random.randint(0, n * m)):
-        i, j = random.randrange(n), random.randrange(m)
-        R[i][j] = R[i][random.randrange(m)] if random.random() < .5 else R[random.randrange(n)][j]
-    if len({v for r in R for v in r}) < 3: continue
-    key = "totally tight" if tt(R) else "not totally tight"
-    if st[key][0] >= 3000: continue
-    c, f = chain(R); st[key][0] += 1; st[key][1] += c; st[key][2] += f
-print("random forms (forms, cases, failures):", st)
-data = pickle.load(open("data_k3_N7.pkl", "rb")); tot = [0, 0]
-for p, o, z, W in data:
-    if len(set(o) | {z}) != 3: continue
-    c, f = chain(matrix(p, o, z, 0)); tot[0] += c; tot[1] += f
-print("stopping games up to 7 nodes (cases, failures):", tot)
+if __name__ == "__main__":
+    random.seed(5); st = {"totally tight": [0, 0, 0], "not totally tight": [0, 0, 0]}
+    while st["totally tight"][0] < 3000 or st["not totally tight"][0] < 3000:
+        n, m = random.randint(2, 6), random.randint(2, 6)
+        R = [[random.randrange(3) for _ in range(m)] for _ in range(n)]
+        # bias towards tightness: copy neighbours often
+        for _ in range(random.randint(0, n * m)):
+            i, j = random.randrange(n), random.randrange(m)
+            R[i][j] = R[i][random.randrange(m)] if random.random() < .5 else R[random.randrange(n)][j]
+        if len({v for r in R for v in r}) < 3: continue
+        key = "totally tight" if tt(R) else "not totally tight"
+        if st[key][0] >= 3000: continue
+        c, f = chain(R); st[key][0] += 1; st[key][1] += c; st[key][2] += f
+    print("random forms (forms, cases, failures):", st)
+    data = pickle.load(open("data_k3_N7.pkl", "rb")); tot = [0, 0]
+    for p, o, z, W in data:
+        if len(set(o) | {z}) != 3: continue
+        c, f = chain(matrix(p, o, z, 0)); tot[0] += c; tot[1] += f
+    print("stopping games up to 7 nodes (cases, failures):", tot)

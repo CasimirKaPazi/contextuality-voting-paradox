@@ -72,4 +72,6 @@ reachable summaries) check the position lemma: some working configuration that
 survives can be recognised by where the line's outcome sits in its orders.
 The `k3_*.py` scripts belong to the hand proof for three outcomes: the
 properties behind the working conditions, the search for the implications
-used in the proof, and a check of the chain lemma (`k3_chain.py`).
+used in the proof, and a check of the chain lemma (`k3_chain.py`). The chain
+conjecture for more outcomes is checked by `chain_k.py` (random forms) and
+`tr_chain.cpp` (all reachable summaries); `k4_chainsearch.py` found it.

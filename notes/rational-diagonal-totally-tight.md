@@ -56,7 +56,7 @@ Together these give the theorem.
 ## 6. Beyond four outcomes, and what remains open
 
 - With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The summary search does not scale to five outcomes.
-- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. For four, Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
+- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes, checked exhaustively for four (end of Section 7). Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
 - Tight forms that are not totally tight remain open. They include the normal forms of general games of perfect information and veto procedures. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
 
 *Reading.* On a core, the three key outcomes are forced in pairs by both players and singly by neither: the loop of refutation is present locally, as in a rock–paper–scissors. On a stopping game it is built step by step in time, one constant line per node. The theorem says both ways of building the loop always leave a player without a strict Nash strategy. *(Interpretation.)*
@@ -105,6 +105,32 @@ The four configurations alternate between the players and between the two kinds.
 **How the facts were found.** For each player, the working conditions depend on 24 yes-or-no properties of the form: forcing, leaving and reaching, for each choice of outcomes. On stopping games with three outcomes these properties take few joint values. A search for short implications that hold on all of them, and that together exclude every assignment in which the lemma fails, returned seven implications up to renaming outcomes. The chain lemma was read off the resulting propositional proof, and its proof uses only (F1), (F2) in both forms and (F3).
 
 The chain lemma was checked directly on 3,000 random totally tight forms of size up to 6 × 6, with 15,376 cases. It was also checked on every stopping game with three outcomes up to seven nodes, with 292,488 cases. No failure was found.
+
+**Beyond three outcomes: the chain conjecture.** For an order P with top a, write P* for P with everything below the top reversed: (a, M, c)* = (a, c, M reversed). The rotation of P* is the reverse of P. So, with P running from a to c, the following four configurations are of the two kinds:
+
+(i, P, rev P), (o, rev P, P), (i, P*, rev P), (o, (rev P)*, P).
+
+With three outcomes and P = (a, e, c) these are the four configurations of the chain lemma.
+
+**Conjecture (computer-checked for four outcomes).** Let i not force a and its opponent o not force c ≠ a. Then for every order P with top a and bottom c, one of these four configurations works.
+
+Checks, with no failure:
+- *Four outcomes, exhaustively.* The check covers all reachable summaries of Section 3 with four outcomes present: 15,662,736 cases on totally reducible forms and 20,280,576 from the core summaries.
+- *Five and six outcomes, by sampling.* On random stopping games: 800 games with 119,184 cases for five outcomes, and 800 games with 771,120 cases for six.
+- *Random totally tight forms with four outcomes.* 1,500 forms, with 38,400 cases.
+
+The four configurations were found as the smallest family of shapes that always contains a working configuration on stopping games with four outcomes. Every order of the middle outcomes works.
+
+The theorem for three outcomes uses only the chain lemma and the forcing sets. So a proof of the conjecture for every number of outcomes would give the theorem for all totally tight forms, without the induction of Section 8.
+
+**Reading.** The four tests take place in three games.
+- *The opposed game* (P against rev P). Both players are tested in it.
+- *i's twin game* (P* against rev P). i ranks a first, and agrees with o on every other outcome.
+- *o's twin game* (P against (rev P)*). o ranks c first, and agrees with i on every other outcome.
+
+A configuration fails exactly when the tested player has a strategy against which every best reply of the opponent is an equilibrium of its game. In the opposed game these are saddle points, all with the same outcome. Neither a nor c can be that outcome, by (F1).
+
+Geometrically, P ↦ rev P is the antipodal map of the permutohedron. P ↦ P* is the antipodal map of the facet on which a is on top, with the other outcomes forming the bottom block. In *The global form*, Section 8, the layer |S| = m − 1 of the stack of degrees lives on such facets. *(Interpretation; the connection is not worked out.)*
 
 ## 8. Towards a hand proof: a working configuration survives
 
@@ -191,7 +217,9 @@ In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `positions.py k N`, `tr_positions.cpp`: the position lemma on stopping games and on all reachable summaries; `./tr_positions k zsrot [file]` as for `tr_auto`;
 - `k3_feat.py`: the properties and working conditions of Section 7, checked against the matrix test;
 - `k3_cegar.py`, `k3_schemas.py`, `k3_minimise.py` (in this order, after `collect.py 3 7`): the search for short implications, their closure under renaming outcomes, and the minimal set;
-- `k3_chain.py`: the chain lemma on random forms (totally tight or not) and on stopping games.
+- `k3_chain.py`: the chain lemma on random forms (totally tight or not) and on stopping games;
+- `k4_chainsearch.py`: the smallest family of shapes on stopping games with four outcomes;
+- `chain_k.py`, `tr_chain.cpp`: the chain conjecture on random forms with four to six outcomes, and on all reachable summaries; `./tr_chain k zsrot [file]` as for `tr_auto`.
 
 ## References
 
