@@ -148,6 +148,34 @@ So the people at the edges decide. Members inside can be anything; agreement nee
 
 *Reading.* The random ballot is the fallback that everyone shares. Agreement is the trade of risk for certainty, and it is available where people at the edges of a group would rather have the average than the gamble. The value shifts of Section 7 of the CORE paper fall on those who would rather have kept the gamble, and on everyone once some participants are risk-averse. *(Proposition proved for the cases stated; the rest computed; the reading is interpretation.)*
 
+## 3d. Particular bargaining rules
+
+Sections 3a–3c bound what groups can do. A definite rule closes the selection question. Let every group S the process reaches bargain over lotteries with its own call as the disagreement point, by one of five rules:
+- **utilitarian:** the largest sum of gains;
+- **Kalai–Smorodinsky:** the largest equal fraction of each member's best possible gain;
+- **Nash:** the largest product of gains;
+- **Raiffa, one step:** each member's best individually rational lottery, averaged. This is random dictatorship over the improvements, one level up (Section 5);
+- **Raiffa:** that step repeated from the new point until it stops.
+
+**Proposition (mean of the peaks).** Let the outcomes be points on a line, u_j(x) = β_j − α_j|x − p_j| with α_j > 0, and let every peak be an available outcome. Under any individually rational behaviour of the groups, every group S that agrees picks a lottery inside the interval of its members' peaks, whose mean is μ_S, the mean of those peaks. A Pareto-efficient agreement gives every participant, member or not, the value of the point μ_S. So every efficient rule leads to the same holdings, the value of the mean of all peaks, in the one-shot and in the sequential variant alike. *(Proved.)*
+
+*Proof.* By induction, every reached group's call is a lottery inside the interval of its peaks with mean μ_S. For a single participant this is the ideal. A call averages the laws of the groups S ∖ {k}, whose means μ_{S∖{k}} average to μ_S.
+- **The mean is pinned.** For the two members at the edges of S, the sum of the expected distances E|X − q₁| + E|X − q_s| is at least q_s − q₁, with equality exactly when X stays in the interval. The call attains it. Individual rationality for both therefore keeps X in the interval and fixes E X − q₁ and q_s − E X, so E X = μ_S.
+- **Jensen.** Given the mean, E|X − p| ≥ |μ_S − p| for every p. Mixing the two available outcomes next to μ_S, to give mean μ_S, attains equality for every p that is not strictly between them. That includes every peak, since the peaks are outcomes. This lottery is the best individually rational one for every member at once. ∎
+
+So on a line with linear loss there is no selection problem. Bargaining has one efficient answer, and CORE implements the mean of the ideal points, not the median. The random ballot fixes the mean. The members at the edges, whose losses depend only on the mean, have nothing to trade, and the members in between take the compromise at the mean. The mean is set by the ideals the participants would enact if they were last. A threat to enact another point is not credible, since the last participant has no reason to enact anything but their ideal. *(Interpretation.)*
+
+**Computed comparison** (`scripts/core/bargaining_rules.py`). Shifts against the endowment are in units of each participant's utility range, over 300 participants in instances of three to five participants. The last column gives, for comparison, the largest shortfall that individual rationality alone allows (e − G, Section 3b):
+
+| Family | below endowment | largest shortfall (rules) | largest shortfall allowed | mean gain |
+|---|---|---|---|---|
+| independent uniform utilities | 18–19 % for every rule | 0.24 (Raiffa, one step) to 0.32 (utilitarian, Nash) | 0.36 | +0.04 to +0.05 |
+| line, linear loss | none | 0 | 0 | +0.063, the same for every rule |
+| line, quadratic loss | none | 0 | 0.042 | +0.13 |
+| plane, distance | 1 % (utilitarian only) | 0.004 (utilitarian), 0 for the others | 0.010 | +0.03 |
+
+With spatial structure, the natural rules do not realise the harm that individual rationality allows. It needs a group to pick, among its improvements, one that moves the outcome away from an outsider. Only the utilitarian rule in the plane does so, and slightly. Without structure the harm is common, and the rule changes its size but hardly its frequency: Raiffa's one-step rule, which spreads the gain over the members' own best improvements, harms least. *(Computed; the reading is interpretation.)*
+
 ## 4. Where CORE stands relative to Gibbard
 
 *Walls and Strategy* gives two exact statements that the CORE paper describes in words.
@@ -172,7 +200,7 @@ So CORE uses two of the three switches between no fixed point and a fixed point:
 
 ## 6. Questions
 
-1. **The sequential equilibrium.** By Section 3a, what participants hold in the sequential variant is the endowment plus the weighted surpluses of the groups. Which surpluses groups capture is the remaining question. In the language of thread A the surpluses are data on the poset of sub-electorates, one vector per group, constrained only by the individual rationality of the members. How large the shortfall can be under individual rationality alone is settled in Section 3b: it is a linear program, and it is zero on a line with losses proportional to distance. Open: which families of surpluses arise from particular bargaining rules in every group, whether the floor has a closed form beyond the line (in the plane it falls below the endowment, by little in the cases computed), whether the criterion of Section 3c (both edges linear) holds for any number of members with individual concave losses, what plays its role when some members are convex, and whether the absence of a canonical selection is an obstruction of a definite level.
+1. **The sequential equilibrium.** By Section 3a, what participants hold in the sequential variant is the endowment plus the weighted surpluses of the groups. Which surpluses groups capture is the remaining question. In the language of thread A the surpluses are data on the poset of sub-electorates, one vector per group, constrained only by the individual rationality of the members. How large the shortfall can be under individual rationality alone is settled in Section 3b: it is a linear program, and it is zero on a line with losses proportional to distance. Which families of surpluses arise from particular bargaining rules in every group is answered for five rules in Section 3d: on a line with linear loss every efficient rule gives the same result, the mean of the ideal points, and with spatial structure the rules hardly realise the harm individual rationality allows. Open: whether the floor has a closed form beyond the line (in the plane it falls below the endowment, by little in the cases computed), whether the criterion of Section 3c (both edges linear) holds for any number of members with individual concave losses, what plays its role when some members are convex, and whether the absence of a canonical selection is an obstruction of a definite level.
 2. **Characterisation of the winner lottery.** *Answered negatively in Section 2:* consistency and participation for joint draws, with anonymity, neutrality and unanimity on first choices, leave a convex family containing every scoring rule with uniform tie-breaking. A characterisation of random ballot by conditions on winner lotteries alone needs proportionality or a condition of the strategic kind.
 3. **The call structure as a game.** Does the sequential call structure, with public calls and observed removals, admit an analysis by sequential rationality that removes part of the strategic remainder, as visible turns do in *Walls and Strategy*?
 4. **Fallbacks compared.** Section 2 gives one side of the comparison between random ballot and maximal lotteries as fallbacks. A second side is the Equality Criterion (working note *The Equality Criterion and Reversal*): random ballot fails it, in the direction of plurality, while maximal lotteries pass, and no strategy-proof Pareto-optimal fallback can pass it. The other side, how manipulable each is when used as the fallback of a consensus procedure, is open.
@@ -188,6 +216,7 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 - who can agree (Section 3c): with mixed curvature, a group of concave and linear members can improve on its random ballot exactly when both members at its edges are linear (proved for the construction, for two and three members, computed beyond); convex members make agreement almost always possible, and the harm to outsiders follows the same attitudes to risk;
 - the negative answer on the electorate side (Section 2): consistency and participation alone do not single out the fallback;
 - CORE's exact place relative to Gibbard's theorems (Section 4), with the limit of what the theorems say about open deliberation;
+- particular bargaining rules (Section 3d): on a line with linear loss every efficient rule leads to the mean of the ideal points, so there is no selection problem; with spatial structure the natural rules hardly harm outsiders (only the utilitarian rule in the plane, slightly), while with unstructured utilities about a fifth of participants end below their endowment under every rule;
 - whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call structure under sequential rationality.
 
 ## References
