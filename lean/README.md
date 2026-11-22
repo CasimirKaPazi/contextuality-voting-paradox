@@ -29,3 +29,5 @@ Each file's header names the statements it checks. This file is the index of wha
 | `JointDraws.lean` | Proposition 1 of *Gibbard–Satterthwaite as a Scenario* (`prop1`): a one-voter scheme with nonnegative lotteries is SD-strategy-proof exactly when every two ballots admit a joint draw on admissible pairs; the draw is built along adjacent swaps | *Gibbard–Satterthwaite as a Scenario* §2 |
 
 What the files leave to standard topology: that a coherent orientation of the triangles is the same as orientability, and the classification of surfaces, which names the resulting surfaces (torus, Klein bottle, sphere, projective plane). What is not formalised: the count over all 18,138 two-player game forms, whose formal version would also need a proof that the enumeration is complete, and Gibbard's 1978 Corollary 2, which `Lotteries.lean` assumes.
+
+What is still to be formalised, and in which order: `roadmap.md` in this folder.
