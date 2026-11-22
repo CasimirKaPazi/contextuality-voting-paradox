@@ -167,19 +167,40 @@ The pointwise and the global layer are two parts of one equivariant problem.
 
 An equivariant obstruction theory in the usual sense would place the isotropy condition at the fixed-point sets and the degree as the next obstruction class. That form is not worked out. *(Interpretation.)*
 
-## 10. Relation to the literature
+**More alternatives.** On the triples, Proposition 6 applies to each triple separately. On the whole sphere of rankings the same holds:
+- **Alternatives.** A permutation π acts on the sum-zero hyperplane of utility vectors with determinant sign(π). This hyperplane carries both the sphere of rankings and the boundary of the simplex of outcomes, so π has degree sign(π) on both.
+- **Reversal.** Reversal is the antipodal map, of degree (−1)^(m−1), on rankings as input and as output.
+
+Neutrality and reversal symmetry therefore again put no condition on the top degrees, and anonymity is the whole constraint for every m. *(Proved; the determinants are checked for m ≤ 6.)*
+
+## 10. The electorate direction
+
+*Consistency as an Extension Problem* asks whether the obstruction of Young–Levenglick is an invariant of how the Condorcet regions sit around the cycle region: "the winding again". For three candidates the winding is there:
+- **The winding.** In the coordinates of the pairwise margins (m_ab, m_bc, m_ca), the cycle region is the pair of opposite orthants +++ and −−−, two cones with a common axis, the purely cyclic margins.
+- **Around the axis.** The six orthants between the cones have the Condorcet winners a, a, c, c, b, b, in this order around the axis. The partial assignment of Condorcet winners winds once around the triangle of candidates, in opposite senses seen from the two cones.
+- **Forced meeting place.** Any extension with convex winning regions, which consistency requires, must have a point where all three regions meet, since a loop that winds once cannot bound a disc on which only two regions meet. Such a point lies outside the open Condorcet regions, so in the closure of the cycle region or on a tie.
+
+*(The order of the regions is read off the sign patterns; the meeting point follows from the winding.)*
+
+But the winding is not the obstruction:
+- **Borda.** Borda's three winning regions are convex and meet exactly where the Borda scores are equal, which in margin coordinates is the purely cyclic axis. Borda realises the winding consistently, placing the meeting point on the axis of the hole. It pays by not being a Condorcet extension. *(Proved: the Borda scores are differences of margins, equal exactly when the margins are equal.)*
+- **The blocking lemma.** This lemma of *A Map of Voting Paradoxes* excludes every point of the cycle region on its own. At a profile p there, any candidate x is beaten by some c, and mixing p with a suitable profile where x is the Condorcet winner passes through a profile where c is. So p cannot go to x, for every x, without looking at any loop.
+
+The obstruction of Young–Levenglick is therefore pointwise. At each point of the hole the relation "beats" is a map of the candidates into themselves without a fixed point: the Lawvere form, at a point. The theorems with a dictator are the opposite case. Every single profile has admissible outcomes, and the obstruction appears only along loops, as a degree. This matches the levels of *Four Levels*: Young–Levenglick read for joint draws is a failure of local consistency (level 1), Arrow's and Gibbard–Satterthwaite's scenarios are symmetry breaking (level 3). The winding of the Condorcet regions around the hole is the direction of the cycle. It is visible in both cases, but only in the second does it carry the obstruction. *(Interpretation.)*
+
+## 11. Relation to the literature
 
 - **Baryshnikov (1993)**: Arrow's theorem by the homology of a nerve. Baryshnikov and Root describe his computation as showing that the profile complex has, in dimension m − 2, the homology of a product of n spheres, and they reprove it. They obtain Gibbard–Satterthwaite through Muller–Satterthwaite: a monotone unanimous rule induces a simplicial map, and the pairing of each voter's class with the outcome class is 1 for a dictator and 0 otherwise.
 - **Okura (2024)**: the same structure with the relation "sum of the voters' maps on homology equals the diagonal". Lemma 2 is this relation for three alternatives.
 - **Rajsbaum and Raventós-Pujol**: an elementary proof by the index lemma on a colored triangulation, with pivotal voters as bivalent paths, and a characterisation of domain restrictions for two voters and three alternatives. **Lara, Rajsbaum and Raventós-Pujol** generalise this.
 
-Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as the exact measure of contextuality for strategy-proof lotteries (the contextual fraction), and the pivotal path as half of the loop. Sections 8 and 9 are first looks: the stack of degrees for one voter, and the three placements as ways out of n · d = 1.
+Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as the exact measure of contextuality for strategy-proof lotteries (the contextual fraction), and the pivotal path as half of the loop. Sections 8 and 9 are first looks: the stack of degrees for one voter, and the three placements as ways out of n · d = 1. Section 10 answers a question of *Consistency as an Extension Problem* in the negative: the winding is there but is not the obstruction.
 
-## 11. What the global form still needs
+## 12. What the global form still needs
 
 - **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, along the stack of degrees of Section 8; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977).
-- **The equivariant statement.** Section 9 gives the three placements as three ways out of n · d = 1 for three alternatives. Still open: the same for more alternatives, where reversal acts on the top class with sign (−1)^(m−1) and neutrality may then constrain the degrees; and a formal equivariant obstruction theory with the isotropy condition and the degree as successive obstructions.
-- **Degree for the electorate direction.** Young–Levenglick and the no-show theorem are agreement-type obstructions (thread A). Whether they carry a degree, or only a local inconsistency, is open.
+- **The equivariant statement.** Section 9 gives the three placements as three ways out of n · d = 1 for three alternatives. For more alternatives the symmetries act with equal signs on both sides, so the conclusion is the same. Still open: a formal equivariant obstruction theory with the isotropy condition and the degree as successive obstructions.
+- **The electorate direction.** Section 10 finds Young–Levenglick pointwise: the Condorcet regions wind around the cycle region, but every point of it is blocked separately. Still open: the same for the no-show theorem, and for more candidates, where the cycle region has more components.
 - Lemmas 1–6 are finite and elementary for each n, and a candidate for a Lean check.
 
 ## References
