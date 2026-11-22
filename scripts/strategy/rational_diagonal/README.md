@@ -62,7 +62,7 @@ rows for player 1, columns for player 2. Preferences are strict rankings.
 ## Survival of a working configuration (`absorption/`)
 
 Towards a hand proof for totally tight forms (note *The rational diagonal on
-totally tight game forms*, Section 7). Run from `absorption/`; `sg.py` imports
+totally tight game forms*, Sections 7 and 8). Run from `absorption/`; `sg.py` imports
 `recipes_core.py` from the parent folder. `python3 collect.py k N` first, then
 the analyses with the same `k N`. `tr_absorb.cpp` checks on all reachable
 summaries that a line with a present outcome keeps a working configuration
@@ -70,3 +70,6 @@ exactly when the new form is valid. `base_rule.py` checks the two base cases
 proved in the note. `positions.py` (stopping games) and `tr_positions.cpp` (all
 reachable summaries) check the position lemma: some working configuration that
 survives can be recognised by where the line's outcome sits in its orders.
+The `k3_*.py` scripts belong to the hand proof for three outcomes: the
+properties behind the working conditions, the search for the implications
+used in the proof, and a check of the chain lemma (`k3_chain.py`).

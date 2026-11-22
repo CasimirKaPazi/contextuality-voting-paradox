@@ -1,12 +1,12 @@
 # The rational diagonal on totally tight game forms
 
-*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It settles the totally tight forms with at most four outcomes by a complete computer check, and records the method, the evidence beyond four outcomes, and what remains open. Scripts: `scripts/strategy/rational_diagonal/`.*
+*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It settles the totally tight forms with at most four outcomes by a complete computer check, gives a hand proof for three outcomes, and records the method, the evidence beyond four outcomes, and what remains open. Scripts: `scripts/strategy/rational_diagonal/`.*
 
 ## 1. The question and the condition
 
 A two-player game form has rows (player 1's strategies), columns (player 2's) and an outcome in each cell. Fix a player i, a strict ranking P of the outcomes for i and a strict ranking Q for the opponent. Read i's strategies as rows. Player i *works* under (P, Q) if every row of i is refuted: among the opponent's best replies to that row (the cells holding the opponent's favourite outcome y in the row) there is one whose column contains an outcome i prefers to y. Then no strategy of i is a strict Nash strategy, which is the rational diagonal. On tight forms every pair of preferences has an equilibrium, so refutation works only through repeated outcomes: the opponent is indifferent among the cells holding y, and one of them must push i away.
 
-**Theorem (computer-checked).** Every non-dictatorial totally tight two-player game form with three or four outcomes admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
+**Theorem (computer-checked; by hand for three outcomes, Section 7).** Every non-dictatorial totally tight two-player game form with three or four outcomes admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
 
 Totally tight forms are those whose 2 × 2 subforms are all tight. They include the normal forms of stopping games (games on a path in which the player to move may stop with that node's outcome) but not all games of perfect information.
 
@@ -56,12 +56,57 @@ Together these give the theorem.
 ## 6. Beyond four outcomes, and what remains open
 
 - With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The summary search does not scale to five outcomes.
-- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. Section 7 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
+- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. For four, Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
 - Tight forms that are not totally tight remain open. They include the normal forms of general games of perfect information and veto procedures. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
 
 *Reading.* On a core, the three key outcomes are forced in pairs by both players and singly by neither: the loop of refutation is present locally, as in a rock–paper–scissors. On a stopping game it is built step by step in time, one constant line per node. The theorem says both ways of building the loop always leave a player without a strict Nash strategy. *(Interpretation.)*
 
-## 7. Towards a hand proof: a working configuration survives
+## 7. Three outcomes by hand
+
+With three outcomes the theorem has a short direct proof, without the summary search and without induction. It uses only that every 2 × 2 subform is tight. A 2 × 2 form is tight exactly when it has a constant row or column.
+
+**Words.** Fix a player i and its opponent o, with i's strategies as rows. Let u ≠ v be outcomes. A row *leaves u* if some cell of the row holding u lies in a column holding another outcome. A row *reaches v from u* if some cell of the row holding u lies in a column holding v. A row is *inside* a set of outcomes if all its cells hold outcomes from the set. The same words are used for columns, with rows and columns exchanged.
+
+**Working conditions.** Let P = (t, m, w), best first.
+- With Q the reverse of P, the configuration (i, P, Q) works exactly when: i does not force t; every row holding w leaves w; every row inside {t, m} holding m reaches t from m.
+- With Q the rotation (m, w, t), it works exactly when: i does not force t; every row holding m reaches t from m; every row inside {t, w} holding w leaves w.
+
+*Proof.* Take the pair (y, M) of a row (Section 3). With the reverse, y is w if the row holds w; otherwise m if it holds m; otherwise t. The row is refuted exactly when some column in which it holds y contains an outcome i prefers to y. For y = w this is any other outcome, for y = m it is t, and for y = t there is none. The rotation is the same with the opponent's order m, w, t. ∎
+
+**Three facts.** Let u, v, w be the three outcomes, all present. Each fact holds with the roles of rows and columns exchanged as well.
+- *(F1)* If o does not force w, every row holding w leaves w. Otherwise all w-cells of some row lie in columns that are constant w.
+- *(F2)* Every row inside {v, w} holding w reaches v from w, or every column inside {u, w} holding w leaves w.
+  *Proof.* Suppose a row r and a column c both fail. Their common cell lies in {v, w} ∩ {u, w}, so it holds w. It is a w-cell of c, so its row r holds only w. But v occurs in some column, r holds w there, and so r reaches v from w. ∎
+- *(F3)* Every row holding w reaches v from w, or every column holding v reaches w from v.
+  *Proof.* Suppose a row r and a column c both fail. Their common cell does not hold w: it would be a w-cell of r in a column holding v. It does not hold v either: it would be a v-cell of c in a row holding w. So it holds u. Take a w-cell of r, in a column c′, and a v-cell of c, in a row r′. Column c′ holds no v and row r′ holds no w, so the cell (r′, c′) holds u. On rows r, r′ and columns c, c′ the subform is (u, w | v, u), which has no constant line and so is not tight. ∎
+
+(F1) and (F2) hold for every form with three outcomes. (F3) is where total tightness enters. On random forms that are not totally tight, the lemma below fails in about 3% of the cases.
+
+**Chain lemma.** Let a, c, e be the three outcomes. Let i be a player who does not force a, and suppose its opponent o does not force c. Then one of the following four configurations works:
+
+(i, (a, e, c), reverse), (o, (c, a, e), rotation), (i, (a, c, e), rotation), (o, (c, e, a), reverse).
+
+*Proof.* Each step uses the failure of the previous configuration.
+1. (i, (a, e, c), reverse). i does not force a, and rows holding c leave c by (F1). So this configuration works unless some row inside {a, e} holding e does not reach a from e.
+2. In that case (F2) gives: every column inside {c, e} holding e leaves e. Then (o, (c, a, e), rotation) works unless some column holding a does not reach c from a.
+3. In that case (F3) gives: every row holding c reaches a from c. Then (i, (a, c, e), rotation) works unless some row inside {a, e} holding e does not leave e.
+4. In that case (F2), with rows and columns exchanged, gives: every column inside {c, e} holding e reaches c from e. Columns holding a leave a by (F1), since i does not force a. So (o, (c, e, a), reverse) works. ∎
+
+The four configurations alternate between the players and between the two kinds. Each one's failure hands the refutation on to the next. *(Interpretation: the loop of refutation of Section 6, carried by four orders.)*
+
+**Theorem for three outcomes.** Every non-dictatorial totally tight form with three outcomes has a working configuration, with Q the reverse of P or its rotation.
+
+*Proof.* Some player i does not force some outcome a. If its opponent does not force some outcome c ≠ a, apply the chain lemma. Otherwise the opponent forces both outcomes other than a. Then i forces no outcome, since a constant row would meet two constant columns with different outcomes. The opponent is not a dictator, so it does not force a. Apply the chain lemma to the opponent, a, and any c ≠ a. ∎
+
+**The position lemma for three outcomes.** The chain lemma also gives the position lemma of Section 8 for three outcomes. Take a line of j with outcome x, after which the form is still valid. Then j does not force some outcome a ≠ x; let b be the third outcome.
+- If the other player does not force some c ≠ a, the chain with i = j gives a configuration of j with top a, or one of the other player whose Q, (a, e, c) in both kinds, has x among its two lowest outcomes, since x ∈ {c, e}.
+- Otherwise the other player forces x and b. Then j forces nothing, and the chain applies with i the other player, top a and c = b. It gives a configuration of j with top b, or one of the other player whose Q is (b, x, a), with x among its two lowest outcomes.
+
+**How the facts were found.** For each player, the working conditions depend on 24 yes-or-no properties of the form: forcing, leaving and reaching, for each choice of outcomes. On stopping games with three outcomes these properties take few joint values. A search for short implications that hold on all of them, and that together exclude every assignment in which the lemma fails, returned seven implications up to renaming outcomes. The chain lemma was read off the resulting propositional proof, and its proof uses only (F1), (F2) in both forms and (F3).
+
+The chain lemma was checked directly on 3,000 random totally tight forms of size up to 6 × 6, with 15,376 cases. It was also checked on every stopping game with three outcomes up to seven nodes, with 292,488 cases. No failure was found.
+
+## 8. Towards a hand proof: a working configuration survives
 
 A *configuration* is a triple (i, P, Q) with Q the reverse of P or P with its top moved to the bottom; configurations of forms with different outcome sets are compared on the outcomes present.
 
@@ -116,7 +161,7 @@ What remains open is the contrapositive, a statement about tops and positions on
 
 **Lemma (open).** Let a totally tight form be valid, let x be one of its outcomes, and let j be a player. Suppose that every working configuration of j has top x, and that every working configuration of the other player whose top is present has x above the two lowest present outcomes of its Q. Then j forces every outcome other than x.
 
-With three outcomes, the second condition says that x is the favourite outcome of Q. For the reverse kind it is the bottom of P; for the rotated kind it is the second outcome of P.
+With three outcomes, the second condition says that x is the favourite outcome of Q. For the reverse kind it is the bottom of P; for the rotated kind it is the second outcome of P. For three outcomes the position lemma holds by hand (Section 7), so the open lemma concerns four or more outcomes.
 
 **What does not work.** Each of the following simpler forms of the inductive hypothesis fails on stopping games with three outcomes:
 - *Tops only.* Suppose a line of j with outcome x is absorbed only when j works with some top other than x, or the other player works with the second kind and top x. This misses about a third of the valid extensions. If the other player may work with top x in either kind (x is then the lowest outcome of Q), about a fifth are still missed. Allowing the second-lowest place of Q as well closes the gap: this is the position lemma.
@@ -126,7 +171,7 @@ With three outcomes, the second condition says that x is the favourite outcome o
 
 The inductive hypothesis therefore has to describe a family of working configurations, not one configuration.
 
-## 8. Scripts
+## 9. Scripts
 
 In `scripts/strategy/rational_diagonal/` (they import `diag2.py` and `recipes_core.py` from the same folder):
 - `tr_automaton.py`: the summary search in Python, with the update rule documented;
@@ -136,14 +181,17 @@ In `scripts/strategy/rational_diagonal/` (they import `diag2.py` and `recipes_co
 - `core_struct.py`, `core_struct4.py`: pessimistic core summaries from the table, for three and four outcomes;
 - `core_enum.py`, `core_summ.py`, `core_profiles.py`, `core_struct_check.py`, `core_struct_check4.py`: enumeration of cores, their summaries, and the coverage checks.
 
-In `scripts/strategy/rational_diagonal/absorption/` (Section 7):
+In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `sg.py`: stopping games, the characterisation of refutation and its check against the matrix;
 - `collect.py k N`: all valid stopping games with up to N nodes and their working configurations, saved for the other scripts;
 - `absorb.py`, `births.py`, `chain.py`: survival versus validity, newly working configurations, one configuration along a run;
 - `abs_tops.py`, `canon_family.py`, `repair.py`, `absmode.py`: the simpler forms that fail, and which player's configurations survive;
 - `tr_absorb.cpp`: the check on all reachable summaries; `./tr_absorb k zsrot [file]` as for `tr_auto`;
 - `base_rule.py k N`: the two base-case rules at every base transition of the stopping games;
-- `positions.py k N`, `tr_positions.cpp`: the position lemma on stopping games and on all reachable summaries; `./tr_positions k zsrot [file]` as for `tr_auto`.
+- `positions.py k N`, `tr_positions.cpp`: the position lemma on stopping games and on all reachable summaries; `./tr_positions k zsrot [file]` as for `tr_auto`;
+- `k3_feat.py`: the properties and working conditions of Section 7, checked against the matrix test;
+- `k3_cegar.py`, `k3_schemas.py`, `k3_minimise.py` (in this order, after `collect.py 3 7`): the search for short implications, their closure under renaming outcomes, and the minimal set;
+- `k3_chain.py`: the chain lemma on random forms (totally tight or not) and on stopping games.
 
 ## References
 
