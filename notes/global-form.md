@@ -1,6 +1,6 @@
 # The Global Form: Arrow's Theorem as a Degree
 
-*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where the negative parts of the real degrees measure contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`.
+*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where the negative parts of the real degrees measure contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`, `scripts/strategy/degree_tower.py`.
 
 ## 1. Voter loops
 
@@ -123,18 +123,62 @@ The random top two is the average of two positional rules: the voter's top, of d
 
 So the contextuality of the random top two, which *Gibbard–Satterthwaite as a Scenario* shows by a linear program, is seen here as a degree outside the hull of the deterministic degrees, and its amount is measured by the degree. In Arrow's scenario the failure takes another form: the coin rule, which is not fully compatible, has no class at all. In the Gibbard–Satterthwaite scenario every model is compatible, and the obstruction is the sign of the degree. *(Interpretation.)*
 
-## 8. Relation to the literature
+## 8. The stack of degrees (one voter)
+
+*A first look, to be revisited.* For one voter the degree of Section 7 is the top layer of a stack of degrees, one for each dimension of the faces of the permutohedron, and the stack gives coordinates for the rule. The deterministic SP rules for one voter are the 2^m − 1 rules "best of S", the voter's best alternative in a fixed non-empty set S.
+- **Coordinates.** Every SD-SP lottery is an affine combination of the rules "best of S", with unique coefficients c_S, and it is a mixture of deterministic SP rules exactly when every c_S is non-negative. *(Proved for three alternatives, Proposition 4. Computed by exact linear programs for four: the 15 rules are affinely independent and the SD-SP lotteries lie in their affine hull.)*
+- **The coefficients are degrees.** c_S is the degree of the lottery on the face of the permutohedron where S occupies the bottom block, the other alternatives above it in any fixed order. That face is a sphere of dimension |S| − 2, so the layers are:
+  - for |S| = 1, the probability of the bottom alternative;
+  - for |S| = 2, the flow when the voter swaps the bottom pair;
+  - for |S| = 3, the winding on the bottom hexagon;
+  - for |S| = m, the top degree.
+
+  *(Proved, given the affine combination: on such a face, "best of S′" has degree 1 if S′ = S and 0 otherwise, since it is constant when S′ meets the alternatives above, and misses part of the simplex when S′ is a proper subset of S. Computed for three and four alternatives on random vertices.)*
+- **Where contextuality sits.** The probabilities are never negative, and strategy-proofness makes the flows non-negative. Contextuality can only appear from dimension 2 up. With three alternatives that is the one degree of Propositions 4 and 5. With four there are two independent layers. The random top two of a block is negative at a hexagon. The neutral lottery with weights (⅔, ⅓, 0, 0) has non-negative hexagons but top degree −⅓. *(Computed.)*
+- **Neutral lotteries.** For a neutral lottery, with weights w₁ ≥ … ≥ w_m on the voter's positions, the stack is the table of finite differences of w. The first differences are the flows, the second the hexagon windings, and the last the top degree. The lottery is a mixture of deterministic rules exactly when the whole table is non-negative. This is Hausdorff's complete monotonicity for finite sequences. *(Proved. A neutral mixture of deterministic rules is a mixture of the rules "best of a random j-set", with weights C(m − i, j − 1)/C(m, j), whose differences are all non-negative. By Newton's forward formula the coefficient of each "best of S" with |S| = j is the (j − 1)-th difference of w at the bottom end, which is the degree on the bottom face. So non-negative differences at the bottom end already give a mixture. Computed for three to six alternatives.)*
+- **Positional rules.** The rule "the voter's k-th choice" has top degree (−1)^(k−1) C(m − 1, k − 1): 1, −2, 1 for three alternatives and 1, −3, 3, −1 for four. These are the last row of the difference table of a unit weight. The bottom choice has sign (−1)^(m−1), as reversal, the antipodal map, requires. *(Proved for the neutral table; counted on the faces of the permutohedron for four alternatives.)*
+
+By Gibbard's decomposition (Proposition 5), every SD-SP rule for any number of voters is then described by a duple part, which is non-contextual of degree 0, and one stack of degrees per voter. Still open: the affine hull beyond four alternatives, the meaning of the inversion over the lattice of subsets, and any counterpart for rules into rankings (Sections 1–4). *(Interpretation.)* Checks: `scripts/strategy/degree_tower.py`.
+
+## 9. The three placements along loops
+
+*Where the Symmetry Goes* sorts the impossibility theorems by where a leftover symmetry goes: (i) into the output, as a paradox; (ii) into the rule, as a dictator or tie-break; (iii) into a lottery, a fixed point. Its isotropy lemma gives the pointwise form, and the end of its Section 7 already reads (ii) and (iii) as the integer and the real solutions of N·d = 1. Added here, for three alternatives: that neutrality and reversal put no condition on the degrees, so that anonymity is the whole of the constraint, and that (i) is the third way out of the same equation.
+
+**How the symmetries act.**
+- **Permuting the alternatives.** On the hexagon of rankings and on the triangle of outcomes alike, a 3-cycle of a, b, c is a rotation and a transposition is a reflection. The two signs always agree. So for a neutral rule, F∘π = π∘F, both sides of the degree change sign together, and neutrality puts no condition on the degrees.
+- **Reversal.** Reversal of all ballots is the half rotation of the hexagon. It keeps the orientation, so a rule into rankings that commutes with reversal is not restricted either. For rules into single outcomes reversal does not act on the outcome.
+- **Permuting the voters.** This permutes the degree vector, and anonymity makes all degrees equal.
+
+*(Proved; the signs are checked by enumeration.)*
+
+**Proposition 6.** For three alternatives, the only one of anonymity, neutrality and (for rules into rankings) reversal symmetry that constrains the degrees of an IIA rule into rankings, or of an SP rule into outcomes, is anonymity. With unanimity it requires n · d = 1, which has no integer solution for n ≥ 2. *(Proved, from Sections 2, 4 and 7.)*
+
+The three placements are the three ways out of this equation.
+- **(ii) Leave the diagonal.** Drop anonymity and keep integer degrees. The solution is a unit vector, one voter with degree 1: Arrow's and Gibbard–Satterthwaite's dictator.
+- **(iii) Leave the integers.** Allow lotteries. With full independence, or with SD-strategy-proofness, the degrees become real and keep their meaning (Propositions 2 and 5), and d = 1/n is random dictatorship.
+- **(i) Leave the circle.** Change the outcome space so that the voter's loop has nothing to wind around. Pairwise majority is anonymous, neutral, unanimous and IIA, but its outcomes include the two Condorcet cycles. In *Cycles and Twists* these are the caps that close the band of rankings into a sphere, on which the loop contracts. Outcomes with ties do the same: the weak orders fill the hexagon, with total indifference at its centre. For choice functions, outcomes that are sets fill the triangle. In each case the degree is not defined, and the symmetry shows up as a cycle or a tie in the output.
+
+*(Interpretation of Proposition 6, with the facts about the outcome spaces proved.)*
+
+The pointwise and the global layer are two parts of one equivariant problem.
+- **The pointwise layer** is the isotropy lemma: an equivariant rule sends each fixed profile to a fixed output. At the Condorcet profile the 3-cycle rotates the hexagon without a fixed point, so neutrality and anonymity together already fail, for numbers of voters divisible by three.
+- **The global layer** is the degree: anonymity, unanimity and locality fail together for every n ≥ 2, without neutrality.
+- **How the placements resolve each layer.** A lottery resolves both: the centre of the simplex is fixed, and real degrees allow 1/n. A dictator resolves both by breaking the symmetry. A paradox resolves both by enlarging the outcome space.
+
+An equivariant obstruction theory in the usual sense would place the isotropy condition at the fixed-point sets and the degree as the next obstruction class. That form is not worked out. *(Interpretation.)*
+
+## 10. Relation to the literature
 
 - **Baryshnikov (1993)**: Arrow's theorem by the homology of a nerve. Baryshnikov and Root describe his computation as showing that the profile complex has, in dimension m − 2, the homology of a product of n spheres, and they reprove it. They obtain Gibbard–Satterthwaite through Muller–Satterthwaite: a monotone unanimous rule induces a simplicial map, and the pairing of each voter's class with the outcome class is 1 for a dictator and 0 otherwise.
 - **Okura (2024)**: the same structure with the relation "sum of the voters' maps on homology equals the diagonal". Lemma 2 is this relation for three alternatives.
 - **Rajsbaum and Raventós-Pujol**: an elementary proof by the index lemma on a colored triangulation, with pivotal voters as bivalent paths, and a characterisation of domain restrictions for two voters and three alternatives. **Lara, Rajsbaum and Raventós-Pujol** generalise this.
 
-Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as the exact measure of contextuality for strategy-proof lotteries (the contextual fraction), and the pivotal path as half of the loop.
+Sections 1–3, and the deterministic part of Section 7, are therefore not new in substance; Baryshnikov and Root reach Gibbard–Satterthwaite by the same kind of class, through monotonicity. They are a short form of the homological proof, with the hexagon and the triangle as the spaces and the rigidity of Lemmas 3, 4 and 6 in place of the injectivity arguments. None of these papers treats lotteries, real coefficients or reversal (checked for Baryshnikov–Root, Okura and Rajsbaum–Raventós-Pujol; Baryshnikov's paper itself was not accessible here). Sections 4, 6 and the lottery part of Section 7 are the additions: the real degree, its identification with the weights of Theorems 5 and 5′ and of Gibbard (1977), the coin rule as a rule without a class, negative degrees as the exact measure of contextuality for strategy-proof lotteries (the contextual fraction), and the pivotal path as half of the loop. Sections 8 and 9 are first looks: the stack of degrees for one voter, and the three placements as ways out of n · d = 1.
 
-## 9. What the global form still needs
+## 11. What the global form still needs
 
-- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, where a voter has a degree on every triple and the one-voter polytope has more vertices; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977).
-- **An equivariant statement.** Degrees are a homomorphism from the voters' classes to the outcome class. Permuting the voters acts on the first, and reversal acts on both, with sign (−1)^(m−1) on the top class. The trichotomy of *Where the Symmetry Goes* should read as: an equivariant integer homomorphism exists (no obstruction), only a real one exists (a lottery), or none exists. This is not yet worked out beyond the voters' permutations.
+- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, along the stack of degrees of Section 8; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977).
+- **The equivariant statement.** Section 9 gives the three placements as three ways out of n · d = 1 for three alternatives. Still open: the same for more alternatives, where reversal acts on the top class with sign (−1)^(m−1) and neutrality may then constrain the degrees; and a formal equivariant obstruction theory with the isotropy condition and the degree as successive obstructions.
 - **Degree for the electorate direction.** Young–Levenglick and the no-show theorem are agreement-type obstructions (thread A). Whether they carry a degree, or only a local inconsistency, is open.
 - Lemmas 1–6 are finite and elementary for each n, and a candidate for a Lean check.
 
@@ -148,6 +192,6 @@ Sections 1–3, and the deterministic part of Section 7, are therefore not new i
 - Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
 - Lara, I., Rajsbaum, S. and Raventós-Pujol, A. (2024). A generalization of Arrow's impossibility theorem through combinatorial topology. arXiv:2402.06024.
 - Okura, T. (2024). A topological proof of Terao's generalized Arrow's impossibility theorem. arXiv:2408.14263.
-- Rajsbaum, S. and Raventós-Pujol, A. (2022). A combinatorial topology approach to Arrow's impossibility theorem. PODC 2022; extended version MPRA paper 120023.
+- Rajsbaum, S. and Raventós-Pujol, A. (2025). A combinatorial topology approach to Arrow's impossibility theorem. *Social Choice and Welfare*. doi:10.1007/s00355-025-01609-7. Conference version in PODC 2022; preprint MPRA Paper 120023.
 - Wilson, R. (1972). Social choice theory without the Pareto principle. *Journal of Economic Theory* 5, 478–486.
 - *Four Levels of Obstruction in Social Choice*, *Cycles and Twists* (drafts); *Contextuality and Symmetry*, *Loops of Relations*, *Where the Symmetry Goes*, *Gibbard–Satterthwaite as a Scenario* (working notes), all in this repository.
