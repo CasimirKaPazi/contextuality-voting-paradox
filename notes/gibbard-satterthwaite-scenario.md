@@ -124,18 +124,19 @@ Both theorems sit at the same place in the hierarchy. The difference is how they
 
 - **Strict preferences only.** Gibbard (1977) works with strict orderings. Indifferences were not examined.
 - **Corollary 2 cites Gibbard's characterisation** and uses only its "only if" direction. It is not reproved here. The direct checks are the linear programs for small cases in Section 3.
-- **Not formalised in Lean.** Proposition 1 is elementary and would be a natural candidate: an adjacent-swap lemma plus chaining along a path. Proposition 3 is a short counting argument.
+- **Formalised in Lean: Proposition 1 only** (`lean/JointDraws.lean`, theorem `prop1`), for one voter's slice of the rule; the whole rule follows voter by voter. Corollary 2 and Proposition 3 are not formalised.
 - **Only the probabilistic models.** Possibilistic models and strong contextuality, such as whether the random top two is strongly contextual, were not examined.
 - **Renaming alternatives** was left out of G. With unanimity it changes nothing. Without unanimity it removes the constant rules as symmetric sections. The resulting placement was not worked out.
 - **Arrow without unanimity**, the empty cell of the table, was not examined.
 
 ## 7. Checks
 
-| Script (`scripts/strategy/`) | What it checks |
+| Script (`scripts/strategy/`) or Lean file | What it checks |
 |---|---|
 | `gs_scenario.py` | Linear programs over empirical models with unanimity (joint draws or SD-strategy-proofness): no probability on outcomes that are nobody's top, and no variation of a voter's weight. m = 3 with two and three voters, m = 4 with two voters |
 | `gs_joint_draws.py` | Isolated pairs: always a joint draw for three alternatives in random samples, not always for four; the example of Section 2, exactly; that it does not extend to a whole scheme; the construction of Proposition 1 run on 33,120 pairs of ballots from 60 vertices of the one-voter polytope (m = 4), marginals and support exact to rounding |
 | `gs_random_top_two.py` | The random top two: SD-strategy-proof (exact) and not a mixture of range rules (linear program), m = 3, 4, 5 |
+| `lean/JointDraws.lean` | Proposition 1, both directions, checked in Lean |
 
 ## References
 
