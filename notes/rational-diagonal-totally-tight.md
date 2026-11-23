@@ -1,12 +1,14 @@
 # The rational diagonal on totally tight game forms
 
-*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It settles the totally tight forms with at most four outcomes by a complete computer check, gives a hand proof for three outcomes, proves the result for stopping games with any number of outcomes, and records the method, the evidence beyond four outcomes, and what remains open. Scripts: `scripts/strategy/rational_diagonal/`.*
+*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It settles the totally tight forms with at most four outcomes by a complete computer check, gives a hand proof for three outcomes, and proves the result for all totally tight forms with any number of outcomes by a reduction to at most seven outcomes and an exact search (Section 7). It also records the method, and what remains open. Scripts: `scripts/strategy/rational_diagonal/`.*
 
 ## 1. The question and the condition
 
 A two-player game form has rows (player 1's strategies), columns (player 2's) and an outcome in each cell. Fix a player i, a strict ranking P of the outcomes for i and a strict ranking Q for the opponent. Read i's strategies as rows. Player i *works* under (P, Q) if every row of i is refuted: among the opponent's best replies to that row (the cells holding the opponent's favourite outcome y in the row) there is one whose column contains an outcome i prefers to y. Then no strategy of i is a strict Nash strategy, which is the rational diagonal. On tight forms every pair of preferences has an equilibrium, so refutation works only through repeated outcomes: the opponent is indifferent among the cells holding y, and one of them must push i away.
 
-**Theorem (computer-checked; by hand for three outcomes and, with a finite search, for stopping games with any number of outcomes, Section 7).** Every non-dictatorial totally tight two-player game form with three or four outcomes admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
+**Theorem.** Every non-dictatorial totally tight two-player game form admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
+
+*Status.* Three outcomes: by hand (Section 7). Four outcomes: by the complete search of Sections 3 and 4. Any number of outcomes: by a reduction to at most seven outcomes and an exact search (Section 7). For forms with a core, this last step uses the block table of Section 2 for cores with several outcomes that nobody forces; that use is checked on all cores enumerated so far.
 
 Totally tight forms are those whose 2 × 2 subforms are all tight. They include the normal forms of stopping games (games on a path in which the player to move may stop with that node's outcome) but not all games of perfect information.
 
@@ -55,8 +57,8 @@ Together these give the theorem.
 
 ## 6. Beyond four outcomes, and what remains open
 
-- With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The summary search does not scale to five outcomes.
-- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes. A merging argument reduces the chain to at most seven outcomes, and a search over stopping games with up to seven outcomes then proves it for all stopping games (end of Section 7). Forms with a core are open from five outcomes on. Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
+- With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The full summary search, over all configurations, does not scale to five outcomes; the search restricted to the four configurations of the chain (Section 7) reaches seven.
+- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes. A merging argument reduces the chain to at most seven outcomes, and an exact search up to seven outcomes then proves it for all totally tight forms (end of Section 7). Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
 - Tight forms that are not totally tight remain open. They include the normal forms of general games of perfect information and veto procedures. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
 
 *Reading.* On a core, the three key outcomes are forced in pairs by both players and singly by neither: the loop of refutation is present locally, as in a rock–paper–scissors. On a stopping game it is built step by step in time, one constant line per node. The theorem says both ways of building the loop always leave a player without a strict Nash strategy. *(Interpretation.)*
@@ -198,7 +200,43 @@ Merging keeps stopping games stopping games. So a smallest counterexample among 
 
 **Theorem (stopping games).** Every non-dictatorial stopping game, with any number of outcomes, admits a rational diagonal with strict preferences. Some player i works under some P with Q the reverse of P or its rotation.
 
-For forms with a core the reduction holds as well. What is missing is the search from the cores with five to seven outcomes. The pessimistic core summaries of Section 4 cover at most one outcome that nobody forces.
+**Forms with a core.** Merging keeps total tightness, so the reduction holds for all totally tight forms. A smallest counterexample has at most seven outcomes. What is needed is the same search started from the cores, with up to four outcomes that nobody forces.
+
+The starting summaries generalise those of Section 4:
+- The three key outcomes follow the table of Fig. 13. They are placed on any three of the k outcomes, in any order.
+- Any set E of further outcomes may occur in the core. These occur only in the recursive blocks, where the last two classes meet. There, any cell may hold any key outcome or any outcome of E.
+- Lines of class 0123 hold the three keys and possibly outcomes of E. Lines of class 1234 hold the three keys and at least one outcome of E.
+- The remaining outcomes come in later through added lines.
+
+For each line, the pairs (y, M) are collected over all ways the line can look. One point needs care: a block in which y is the only allowed outcome of the line's content holds y in every cell, so its columns always count for M. Without this, the summaries are too pessimistic, and the starts already fail with four outcomes.
+
+The starting summaries cover the actual cores. Every enumerated core, in both orientations and under every renaming of outcomes, lies inside some start:
+
+| core outcomes | cores enumerated | summaries | not covered |
+|---|---|---|---|
+| 3 | all of size 5 × 5 | 3,974,400 | 0 |
+| 3 and 4, with the starts for four | three outcomes: all of sizes 4 × 5 and 5 × 5; four outcomes: all up to 4 × 5 | 16,598,016 | 0 |
+| 5 | all 480 of size 4 × 5, and 35,208 of size 5 × 5 (an enumeration cut off by a time limit) | 8,565,120 | 0 |
+
+The search from these starts adds lines in every possible way:
+
+| outcomes | starts | summaries (up to the symmetry) | cases | failures |
+|---|---|---|---|---|
+| 4 | 72 | 1,915 | 3,002 | 0 |
+| 5 | 296 | 63,470 | 107,362 | 0 |
+| 6 | 1,024 | 2,474,280 | 4,239,520 | 0 |
+| 7 | 3,208 | 110,539,918 | 189,644,570 | 0 |
+
+**Theorem (all totally tight forms).** The chain conjecture holds for every number of outcomes, and so does the theorem of Section 1.
+
+*Proof.* A smallest counterexample to the chain would have at most seven outcomes, and the two searches exclude these. The theorem then follows from the chain as for three outcomes. ∎
+
+The proof rests on three things:
+- the structure theorem of Boros, Gurvich, Makino and Papp: every totally tight form is a single cell or a core, with constant lines added;
+- their table for cores, used here with several outcomes that nobody forces confined to the recursive blocks; this is checked on the enumerated cores above, not proved;
+- two exact computer searches.
+
+A proof by hand for any number of outcomes would have to replace the searches by an argument for the three forms of a smallest counterexample.
 
 ## 8. Towards a hand proof: a working configuration survives
 
@@ -291,7 +329,9 @@ In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `chain_pairs.py`: the proved pieces 1–4 towards the conjecture, and how often the remaining cases occur;
 - `chain_atoms.py`, `chain_triples.py`: the patterns of safe lines that never occur together, and the patterns of failing tests;
 - `chain_mergecheck.py`: safe lines after merging two adjacent middle outcomes;
-- `tr_chain_stop.cpp`: the exact search over stopping games with up to seven outcomes; `./tr_chain_stop k 27`.
+- `tr_chain_stop.cpp`: the exact search over totally tight forms with up to seven outcomes; `./tr_chain_stop k 27` from a single cell (stopping games), `./tr_chain_stop k 27 starts.txt` from the cores;
+- `core_chain_starts.py k`: the pessimistic core summaries for the chain, with any set of outcomes that nobody forces;
+- `core_chain_cover.py k starts.txt cores...`: the coverage check against cores enumerated by `core_enum.py`.
 
 ## References
 
