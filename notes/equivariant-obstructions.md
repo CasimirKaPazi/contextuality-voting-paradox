@@ -65,17 +65,17 @@ Unanimity prescribes F on Δ: the identity of Y. The question is whether it exte
 
 The renamings and reversal drop out of the proof because they act with the same sign on both sides, as in *The Global Form*, Proposition 6. Only P matters. It is the image of K and not its intersection with Sₙ, so a symmetry that swaps two voters and reverses all ballots at the same time counts as swapping the voters.
 
-**In the language of obstruction theory.** For K = P, an equivariant map is a map from X/P to Y. Here X/P is a product of symmetric products of the hexagon, one per block, and each symmetric product of a circle is homotopy equivalent to a circle (Morton†). So H¹(X/P) = ℤ^b for b blocks, and its restriction to Δ is (d_j) ↦ Σ_j |block j|·d_j. The exact sequence of the pair (X/P, Δ) gives H²(X/P, Δ; ℤ) ≅ ℤ/g ⊕ H²(X/P), with H²(X/P) free. The primary obstruction to extending the unanimous map is the image of 1 under the connecting map. It is the generator of the torsion part ℤ/g. *(Proved.)*
+**In the language of obstruction theory.** For K = P, an equivariant map is a map from X/P to Y. Here X/P is a product of symmetric products of the hexagon, one per block, and each symmetric product of a circle is homotopy equivalent to a circle. Morton shows that the n-th symmetric product is a bundle of (n − 1)-simplices over a circle, orientable exactly for n odd. His proof also shows the arithmetic directly: one voter going once around moves the base by 1/n of a turn, so the diagonal loop is n times the generator. So H¹(X/P) = ℤ^b for b blocks, and its restriction to Δ is (d_j) ↦ Σ_j |block j|·d_j. The exact sequence of the pair (X/P, Δ) gives H²(X/P, Δ; ℤ) ≅ ℤ/g ⊕ H²(X/P), with H²(X/P) free. The primary obstruction to extending the unanimous map is the image of 1 under the connecting map. It is the generator of the torsion part ℤ/g. *(Proved.)*
 
 **Torsion and lotteries.** With real coefficients ℤ/g ⊗ ℝ = 0, and the obstruction vanishes. With rational coefficients it vanishes as well, and ℤ[1/g] suffices. For full anonymity the solution is d_i = 1/n, random dictatorship, whose probabilities are multiples of 1/n, exactly the denominators the torsion requires. Placement (iii) is possible because the global obstruction is torsion. Convexification kills torsion. *(The first statements proved; the reading of placement (iii) is interpretation.)*
 
-**For continuous maps the stage is sharp.** On circles, the map (x₁, …, xₙ) ↦ x₁^{a₁} ⋯ xₙ^{aₙ}, in complex notation, is unanimous exactly when Σ aᵢ = 1. If the aᵢ are constant on the orbits of P, it is P-equivariant. So a continuous unanimous map, symmetric under P, exists exactly when g = 1, by Bézout. For full anonymity this is Chichilnisky's theorem. With two blocks of two and three voters it exists: x₃x₄x₅ / (x₁x₂), of degrees (−1, −1, 1, 1, 1). *(Proved; elementary.)*
+**For continuous maps without Pareto the stage is sharp.** On circles, the map (x₁, …, xₙ) ↦ x₁^{a₁} ⋯ xₙ^{aₙ}, in complex notation, is unanimous exactly when Σ aᵢ = 1. If the aᵢ are constant on the orbits of P, it is P-equivariant. So a continuous unanimous map, symmetric under P, exists exactly when g = 1, by Bézout. For full anonymity this is Chichilnisky's theorem (1980). With two blocks of two and three voters it exists: x₃x₄x₅ / (x₁x₂), of degrees (−1, −1, 1, 1, 1). *(Proved; elementary.)* With a Pareto condition the continuous case behaves like the discrete one of Section 3 (Chichilnisky 1982).
 
 ## 3. Positivity: the pinning lemma
 
 For local Pareto rules, Proposition 1 is not sharp, because the degrees cannot be negative.
 
-**Lemma 2 (pinning).** Every degree of a local Pareto rule is 0 or 1. *(Proved.)*
+**Lemma 2 (pinning).** Every degree of a local Pareto rule is 0 or 1. *(Proved. The continuous counterpart is Chichilnisky's (1982) theorem as Baryshnikov states it: for continuous rules on spheres of linear preferences that respect unanimity on every comparison, exactly one voter is a "manipulator", who can produce any social preference whatever the others report; in Baryshnikov's terms, every voter is a homological dictator or homologically irrelevant.)*
 
 *Proof.* By Lemma 1 the degree can be computed at any context. Let every other voter hold abc, and let voter i walk abc, bac, bca, cba, cab, acb and back. At bac all voters agree that a and b are above c, so Pareto puts the social ranking at abc or bac. The walk starts at abc, since the profile is unanimous. Its first step therefore goes forward or stands still. A degree of −1 would need six backward steps, and a degree of 2 or more would need more than six steps. ∎
 
@@ -128,13 +128,18 @@ Collected, for three alternatives:
 The three placements of *Where the Symmetry Goes* read off the ladder as follows.
 - **(ii), a dictator.** The degree vector is a vertex of the simplex. Symmetry survives only as far as it fixes that vertex, so P must fix a voter.
 - **(iii), a lottery.** The degree vector is any point of the simplex. Every P has fixed points there, the barycentres of its orbits, and full anonymity has one, 1/n. This is observation 3 of *Where the Symmetry Goes* made exact: the fixed point of the symmetry on the space of rules is the barycentre of the rules that break it. In stage 2 the same exit is the vanishing of torsion over ℝ.
-- **(i), a paradox.** Replacing Y by a space whose loops contract removes stage 2: the Condorcet cycles as caps, or the weak orders with total indifference at the centre (*The Global Form*, Section 9). For the weak orders the fixed sets also become non-empty, since total indifference is fixed by every renaming and by reversal, so stage 0 disappears too. What is left is that the symmetric outputs are inadmissible, which is the case "A^H empty, Y^H non-empty" of the isotropy lemma.
+- **(i), a paradox.** Replacing Y by a space whose loops contract removes stage 2: the Condorcet cycles as caps, or the weak orders with total indifference at the centre (*The Global Form*, Section 9). For the weak orders the fixed sets also become non-empty, since total indifference is fixed by every renaming and by reversal, so stage 0 disappears too. But an IIA rule that respects unanimity on every comparison never outputs a tie at a profile of strict ballots (Baryshnikov, Lemma 1). So the weak orders are an exit only for rules that give up IIA or Pareto, such as Borda. Pairwise majority takes the other exit, the caps. What is left is that the symmetric outputs are inadmissible, which is the case "A^H empty, Y^H non-empty" of the isotropy lemma.
 
-The layers split between the two halves of the isotropy lemma's slogan "obstruction at points, obstruction along loops". Stages 0 and 1 are at points and need neutrality or reversal together with anonymity. Stage 2 is along loops and needs anonymity alone. Positivity and rigidity are not obstructions in the homotopy-theoretic sense at all. They are what makes the theorems with a dictator stronger than Chichilnisky's. *(Interpretation of the propositions above.)*
+The layers split between the two halves of the isotropy lemma's slogan "obstruction at points, obstruction along loops". Stages 0 and 1 are at points and need neutrality or reversal together with anonymity. Stage 2 is along loops and needs anonymity alone. Positivity and rigidity are not obstructions in the homotopy-theoretic sense at all. They are what makes the theorems with a dictator stronger than Chichilnisky's of 1980. His theorem of 1982, with Pareto, has positivity (one manipulator) but not rigidity. *(Interpretation of the propositions above.)*
 
 ## 6. More alternatives
 
-For m alternatives the rankings form a sphere of dimension m − 2 (*The Global Form*, Section 3), and stages run up to m − 1. The top stage has the same computation. H^{m−2}(X) is ℤⁿ, one class per voter, since products of classes from two factors have degree 2(m − 2). Renamings and reversal act with the same sign on both sides (*The Global Form*, Section 9). So, for rules that define a top class, as IIA rules do through Baryshnikov's simplicial map, the top obstruction is again the class of 1 in ℤ/g. *(Proved for the top stage, given the class.)* Not worked out:
+For m alternatives the rankings form a sphere of dimension m − 2 (*The Global Form*, Section 3), and stages run up to m − 1. The top stage has the same computation. For IIA rules the class is supplied by Baryshnikov:
+- the nerve of the cover of the strict orders by the sets "x above y" is a homotopy sphere of dimension m − 2 (his Theorem 1);
+- the corresponding nerve of profiles has no cohomology below dimension m − 2 and has H^{m−2} = ℤⁿ, with basis pulled back from the n voters (his Propositions 4 and 5);
+- an IIA rule is a simplicial map of the nerves, and the diagonal embedding sends the generator to the sum of the basis classes (his Lemma 3).
+
+The voters' permutations permute that basis. Renamings and reversal act with the same sign on both sides (*The Global Form*, Section 9). So the top obstruction is again the class of 1 in ℤ/g. *(Proved for the top stage, from Baryshnikov's computation.)* Baryshnikov's Theorem 2 then combines this with his Proposition 7: every voter is a homological dictator (pairing 1) or homologically irrelevant (pairing 0). That is positivity and rigidity at once, both from IIA. Not worked out:
 - the lower stages, where the fixed sets of renamings are spheres of lower dimension inside the sphere of utility vectors;
 - positivity, whose natural form is Lemma 2 on each triple. It needs the rule to be local on triples, which is IIA again.
 
@@ -151,9 +156,11 @@ Young–Levenglick and the no-show theorem do not fit this ladder. No group is i
 ## References
 
 - Bredon, G. E. (1967). *Equivariant Cohomology Theories*. Lecture Notes in Mathematics 34. Springer.†
+- Baryshnikov, Y. (1993). Unifying impossibility theorems: a topological approach. *Advances in Applied Mathematics* 14, 404–415.
 - Chichilnisky, G. (1980). Social choice and the topology of spaces of preferences. *Advances in Mathematics* 37, 165–176.
+- Chichilnisky, G. (1982). The topological equivalence of the Pareto condition and the existence of a dictator. *Journal of Mathematical Economics* 9, 223–233. (Not read; cited through Baryshnikov's statement of it.)
 - Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
 - May, K. O. (1952). A set of independent necessary and sufficient conditions for simple majority decision. *Econometrica* 20, 680–684.
-- Morton, H. R. (1967). Symmetric products of the circle. *Proceedings of the Cambridge Philosophical Society* 63, 349–352.†
+- Morton, H. R. (1967). Symmetric products of the circle. *Proceedings of the Cambridge Philosophical Society* 63, 349–352.
 - tom Dieck, T. (1987). *Transformation Groups*. de Gruyter Studies in Mathematics 8. Section II.3 (obstruction theory).†
 - *The Global Form*, *Where the Symmetry Goes*, *Consistency as an Extension Problem* (working notes); *Four Levels of Obstruction in Social Choice* (draft), all in this repository.
