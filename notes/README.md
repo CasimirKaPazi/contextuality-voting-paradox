@@ -12,6 +12,7 @@ Notes are revised as the picture becomes clearer. Each opens with a short statem
 | [`gibbard-satterthwaite-scenario.md`](gibbard-satterthwaite-scenario.md) | Gibbard–Satterthwaite as a scenario: joint draws and strategy-proofness, models with and without unanimity |
 | [`where-the-symmetry-goes.md`](where-the-symmetry-goes.md) | Where an unavoidable symmetry ends up in aggregation: in the output, in the rule or in a lottery; the pointwise form by the isotropy lemma |
 | [`global-form.md`](global-form.md) | The impossibility theorems with a dictator as obstructions along loops: voters' degrees, integer for rules and real for lotteries |
+| [`equivariant-obstructions.md`](equivariant-obstructions.md) | The symmetry problem taken apart in the order of equivariant obstruction theory: isotropy, ties, the degree as a torsion class, then positivity and rigidity |
 | [`equality-criterion.md`](equality-criterion.md) | The Equality Criterion of Wolk, Quinn and Ogren as blindness to the reversal-symmetric part of a profile |
 | [`two-kinds-of-loop.md`](two-kinds-of-loop.md) | Condorcet cycles (integer winding) against the Liar (parity), the Klein bottle seam, strategy and computability |
 | [`loops-of-relations.md`](loops-of-relations.md) | One frame for the Liar, the Condorcet cycle and the strategic diagonal: sections of a loop of contexts as fixed points of its monodromy |

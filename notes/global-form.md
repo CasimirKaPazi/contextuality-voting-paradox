@@ -165,7 +165,7 @@ The pointwise and the global layer are two parts of one equivariant problem.
 - **The global layer** is the degree: anonymity, unanimity and locality fail together for every n ≥ 2, without neutrality.
 - **How the placements resolve each layer.** A lottery resolves both: the centre of the simplex is fixed, and real degrees allow 1/n. A dictator resolves both by breaking the symmetry. A paradox resolves both by enlarging the outcome space.
 
-An equivariant obstruction theory in the usual sense would place the isotropy condition at the fixed-point sets and the degree as the next obstruction class. That form is not worked out. *(Interpretation.)*
+An equivariant obstruction theory in the usual sense places the isotropy condition at the fixed-point sets and the degree as the next obstruction class. For three alternatives this is worked out in the working note *Equivariant Obstructions*: the degree is the last obstruction, a torsion class of order n (of order g, the gcd of the orbit sizes, for partial anonymity), and two layers outside homotopy theory follow, positivity and rigidity.
 
 **More alternatives.** On the triples, Proposition 6 applies to each triple separately. On the whole sphere of rankings the same holds:
 - **Alternatives.** A permutation π acts on the sum-zero hyperplane of utility vectors with determinant sign(π). This hyperplane carries both the sphere of rankings and the boundary of the simplex of outcomes, so π has degree sign(π) on both.
@@ -198,8 +198,8 @@ Sections 1–3, and the deterministic part of Section 7, are therefore not new i
 
 ## 12. What the global form still needs
 
-- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, along the stack of degrees of Section 8; a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977).
-- **The equivariant statement.** Section 9 gives the three placements as three ways out of n · d = 1 for three alternatives. For more alternatives the symmetries act with equal signs on both sides, so the conclusion is the same. Still open: a formal equivariant obstruction theory with the isotropy condition and the degree as successive obstructions.
+- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, along the stack of degrees of Section 8. The direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977), is given for three alternatives in *Equivariant Obstructions*, Proposition 4.
+- **The equivariant statement.** Section 9 gives the three placements as three ways out of n · d = 1 for three alternatives. For more alternatives the symmetries act with equal signs on both sides, so the conclusion is the same. The obstruction theory with the isotropy condition and the degree as successive obstructions is in *Equivariant Obstructions* for three alternatives, and for the top stage with more. Still open: the lower stages for more alternatives.
 - **The electorate direction.** Section 10 finds Young–Levenglick pointwise: the Condorcet regions wind around the cycle region, but every point of it is blocked separately. Still open: the same for the no-show theorem, and for more candidates, where the cycle region has more components.
 - Lemmas 1–6 are finite and elementary for each n, and a candidate for a Lean check.
 
