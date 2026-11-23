@@ -303,6 +303,91 @@ So on a line every gain over the fallback can be manipulated: no rule that compu
 
 *(Interpretation.)*
 
+## 3i. Proposals inside the call
+
+The CORE paper leaves the relation between proposals and calls informal. Deliberation produces proposals, and a call is a threat of removal. Sections 3g and 3h put a proposal before the removal. This section states a refinement of the protocol in that direction, as a candidate for the follow-up. The paper itself is unchanged.
+
+**The protocol.**
+1. The group deliberates.
+2. Anyone may call. A call asks: do we have an agreement?
+3. A call draws a proposer group uniformly among the groups of a given size. It may contain the caller.
+4. The proposer group works out a proposal, in the model a lottery, by this same protocol among its own members. An internal veto excludes one of its members, drawn uniformly, from the group's work only. Once the group has a proposal, all of its members return to the larger group with full rights.
+5. If every member of the group accepts, the proposal is enacted. If anyone vetoes, one member of the group is drawn uniformly and excluded; it may be the caller, a proposer or anyone else. The excluded member keeps their stake in the outcome, and deliberation continues.
+
+The size of the proposer group is left open.
+- **Size zero** is the paper's call.
+- **Size one** is the random proposer of Section 3g.
+- **Size all but one** mirrors exclusion. Exclusion takes away a member's say over the decision and keeps their stake. The mirror takes away a member's say over the proposal and keeps their veto.
+- **Inside a proposer group**, exclusions that do not carry over to the larger group make the sequential variant, applied to proposals instead of decisions.
+
+**Proposition (what the protocol keeps).**
+1. *The floor.* Every enacted proposal is accepted by every member present. A member who vetoes everything receives what the exclusion process gives. In the one-shot variant, where a veto at the full group goes straight to the random ballot, that is exactly the endowment.
+2. *Fair draws.* The proposer group and the excluded member are drawn uniformly, with the caller included in both draws. So calling confers no special role. Exclusions are uniform whenever they occur, so the martingale of Section 3 is unchanged.
+3. *The equilibrium.* With complete information and undominated votes at every level, accepting exactly what is worth at least the alternative is weakly dominant. Every proposal made at a group S lies in the set A_S of lotteries that every member weakly prefers to an exclusion. A proposer group T working for a target set B falls back on the average of the proposals of the groups T minus one member. Its members accept only lotteries in B that beat that fallback, and a drawn subgroup works for this smaller target. A single member proposes their best lottery in the target. The values follow by backward induction over the groups. With proposer groups of one member, the outcome is one step of Raiffa's procedure in every group (Section 3g).
+4. *Internal exclusions harm no one.* They change only who works on the proposal. The result must still pass the whole group.
+
+*(Proved.)*
+
+*Proof.* 1. Each member's veto is always available. 2. By symmetry of the draws, and because the law of the participant left last depends only on exclusions being uniform (Section 3). 3. Item 1 of Section 3g applies at every level. By induction on the size of T, every proposal T can make that passes lies in its target, which lies in A_S. 4. Follows from 3. ∎
+
+**Where harm can still enter.** The harm that remains is the one in the CORE paper's sequential variant, illustrated by the example of its Section 7.1. An excluded member loses their veto, and groups formed later without them can agree on what is bad for them (Sections 3a and 3b). The harm sits in the value of an exclusion, the threat point, and it is the same with or without proposals inside the call. The one-shot variant does not have it.
+
+**Proposition (veto kept).** Suppose an excluded member leaves the draw for the last place and the draws for proposer groups, but keeps a veto over every later proposal. Then every participant holds at least their endowment at every stage. *(Proved.)*
+
+*Proof.* Let h(S) be the value of the process when S is the set of members still in the draws. Every proposal at S must be accepted by all participants, so h_i(S) is at least the average of h_i(S ∖ {k}) over the members k of S, for every participant i. When one member is left, h_i is the value of that member's ideal. By induction h_i(S) is at least the average of i's values for the ideals of the members of S, which is e_i(S). ∎
+
+**The price: one stubborn member.** A veto in CORE never keeps the status quo. It moves the draw one step, and after at most n − 1 steps the last candidate's ideal is enacted, so no one can stop the process. A member who vetoes every proposal can, however, stop every agreement.
+- **Sequential variant.** At each veto such a member is excluded with probability 1/|S|, and from then on cannot block. The others can still agree.
+- **Veto kept, and the one-shot variant.** One stubborn member reduces the process to the random ballot, revealed step by step, and all gains are lost. The mechanism is then biased towards the random ballot without agreement.
+
+The pressure the sequential variant puts on each member is that, once out, the others may agree without them. That pressure is the harm of the previous paragraph seen from the other side.
+
+A limited veto would keep the protection and limit the blocking. Under a *floor veto*, an excluded member's veto counts only against proposals worth less to them than the random ballot over the members still in the draw. Every participant then holds at least their endowment, by the same induction, and a stubborn excluded member can block only proposals below their floor. But this is a rule only if the floor can be checked, and checking it needs the ideals of the remaining members and the excluded member's utility. Otherwise the restriction is an assumption about how excluded members vote, and as a rule it becomes the full veto. *(Proved, given a checkable floor.)*
+
+**Computed** (`scripts/core/proposer_groups.py`; the families of Section 3d, three to five participants, 56 instances each; gains over the endowment in units of each participant's utility range, with the share of participants below the endowment in brackets).
+
+Part 1, everyone plays rationally:
+
+| exclusion | proposer groups | independent uniform | line, quadratic loss | plane, distance |
+|---|---|---|---|---|
+| sequential | one | +0.0515 (17.5 %) | +0.1077 | +0.0231 |
+| sequential | half | +0.0519 (17.0 %) | +0.1079 | +0.0233 |
+| sequential | all but one | +0.0526 (16.5 %) | +0.1090 | +0.0238 |
+| one-shot | one | +0.0472 (0) | +0.1015 | +0.0224 |
+| one-shot | half | +0.0504 (0) | +0.1039 | +0.0232 |
+| one-shot | all but one | +0.0541 (0) | +0.1083 | +0.0243 |
+| veto kept | one | +0.0530 (0) | +0.1078 | +0.0231 |
+| veto kept | half | +0.0534 (0) | +0.1080 | +0.0233 |
+| veto kept | all but one | +0.0537 (0) | +0.1091 | +0.0238 |
+| floor veto | one | +0.0530 (0) | +0.1078 | +0.0231 |
+| floor veto | half | +0.0533 (0) | +0.1080 | +0.0233 |
+| floor veto | all but one | +0.0536 (0) | +0.1091 | +0.0237 |
+
+In the line and plane families nobody ends below the endowment under any variant. On the line with linear loss every variant gives +0.0674, the value of the mean of the ideals (Section 3d). In the uniform family the largest shortfall under sequential exclusion is 0.157 to 0.165. With proposer groups of one and sequential exclusion, the values are those of the Raiffa one-step rule in Section 3d.
+
+Part 2, one participant vetoes every proposal they may veto; the others play rationally; proposer groups of one, with all but one differing only in the fourth digit:
+
+| exclusion | others, uniform | stubborn member, uniform | others, line, linear loss | others, line, quadratic loss | others, plane |
+|---|---|---|---|---|---|
+| sequential | +0.0129 (6.9 %) | +0.0004 | +0.0099 | +0.0305 | +0.0021 |
+| one-shot | 0 | 0 | 0 | 0 | 0 |
+| veto kept | 0 | 0 | 0 | 0 | 0 |
+| floor veto, checked | +0.0119 (0) | +0.0205 | +0.0104 | +0.0313 | +0.0021 |
+
+*(Computed.)*
+
+*Reading.*
+- **Larger proposer groups gain more.** All but one gains most. With the one-shot fallback, proposer groups of all but one pass the sequential variant with single proposers in every family (in the uniform family, +0.0541 against +0.0515) without harming anyone.
+- **Harm comes from the threat point.** In unstructured utilities, the paper's sequential exclusion leaves about a sixth of participants below their endowment whatever the proposer groups, because the harm sits in the value of an exclusion.
+- **Protection and robustness pull apart.**
+  - *Keeping the veto* protects each member against the group: nobody falls below the endowment, and with rational play the gains stay.
+  - *The sequential variant* protects the group against a stubborn member. There, one stubborn member costs most of the gain: in the uniform family the others keep +0.013 of about +0.05. Under a kept veto, or in the one-shot variant, they cost all of it.
+  - *A checkable floor veto* has both properties. Stubbornness does not pay under it compared with rational play, but the stubborn member does get more than the others.
+- **What the design implies.** Which property matters more depends on the setting, outside the model. Where positions are public enough for floors to be checked, the floor veto combines the two. Where they are not, the choice is between a guarantee for each member and robustness against obstruction.
+- **Limits.** All of this assumes complete information, apart from the stubborn member. With private ideals, Section 3h applies unchanged. Which size of proposer group works best in practice is outside the model.
+
+*(Interpretation.)*
+
 ## 4. Where CORE stands relative to Gibbard
 
 *Walls and Strategy* gives two exact statements that the CORE paper describes in words.
@@ -331,6 +416,7 @@ So CORE uses two of the three switches between no fixed point and a fixed point:
 2. **Characterisation of the winner lottery.** *Answered negatively in Section 2:* consistency and participation for joint draws, with anonymity, neutrality and unanimity on first choices, leave a convex family containing every scoring rule with uniform tie-breaking. A characterisation of random ballot by conditions on winner lotteries alone needs proportionality or a condition of the strategic kind.
 3. **The call structure as a game.** *Answered for complete information in Section 3g:* with a uniformly drawn proposer at every group and undominated votes, the subgame-perfect equilibria are found by backward induction, and their outcome is one step of Raiffa's procedure in every group. With private information (Section 3h): if only attitudes are private, a proposer who wants acceptance for every type proposes the mean, so the outcome is the mean rule; if ideals are private, the mean of declarations invites exaggeration (on a line, the average rule's equilibrium leaves about a third of members below their true endowment), and on a line the random ballot is the only strategy-proof rule that harms no one. Open: the equilibrium of the call game with private ideals, and how deliberation can make stated positions credible.
 4. **Fallbacks compared.** Section 2 gives one side of the comparison between random ballot and maximal lotteries as fallbacks. A second side is the Equality Criterion (working note *The Equality Criterion and Reversal*): random ballot fails it, in the direction of plurality, while maximal lotteries pass, and no strategy-proof Pareto-optimal fallback can pass it. The other side, how manipulable each is when used as the fallback of a consensus procedure, is open.
+5. **Proposals inside the call.** Section 3i states a protocol in which a call draws a proposer group that works out a proposal by the same protocol, and an exclusion follows only a veto. Open: which sizes of proposer group to use, how the protocol behaves with private ideals beyond Section 3h, and whether any rule protects excluded members and is robust against a stubborn member when floors cannot be checked.
 
 ## 7. Material for a follow-up
 
@@ -348,6 +434,7 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 - safe agreements (Section 3f): an agreement is weakly better than the call for every concave utility exactly when it arises from the call by pooling outcomes and enacting the block means (Strassen). If every group agrees safely, everyone holds at least the endowment; the outcome is the expected ideal of the eventual dictator given partial information about the draw, and the mean rule, which reveals nothing, is the least risky;
 - the call structure as a game (Section 3g): with complete information and a uniformly drawn proposer at every group, accepting exactly what is worth the call is weakly dominant, and the subgame-perfect outcome is one step of Raiffa's procedure in every group, so the calls carry no strategic remainder; the draw that removes can also recognise;
 - private information (Section 3h): with public ideals and private attitudes, the mean is the only certain proposal every type accepts, and on a line the proposals every type accepts are exactly the safe ones; with private ideals the barrier returns: on a line the random ballot is the only strategy-proof lottery rule that harms no one, with no harm in the place of efficiency in Gibbard's theorem, and the always-call floor is what survives;
+- proposals inside the call (Section 3i): a call draws a proposer group, which finds its proposal by the same protocol with internal exclusions that do not carry over; the floor, the fair draws and the martingale are kept; harm can enter only through the value of an exclusion, as in the paper's sequential variant; keeping the excluded members' veto removes the harm but lets one stubborn member force the random ballot, while a veto limited to the member's floor has both properties if the floor can be checked;
 - whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call game with private ideals.
 
 ## References
