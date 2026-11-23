@@ -26,8 +26,15 @@ at `S` is the average of `i`'s utilities `U i j` for the ideals of the members `
   every concave utility `f`, member or not, the mean of `S` is worth at least the call at `S`, and
   at least the endowment `avg S (f ∘ p)`.
 
-Not formalised here: the decomposition of holdings (Section 3a), the theorem for one dimension
-(Section 3b), safe agreements as poolings (Section 3f), and the computations.
+* **The decomposition of holdings** (`holdings_decomposition`; Section 3a). For any values `h` on
+  stages with `h {j} = u j`, the value at a stage `S` is the average of `u` over `S` plus the
+  surpluses `h T − (call at T)` of the groups `T ⊆ S` of two or more, each divided by
+  `C(|S|, |T|)`, the number of groups of that size. The step is a count: a group `T` is reached
+  from `S` after one removal from exactly `|S| − |T|` of the sets `S ∖ {k}`, and
+  `(|S| − |T|) · C(|S|, |T|) = |S| · C(|S| − 1, |T|)`.
+
+Not formalised here: the theorem for one dimension (Section 3b), safe agreements as poolings
+(Section 3f), and the computations.
 -/
 
 open Finset
@@ -155,6 +162,144 @@ theorem holding_ge_endowment (U : V → V → ℝ) (h : Finset V → V → ℝ)
     (hstep : ∀ S : Finset V, 2 ≤ S.card → ∀ i, avg S (fun k => h (S.erase k) i) ≤ h S i)
     (S : Finset V) (hS : S.Nonempty) (i : V) : endowment U S i ≤ h S i :=
   floor (U i) (fun T => h T i) (fun j => h1 j i) (fun T hT => hstep T hT i) S hS
+
+/-! ### The decomposition of holdings -/
+
+lemma avg_congr (S : Finset V) {f g : V → ℝ} (h : ∀ k ∈ S, f k = g k) : avg S f = avg S g := by
+  unfold avg
+  rw [Finset.sum_congr rfl h]
+
+lemma avg_add (S : Finset V) (f g : V → ℝ) :
+    avg S (fun k => f k + g k) = avg S f + avg S g := by
+  unfold avg
+  rw [Finset.sum_add_distrib, mul_add]
+
+/-- The value of a call at `S`, given the values `h` one removal later. -/
+noncomputable def callValue (h : Finset V → ℝ) (S : Finset V) : ℝ := avg S (fun k => h (S.erase k))
+
+/-- The surplus of `S` over its own call. -/
+noncomputable def surplus (h : Finset V → ℝ) (S : Finset V) : ℝ := h S - callValue h S
+
+/-- The surpluses of the groups of two or more inside `S`, each divided by the number of groups of
+its size. -/
+noncomputable def surplusSum (h : Finset V → ℝ) (S : Finset V) : ℝ :=
+  ∑ T ∈ S.powerset, if 2 ≤ T.card then surplus h T / (S.card.choose T.card : ℝ) else 0
+
+/-- A group `T ⊆ S` lies inside `S ∖ {k}` for exactly the `|S| − |T|` members `k` outside `T`. -/
+lemma sum_erase_powerset (S : Finset V) (F : Finset V → ℝ) :
+    ∑ k ∈ S, ∑ T ∈ (S.erase k).powerset, F T
+      = ∑ T ∈ S.powerset, ((S.card : ℝ) - T.card) * F T := by
+  have hiff : ∀ k T, k ∈ S ∧ T ∈ (S.erase k).powerset ↔ k ∈ S \ T ∧ T ∈ S.powerset := by
+    intro k T
+    simp only [Finset.mem_powerset, Finset.mem_sdiff, Finset.subset_iff, Finset.mem_erase]
+    constructor
+    · rintro ⟨hk, hT⟩
+      exact ⟨⟨hk, fun hkT => (hT hkT).1 rfl⟩, fun x hx => (hT hx).2⟩
+    · rintro ⟨⟨hk, hkT⟩, hT⟩
+      exact ⟨hk, fun x hx => ⟨fun hxk => hkT (hxk ▸ hx), hT hx⟩⟩
+  rw [Finset.sum_comm' hiff]
+  apply Finset.sum_congr rfl
+  intro T hT
+  rw [Finset.sum_const, nsmul_eq_mul]
+  congr 1
+  have hsub : T ⊆ S := Finset.mem_powerset.mp hT
+  have := Finset.card_sdiff_add_card_eq_card hsub
+  have h2 : (S \ T).card = S.card - T.card := by omega
+  rw [h2, Nat.cast_sub (Finset.card_le_card hsub)]
+
+lemma aux_div (x y z w : ℝ) (hx : x ≠ 0) (hz : z ≠ 0) (hw : w ≠ 0) (h : w * x = z * y) :
+    x⁻¹ * y / w = 1 / z := by
+  rw [div_eq_div_iff hw hz]
+  calc x⁻¹ * y * z = x⁻¹ * (z * y) := by ring
+    _ = x⁻¹ * (w * x) := by rw [h]
+    _ = 1 * w := by rw [mul_comm w x, ← mul_assoc, inv_mul_cancel₀ hx]
+
+/-- The weights: `(|S| − |T|) / (|S| · C(|S| − 1, |T|)) = 1 / C(|S|, |T|)` for `|T| < |S|`. -/
+lemma term_eq (s t : ℕ) (a : ℝ) (ht : t < s) :
+    ((s : ℝ))⁻¹ * ((s : ℝ) - t) * (a / ((s - 1).choose t : ℝ)) = a / (s.choose t : ℝ) := by
+  obtain ⟨m, rfl⟩ : ∃ m, s = m + 1 := ⟨s - 1, by omega⟩
+  rw [Nat.add_sub_cancel]
+  have e' : (m.choose t : ℝ) * ((m + 1 : ℕ) : ℝ) = ((m + 1).choose t : ℝ) * ((m + 1 - t : ℕ) : ℝ) := by
+    exact_mod_cast Nat.choose_mul_succ_eq m t
+  rw [Nat.cast_sub (show t ≤ m + 1 by omega)] at e'
+  have hx : ((m + 1 : ℕ) : ℝ) ≠ 0 := by positivity
+  have hz : ((m + 1).choose t : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.choose_pos (show t ≤ m + 1 by omega)).ne'
+  have hw : (m.choose t : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.choose_pos (show t ≤ m by omega)).ne'
+  calc ((m + 1 : ℕ) : ℝ)⁻¹ * (((m + 1 : ℕ) : ℝ) - t) * (a / (m.choose t : ℝ))
+      = (((m + 1 : ℕ) : ℝ)⁻¹ * (((m + 1 : ℕ) : ℝ) - t) / (m.choose t : ℝ)) * a := by ring
+    _ = (1 / ((m + 1).choose t : ℝ)) * a := by rw [aux_div _ _ _ _ hx hz hw e']
+    _ = a / ((m + 1).choose t : ℝ) := by ring
+
+/-- Induction on the size of the stage, for `holdings_decomposition`. -/
+theorem holdings_decomposition_aux (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j) :
+    ∀ n : ℕ, ∀ S : Finset V, S.card = n + 1 → h S = avg S u + surplusSum h S := by
+  intro n
+  induction n with
+  | zero =>
+    intro S hS
+    have hS' : S.card = 1 := by omega
+    obtain ⟨j, rfl⟩ := Finset.card_eq_one.mp hS'
+    have h0 : surplusSum h {j} = 0 := by
+      unfold surplusSum
+      apply Finset.sum_eq_zero
+      intro T hT
+      have hT1 : T.card ≤ 1 := by
+        have := Finset.card_le_card (Finset.mem_powerset.mp hT)
+        simpa using this
+      rw [if_neg (show ¬ 2 ≤ T.card by omega)]
+    rw [h0, avg_singleton, h1, add_zero]
+  | succ n ih =>
+    intro S hS
+    have h2 : 2 ≤ S.card := by omega
+    -- the induction hypothesis for the groups with one member removed
+    have hk : ∀ k ∈ S, h (S.erase k) = avg (S.erase k) u
+        + ∑ T ∈ (S.erase k).powerset,
+            if 2 ≤ T.card then surplus h T / ((S.card - 1).choose T.card : ℝ) else 0 := by
+      intro k hk
+      have hc : (S.erase k).card = S.card - 1 := Finset.card_erase_of_mem hk
+      rw [ih (S.erase k) (by omega)]
+      unfold surplusSum
+      rw [hc]
+    have hcall : h S = surplus h S + avg S (fun k => h (S.erase k)) := by
+      unfold surplus callValue
+      ring
+    have hsum : avg S (fun k => h (S.erase k)) = avg S u + ((S.card : ℝ))⁻¹ *
+        ∑ T ∈ S.powerset, ((S.card : ℝ) - T.card) *
+          (if 2 ≤ T.card then surplus h T / ((S.card - 1).choose T.card : ℝ) else 0) := by
+      rw [avg_congr S hk, avg_add, avg_erase S u h2, ← sum_erase_powerset]
+      rfl
+    have hterm : ∀ T ∈ S.powerset,
+        (if 2 ≤ T.card then surplus h T / (S.card.choose T.card : ℝ) else 0)
+          = ((S.card : ℝ))⁻¹ * (((S.card : ℝ) - T.card) *
+              (if 2 ≤ T.card then surplus h T / ((S.card - 1).choose T.card : ℝ) else 0))
+            + (if T = S then surplus h S else 0) := by
+      intro T hT
+      have hsub := Finset.mem_powerset.mp hT
+      by_cases hTS : T = S
+      · subst hTS
+        simp [Nat.choose_self, h2]
+      · have hlt : T.card < S.card :=
+          Finset.card_lt_card (Finset.ssubset_iff_subset_ne.mpr ⟨hsub, hTS⟩)
+        rw [if_neg hTS, add_zero]
+        split_ifs with h2T
+        · rw [← mul_assoc]
+          exact (term_eq S.card T.card (surplus h T) hlt).symm
+        · simp
+    rw [hcall, hsum]
+    unfold surplusSum
+    rw [Finset.sum_congr rfl hterm, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_ite_eq',
+      if_pos (Finset.mem_powerset_self S)]
+    ring
+
+/-- **The decomposition of holdings** (Section 3a): the value at a nonempty stage is the average of
+the values at the single members plus the surpluses of the groups of two or more inside it, each
+divided by the number of groups of its size. With `h` the value of the process to one participant
+and `u` that participant's utilities for the ideals, this is the endowment plus the weighted
+surpluses. -/
+theorem holdings_decomposition (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j)
+    (S : Finset V) (hS : S.Nonempty) : h S = avg S u + surplusSum h S :=
+  holdings_decomposition_aux u h h1 (S.card - 1) S (by have := hS.card_pos; omega)
 
 /-! ### The mean rule -/
 

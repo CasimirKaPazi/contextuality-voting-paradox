@@ -69,7 +69,7 @@ Appendix: the computations, with scripts and the settings of every table.
 - every comparison of rules and variants: how often outsiders are harmed, the gains, and the cost of a stubborn member;
 - for six to eight participants [3i, larger groups]: no harm in the line and plane families at any size; with unstructured utilities the share harmed under sequential exclusion grows to about a third; the kept and floor vetoes match the sequential gains in the spatial families, while with unstructured utilities they fell behind at six and seven participants.
 
-Beyond eight participants, nothing has been computed. Enumerating every group grows as 2ⁿ, and going further would need sampled removal paths instead.
+Beyond eight participants, nothing has been computed, and larger groups are not pursued further: the comparisons are illustrations, not a basis for asymptotic claims.
 
 **Open:**
 - a closed form of the rational floor beyond the line;
@@ -81,7 +81,7 @@ Beyond eight participants, nothing has been computed. Enumerating every group gr
 ## 5. Before drafting
 
 1. *Done:* the characterisation of Ehlers, Peters and Storcken used in Section 3h is checked against their paper (Theorem 4.1, formula (12), Proposition 5.2), and the proof there is written in their terms.
-2. *Done up to eight participants:* the comparisons of Sections 3d and 3i, with a single proposer, for six to eight participants. The harm in unstructured utilities grows with the group, and the spatial families stay free of harm. Larger groups would need sampled removal paths, and larger samples would sharpen the comparison of gains.
-3. Optionally check the shortest proofs in Lean: the martingale, the decomposition of holdings, the veto-kept induction and the mean rule's safety.
+2. *Done up to eight participants:* the comparisons of Sections 3d and 3i, with a single proposer, for six to eight participants. The harm in unstructured utilities grows with the group, and the spatial families stay free of harm. Not pursued beyond that.
+3. *In progress:* the martingale and the fair call, the veto-kept induction and the mean rule's safety are checked in Lean (`lean/CoreDraw.lean`), all from one induction on the size of the stage. The decomposition of holdings is written there as well and awaits a build.
 4. Settle the notation once. The working note uses e, h, c, s and G for endowment, holding, call, surplus and floor, D for the eventual dictator and R(S) for the outcome law from a group (Section 3b).
 5. Choose the title and the relation to the first paper. The working title is *CORE II: The Draw, Safe Agreements and the Call as a Game*.
