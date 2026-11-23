@@ -48,14 +48,17 @@ variable {V : Type*} [DecidableEq V]
 /-- The average of `f` over the finite set `S`. -/
 noncomputable def avg (S : Finset V) (f : V → ℝ) : ℝ := ((S.card : ℝ))⁻¹ * ∑ j ∈ S, f j
 
+omit [DecidableEq V] in
 lemma avg_mono (S : Finset V) {f g : V → ℝ} (h : ∀ k ∈ S, f k ≤ g k) : avg S f ≤ avg S g := by
   unfold avg
   exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum h) (inv_nonneg.mpr (Nat.cast_nonneg _))
 
+omit [DecidableEq V] in
 lemma avg_neg (S : Finset V) (f : V → ℝ) : avg S (fun k => -f k) = -avg S f := by
   unfold avg
   rw [Finset.sum_neg_distrib, mul_neg]
 
+omit [DecidableEq V] in
 lemma avg_singleton (j : V) (f : V → ℝ) : avg {j} f = f j := by
   simp [avg]
 
@@ -165,10 +168,12 @@ theorem holding_ge_endowment (U : V → V → ℝ) (h : Finset V → V → ℝ)
 
 /-! ### The decomposition of holdings -/
 
+omit [DecidableEq V] in
 lemma avg_congr (S : Finset V) {f g : V → ℝ} (h : ∀ k ∈ S, f k = g k) : avg S f = avg S g := by
   unfold avg
   rw [Finset.sum_congr rfl h]
 
+omit [DecidableEq V] in
 lemma avg_add (S : Finset V) (f g : V → ℝ) :
     avg S (fun k => f k + g k) = avg S f + avg S g := by
   unfold avg
@@ -247,7 +252,7 @@ theorem holdings_decomposition_aux (u : V → ℝ) (h : Finset V → ℝ) (h1 : 
       have hT1 : T.card ≤ 1 := by
         have := Finset.card_le_card (Finset.mem_powerset.mp hT)
         simpa using this
-      rw [if_neg (show ¬ 2 ≤ T.card by omega)]
+      rw [ite_eq_right (show ¬ 2 ≤ T.card by omega)]
     rw [h0, avg_singleton, h1, add_zero]
   | succ n ih =>
     intro S hS
@@ -281,7 +286,7 @@ theorem holdings_decomposition_aux (u : V → ℝ) (h : Finset V → ℝ) (h1 : 
         simp [Nat.choose_self, h2]
       · have hlt : T.card < S.card :=
           Finset.card_lt_card (Finset.ssubset_iff_subset_ne.mpr ⟨hsub, hTS⟩)
-        rw [if_neg hTS, add_zero]
+        rw [ite_eq_right hTS, add_zero]
         split_ifs with h2T
         · rw [← mul_assoc]
           exact (term_eq S.card T.card (surplus h T) hlt).symm
@@ -289,7 +294,7 @@ theorem holdings_decomposition_aux (u : V → ℝ) (h : Finset V → ℝ) (h1 : 
     rw [hcall, hsum]
     unfold surplusSum
     rw [Finset.sum_congr rfl hterm, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_ite_eq',
-      if_pos (Finset.mem_powerset_self S)]
+      ite_eq_left (Finset.mem_powerset_self S)]
     ring
 
 /-- **The decomposition of holdings** (Section 3a): the value at a nonempty stage is the average of
@@ -310,6 +315,7 @@ variable {E : Type*} [AddCommGroup E] [Module ℝ E]
 /-- The mean of the ideals `p j` of the members of `S`. -/
 noncomputable def mean (S : Finset V) (p : V → E) : E := ((S.card : ℝ))⁻¹ • ∑ j ∈ S, p j
 
+omit [DecidableEq V] in
 lemma mean_singleton (j : V) (p : V → E) : mean {j} p = p j := by
   simp [mean]
 

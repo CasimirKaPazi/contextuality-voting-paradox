@@ -56,7 +56,7 @@ where C(n, k) is the binomial coefficient.
 
 *Proof.* Unfold h(V) = s(V) + c(V) and c(S) = average of h(S ∖ {j}) down to single participants, where h({j}) is the value of j's ideal. Each group S of size k is reached in this unfolding with the probability that uniform removals from V pass through S, which is 1/C(n, k), since the set left after n − k removals is a uniformly random set of size k. The single participants contribute the value of the ideal of D, whose expectation is e_i(V). ∎
 
-In the language of probability this is the Doob decomposition of the holdings with respect to the martingale of Section 3: the endowment is the martingale part, and the surpluses captured along the way are the rest. It is an identity, and holds whatever the groups do (checked on random instances, `scripts/core/core_checks.py`, part 3).
+In the language of probability this is the Doob decomposition of the holdings with respect to the martingale of Section 3: the endowment is the martingale part, and the surpluses captured along the way are the rest. It is an identity, and holds whatever the groups do (checked on random instances, `scripts/core/core_checks.py`, part 3, and checked in Lean as `holdings_decomposition` in `lean/CoreDraw.lean`, for any values on the stages that agree with the ideals at single participants).
 
 Its consequences:
 
