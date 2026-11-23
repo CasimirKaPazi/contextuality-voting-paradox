@@ -8,7 +8,7 @@ A two-player game form has rows (player 1's strategies), columns (player 2's) an
 
 **Theorem.** Every non-dictatorial totally tight two-player game form admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
 
-*Status.* Three outcomes: by hand (Section 7). Four outcomes: by the complete search of Sections 3 and 4. Any number of outcomes: by a reduction to at most seven outcomes and an exact search (Section 7). For forms with a core, this last step uses the block table of Section 2 for cores with several outcomes that nobody forces; that use is checked on all cores enumerated so far.
+*Status.* Three outcomes: by hand (Section 7). Four outcomes: by the complete search of Sections 3 and 4. Any number of outcomes: by a reduction to at most seven outcomes and an exact search (Section 7). For forms with a core, this last step uses the block table of Section 2 for cores with several outcomes that nobody forces. That use is checked on all cores up to 5 × 6, but not proved.
 
 Totally tight forms are those whose 2 × 2 subforms are all tight. They include the normal forms of stopping games (games on a path in which the player to move may stop with that node's outcome) but not all games of perfect information.
 
@@ -210,13 +210,17 @@ The starting summaries generalise those of Section 4:
 
 For each line, the pairs (y, M) are collected over all ways the line can look. One point needs care: a block in which y is the only allowed outcome of the line's content holds y in every cell, so its columns always count for M. Without this, the summaries are too pessimistic, and the starts already fail with four outcomes.
 
-The starting summaries cover the actual cores. Every enumerated core, in both orientations and under every renaming of outcomes, lies inside some start:
+The starting summaries cover the actual cores. Every enumerated core, in both orientations and under every renaming of outcomes, lies inside some start. Cores are enumerated completely for each size: irreducible, with every 2 × 2 subform tight, no constant and no repeated line, and outcomes numbered by first appearance.
 
-| core outcomes | cores enumerated | summaries | not covered |
-|---|---|---|---|
-| 3 | all of size 5 × 5 | 3,974,400 | 0 |
-| 3 and 4, with the starts for four | three outcomes: all of sizes 4 × 5 and 5 × 5; four outcomes: all up to 4 × 5 | 16,598,016 | 0 |
-| 5 | all 480 of size 4 × 5, and 35,208 of size 5 × 5 (an enumeration cut off by a time limit) | 8,565,120 | 0 |
+| core outcomes | sizes (all cores of these sizes) | cores | summaries | not covered |
+|---|---|---|---|---|
+| 3 | 5 × 5 | 331,200 | 3,974,400 | 0 |
+| 3 and 4, with the starts for four | three: 4 × 5, 5 × 5; four: up to 4 × 5 | 345,792 | 16,598,016 | 0 |
+| 5 | 4 × 5, 5 × 5, 4 × 6, 5 × 6, 4 × 7 | 1,816,800 | 436,032,000 | 0 |
+| 6 | 5 × 5, 5 × 6 | 393,600 | 566,784,000 | 0 |
+| 7 | 5 × 6 (there are none of size 5 × 5) | 26,400 | 266,112,000 | 0 |
+
+The cores with six and seven outcomes contain three and four outcomes that nobody forces. So the generalisation to several such outcomes is tested where it matters.
 
 The search from these starts adds lines in every possible way:
 
@@ -233,7 +237,7 @@ The search from these starts adds lines in every possible way:
 
 The proof rests on three things:
 - the structure theorem of Boros, Gurvich, Makino and Papp: every totally tight form is a single cell or a core, with constant lines added;
-- their table for cores, used here with several outcomes that nobody forces confined to the recursive blocks; this is checked on the enumerated cores above, not proved;
+- their table for cores, used here with several outcomes that nobody forces confined to the recursive blocks. This is checked on all cores up to 5 × 6 (and 4 × 7 with five outcomes), including cores with four such outcomes, but not proved;
 - two exact computer searches.
 
 A proof by hand for any number of outcomes would have to replace the searches by an argument for the three forms of a smallest counterexample.
@@ -331,7 +335,8 @@ In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `chain_mergecheck.py`: safe lines after merging two adjacent middle outcomes;
 - `tr_chain_stop.cpp`: the exact search over totally tight forms with up to seven outcomes; `./tr_chain_stop k 27` from a single cell (stopping games), `./tr_chain_stop k 27 starts.txt` from the cores;
 - `core_chain_starts.py k`: the pessimistic core summaries for the chain, with any set of outcomes that nobody forces;
-- `core_chain_cover.py k starts.txt cores...`: the coverage check against cores enumerated by `core_enum.py`.
+- `core_chain_cover.py k starts.txt cores...`: the coverage check against cores enumerated by `core_enum.py`;
+- `core_enum_cover.cpp`: complete enumeration of the cores of a given size and number of outcomes, with the coverage check; `./core_enum_cover m n k starts_k.txt`.
 
 ## References
 
