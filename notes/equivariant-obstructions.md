@@ -139,9 +139,23 @@ For m alternatives the rankings form a sphere of dimension m − 2 (*The Global 
 - the corresponding nerve of profiles has no cohomology below dimension m − 2 and has H^{m−2} = ℤⁿ, with basis pulled back from the n voters (his Propositions 4 and 5);
 - an IIA rule is a simplicial map of the nerves, and the diagonal embedding sends the generator to the sum of the basis classes (his Lemma 3).
 
-The voters' permutations permute that basis. Renamings and reversal act with the same sign on both sides (*The Global Form*, Section 9). So the top obstruction is again the class of 1 in ℤ/g. *(Proved for the top stage, from Baryshnikov's computation.)* Baryshnikov's Theorem 2 then combines this with his Proposition 7: every voter is a homological dictator (pairing 1) or homologically irrelevant (pairing 0). That is positivity and rigidity at once, both from IIA. Not worked out:
-- the lower stages, where the fixed sets of renamings are spheres of lower dimension inside the sphere of utility vectors;
-- positivity, whose natural form is Lemma 2 on each triple. It needs the rule to be local on triples, which is IIA again.
+The voters' permutations permute that basis. Renamings and reversal act with the same sign on both sides (*The Global Form*, Section 9). So the top obstruction is again the class of 1 in ℤ/g. *(Proved for the top stage, from Baryshnikov's computation.)* Baryshnikov's Theorem 2 then combines this with his Proposition 7: every voter is a homological dictator (pairing 1) or homologically irrelevant (pairing 0). That is positivity and rigidity at once, both from IIA. Positivity for rules that are only local is not worked out; its natural form is Lemma 2 on each triple, which needs the rule to be local on triples, and that is IIA again.
+
+**Fixed sets.** For the lower stages, take the sphere of rankings in its realised form: unit utility vectors with coordinate sum zero, in a space V of dimension m − 1. A strict ranking is an open chamber, and a ballot with ties lies on the walls. Renamings permute the coordinates and reversal is −1, so the fixed set of an element is the unit sphere of an eigenspace:
+- a renaming π fixes the vectors that are constant on each cycle of π. Its fixed set is a sphere of dimension c(π) − 2, where c(π) is the number of cycles. It consists of the ballots in which each cycle is one tie block, so it is the sphere of rankings of a problem with c(π) alternatives, one per cycle;
+- reversal composed with π fixes the (−1)-eigenspace of π, of dimension e(π), the number of cycles of even length. Its fixed set is a sphere of dimension e(π) − 1.
+
+*(Proved; the dimensions checked for every element with m ≤ 6.)* For three alternatives this gives the list of Section 2: a transposition fixes two midpoints, and reversal composed with a transposition fixes two rankings. For four alternatives a transposition fixes a circle, the rankings of the three blocks {a, b}, c and d. Reversal composed with a double transposition also fixes a circle. So stage 2 can now obstruct on strata of X whose stabiliser renames alternatives, not only at the top.
+
+**Proposition 5.** Let m = 4, and let five voters form blocks {1, 2} and {3, 4, 5}. No continuous map F from the product of five spheres of rankings to the sphere of rankings is unanimous, symmetric within the blocks and neutral. The top-stage obstruction vanishes here, since gcd(2, 3) = 1. *(Proved.)*
+
+*Proof.* Let τ be the transposition of a and b, and h the element that swaps voters 1 and 2 and applies τ. Its fixed set X^h consists of the profiles with u₂ = τu₁ and u₃, u₄, u₅ in the circle C fixed by τ. So X^h is the sphere of voter 1 times C³. Equivariance sends X^h into C. The permutations of voters 3, 4 and 5 commute with h, so the restriction of F to X^h is symmetric in u₃, u₄, u₅. The sphere of voter 1 has dimension 2 and contributes nothing to H¹, so F on X^h has degrees (d, d, d) on the three circles. The unanimous profiles at a point c of C lie in X^h, since τc = c. As c goes once around C, voter 1's coordinate makes a loop in a 2-sphere, which contracts, and the other three go once around their circles. Unanimity gives 1 = 3d, which has no integer solution. ∎
+
+The obstruction is the one of Proposition 1, for a smaller problem. On the stratum of h, the profiles are those of an electorate of three voters with ballots on the three alternatives {a, b}, c and d. Voters 1 and 2 have become one composite voter whose ballot is unconstrained, and the composite voter has no degree, because its ballot moves on a sphere of higher dimension. The anonymity among the remaining three gives ℤ/3. For three alternatives the stratum of the same h is stage 1, with values in two midpoints. There a self-dual symmetric function of the remaining voters' tied ballots is needed, which exists exactly when their number is odd, May's condition at a tie. *(Interpretation; the case m = 3 follows from Section 2.)*
+
+In general the stratum of an element (σ, π) is a product with one factor per cycle of σ: a cycle of length ℓ contributes the fixed sphere of π^ℓ. Only the cycles whose factor is the fixed sphere of π itself carry a degree, so a lower stage obstructs by ℤ/g_h, where g_h is the gcd of the sizes of the orbits on these cycles under the elements of K that commute with h. Signs from the renaming parts of those elements have not been checked in general. *(Sketch.)*
+
+For rules with positivity the lower strata add nothing. For local Pareto rules with three alternatives (Proposition 3), and for unanimous IIA rules with any number (Arrow's theorem), a K-equivariant rule exists exactly when P fixes a voter, and then that voter's dictatorship satisfies every stage. The lower strata obstruct only where positivity is absent, as for continuous maps without a Pareto condition. *(Proved; the second sentence is the example above.)*
 
 ## 7. Relation to the electorate direction
 
@@ -149,7 +163,7 @@ Young–Levenglick and the no-show theorem do not fit this ladder. No group is i
 
 ## 8. Open questions
 
-1. The lower stages for m ≥ 4, and whether any of them obstructs beyond the arithmetic of stage 0.
+1. The lower stages for m ≥ 4. They can obstruct where the top stage does not (Proposition 5). Open: the general formula for g_h with signs, and whether a lower stage ever obstructs for rules that are Pareto but not local.
 2. An equivariant form of positivity. The degree vector lies in a cone fixed by Pareto, and the obstruction of Proposition 3 is the absence of a fixed vertex. Is there a formulation in which positivity is a coefficient condition, so that the ladder becomes one obstruction theory with ordered coefficients?
 3. For which local Pareto rules is the degree-1 voter a dictator? Two voters always; three voters not. Is there a condition weaker than IIA that suffices, such as locality on every pair of comparisons?
 

@@ -26,6 +26,8 @@ Part 3, stage 2 (the degree). Decides by 0/1 programs whether a local Pareto rul
         blocks (2, 2), (3, 3) fail as the torsion class predicts; blocks (2, 3) fail although g = 1,
         by the pinning. Rigidity is a further layer: every local Pareto rule of two voters is a
         dictatorship, while for three voters there is one with degrees (0, 0, 1) that is not.
+Part 4, more alternatives. Checks the dimensions of the fixed spheres of all renamings and of
+        reversal composed with them, for m = 3 to 6, against the cycle formula of the note.
 Run: python3 equivariant_stages.py   (numpy and scipy; about twenty seconds)
 """
 import itertools
@@ -293,7 +295,41 @@ def part3():
     print()
 
 
+# ---------------------------------------------------------------- Part 4: fixed spheres for more alternatives
+def cycle_lengths(p):
+    seen, out = set(), []
+    for i in range(len(p)):
+        if i not in seen:
+            c, j = 0, i
+            while j not in seen:
+                seen.add(j); j = p[j]; c += 1
+            out.append(c)
+    return out
+
+
+def part4(mmax=6):
+    print("Part 4: fixed sets on the realised sphere of rankings (unit utility vectors with sum zero)")
+    bad = 0
+    for m in range(3, mmax + 1):
+        for p in permutations(range(m)):
+            P = np.zeros((m, m))
+            for i, j in enumerate(p):
+                P[j, i] = 1
+            cy = cycle_lengths(p)
+            for rev in (0, 1):
+                A = -P if rev else P
+                dim = m - np.linalg.matrix_rank(np.vstack([A - np.eye(m), np.ones((1, m))]))
+                pred = len(cy) - 1 if not rev else sum(1 for c in cy if c % 2 == 0)
+                bad += dim != pred
+    print(f"  m = 3..{mmax}: fixed subspace of a renaming pi has dimension c(pi) - 1, of reversal o pi"
+          f" dimension e(pi) (even cycles): {'all match' if bad == 0 else str(bad) + ' MISMATCHES'}")
+    print("  m = 4: a transposition and reversal o (double transposition) fix circles, so stage 2 can"
+          " obstruct on their strata (Proposition 5 of the note)")
+    print()
+
+
 if __name__ == "__main__":
     part1()
     part2()
     part3()
+    part4()
