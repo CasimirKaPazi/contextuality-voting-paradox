@@ -1,0 +1,222 @@
+import Mathlib
+
+/-!
+# The draw of CORE: martingale, floors and the mean rule
+
+Statements from the working note *CORE and the Formal Results* (`notes/core-connection.md`).
+
+Participants form a type `V`; a stage of the removal process is the finite set `S` of participants
+still in the draw. `avg S f` is the average of `f` over `S`, and the endowment of participant `i`
+at `S` is the average of `i`'s utilities `U i j` for the ideals of the members `j` of `S`.
+
+* **The fair call** (`avg_erase`, `fair_call`; Section 3). Averaging over the member removed by a
+  call leaves the average unchanged: the endowments form a martingale along the removals. This is
+  Theorem 1 of the CORE paper.
+* **The participant left last is uniform** (`last_uniform`; Section 3). If `P S i` is defined by
+  `P {j} i = [i = j]` and, for `|S| ≥ 2`, by averaging over the member removed, then
+  `P S i = 1/|S|` for every member `i` of `S`.
+* **Floors from stage-wise floors** (`floor`, `holding_ge_endowment`; Sections 3i and 3e). If a
+  value assigned to each stage is the value of the ideal at a single member and is at least the
+  average of its values one removal later, it is at least the endowment at every stage. With an
+  excluded member keeping their veto over every later proposal, the value of the process has this
+  property for every participant (*veto kept*, Section 3i).
+* **The mean rule is safe** (`mean_erase`, `mean_safe`, `mean_rule_ge_endowment`; Section 3e).
+  Ideals are points `p j` of a real vector space and `mean S p` is the mean of the ideals of the
+  members. Averaging the means of the groups with one member removed gives the mean again. For
+  every concave utility `f`, member or not, the mean of `S` is worth at least the call at `S`, and
+  at least the endowment `avg S (f ∘ p)`.
+
+Not formalised here: the decomposition of holdings (Section 3a), the theorem for one dimension
+(Section 3b), safe agreements as poolings (Section 3f), and the computations.
+-/
+
+open Finset
+
+namespace CoreDraw
+
+variable {V : Type*} [DecidableEq V]
+
+/-! ### Averages over a stage -/
+
+/-- The average of `f` over the finite set `S`. -/
+noncomputable def avg (S : Finset V) (f : V → ℝ) : ℝ := ((S.card : ℝ))⁻¹ * ∑ j ∈ S, f j
+
+lemma avg_mono (S : Finset V) {f g : V → ℝ} (h : ∀ k ∈ S, f k ≤ g k) : avg S f ≤ avg S g := by
+  unfold avg
+  exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum h) (inv_nonneg.mpr (Nat.cast_nonneg _))
+
+lemma avg_neg (S : Finset V) (f : V → ℝ) : avg S (fun k => -f k) = -avg S f := by
+  unfold avg
+  rw [Finset.sum_neg_distrib, mul_neg]
+
+lemma avg_singleton (j : V) (f : V → ℝ) : avg {j} f = f j := by
+  simp [avg]
+
+/-- Each member is missing from exactly one of the sets `S.erase k`. -/
+lemma sum_sum_erase (S : Finset V) (f : V → ℝ) :
+    ∑ k ∈ S, ∑ j ∈ S.erase k, f j = ((S.card : ℝ) - 1) * ∑ j ∈ S, f j := by
+  have h : ∀ k ∈ S, ∑ j ∈ S.erase k, f j = ∑ j ∈ S, f j - f k :=
+    fun k hk => Finset.sum_erase_eq_sub hk
+  rw [Finset.sum_congr rfl h, Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]
+  ring
+
+/-- **The fair call.** Averaging over the member removed leaves the average unchanged. -/
+lemma avg_erase (S : Finset V) (f : V → ℝ) (hS : 2 ≤ S.card) :
+    avg S (fun k => avg (S.erase k) f) = avg S f := by
+  have h1 : 1 ≤ S.card := by omega
+  have hne : (S.card : ℝ) - 1 ≠ 0 := by
+    have : (2 : ℝ) ≤ S.card := by exact_mod_cast hS
+    intro h0
+    linarith
+  have hc : ∀ k ∈ S, ((S.erase k).card : ℝ)⁻¹ * ∑ j ∈ S.erase k, f j
+      = ((S.card : ℝ) - 1)⁻¹ * ∑ j ∈ S.erase k, f j := by
+    intro k hk
+    rw [Finset.card_erase_of_mem hk, Nat.cast_sub h1, Nat.cast_one]
+  unfold avg
+  rw [Finset.sum_congr rfl hc, ← Finset.mul_sum, sum_sum_erase, inv_mul_cancel_left₀ hne]
+
+/-! ### Floors from stage-wise floors -/
+
+/-- Induction on the size of the stage, for `floor`. -/
+theorem floor_aux (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j)
+    (hstep : ∀ S : Finset V, 2 ≤ S.card → avg S (fun k => h (S.erase k)) ≤ h S) :
+    ∀ n : ℕ, ∀ S : Finset V, S.card = n + 1 → avg S u ≤ h S := by
+  intro n
+  induction n with
+  | zero =>
+    intro S hS
+    have hS' : S.card = 1 := by omega
+    obtain ⟨j, rfl⟩ := Finset.card_eq_one.mp hS'
+    exact le_of_eq (by rw [avg_singleton, h1])
+  | succ n ih =>
+    intro S hS
+    have h2 : 2 ≤ S.card := by omega
+    have hk : ∀ k ∈ S, avg (S.erase k) u ≤ h (S.erase k) := by
+      intro k hk
+      apply ih
+      have := Finset.card_erase_of_mem hk
+      omega
+    calc avg S u = avg S (fun k => avg (S.erase k) u) := (avg_erase S u h2).symm
+      _ ≤ avg S (fun k => h (S.erase k)) := avg_mono S hk
+      _ ≤ h S := hstep S h2
+
+/-- **Floors from stage-wise floors.** A value on stages that equals `u j` at the single member `j`
+and is at least its own average one removal later is at least the average of `u` at every
+nonempty stage. -/
+theorem floor (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j)
+    (hstep : ∀ S : Finset V, 2 ≤ S.card → avg S (fun k => h (S.erase k)) ≤ h S)
+    (S : Finset V) (hS : S.Nonempty) : avg S u ≤ h S :=
+  floor_aux u h h1 hstep (S.card - 1) S (by have := hS.card_pos; omega)
+
+/-- The same with equality: a value that equals its own average one removal later is the
+average of `u`. -/
+theorem eq_of_step (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j)
+    (hstep : ∀ S : Finset V, 2 ≤ S.card → h S = avg S (fun k => h (S.erase k)))
+    (S : Finset V) (hS : S.Nonempty) : h S = avg S u := by
+  apply le_antisymm
+  · have key : avg S (fun j => -u j) ≤ -h S :=
+      floor (fun j => -u j) (fun T => -h T) (fun j => by simp [h1])
+        (fun T hT => by
+          show avg T (fun k => -h (T.erase k)) ≤ -h T
+          exact le_of_eq (by rw [avg_neg, hstep T hT]))
+        S hS
+    rw [avg_neg] at key
+    linarith
+  · exact floor u h h1 (fun T hT => (hstep T hT).ge) S hS
+
+/-! ### The draw -/
+
+/-- **The participant left last is uniform.** -/
+theorem last_uniform (P : Finset V → V → ℝ) (h1 : ∀ j i, P {j} i = if i = j then 1 else 0)
+    (hstep : ∀ S : Finset V, 2 ≤ S.card → ∀ i, P S i = avg S (fun k => P (S.erase k) i))
+    (S : Finset V) (hS : S.Nonempty) (i : V) (hi : i ∈ S) : P S i = ((S.card : ℝ))⁻¹ := by
+  have key : P S i = avg S (fun j => if i = j then 1 else 0) :=
+    eq_of_step _ (fun T => P T i) (fun j => h1 j i) (fun T hT => hstep T hT i) S hS
+  rw [key]
+  simp [avg, Finset.sum_ite_eq, hi]
+
+/-- The endowment of participant `i` at the stage `S`: the average of `i`'s utilities `U i j` for
+the ideals of the members `j` of `S`. -/
+noncomputable def endowment (U : V → V → ℝ) (S : Finset V) (i : V) : ℝ := avg S (U i)
+
+/-- **The fair call** (Theorem 1 of the CORE paper): the expected endowment after a call equals
+the endowment before it. -/
+theorem fair_call (U : V → V → ℝ) (S : Finset V) (hS : 2 ≤ S.card) (i : V) :
+    avg S (fun k => endowment U (S.erase k) i) = endowment U S i :=
+  avg_erase S (U i) hS
+
+/-- **Veto kept.** Let `h S i` be the value to participant `i` of the process when `S` is the set
+of members still in the draws. If a single member enacts their ideal, and at every larger stage
+every participant gets at least their average value one exclusion later (as when every
+participant, excluded or not, must accept every proposal), then every participant holds at least
+their endowment at every stage. -/
+theorem holding_ge_endowment (U : V → V → ℝ) (h : Finset V → V → ℝ)
+    (h1 : ∀ j i, h {j} i = U i j)
+    (hstep : ∀ S : Finset V, 2 ≤ S.card → ∀ i, avg S (fun k => h (S.erase k) i) ≤ h S i)
+    (S : Finset V) (hS : S.Nonempty) (i : V) : endowment U S i ≤ h S i :=
+  floor (U i) (fun T => h T i) (fun j => h1 j i) (fun T hT => hstep T hT i) S hS
+
+/-! ### The mean rule -/
+
+section Mean
+
+variable {E : Type*} [AddCommGroup E] [Module ℝ E]
+
+/-- The mean of the ideals `p j` of the members of `S`. -/
+noncomputable def mean (S : Finset V) (p : V → E) : E := ((S.card : ℝ))⁻¹ • ∑ j ∈ S, p j
+
+lemma mean_singleton (j : V) (p : V → E) : mean {j} p = p j := by
+  simp [mean]
+
+lemma sum_sum_erase_vec (S : Finset V) (p : V → E) :
+    ∑ k ∈ S, ∑ j ∈ S.erase k, p j = ((S.card : ℝ) - 1) • ∑ j ∈ S, p j := by
+  have h : ∀ k ∈ S, ∑ j ∈ S.erase k, p j = ∑ j ∈ S, p j - p k :=
+    fun k hk => Finset.sum_erase_eq_sub hk
+  rw [Finset.sum_congr rfl h, Finset.sum_sub_distrib, Finset.sum_const, sub_smul, one_smul,
+    Nat.cast_smul_eq_nsmul]
+
+/-- **The recursion of the mean rule.** The means of the groups with one member removed average to
+the mean of the group. -/
+lemma mean_erase (S : Finset V) (p : V → E) (hS : 2 ≤ S.card) :
+    ((S.card : ℝ))⁻¹ • ∑ k ∈ S, mean (S.erase k) p = mean S p := by
+  have h1 : 1 ≤ S.card := by omega
+  have hne : (S.card : ℝ) - 1 ≠ 0 := by
+    have : (2 : ℝ) ≤ S.card := by exact_mod_cast hS
+    intro h0
+    linarith
+  have hc : ∀ k ∈ S, mean (S.erase k) p = ((S.card : ℝ) - 1)⁻¹ • ∑ j ∈ S.erase k, p j := by
+    intro k hk
+    unfold mean
+    rw [Finset.card_erase_of_mem hk, Nat.cast_sub h1, Nat.cast_one]
+  rw [Finset.sum_congr rfl hc, ← Finset.smul_sum, sum_sum_erase_vec, inv_smul_smul₀ hne]
+  rfl
+
+/-- **The mean is worth at least the call**, for every concave utility. -/
+theorem mean_safe {f : E → ℝ} (hf : ConcaveOn ℝ Set.univ f) (S : Finset V) (p : V → E)
+    (hS : 2 ≤ S.card) :
+    avg S (fun k => f (mean (S.erase k) p)) ≤ f (mean S p) := by
+  have hpos : (0 : ℝ) < S.card := by exact_mod_cast (by omega : 0 < S.card)
+  have hw : ∑ _k ∈ S, ((S.card : ℝ))⁻¹ = 1 := by
+    rw [Finset.sum_const, nsmul_eq_mul, mul_inv_cancel₀ hpos.ne']
+  have key : ∑ k ∈ S, ((S.card : ℝ))⁻¹ • f (mean (S.erase k) p)
+      ≤ f (∑ k ∈ S, ((S.card : ℝ))⁻¹ • mean (S.erase k) p) :=
+    hf.le_map_sum (fun _ _ => inv_nonneg.mpr (Nat.cast_nonneg _)) hw (fun _ _ => Set.mem_univ _)
+  have hrhs : ∑ k ∈ S, ((S.card : ℝ))⁻¹ • mean (S.erase k) p = mean S p := by
+    rw [← Finset.smul_sum]
+    exact mean_erase S p hS
+  rw [hrhs] at key
+  unfold avg
+  rw [Finset.mul_sum]
+  simpa only [smul_eq_mul] using key
+
+/-- **The mean rule is safe** (Section 3e): for every concave utility `f`, the mean of the ideals
+of the members of `S` is worth at least the endowment at `S`, the average of `f` over their
+ideals. With `f` the utility of any participant, member of `S` or not. -/
+theorem mean_rule_ge_endowment {f : E → ℝ} (hf : ConcaveOn ℝ Set.univ f) (p : V → E)
+    (S : Finset V) (hS : S.Nonempty) : avg S (fun j => f (p j)) ≤ f (mean S p) :=
+  floor (fun j => f (p j)) (fun T => f (mean T p)) (fun j => by simp [mean_singleton])
+    (fun T hT => mean_safe hf T p hT) S hS
+
+end Mean
+
+end CoreDraw
