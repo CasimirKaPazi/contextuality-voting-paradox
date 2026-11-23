@@ -59,7 +59,7 @@ Together these give the theorem.
 
 - With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The full summary search, over all configurations, does not scale to five outcomes; the search restricted to the four configurations of the chain (Section 7) reaches seven.
 - No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes. A merging argument reduces the chain to at most seven outcomes, and an exact search up to seven outcomes then proves it for all totally tight forms (end of Section 7). Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
-- Tight forms that are not totally tight remain open. They include the normal forms of general games of perfect information and veto procedures. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
+- Tight forms that are not totally tight remain open in general. They include the normal forms of general games of perfect information and veto procedures. For three outcomes, Section 7 settles every form with a recombination property, which includes every game of perfect information. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
 
 *Reading.* On a core, the three key outcomes are forced in pairs by both players and singly by neither: the loop of refutation is present locally, as in a rock–paper–scissors. On a stopping game it is built step by step in time, one constant line per node. The theorem says both ways of building the loop always leave a player without a strict Nash strategy. *(Interpretation.)*
 
@@ -103,6 +103,33 @@ The four configurations alternate between the players and between the two kinds.
 **The position lemma for three outcomes.** The chain lemma also gives the position lemma of Section 8 for three outcomes. Take a line of j with outcome x, after which the form is still valid. Then j does not force some outcome a ≠ x; let b be the third outcome.
 - If the other player does not force some c ≠ a, the chain with i = j gives a configuration of j with top a, or one of the other player whose Q, (a, e, c) in both kinds, has x among its two lowest outcomes, since x ∈ {c, e}.
 - Otherwise the other player forces x and b. Then j forces nothing, and the chain applies with i the other player, top a and c = b. It gives a configuration of j with top b, or one of the other player whose Q is (b, x, a), with x among its two lowest outcomes.
+
+**Beyond totally tight forms: recombination.** Of the three facts, only (F3) uses total tightness, and only through the following property of a form.
+
+*(R) Recombination.* For any two cells x = (r, s₀) and y = (r₀, s) there is a row r′ with (r′, s₀) = g(x) and (r′, s) = g(y), or a column s′ with (r, s′) = g(x) and (r₀, s′) = g(y).
+
+*(F3) from (R).* Suppose a row r and a column c both fail. Take a w-cell of r, in a column s′, and a v-cell of c, in a row r′. By (R), either some row holds w in column s′ and v in column c, or some column holds w in row r and v in row r′. The first is a v-cell of c in a row holding w. The second is a w-cell of r in a column holding v. Either contradicts the failure. ∎
+
+Two classes of forms have (R):
+- *Totally tight forms.* The 2 × 2 subform on rows r, r₀ and columns s₀, s has a constant line. If row r is constant, s′ = s works. If row r₀ is constant, s′ = s₀ works. If column s₀ is constant, r′ = r₀ works. If column s is constant, r′ = r works.
+- *Games of perfect information* (finite trees, two players, outcomes at the leaves). A cell is a pair of strategies (plans), and its outcome is that of the leaf reached. Follow the plays of x and y from the root. If they reach the same leaf, s′ = s works. Otherwise let N be the first node where they part. Before N both plays make the same moves.
+  - If N belongs to the row player, let s′ follow s₀ below the branch that x takes at N, and s elsewhere; s₀ and s agree before N. Then (r, s′) plays out as x and (r₀, s′) as y.
+  - If N belongs to the column player, build r′ from r and r₀ in the same way.
+
+  Removing repeated lines keeps (R).
+
+Unlike total tightness, (R) is not inherited by subforms: subforms of a game tree's normal form can lose it.
+
+**Theorem (three outcomes, recombination).** Every non-dictatorial two-player game form with three outcomes and property (R) admits a rational diagonal, with Q the reverse of P or its rotation. In particular, every game of perfect information with three outcomes does.
+
+*Proof.* The chain lemma uses only (F1), (F2) and (F3); the first two hold for every form, and (F3) follows from (R). The theorem for three outcomes then follows as before. ∎
+
+Tightness is not used. The checks agree:
+- on 400 random forms with (R) that are not tight, the chain lemma held in all 3,704 cases;
+- on 400 random forms without (R), it failed in 128 of 3,604 cases;
+- all 300 random game trees tested had (R).
+
+*More outcomes.* Piece 2 above also follows from (R), by the same argument. Pieces 1, 3 and 4 use only saddle points and common cells. Tightness and (R) both survive merging. So the reduction to at most seven outcomes holds for tight forms with (R), and in particular for games of perfect information, which are tight (Gurvich). But the chain fails on some tight forms with (R) and four outcomes: 70 of 12,900 cases on 400 random forms. So for trees, the searches would have to use their tree structure. On 2,100 random game trees with three to five outcomes, about half of them not totally tight, the chain held in all 51,528 cases. A finite summary for trees exists: the normal form at a node is built from those of its two subtrees, and the pairs (y, M) combine directly. A search over it is a natural next step.
 
 **How the facts were found.** For each player, the working conditions depend on 24 yes-or-no properties of the form: forcing, leaving and reaching, for each choice of outcomes. On stopping games with three outcomes these properties take few joint values. A search for short implications that hold on all of them, and that together exclude every assignment in which the lemma fails, returned seven implications up to renaming outcomes. The chain lemma was read off the resulting propositional proof, and its proof uses only (F1), (F2) in both forms and (F3).
 
@@ -335,6 +362,13 @@ In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `core_chain_starts.py k`: the pessimistic core summaries for the chain, with any set of outcomes that nobody forces;
 - `core_chain_cover.py k starts.txt cores...`: the coverage check against cores enumerated by `core_enum.py`;
 - `core_enum_cover.cpp`: complete enumeration of the cores of a given size and number of outcomes, with the coverage check; `./core_enum_cover m n k starts_k.txt`.
+
+In `scripts/strategy/rational_diagonal/perfect_information/` (Section 7, recombination; they import from `absorption/`):
+- `pi_trees.py`: random game trees, their normal forms, and the chain on them;
+- `pi_more.py`: the chain and the pieces 1–4 on more trees, with up to five outcomes;
+- `recomb.py`: the property (R) on trees, and the chain and piece 2 on random tight forms with (R);
+- `recomb3.py`: the chain lemma with three outcomes on forms with (R) that are not tight, and on forms without (R);
+- `tightforms.py`, `tight_pieces.py`: the chain and the pieces 1–4 on random tight forms that are not totally tight.
 
 ## References
 
