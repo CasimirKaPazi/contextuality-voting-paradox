@@ -59,7 +59,7 @@ Appendix: the computations, with scripts and the settings of every table.
 - safe agreements as poolings;
 - the call game with complete information;
 - cautious proposers with private attitudes;
-- the line theorem with private ideals, from the characterisation of Ehlers, Peters and Storcken by fixed probabilistic ballots (form checked against the restatement of Chatterji, Roy, Sadhukhan, Sen and Zeng), with exact grid computations as an independent check;
+- the line theorem with private ideals, from the characterisation of Ehlers, Peters and Storcken by fixed probabilistic ballots (Theorem 4.1 and Proposition 5.2 of their paper, checked against the original), with exact grid computations as an independent check;
 - the properties of proposals inside the call, and the veto-kept induction.
 
 **Settled with a caveat:**
@@ -77,7 +77,7 @@ Appendix: the computations, with scripts and the settings of every table.
 
 ## 5. Before drafting
 
-1. *Done:* the form of the Ehlers–Peters–Storcken characterisation used in Section 3h is checked, and the proof there is written in that form (fixed probabilistic ballots on upper tails). It would still be good to read the original paper, which is behind a paywall, for its exact statement on the real line.
+1. *Done:* the characterisation of Ehlers, Peters and Storcken used in Section 3h is checked against their paper (Theorem 4.1, formula (12), Proposition 5.2), and the proof there is written in their terms.
 2. Decide whether the computed comparisons need larger groups, for instance by sampling instead of enumerating all groups.
 3. Optionally check the shortest proofs in Lean: the martingale, the decomposition of holdings, the veto-kept induction and the mean rule's safety.
 4. Settle the notation once. The working note uses e, h, c, s and G for endowment, holding, call, surplus and floor, D for the eventual dictator and R(S) for the outcome law from a group (Section 3b).
