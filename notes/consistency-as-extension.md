@@ -37,7 +37,7 @@ The output may be **deterministic** (sets of winners, or rankings) or a **lotter
 | Output | Combination | Status | Where the cycle goes |
 |---|---|---|---|
 | deterministic | S + G (+ continuity) | possible, exactly the scoring rules (Young 1975) | every scoring rule gives a complete tie on a profile in which each candidate occupies each position equally often, such as abc, bca, cab: pure cycles are sent to indifference and their direction is erased (placement iii, discrete) |
-| deterministic | G + C | impossible (Young and Levenglick 1978; every Condorcet extension fails from eight voters, every anonymous and neutral one from five, for three candidates: Brandt, Dong and Peters) | the blocking lemma: no break of the cycle glues |
+| deterministic | G + C | impossible (Young and Levenglick 1978; every Condorcet extension fails from eight voters, every anonymous and neutral one from five, for three candidates and rules that may return sets: Brandt, Dong and Peters; a resolute anonymous and neutral rule fails already at the Condorcet profile) | the blocking lemma: no break of the cycle glues |
 | deterministic | S + C, unique winner | impossible at the Condorcet profile (Section 1 of *Where the Symmetry Goes*) | a tie-breaker or agenda breaks the symmetry from outside (placement ii) |
 | lottery | S + G + C, and consistency with respect to clones | possible, uniquely: **maximal lotteries** (Fishburn 1984; Brandl, Brandt and Seedig 2016) | the lottery is the optimal mixed strategy of the symmetric zero-sum game given by the pairwise majority margins; it exists by von Neumann's minimax theorem (placement iii) |
 
@@ -144,6 +144,8 @@ With L(p_x)(x) = 1 and L(p_x + q)(x) = 0, the row L(p_x)(x) + L(q)(x) − L(p_x 
 
 This is the blocking lemma of Section 2, at a single profile and with small witnesses: the proof of Theorem 2 of *Four Levels* (checked in Lean) uses electorates of size 2n + 1, here three voters suffice. For ten and eleven voters the least certificates have the same shape, with a different q (at eleven voters, a profile of eight voters with margins 2 on each comparison of a cycle). At eight voters the linear program is feasible, so no profile of at most eight voters can be blocked for all three candidates by electorates that fit. *(Computed.)*
 
+The certificate is Brandt, Dong and Peters' proof of their Theorem 2, summed over the three cyclic renamings: every Condorcet extension, possibly set-valued, violates subset-reinforcement from nine voters. Their proof uses the doubled cycle, assumes by its cyclic symmetry that a is among the winners, and joins it with the three-voter profile {acb, acb, cab}. The coincidence of the thresholds has a short reason. Subset-reinforcement asks that a candidate chosen in both parts be chosen in the union, and their proof uses it only where one part has a Condorcet winner. There the joint-draw inequality, with L(q)(a) = 1, reads L(p + q)(a) ≥ L(p)(a). So the supports of a lottery rule consistent for joint draws satisfy subset-reinforcement on exactly these joins, and their proof applies to lotteries unchanged. *(Proved.)* What the linear program adds is that this is the least certificate, and that it exists for no smaller electorate.
+
 **Deterministic rules, eight voters.** Here no profile is blocked on its own. Every one of the 671 profiles without a Condorcet winner keeps at least one candidate that no join with a Condorcet profile excludes. Yet no consistent Condorcet extension exists (Brandt, Dong and Peters; for anonymous rules, Section 3c). A minimal unsatisfiable set has ten profiles without a Condorcet winner, and dropping any one of them leaves a satisfiable set:
 - Q0, the Condorcet profile {abc, bca, cab};
 - six four-voter profiles with two unbeaten candidates, for example Q1 = {abc, acb, cba, cba} and Q5 = {acb, acb, bca, cab}, both with a and c unbeaten;
@@ -154,7 +156,18 @@ The proof is a case split on W(Q0). Suppose W(Q0) = a.
 2. Q0 + Q1 and Q0 + Q5 have Condorcet winner c, which beats a in Q0. So neither Q1 nor Q5 elects a, and since b is beaten in both, both elect c.
 3. Q1 + Q5 = Q7, so W(Q7) = c, a contradiction.
 
-The cases b and c are the same after renaming the candidates cyclically (with Q2, Q4, Q8 and Q3, Q6, Q9). *(Computed: unsatisfiability, minimality and every step of the three cases.)*
+The cases b and c are the same after renaming the candidates cyclically (with Q2, Q4, Q8 and Q3, Q6, Q9). *(Computed: unsatisfiability, minimality and every step of the three cases.)* This is the structure of Brandt, Dong and Peters' proof of their Theorem 3, for anonymous rules and full reinforcement: from the Condorcet profile, two auxiliary profiles are forced to the candidate that beats the one chosen, and their join contradicts a join of the Condorcet profile with a five-voter electorate. The computation adds that the ten profiles form a minimal unsatisfiable set, so that no proof can use fewer, and that no profile is blocked on its own.
+
+**The levels as the electorate grows.** Requiring the draws of two joins to agree on every pair of profiles they share turns weakly compatible families into empirical models. At eight voters such models exist. That holds for both readings of the join of an electorate with a copy of itself, p + p: two copies of p with separate draws (the reading of the lemma in Section 3b), or a single variable, which forces L(2p) = L(p). Since no deterministic rule exists at eight voters, no global section does either, so every such model is strongly contextual. With the renamings of the alternatives as the symmetry, resolute neutral rules exist only up to two voters. At the Condorcet profile a neutral winner would have to be fixed by the 3-cycle, which is the isotropy obstruction of *Equivariant Obstructions*, stage 0, with or without consistency. *(Computed.)* So the joins scenario passes through all four levels of *Four Levels* as the electorate grows:
+
+| Voters | Level | What exists | What fails, and where |
+|---|---|---|---|
+| up to 2 | 4, consistency | a neutral consistent Condorcet extension | |
+| 3 to 7 | 3, symmetry breaking | consistent Condorcet extensions, none neutral | isotropy at the Condorcet profile |
+| 8 | 2, contextuality | empirical models, no global section | the case split at the Condorcet profile, with a derived witness |
+| 9 and more | 1, local inconsistency | no weakly compatible family | the blocking lemma at one profile, with direct witnesses |
+
+Each step down is caused by the same profile, the Condorcet profile or a multiple of it, and each obstruction is closer to a single point than the one before. Young–Levenglick in the limit of vote shares is the last row. *(The levels are computed; the reading is interpretation.)*
 
 **The levels as the electorate grows.** Requiring the draws of two joins to agree on every pair of profiles they share turns weakly compatible families into empirical models. At eight voters such models exist. That holds for both readings of the join of an electorate with a copy of itself, p + p: two copies of p with separate draws (the reading of the lemma in Section 3b), or a single variable, which forces L(2p) = L(p). Since no deterministic rule exists at eight voters, no global section does either, so every such model is strongly contextual. With the renamings of the alternatives as the symmetry, resolute neutral rules exist only up to two voters. At the Condorcet profile a neutral winner would have to be fixed by the 3-cycle, which is the isotropy obstruction of *Equivariant Obstructions*, stage 0, with or without consistency. *(Computed.)* So the joins scenario passes through all four levels of *Four Levels* as the electorate grows:
 
@@ -200,7 +213,7 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 - Baryshnikov, Y. (1993). Unifying impossibility theorems: a topological approach. *Advances in Applied Mathematics* 14, 404–415.
 - Brandl, F., Brandt, F. and Hofbauer, J. (2019). Welfare maximization entices participation. *Games and Economic Behavior* 114, 308–314. arXiv:1508.03538.
 - Brandl, F., Brandt, F. and Seedig, H. G. (2016). Consistent probabilistic social choice. *Econometrica* 84, 1839–1880. arXiv:1503.00694.
-- Brandt, F., Dong, C. and Peters, D. (2024). Condorcet-consistent choice among three candidates. arXiv:2411.19857.
+- Brandt, F., Dong, C. and Peters, D. (2024). Condorcet-consistent choice among three candidates. arXiv:2411.19857. (Theorems 2, 3 and 4: subset-reinforcement from nine voters, reinforcement for anonymous rules from eight, for anonymous and neutral rules from five; rules may return sets.)
 - Brandt, F., Geist, C. and Peters, D. (2017). Optimal bounds for the no-show paradox via SAT solving. *Mathematical Social Sciences* 90, 18–27.
 - Fishburn, P. C. (1984). Probabilistic social choice based on simple voting comparisons. *Review of Economic Studies* 51, 683–692.
 - Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
