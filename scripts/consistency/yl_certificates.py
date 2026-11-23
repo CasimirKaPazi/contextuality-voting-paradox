@@ -20,9 +20,17 @@ Part 2, deterministic rules. At n = 8 there is no consistent Condorcet extension
         eight-voter profile above x to x through a five-voter electorate with Condorcet winner x,
         while the two four-voter profiles below it are pushed off x by their joins with Q0, onto
         the candidate y that beats x, and their join then forces y.
-Run: python3 yl_certificates.py [n ...]   (numpy and scipy; about a minute for n = 9, 10, 11)
+Part 3, the levels. With draws that agree on every pair of profiles shared by two joins, models exist
+        at n = 8, for both readings of the join p + p (two copies of p drawn separately, or one
+        variable); since no deterministic rule exists there, every such model is strongly contextual.
+        Neutral deterministic rules exist only up to n = 2 (at the Condorcet profile a neutral winner
+        would have to be fixed by the 3-cycle). Relative to the renamings, the scenario is at level 4
+        for n <= 2, 3 for 3 <= n <= 7, 2 at n = 8 and 1 from n = 9.
+Run: python3 yl_certificates.py [n ...]   (numpy and scipy; about two minutes)
 """
+import itertools
 import sys
+import time
 
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, linprog, milp
@@ -31,7 +39,6 @@ from scipy.sparse import coo_matrix, csr_matrix, hstack, identity, vstack
 import electorate_scenario as S
 
 M = 3
-NAMES = None
 
 
 def names(R):
@@ -194,7 +201,111 @@ def part2():
     print()
 
 
+# ---------------------------------------------------------------- Part 3: the levels as the electorate grows
+def full_models(n, literal=False, share_pairs=True, m=3):
+    R,profiles,index,winner=S.setup(m,n)
+    P=len(profiles); sizes=[sum(p) for p in profiles]
+    nvar=0; Lcol={}
+    for t in range(P):
+        if winner[t] is None:
+            for a in range(m): Lcol[(t,a)]=nvar; nvar+=1
+    rows=[];cols=[];vals=[];beq=[]; r=0
+    def eq(entries, rhs):
+        nonlocal r
+        for c,v in entries: rows.append(r);cols.append(c);vals.append(v)
+        beq.append(rhs); r+=1
+    for t in range(P):
+        if winner[t] is None: eq([(Lcol[(t,a)],1) for a in range(m)],1)
+    occ={}   # pair -> list of (dict assignment->col restricted) as list of (col, a,b)
+    for i in range(P):
+        for j in range(i,P):
+            if sizes[i]+sizes[j]>n: continue
+            h=index[tuple(a+b for a,b in zip(profiles[i],profiles[j]))]
+            if all(winner[t] is not None for t in (i,j,h)): continue
+            coords=[i,h] if (literal and i==j) else [i,j,h]
+            doms=[[winner[t]] if winner[t] is not None else range(m) for t in coords]
+            assigns=[]
+            for v in itertools.product(*doms):
+                if literal and i==j:
+                    ok = v[1]==v[0]
+                else:
+                    ok = not (v[0]==v[1] and v[2]!=v[0])
+                if ok: assigns.append(v)
+            if not assigns:
+                return 'empty context'
+            base=nvar; nvar+=len(assigns)
+            for k,t in enumerate(coords):
+                if winner[t] is None:
+                    for a in range(m):
+                        eq([(base+s,1) for s,v in enumerate(assigns) if v[k]==a]+[(Lcol[(t,a)],-1)],0)
+            if share_pairs:
+                for k in range(len(coords)):
+                    for l in range(k+1,len(coords)):
+                        u,w=coords[k],coords[l]
+                        if u==w or winner[u] is not None or winner[w] is not None: continue
+                        if u>w: k2,l2,u2,w2=l,k,w,u
+                        else: k2,l2,u2,w2=k,l,u,w
+                        occ.setdefault((u2,w2),[]).append([(base+s,v[k2],v[l2]) for s,v in enumerate(assigns)])
+    npair=0
+    for key,lst in occ.items():
+        if len(lst)<2: continue
+        npair+=1
+        first=lst[0]
+        for other in lst[1:]:
+            for a in range(m):
+                for b in range(m):
+                    e=[(c,1) for c,x,y in first if (x,y)==(a,b)]+[(c,-1) for c,x,y in other if (x,y)==(a,b)]
+                    if e: eq(e,0)
+    A=coo_matrix((vals,(rows,cols)),shape=(r,nvar)).tocsr()
+    t=time.time()
+    res=linprog(np.zeros(nvar),A_eq=A,b_eq=np.array(beq),bounds=(0,None),method='highs')
+    return res.status == 0
+def neutral_det(n, m=3, neutral=True, integer=True):
+    R,profiles,index,winner=S.setup(m,n)
+    ok,nv,A,b,E,nf,_=S.build(m,n,True,False)
+    free=[i for i,w in enumerate(winner) if w is None]
+    col={}
+    for i in free:
+        for a in range(m): col[(i,a)]=len(col)
+    rows=[];cols=[];vals=[];r=0
+    if neutral:
+        Rl=list(R)
+        for pi in itertools.permutations(range(m)):
+            perm_r=[Rl.index(tuple(pi[x] for x in rr)) for rr in Rl]
+            for i in free:
+                q=[0]*len(Rl)
+                for k,c in enumerate(profiles[i]): q[perm_r[k]]+=c
+                j=index[tuple(q)]
+                for a in range(m):
+                    if (i,a)<(j,pi[a]):
+                        rows+= [r,r]; cols+=[col[(i,a)],col[(j,pi[a])]]; vals+=[1,-1]; r+=1
+    N=coo_matrix((vals,(rows,cols)),shape=(r,nv)).tocsr()
+    cons=[LinearConstraint(E,1,1),LinearConstraint(A,-np.inf,b)]
+    if r: cons.append(LinearConstraint(N,0,0))
+    res=milp(np.zeros(nv),constraints=cons,integrality=np.ones(nv) if integer else np.zeros(nv),bounds=Bounds(0,1))
+    return res.status==0
+
+
+def part3():
+    print("Part 3: the levels of the joins scenario relative to the renamings of the alternatives")
+    for n in (7, 8):
+        print(f"  n = {n}: empirical model (draws agreeing on shared pairs), two copies for p + p:"
+              f" {full_models(n, literal=False)}; one variable for p + p: {full_models(n, literal=True)}")
+    first_det = first_neutral = None
+    for n in range(2, 9):
+        if first_neutral is None and not neutral_det(n):
+            first_neutral = n
+        if first_det is None and not neutral_det(n, neutral=False):
+            first_det = n
+    print(f"  neutral deterministic rules exist up to n = {first_neutral - 1};"
+          f" deterministic rules up to n = {first_det - 1}")
+    print(f"  levels: 4 for n <= {first_neutral - 1}, 3 for {first_neutral} <= n <= {first_det - 1},"
+          f" 2 for n = {first_det} (models without global sections, hence strongly contextual), 1 from n = 9")
+    print()
+
+
 if __name__ == "__main__":
     ns = [int(a) for a in sys.argv[1:]] or [9, 10, 11]
     part1(ns)
     part2()
+    part3()
