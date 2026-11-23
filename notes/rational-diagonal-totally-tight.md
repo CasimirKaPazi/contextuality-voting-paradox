@@ -56,7 +56,7 @@ Together these give the theorem.
 ## 6. Beyond four outcomes, and what remains open
 
 - With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The summary search does not scale to five outcomes.
-- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes, checked exhaustively for four (end of Section 7). Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
+- No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes, checked exhaustively for four and reduced to at most nine outcomes (end of Section 7). Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
 - Tight forms that are not totally tight remain open. They include the normal forms of general games of perfect information and veto procedures. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
 
 *Reading.* On a core, the three key outcomes are forced in pairs by both players and singly by neither: the loop of refutation is present locally, as in a rock–paper–scissors. On a stopping game it is built step by step in time, one constant line per node. The theorem says both ways of building the loop always leave a player without a strict Nash strategy. *(Interpretation.)*
@@ -163,6 +163,21 @@ On stopping games with four and five outcomes, every remaining combination is ex
 
 Over the same samples, at least one of the two tests in the opposed game fails, and at least one of the two tests in the twin games. Every pattern of failures allowed by this and by the conjecture occurs.
 
+**Merging outcomes (proved).** Call the outcome that the opponent picks against a safe line its *critical outcome*: v for r₁ and s₂, the worst outcome of r₃, and the best outcome of s₄. Merge two middle outcomes that are adjacent in P into one. They are then adjacent in all four orders, since P* and (rev P)* only reverse the middle.
+- The merged form is again totally tight, because a constant line stays constant.
+- i still does not force a, and o still does not force c.
+- A safe line whose critical outcome is not one of the two merged outcomes stays safe for the merged orders. Its critical outcome stays the opponent's choice, its cells holding that outcome are the same, and the merged outcome lies on the same side of it as both of the outcomes it replaces.
+- More generally, the critical outcome y may itself be merged with a neighbour x that the line does not hold. The cells holding y are then unchanged, and the set of outcomes better than y for the tested player can only shrink.
+
+*Checked* on random stopping games with four to six outcomes: in 994,458 merges avoiding the critical outcome of a safe line, the test still failed afterwards.
+
+**Reduction (proved).** Suppose the conjecture fails, and take a counterexample with the fewest outcomes.
+- Its critical middle outcomes are v and, by 1–4, at most two more: the worst outcome m_j of an r₃ of type δ, with j > q, and the best outcome m_l of an s₄ of type β, with l < q. By 2, at most one of the two lines is of type α or γ.
+- No two adjacent middle outcomes can both be non-critical. Otherwise merging them would give a smaller counterexample.
+- So the middle outcomes consist of the at most three critical ones, with at most one other outcome before, between and after them. That leaves at most seven middle outcomes, and so at most nine outcomes in all. With two critical middle outcomes there are at most seven outcomes.
+
+Since the conjecture holds for four outcomes (checked exhaustively), it holds for every number of outcomes as soon as it holds for five to nine outcomes, in the configurations just described.
+
 ## 8. Towards a hand proof: a working configuration survives
 
 A *configuration* is a triple (i, P, Q) with Q the reverse of P or P with its top moved to the bottom; configurations of forms with different outcome sets are compared on the outcomes present.
@@ -252,7 +267,8 @@ In `scripts/strategy/rational_diagonal/absorption/` (Sections 7 and 8):
 - `k4_chainsearch.py`: the smallest family of shapes on stopping games with four outcomes;
 - `chain_k.py`, `tr_chain.cpp`: the chain conjecture on random forms with four to six outcomes, and on all reachable summaries; `./tr_chain k zsrot [file]` as for `tr_auto`;
 - `chain_pairs.py`: the proved pieces 1–4 towards the conjecture, and how often the remaining cases occur;
-- `chain_atoms.py`, `chain_triples.py`: the patterns of safe lines that never occur together, and the patterns of failing tests.
+- `chain_atoms.py`, `chain_triples.py`: the patterns of safe lines that never occur together, and the patterns of failing tests;
+- `chain_mergecheck.py`: safe lines after merging two adjacent middle outcomes.
 
 ## References
 
