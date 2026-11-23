@@ -1,6 +1,6 @@
 # The rational diagonal on totally tight game forms
 
-*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It settles the totally tight forms with at most four outcomes by a complete computer check, gives a hand proof for three outcomes, and proves the result for all totally tight forms with any number of outcomes by a reduction to at most seven outcomes and an exact search (Section 7). It also records the method, and what remains open. Scripts: `scripts/strategy/rational_diagonal/`.*
+*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It settles the totally tight forms with at most four outcomes by a complete computer check, gives a hand proof for three outcomes, and proves the result for all totally tight forms with any number of outcomes by a reduction to at most seven outcomes and an exact search (Section 7). The same reduction, with an exact search over game trees, proves it for all games of perfect information. It also records the method, and what remains open. Scripts: `scripts/strategy/rational_diagonal/`.*
 
 ## 1. The question and the condition
 
@@ -9,6 +9,8 @@ A two-player game form has rows (player 1's strategies), columns (player 2's) an
 **Theorem.** Every non-dictatorial totally tight two-player game form admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
 
 *Status.* Three outcomes: by hand (Section 7). Four outcomes: by the complete search of Sections 3 and 4. Any number of outcomes: by a reduction to at most seven outcomes and an exact search (Section 7). For forms with a core, this last step uses the description of cores by Boros, Gurvich, Makino and Papp (Section 2), which allows any number of outcomes that nobody forces.
+
+The same theorem holds for every game of perfect information, by the same reduction and an exact search over game trees (Section 7).
 
 Totally tight forms are those whose 2 × 2 subforms are all tight. They include the normal forms of stopping games (games on a path in which the player to move may stop with that node's outcome) but not all games of perfect information.
 
@@ -59,7 +61,7 @@ Together these give the theorem.
 
 - With five and six outcomes, random stopping games (3,000 and 600) always had a working pair of the two kinds. The full summary search, over all configurations, does not scale to five outcomes; the search restricted to the four configurations of the chain (Section 7) reaches seven.
 - No simple rule for choosing i was found. The owner of the first node, the player who forces more outcomes and the outcome that appears last each work in most stopping games but not in all. A hand proof would need to explain why the two kinds of opponent order together always suffice. For three outcomes Section 7 gives such a proof. It suggests a chain of four configurations for any number of outcomes. A merging argument reduces the chain to at most seven outcomes, and an exact search up to seven outcomes then proves it for all totally tight forms (end of Section 7). Section 8 proves the base cases of an induction and reduces the rest to one lemma about positions in the orders.
-- Tight forms that are not totally tight remain open in general. They include the normal forms of general games of perfect information and veto procedures. For three outcomes, Section 7 settles every form with a recombination property, which includes every game of perfect information; an exact search settles games of perfect information with up to five outcomes. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
+- Tight forms that are not totally tight remain open in general; veto procedures are among them. Games of perfect information, whose normal forms are tight but not always totally tight, are settled for every number of outcomes by the reduction and an exact search over trees (Section 7). For three outcomes, Section 7 also settles every form with a recombination property. Exhaustive and random searches over tight forms have found no counterexample (see *Walls and Strategy*, Section 3).
 
 *Reading.* On a core, the three key outcomes are forced in pairs by both players and singly by neither: the loop of refutation is present locally, as in a rock–paper–scissors. On a stopping game it is built step by step in time, one constant line per node. The theorem says both ways of building the loop always leave a player without a strict Nash strategy. *(Interpretation.)*
 
@@ -131,24 +133,34 @@ Tightness is not used. The checks agree:
 
 *More outcomes.* Piece 2 above also follows from (R), by the same argument. Pieces 1, 3 and 4 use only saddle points and common cells. Tightness and (R) both survive merging. So the reduction to at most seven outcomes holds for tight forms with (R), and in particular for games of perfect information, which are tight (Gurvich). But the chain fails on some tight forms with (R) and four outcomes: 70 of 12,900 cases on 400 random forms. So for trees, the searches have to use their tree structure. On 2,100 random game trees with three to five outcomes, about half of them not totally tight, the chain held in all 51,528 cases.
 
-**Games of perfect information, exhaustively up to five outcomes.** A node with more than two branches is a chain of binary nodes of the same player, so a tree is built from leaves by composing two subtrees A and B at a node of either player. The summaries of the four chain configurations combine directly. Take a configuration whose lines belong to player p.
+**Games of perfect information.** A node with more than two branches is a chain of binary nodes of the same player, so a tree is built from leaves by composing two subtrees A and B at a node of either player. The summaries of the four chain configurations combine directly. Take a configuration whose lines belong to player p.
 - *Node of p.* p's lines are those of A and those of B. A line of A keeps its favourite y. Its M becomes the better of M and the best outcome present in B, since every column now also crosses B. Lines of B are treated likewise.
 - *Node of the opponent.* p's lines are pairs of a line of A with pairs (y₁, M₁) and a line of B with (y₂, M₂). The favourite is the one the opponent prefers, with its M. If y₁ = y₂, M is the better of M₁ and M₂.
 - *Presence and forcing.* The outcomes present are the union. At a node of player 0, player 0 forces what it forces in A or in B, and player 1 forces what it forces in both; at a node of player 1 the roles are exchanged.
 
 These rules agree with the normal forms of 1,918 random trees.
 
-The summaries of all trees with k outcomes are the closure of the leaves under these compositions. Composition is monotone in the pair sets, and a working configuration keeps working on a subset. So it suffices to keep, for each set of present outcomes and forcing sets, the summaries that are maximal. The closure is then finite and exact:
+The summaries of all trees with k outcomes are the closure of the leaves under these compositions. Composition is monotone in the pair sets, and a working configuration keeps working on a subset. So it suffices to keep, for each set of present outcomes and forcing data, the summaries that are maximal. The closure is then finite and exact.
+
+Rename the outcomes so that P = (0, 1, …, k − 1), and swap players if needed so that i is player 0. The chain reads only two forcing facts: whether player 0 forces 0, and whether player 1 forces k − 1. Forcing composes outcome by outcome (union at the forcing player's node, intersection at the other's), so these two facts compose on their own and the closure can track only them. Composition is also symmetric in the two subtrees. A *case* is a maximal summary with all k outcomes present, in which player 0 does not force 0 and player 1 does not force k − 1; a *failure* is a case where none of the four configurations works.
 
 | outcomes | maximal tree summaries | cases | failures |
 |---|---|---|---|
-| 3 | 47 | 22 | 0 |
-| 4 | 372 | 198 | 0 |
-| 5 | 2,477 | 1,030 | 0 |
+| 3 | 15 | 4 | 0 |
+| 4 | 64 | 22 | 0 |
+| 5 | 281 | 78 | 0 |
+| 6 | 1,210 | 240 | 0 |
+| 7 | 5,063 | 688 | 0 |
 
-**Theorem (perfect information, at most five outcomes).** Every non-dictatorial game of perfect information with at most five outcomes admits a rational diagonal, with Q the reverse of P or its rotation.
+For three to five outcomes, an earlier version of the closure that tracked the full forcing sets (47, 372 and 2,477 maximal summaries) also found no failure. With seven outcomes the closure meets about 970,000 distinct summaries before it stabilises.
 
-With six outcomes the closure grows too fast for this search: 45,482 maximal summaries after four rounds of composition. Neither half of the chain suffices, pessimistically, on its own: closures that track only two or three of the four configurations already fail with three outcomes. By the reduction, a smallest counterexample among games of perfect information would have six or seven outcomes, in one of the three forms above.
+Neither half of the chain suffices, pessimistically, on its own: closures that track only two or three of the four configurations already fail with three outcomes.
+
+**Theorem (games of perfect information).** The chain conjecture holds for every game of perfect information, with any number of outcomes. So every non-dictatorial game of perfect information admits a rational diagonal with strict preferences, with Q the reverse of P or its rotation.
+
+*Proof.* Merging two outcomes relabels leaves, so it keeps a tree a tree, and the reduction applies within games of perfect information. A smallest counterexample would have at most seven outcomes, and the closure excludes these. The theorem follows from the chain as for three outcomes. ∎
+
+Unlike the totally tight case, this proof uses no structure theorem: the tree itself gives the finite closure. It rests on the four composition rules, the reduction and one exact computer search.
 
 **How the facts were found.** For each player, the working conditions depend on 24 yes-or-no properties of the form: forcing, leaving and reaching, for each choice of outcomes. On stopping games with three outcomes these properties take few joint values. A search for short implications that hold on all of them, and that together exclude every assignment in which the lemma fails, returned seven implications up to renaming outcomes. The chain lemma was read off the resulting propositional proof, and its proof uses only (F1), (F2) in both forms and (F3).
 
@@ -389,7 +401,7 @@ In `scripts/strategy/rational_diagonal/perfect_information/` (Section 7, recombi
 - `recomb3.py`: the chain lemma with three outcomes on forms with (R) that are not tight, and on forms without (R);
 - `tightforms.py`, `tight_pieces.py`: the chain and the pieces 1–4 on random tight forms that are not totally tight;
 - `tree_summary.py`: the composition rules for tree summaries, checked against normal forms;
-- `tree_chain.cpp`: the exact closure of tree summaries and the chain check; `./tree_chain k`.
+- `tree_chain.cpp`: the exact closure of tree summaries, tracking the two forcing facts the chain reads, and the chain check; `./tree_chain k` (seven outcomes take a few minutes).
 
 ## References
 
