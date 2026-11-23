@@ -229,6 +229,35 @@ In the language of Section 3, the mean rule enacts the forecast of the martingal
 
 *(Computed.)* So the rules use the room that the members' particular utilities give them. The gain to the members comes with the loss of the guarantee for those outside, which in these instances is used little.
 
+## 3g. The call structure as a game
+
+Sections 3b–3f ask what groups can and do agree on. The CORE paper leaves open how the calls themselves behave under strategic play. One protocol makes this precise.
+
+At every group S the process reaches, one member is drawn uniformly and proposes a lottery. Then every member accepts or calls. If all accept, the lottery is enacted. Otherwise one member is drawn uniformly and removed, and the game goes on at the smaller group. A single member enacts their ideal. Utilities are known to everyone.
+
+**Proposition (sequential rationality).**
+
+1. Fix what follows each smaller group. A member's vote matters only when every other member accepts, and then it decides between the proposal and the call. So accepting exactly the proposals worth at least the call is weakly dominant. Without this refinement, every behaviour in which all members always call is an equilibrium, and it gives the endowment.
+2. In every subgame-perfect equilibrium in undominated votes, the drawn member proposes a lottery that is best for them among those every member weakly prefers to the call. Before the draw, the expected outcome at S is the average of these lotteries over the members: one step of Raiffa's discrete procedure, with the call as disagreement point. The equilibria are found by backward induction over the groups, with one linear program for each possible proposer.
+3. If each proposer's best acceptable lotteries all give the other members the same values, the equilibrium values are unique. They are then the holdings of the Raiffa one-step rule of Section 3d.
+
+*(Proved. For two-person bargaining, extensive games of this kind are known to support Raiffa's procedure, with repeated rounds leading to his sequential solution; see Myerson and Trockel. The single step for any number of members is the same elementary argument.)*
+
+*Proof.* 1. If another member calls, the removal happens whatever the vote. 2. By induction on the size of S, the outcome from every smaller group is fixed, and so is the call at S. Given 1, a proposal is enacted exactly when every member weakly prefers it to the call. Any other proposal leads to the call, which the proposer can also obtain by proposing it. The proposer's problem is a linear program over lotteries. 3. Expected utility is linear, so averaging over the drawn proposer gives Raiffa's step. ∎
+
+**Computed** (`scripts/core/call_game.py`; the four families of Section 3d, three to five participants, 56 instances each). The game, computed node by node with acceptance checked, agrees with the Raiffa one-step rule to within 10⁻⁹ (part 1).
+
+- **Uniqueness.** In the uniform, quadratic-line and plane families, every one of the 1,280 proposer problems per family fixed the others' values. On the line with linear loss, 38 percent left them open, by up to 0.34 of the utility range (part 2). A proposer at an edge cares only about the mean (Section 3d), so they are indifferent between lotteries that matter to the members inside. Every such equilibrium is still individually rational, so by the theorem of Section 3b nobody falls below the endowment. Breaking ties in favour of the other members gives the mean of the peaks.
+- **What recognition is worth.** At the full group, the drawn proposer gains over the group's expected value by 0.019 of their utility range on average for independent utilities, 0.015 on the line with quadratic loss, 0.008 in the plane and nothing on the line with linear loss. The largest gain was 0.27 (part 3).
+
+*Reading.* This answers Question 3 of Section 6 for complete information.
+- **No remainder in the calls.** Calls carry no strategic remainder. With visible moves, sequential rationality solves the call structure by backward induction, as visible turns do in the veto-then-pick example of *Walls and Strategy*.
+- **The draw is used twice.** The draw that removes can also recognise who proposes. The uniform symmetry of the fallback then appears a second time, in who speaks first, and the ex ante fairness of Section 3 extends to the proposals.
+- **What remains.** Two things remain. One is the choice among a proposer's indifferent options, as on the line. The other is incomplete information: a proposer needs every member's call value, which depends on that member's private utility and on what smaller groups would do. A finite formalisation with private utilities is a game form, and the barrier of Section 4 is expected to return there (not shown).
+- **Steering the selection.** Random recognition carries out Raiffa's step, which leaves the safe class of Section 3f in about a third of the groups. A protocol that admitted only poolings of the call as proposals would lead every proposer with a concave utility, weakly, to the mean. It would thus carry out the mean rule. Several rounds of interim agreements within a group would carry out further steps of Raiffa's procedure (Section 5).
+
+*(Interpretation.)*
+
 ## 4. Where CORE stands relative to Gibbard
 
 *Walls and Strategy* gives two exact statements that the CORE paper describes in words.
@@ -239,7 +268,7 @@ In the language of Section 3, the mean rule enacts the forecast of the martingal
 
 **What does not transfer.** Theorems 3 and 6 concern game forms with finitely many strategies and a fixed set of outcomes. CORE's deliberation has neither: proposals may be lotteries and may introduce options that were on no list (the paper's Theorem 3 on where the gains lie). The theorems therefore bound every way of formalising deliberation as a game form, and say that no such formalisation can remove the barrier while recovering the gains. They do not describe deliberation itself, which is what the paper leaves open on purpose. Whether the open search has properties that no finite formalisation has is a question these results cannot reach.
 
-**Turns.** The observation on simultaneity in *Walls and Strategy* (sequential rationality with visible moves removes the rational diagonal in the veto-then-pick example) bears on the sequential variant: calls are public and taken one at a time, and each removal is observed before the next move. Whether this removes part of the obstruction for the call structure, as distinct from deliberation, is not settled. *(Open.)*
+**Turns.** The observation on simultaneity in *Walls and Strategy* (sequential rationality with visible moves removes the rational diagonal in the veto-then-pick example) bears on the sequential variant: calls are public and taken one at a time, and each removal is observed before the next move. With complete information the remainder disappears: the call structure is solved by backward induction, and with random recognition its outcome is one step of Raiffa's procedure in every group (Section 3g). With private utilities it is not settled. *(Open.)*
 
 ## 5. Bargaining, cycles and fixed points
 
@@ -255,7 +284,7 @@ So CORE uses two of the three switches between no fixed point and a fixed point:
 
 1. **The sequential equilibrium.** By Section 3a, what participants hold in the sequential variant is the endowment plus the weighted surpluses of the groups. Which surpluses groups capture is the remaining question. In the language of thread A the surpluses are data on the poset of sub-electorates, one vector per group, constrained only by the individual rationality of the members. How large the shortfall can be under individual rationality alone is settled in Section 3b: it is a linear program, and it is zero on a line with losses proportional to distance. Which families of surpluses arise from particular bargaining rules in every group is answered for five rules in Section 3d: on a line with linear loss every efficient rule gives the same result, the mean of the ideal points, and with spatial structure the rules hardly realise the harm individual rationality allows. Open: whether the floor has a closed form beyond the line (in the plane it falls below the endowment, by little in the cases computed), whether the criterion of Section 3c (both edges linear) holds for any number of members with individual concave losses, what plays its role when some members are convex, and whether the absence of a canonical selection is an obstruction of a definite level. Beyond the line, the mean rule (Section 3e) is a canonical selection that is individually rational and harms no one whenever utilities are concave on a convex outcome space, but it is no longer the only efficient one. It is the least risky of the agreements that are safe for every concave utility, those less risky than the call (Section 3f). The open part of the selection question is therefore what happens outside that class, where the members' particular utilities decide.
 2. **Characterisation of the winner lottery.** *Answered negatively in Section 2:* consistency and participation for joint draws, with anonymity, neutrality and unanimity on first choices, leave a convex family containing every scoring rule with uniform tie-breaking. A characterisation of random ballot by conditions on winner lotteries alone needs proportionality or a condition of the strategic kind.
-3. **The call structure as a game.** Does the sequential call structure, with public calls and observed removals, admit an analysis by sequential rationality that removes part of the strategic remainder, as visible turns do in *Walls and Strategy*?
+3. **The call structure as a game.** *Answered for complete information in Section 3g:* with a uniformly drawn proposer at every group and undominated votes, the subgame-perfect equilibria are found by backward induction, and their outcome is one step of Raiffa's procedure in every group. Open: private utilities, where a proposer does not know the members' call values, and protocols that steer the selection (for instance proposals restricted to poolings of the call, which leads to the mean rule).
 4. **Fallbacks compared.** Section 2 gives one side of the comparison between random ballot and maximal lotteries as fallbacks. A second side is the Equality Criterion (working note *The Equality Criterion and Reversal*): random ballot fails it, in the direction of plurality, while maximal lotteries pass, and no strategy-proof Pareto-optimal fallback can pass it. The other side, how manipulable each is when used as the fallback of a consensus procedure, is open.
 
 ## 7. Material for a follow-up
@@ -272,7 +301,8 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 - particular bargaining rules (Section 3d): on a line with linear loss every efficient rule leads to the mean of the ideal points, so there is no selection problem; with spatial structure the natural rules hardly harm outsiders (only the utilitarian rule in the plane, slightly), while with unstructured utilities about a fifth of participants end below their endowment under every rule;
 - the mean rule (Section 3e): with concave utilities on a convex outcome space, agreeing on the mean of the members' ideals in every group is individually rational, consistent along the removal process (each call is the ideals reflected through the mean and shrunk), and leaves everyone at least at the endowment; on a line with linear loss it is the only efficient agreement, in the plane one of many;
 - safe agreements (Section 3f): an agreement is weakly better than the call for every concave utility exactly when it arises from the call by pooling outcomes and enacting the block means (Strassen). If every group agrees safely, everyone holds at least the endowment; the outcome is the expected ideal of the eventual dictator given partial information about the draw, and the mean rule, which reveals nothing, is the least risky;
-- whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call structure under sequential rationality.
+- the call structure as a game (Section 3g): with complete information and a uniformly drawn proposer at every group, accepting exactly what is worth the call is weakly dominant, and the subgame-perfect outcome is one step of Raiffa's procedure in every group, so the calls carry no strategic remainder; the draw that removes can also recognise;
+- whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call game with private utilities.
 
 ## References
 
@@ -286,7 +316,9 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 - Heitzig, J. and Simmons, F. W. (2012). Some chance for consensus: voting methods for which consensus is an equilibrium. *Social Choice and Welfare* 38, 43–57.
 - Hylland, A. (1980). Strategy proofness of voting procedures with lotteries as outcomes and infinite sets of strategies. Mimeo, University of Oslo.
 - McLennan, A. (1980). Randomized preference aggregation: additivity of power and strategy proofness. *Journal of Economic Theory* 22, 1–11.
+- Myerson, R. B. (1991). *Game Theory: Analysis of Conflict.* Harvard University Press (pp. 393–394).
 - Raiffa, H. (1953). Arbitration schemes for generalized two-person games. In *Contributions to the Theory of Games II*, Princeton University Press, 361–387.
 - Rothschild, M. and Stiglitz, J. E. (1970). Increasing risk: I. A definition. *Journal of Economic Theory* 2, 225–243.
 - Strassen, V. (1965). The existence of probability measures with given marginals. *Annals of Mathematical Statistics* 36, 423–439.
+- Trockel, W. (2011). An exact non-cooperative support for the sequential Raiffa solution. *Journal of Mathematical Economics* 47, 77–83.
 - *CORE: Consensus Or Random Exclusion* (`papers/CORE_13.md`); *Four Levels of Obstruction in Social Choice*, *Walls and Strategy*, *Cycles and Twists* (drafts); *Consistency as an Extension Problem*, *The Switch Between Fixed Point and No Fixed Point* (working notes), all in this repository.
