@@ -131,6 +131,39 @@ The deterministic threshold for joins agrees with Brandt, Dong and Peters, who s
 
 **Consequence for a random fallback.** A procedure that ends in a lottery can be consistent ex ante and elect a Condorcet winner when there is one, but the realised winner is not consistent across electorates. This is the same ex ante/ex post distinction that appears in Gibbard (1978) for efficiency. *(Interpretation.)*
 
+## 3d. The obstruction at the thresholds
+
+At the first level of *Four Levels* there is no model at all, so there is nothing to which a contextuality invariant, such as a cohomology class, could be attached. What certifies the failure is a solution of the dual linear program: a non-negative combination of the constraints that contradicts the normalisation of the lotteries (Farkas). For the joins of Section 3c, with three alternatives and anonymous rules, the certificates at the two thresholds can be read off. The script `scripts/consistency/yl_certificates.py` computes and checks them.
+
+**Lotteries, nine voters.** A certificate of least total weight has three rows, each of weight 1. They share one profile q without a Condorcet winner, here the Condorcet profile doubled: two voters each with abc, bca and cab. For each candidate x there is a row with a three-voter electorate p_x whose Condorcet winner is x:
+- p_b = {abc, bac, bac}, and p_b + q has Condorcet winner a, which beats b in q;
+- p_a = {acb, acb, cab}, and p_a + q has c, which beats a;
+- p_c = {bac, cba, cba}, and p_c + q has b, which beats c.
+
+With L(p_x)(x) = 1 and L(p_x + q)(x) = 0, the row L(p_x)(x) + L(q)(x) − L(p_x + q)(x) ≤ 1 reads L(q)(x) ≤ 0. The three rows sum to Σ_x L(q)(x) ≤ 0, against the normalisation Σ_x L(q)(x) = 1. *(Computed; the certificate is then verified by hand as just done.)*
+
+This is the blocking lemma of Section 2, at a single profile and with small witnesses: the proof of Theorem 2 of *Four Levels* (checked in Lean) uses electorates of size 2n + 1, here three voters suffice. For ten and eleven voters the least certificates have the same shape, with a different q (at eleven voters, a profile of eight voters with margins 2 on each comparison of a cycle). At eight voters the linear program is feasible, so no profile of at most eight voters can be blocked for all three candidates by electorates that fit. *(Computed.)*
+
+**Deterministic rules, eight voters.** Here no profile is blocked on its own. Every one of the 671 profiles without a Condorcet winner keeps at least one candidate that no join with a Condorcet profile excludes. Yet no consistent Condorcet extension exists (Brandt, Dong and Peters; for anonymous rules, Section 3c). A minimal unsatisfiable set has ten profiles without a Condorcet winner, and dropping any one of them leaves a satisfiable set:
+- Q0, the Condorcet profile {abc, bca, cab};
+- six four-voter profiles with two unbeaten candidates, for example Q1 = {abc, acb, cba, cba} and Q5 = {acb, acb, bca, cab}, both with a and c unbeaten;
+- three eight-voter profiles, each the join of two of them, for example Q7 = Q1 + Q5.
+
+The proof is a case split on W(Q0). Suppose W(Q0) = a.
+1. Q7 is also Q0 joined with {acb, acb, acb, cba, cba}, whose Condorcet winner is a. So W(Q7) = a.
+2. Q0 + Q1 and Q0 + Q5 have Condorcet winner c, which beats a in Q0. So neither Q1 nor Q5 elects a, and since b is beaten in both, both elect c.
+3. Q1 + Q5 = Q7, so W(Q7) = c, a contradiction.
+
+The cases b and c are the same after renaming the candidates cyclically (with Q2, Q4, Q8 and Q3, Q6, Q9). *(Computed: unsatisfiability, minimality and every step of the three cases.)*
+
+**Reading.** Both certificates are the fixed-point-free map "beats" at the Condorcet profile. They differ in how a candidate x is blocked there.
+- **For lotteries** the witness must be direct: an electorate with Condorcet winner x whose join with q has a Condorcet winner that beats x.
+- **For deterministic rules** the witness may be derived. Q7 has no Condorcet winner (a and c tie), but its value is fixed by consistency on Q1 + Q5. A tie is resolved in one place and the resolution then serves as a witness. A lottery can split the probability at a tie, and the joint-draw inequality bites only when probabilities add up to more than one, so a derived witness is not available to it. That is the one voter between the thresholds.
+
+Neither certificate uses a cover of an electorate by more than two parts, or overlapping parts. The lottery certificate is a star of three joins around one profile; the deterministic one adds one layer of joins below it. For the obstruction itself, therefore, the two-part joins of Section 3c suffice, and nothing cohomological is to be expected at this level. Covers with overlaps matter for a different question: whether the weakly compatible families that exist at eight voters can be made into empirical models, with draws agreeing on shared pairs of profiles. That is the gap between the first and second levels at eight voters, and it is still open.
+
+The lottery certificate also has the form of a fixed-point count. Each candidate's contribution at q is forced to zero, while the contributions must add up to one, the Euler characteristic of the simplex of lotteries. This is the bounded line of *Cycles and Twists* in additive form, and a candidate for the fixed-point index asked for in *Four Levels*, open problem 3. *(Interpretation.)*
+
 ## 4. Reading
 
 Taken together:
@@ -148,7 +181,7 @@ On this reading the problem is resolved at one level by a fixed point and reappe
 1. Express the obstruction of Section 2 as an invariant of the arrangement of Condorcet regions around the cycle region, for three and for more candidates. For three candidates the answer is negative: the regions wind once around the hole, but the obstruction is pointwise (*The Global Form*, Section 10).
 2. Section 3a explains the incompatibility of consistency over electorates and over clones for symmetric deterministic rules through positions and comparisons. Is there a blocking-type argument that covers the non-symmetric case as well?
 3. Characterise how far maximal lotteries are from strategy-proofness, and compare them with random dictatorship as a fallback for consensus procedures. A related point concerns adding alternatives. When voters' utilities decrease concavely with distance in a space of positions, every voter prefers a candidate placed at the mean position of a lottery to the lottery itself (Jensen's inequality). A compromise therefore always exists against a lottery fallback, even where no position beats every other, as in McKelvey's theorem. Successive compromises can then be expected to move the remaining cycle into a small central region rather than remove it. The cost of a final lottery would then shrink with the size of that region. Whether deliberately sustained cycles can prevent this, and how far random removal deters them, are open.
-4. Section 3b reads consistency and participation ex ante and ex post. Is there a single formulation, a scenario whose contexts are electorates and their extensions, in which both are constraints and the Condorcet principle is a boundary condition, so that both theorems become the statement that the scenario has no empirical model? *Answered in Section 3c*: both theorems are statements about sub-scenarios of one scenario, whose weakly compatible families reduce to lotteries with two families of linear conditions. For three alternatives the combination fails from the same electorate sizes as consistency alone. Open: whether from four alternatives on it fails for smaller electorates than either constraint alone, and a formulation with covers by more than two, overlapping sub-electorates.
+4. Section 3b reads consistency and participation ex ante and ex post. Is there a single formulation, a scenario whose contexts are electorates and their extensions, in which both are constraints and the Condorcet principle is a boundary condition, so that both theorems become the statement that the scenario has no empirical model? *Answered in Section 3c*: both theorems are statements about sub-scenarios of one scenario, whose weakly compatible families reduce to lotteries with two families of linear conditions. For three alternatives the combination fails from the same electorate sizes as consistency alone. Open: whether from four alternatives on it fails for smaller electorates than either constraint alone, and a formulation with covers by more than two, overlapping sub-electorates. Section 3d shows that the obstructions at the thresholds need neither: they are certificates built from two-part joins around the Condorcet profile. Overlapping covers remain relevant to whether the weakly compatible families at eight voters are empirical models.
 5. Does the pattern "resolved by a fixed point, reappearing one level up" continue: is there a natural third level beyond aggregation and strategy?
 
 ## References
