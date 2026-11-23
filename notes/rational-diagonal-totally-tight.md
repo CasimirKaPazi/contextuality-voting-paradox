@@ -8,7 +8,7 @@ A two-player game form has rows (player 1's strategies), columns (player 2's) an
 
 **Theorem.** Every non-dictatorial totally tight two-player game form admits a rational diagonal with strict preferences. Moreover some player i works under some P with Q equal either to the reverse of P or to P with its top moved to the bottom. In both cases i's favourite outcome is the opponent's least favourite.
 
-*Status.* Three outcomes: by hand (Section 7). Four outcomes: by the complete search of Sections 3 and 4. Any number of outcomes: by a reduction to at most seven outcomes and an exact search (Section 7). For forms with a core, this last step uses the block table of Section 2 for cores with several outcomes that nobody forces. That use is checked on all cores up to 5 × 6, but not proved.
+*Status.* Three outcomes: by hand (Section 7). Four outcomes: by the complete search of Sections 3 and 4. Any number of outcomes: by a reduction to at most seven outcomes and an exact search (Section 7). For forms with a core, this last step uses the description of cores by Boros, Gurvich, Makino and Papp (Section 2), which allows any number of outcomes that nobody forces.
 
 Totally tight forms are those whose 2 × 2 subforms are all tight. They include the normal forms of stopping games (games on a path in which the player to move may stop with that node's outcome) but not all games of perfect information.
 
@@ -19,7 +19,7 @@ A *constant line* is a row or column holding a single outcome. Boros, Gurvich, M
 Every core has the same effectivity function, the 2-majority on three outcomes a₁, a₂, a₃: each player forces any two of them and no single outcome. Cores may contain further outcomes that neither player can force. The journal version (Discrete Mathematics 310 (2010), Fig. 13, Approximation III) describes cores block by block. Rows and columns fall into eight classes:
 - three pair classes, whose lines hold exactly one pair of a₁, a₂, a₃ and are always present;
 - four classes whose lines hold all three;
-- one class whose lines also hold an outcome nobody can force.
+- one class whose lines also hold outcomes nobody can force. There may be any number of such outcomes. By definition this class consists of exactly the lines holding such an outcome (Section 4.1 of the journal version), and each of its lines holds a₁, a₂ and a₃ as well (Remark 24). Since a cell lies in its row and in its column, these outcomes occur only where two lines of this class meet.
 
 The table gives, for each pair of a row class and a column class, the outcomes the cells may take: most blocks are constant, a few are two-valued "staircases", and the block where the last two classes meet is recursive. The complete case analysis behind this table is referred by the authors to their earlier preprint.
 
@@ -204,13 +204,13 @@ Merging keeps stopping games stopping games. So a smallest counterexample among 
 
 The starting summaries generalise those of Section 4:
 - The three key outcomes follow the table of Fig. 13. They are placed on any three of the k outcomes, in any order.
-- Any set E of further outcomes may occur in the core. These occur only in the recursive blocks, where the last two classes meet. There, any cell may hold any key outcome or any outcome of E.
+- Any set E of further outcomes may occur in the core. As noted in Section 2, they occur only where two lines of the last class meet. The starts allow them, more pessimistically, in every recursive block, where the last two classes meet; there any cell may hold any key outcome or any outcome of E. Since the recursive block may itself be any totally tight form, this is the only freedom the starts need.
 - Lines of class 0123 hold the three keys and possibly outcomes of E. Lines of class 1234 hold the three keys and at least one outcome of E.
 - The remaining outcomes come in later through added lines.
 
 For each line, the pairs (y, M) are collected over all ways the line can look. One point needs care: a block in which y is the only allowed outcome of the line's content holds y in every cell, so its columns always count for M. Without this, the summaries are too pessimistic, and the starts already fail with four outcomes.
 
-The starting summaries cover the actual cores. Every enumerated core, in both orientations and under every renaming of outcomes, lies inside some start. Cores are enumerated completely for each size: irreducible, with every 2 × 2 subform tight, no constant and no repeated line, and outcomes numbered by first appearance.
+So the starts cover every core, by the description of cores. As a check of the encoding, every enumerated core, in both orientations and under every renaming of outcomes, lies inside some start. The enumeration is complete for each size listed: cores that are irreducible, have every 2 × 2 subform tight, no constant and no repeated line, and outcomes numbered by first appearance.
 
 | core outcomes | sizes (all cores of these sizes) | cores | summaries | not covered |
 |---|---|---|---|---|
@@ -219,8 +219,6 @@ The starting summaries cover the actual cores. Every enumerated core, in both or
 | 5 | 4 × 5, 5 × 5, 4 × 6, 5 × 6, 4 × 7 | 1,816,800 | 436,032,000 | 0 |
 | 6 | 5 × 5, 5 × 6 | 393,600 | 566,784,000 | 0 |
 | 7 | 5 × 6 (there are none of size 5 × 5) | 26,400 | 266,112,000 | 0 |
-
-The cores with six and seven outcomes contain three and four outcomes that nobody forces. So the generalisation to several such outcomes is tested where it matters.
 
 The search from these starts adds lines in every possible way:
 
@@ -237,7 +235,7 @@ The search from these starts adds lines in every possible way:
 
 The proof rests on three things:
 - the structure theorem of Boros, Gurvich, Makino and Papp: every totally tight form is a single cell or a core, with constant lines added;
-- their table for cores, used here with several outcomes that nobody forces confined to the recursive blocks. This is checked on all cores up to 5 × 6 (and 4 × 7 with five outcomes), including cores with four such outcomes, but not proved;
+- their table for cores (Approximation III, with Section 4.1 and Remark 24 for the outcomes nobody forces);
 - two exact computer searches.
 
 A proof by hand for any number of outcomes would have to replace the searches by an argument for the three forms of a smallest counterexample.
