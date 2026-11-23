@@ -18,4 +18,5 @@ Notes are revised as the picture becomes clearer. Each opens with a short statem
 | [`fixed-point-switch.md`](fixed-point-switch.md) | Literature on the switch between fixed point and no fixed point: acyclic covers, odd and even loops through negation, partiality |
 | [`rational-diagonal-totally-tight.md`](rational-diagonal-totally-tight.md) | The rational diagonal on totally tight two-player game forms |
 | [`core-connection.md`](core-connection.md) | The CORE mechanism against the formal results: its fallback, the draw as hidden variable, holdings in the sequential variant, bargaining in groups; material for a follow-up to the CORE paper |
+| [`core-follow-up-outline.md`](core-follow-up-outline.md) | A proposed structure for a follow-up to the CORE paper, with what is settled and what is missing |
 | [`ladder-of-lost-properties.md`](ladder-of-lost-properties.md) | Speculative: the normed division algebras and Hopf fibrations as a frame for successive breakdowns of aggregation |
