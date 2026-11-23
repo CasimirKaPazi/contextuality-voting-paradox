@@ -253,8 +253,53 @@ At every group S the process reaches, one member is drawn uniformly and proposes
 *Reading.* This answers Question 3 of Section 6 for complete information.
 - **No remainder in the calls.** Calls carry no strategic remainder. With visible moves, sequential rationality solves the call structure by backward induction, as visible turns do in the veto-then-pick example of *Walls and Strategy*.
 - **The draw is used twice.** The draw that removes can also recognise who proposes. The uniform symmetry of the fallback then appears a second time, in who speaks first, and the ex ante fairness of Section 3 extends to the proposals.
-- **What remains.** Two things remain. One is the choice among a proposer's indifferent options, as on the line. The other is incomplete information: a proposer needs every member's call value, which depends on that member's private utility and on what smaller groups would do. A finite formalisation with private utilities is a game form, and the barrier of Section 4 is expected to return there (not shown).
+- **What remains.** Two things remain. One is the choice among a proposer's indifferent options, as on the line. The other is incomplete information: a proposer needs every member's call value, which depends on that member's private utility and on what smaller groups would do. Section 3h takes this up: private attitudes cost nothing, while private ideals bring the barrier of Section 4 back.
 - **Steering the selection.** Random recognition carries out Raiffa's step, which leaves the safe class of Section 3f in about a third of the groups. A protocol that admitted only poolings of the call as proposals would lead every proposer with a concave utility, weakly, to the mean. It would thus carry out the mean rule. Several rounds of interim agreements within a group would carry out further steps of Raiffa's procedure (Section 5).
+
+*(Interpretation.)*
+
+## 3h. Private information
+
+Section 3g assumes that utilities are known. Two kinds of private information behave differently. One is a participant's attitude: how much each distance matters and how risk is weighed. The other is the ideal itself.
+
+**Private attitudes, public ideals.** Suppose the members' ideals are known. Each member's utility, however, is private: it may be any concave function on the convex outcome space X with its maximum at that member's ideal. Call a proposal *acceptable for all types* if every member weakly prefers it to the call, whatever their utility in this class.
+
+**Proposition (cautious proposers).** Suppose every group the process reaches has so far followed the mean rule. Then at a group S:
+
+1. Every proposal acceptable for all types has mean μ_S.
+2. The mean μ_S is acceptable for all types. Every proposer with a concave utility weakly prefers it to every other proposal with mean μ_S.
+3. On a line, the proposals acceptable for all types are exactly the safe ones of Section 3f.
+
+So in the call game of Section 3g, a proposer who wants acceptance whatever the others' attitudes proposes the mean. If every proposer does so, the outcome is the mean rule. *(Proved.)*
+
+*Proof.*
+- **The call lies in the hull.** Under the mean rule, the call at S is uniform over the points μ_{S∖{k}}, which lie in the convex hull of the members' ideals.
+- **Part 1.** Let L have mean m ≠ μ_S, and let v be the unit vector from μ_S towards m. Take the member whose ideal p lies furthest back along v, so that ⟨v, x − p⟩ ≥ 0 on the hull. Give that member the utility u(x) = −‖x − p‖ − λ · max(0, ⟨v, x − p⟩), which is concave with its maximum at p. Under the call the second term has expectation λ⟨v, μ_S − p⟩. Under L its expectation is at least λ⟨v, m − p⟩, which is larger by λ⟨v, m − μ_S⟩ > 0. For large λ the member therefore rejects L.
+- **Part 2.** The mean is safe (Section 3f), and Jensen's inequality gives the rest.
+- **Part 3.** By 1 and Section 3d, a lottery acceptable for all types lies in the interval [q₁, q_s] of the members' ideals and has mean μ_S. Give the leftmost member the utility −|x − q₁| − λ · max(0, x − t) for a point t in the interval. This is concave with its maximum at q₁, and for large λ it forces E max(0, X − t) to be no larger under L than under the call. For lotteries on [q₁, q_s] with a common mean, this inequality for every t is the convex order (Rothschild and Stiglitz). ∎
+
+`scripts/core/private_info.py`, part 1, builds the rejecting utilities of the proof:
+- for 500 off-mean lotteries in the plane;
+- for 456 lotteries on the line that have the right mean but are riskier than the call.
+
+It checks that each one is rejected. *(Computed.)*
+
+**Private ideals.** The mean needs the ideals. If the agreement were the mean of declared ideals, members would declare positions more extreme than their own. On an interval with losses proportional to distance, the mean of declarations is the average voting rule. Renault and Trannoy show that its equilibrium outcome is unique and given by a median formula. With equal weights, best replies converge to the median of the ideals together with the points k/n, k = 1, …, n − 1 (part 2, to within 10⁻¹⁶ in 4,000 instances). That outcome leaves 32 percent of members below their true endowment, by up to 0.24 on an interval of length 1. The mean of the true ideals leaves no one below it (Section 3e). *(Computed; the median formula is Renault and Trannoy's.)*
+
+Gibbard's theorem does not apply directly, since utilities single-peaked on a line form a restricted domain. On it the median of declared ideals is strategy-proof (Moulin), but the median can leave a member at an edge below their endowment. The condition that brings random dictatorship back is the one CORE cares about: that no one is harmed.
+
+**Theorem (no strategy-proof improvement on the line).** Let the outcomes be the points of a line, let members report single-peaked preferences, and let F be a lottery rule that is strategy-proof in the sense of stochastic dominance. Suppose that at every profile, every member with loss proportional to distance from their ideal weakly prefers F to the random ballot. Then F is the random ballot. *(Proved, given the characterisation of Ehlers, Peters and Storcken in the form used below; checked exactly on grids, part 3.)*
+
+*Proof.* By the argument of Section 3d, no harm to the two members at the edges forces F(p) to lie in the interval of the ideals and to have their mean as its mean. In the form used here, Ehlers, Peters and Storcken's characterisation says the following: the probability that the outcome is at most x depends only on x and on the set L of members whose ideal is at most x. Write it as β_L(x). Take a profile with the ideals of L at a point a and all others at a point b > a. Then the mean of F(p) is a + (b − a)(1 − |L|/n), and it is also a plus the integral of 1 − β_L(x) over [a, b). Since this holds for every b > a, differentiating in b gives β_L(x) = |L|/n for every x. Then at every profile the probability of an outcome at most x is the share of members whose ideal is at most x, which is the random ballot. ∎
+
+Part 3 of the script checks the theorem without the characterisation. It takes the line as a grid of 4 or 5 points and two or three members, and allows rules that depend on the whole reported orders. Strategy-proofness in the sense of stochastic dominance and no harm are then linear constraints. The largest total gain over the random ballot is zero. Pushing in random directions inside the feasible set never leaves the random ballot by more than 2·10⁻⁹. *(Computed.)*
+
+So on a line every gain over the fallback can be manipulated: no rule that computes the compromise from declarations is both strategy-proof and harmless, except the fallback itself. No harm takes the place that efficiency has in Gibbard's theorem. The floor survives without any information. In the one-shot variant a member who always calls receives exactly their endowment, whatever the others declare or intend, which is the computable floor of Section 4.
+
+*Reading.* The two kinds of private information split the mechanism along the line drawn in *Walls and Strategy*.
+- **Attitudes cost nothing.** Private attitudes do no harm. A proposer who does not know how the others weigh distance and risk can still propose the one point that every type accepts, and it is the point they would choose anyway.
+- **Ideals carry the remainder.** Private ideals carry the whole strategic remainder. The compromise depends on knowing where people stand, the incentive to overstate is the classical one, and on a line only the fallback is immune to it without harming anyone.
+- **What the design implies.** For the design this suggests separating the two. Ideals should be stated where overstating is checked or costly, for instance in deliberation that tests positions against reasons. Attitudes can stay private.
 
 *(Interpretation.)*
 
@@ -268,7 +313,7 @@ At every group S the process reaches, one member is drawn uniformly and proposes
 
 **What does not transfer.** Theorems 3 and 6 concern game forms with finitely many strategies and a fixed set of outcomes. CORE's deliberation has neither: proposals may be lotteries and may introduce options that were on no list (the paper's Theorem 3 on where the gains lie). The theorems therefore bound every way of formalising deliberation as a game form, and say that no such formalisation can remove the barrier while recovering the gains. They do not describe deliberation itself, which is what the paper leaves open on purpose. Whether the open search has properties that no finite formalisation has is a question these results cannot reach.
 
-**Turns.** The observation on simultaneity in *Walls and Strategy* (sequential rationality with visible moves removes the rational diagonal in the veto-then-pick example) bears on the sequential variant: calls are public and taken one at a time, and each removal is observed before the next move. With complete information the remainder disappears: the call structure is solved by backward induction, and with random recognition its outcome is one step of Raiffa's procedure in every group (Section 3g). With private utilities it is not settled. *(Open.)*
+**Turns.** The observation on simultaneity in *Walls and Strategy* (sequential rationality with visible moves removes the rational diagonal in the veto-then-pick example) bears on the sequential variant: calls are public and taken one at a time, and each removal is observed before the next move. With complete information the remainder disappears: the call structure is solved by backward induction, and with random recognition its outcome is one step of Raiffa's procedure in every group (Section 3g). With private information it splits (Section 3h): private attitudes leave the mean as the proposal every type accepts, while private ideals bring the barrier back, since on a line the random ballot is the only strategy-proof rule that harms no one. *(The split is proved; a full equilibrium analysis with private ideals is open.)*
 
 ## 5. Bargaining, cycles and fixed points
 
@@ -284,7 +329,7 @@ So CORE uses two of the three switches between no fixed point and a fixed point:
 
 1. **The sequential equilibrium.** By Section 3a, what participants hold in the sequential variant is the endowment plus the weighted surpluses of the groups. Which surpluses groups capture is the remaining question. In the language of thread A the surpluses are data on the poset of sub-electorates, one vector per group, constrained only by the individual rationality of the members. How large the shortfall can be under individual rationality alone is settled in Section 3b: it is a linear program, and it is zero on a line with losses proportional to distance. Which families of surpluses arise from particular bargaining rules in every group is answered for five rules in Section 3d: on a line with linear loss every efficient rule gives the same result, the mean of the ideal points, and with spatial structure the rules hardly realise the harm individual rationality allows. Open: whether the floor has a closed form beyond the line (in the plane it falls below the endowment, by little in the cases computed), whether the criterion of Section 3c (both edges linear) holds for any number of members with individual concave losses, what plays its role when some members are convex, and whether the absence of a canonical selection is an obstruction of a definite level. Beyond the line, the mean rule (Section 3e) is a canonical selection that is individually rational and harms no one whenever utilities are concave on a convex outcome space, but it is no longer the only efficient one. It is the least risky of the agreements that are safe for every concave utility, those less risky than the call (Section 3f). The open part of the selection question is therefore what happens outside that class, where the members' particular utilities decide.
 2. **Characterisation of the winner lottery.** *Answered negatively in Section 2:* consistency and participation for joint draws, with anonymity, neutrality and unanimity on first choices, leave a convex family containing every scoring rule with uniform tie-breaking. A characterisation of random ballot by conditions on winner lotteries alone needs proportionality or a condition of the strategic kind.
-3. **The call structure as a game.** *Answered for complete information in Section 3g:* with a uniformly drawn proposer at every group and undominated votes, the subgame-perfect equilibria are found by backward induction, and their outcome is one step of Raiffa's procedure in every group. Open: private utilities, where a proposer does not know the members' call values, and protocols that steer the selection (for instance proposals restricted to poolings of the call, which leads to the mean rule).
+3. **The call structure as a game.** *Answered for complete information in Section 3g:* with a uniformly drawn proposer at every group and undominated votes, the subgame-perfect equilibria are found by backward induction, and their outcome is one step of Raiffa's procedure in every group. With private information (Section 3h): if only attitudes are private, a proposer who wants acceptance for every type proposes the mean, so the outcome is the mean rule; if ideals are private, the mean of declarations invites exaggeration (on a line, the average rule's equilibrium leaves about a third of members below their true endowment), and on a line the random ballot is the only strategy-proof rule that harms no one. Open: the equilibrium of the call game with private ideals, and how deliberation can make stated positions credible.
 4. **Fallbacks compared.** Section 2 gives one side of the comparison between random ballot and maximal lotteries as fallbacks. A second side is the Equality Criterion (working note *The Equality Criterion and Reversal*): random ballot fails it, in the direction of plurality, while maximal lotteries pass, and no strategy-proof Pareto-optimal fallback can pass it. The other side, how manipulable each is when used as the fallback of a consensus procedure, is open.
 
 ## 7. Material for a follow-up
@@ -302,7 +347,8 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 - the mean rule (Section 3e): with concave utilities on a convex outcome space, agreeing on the mean of the members' ideals in every group is individually rational, consistent along the removal process (each call is the ideals reflected through the mean and shrunk), and leaves everyone at least at the endowment; on a line with linear loss it is the only efficient agreement, in the plane one of many;
 - safe agreements (Section 3f): an agreement is weakly better than the call for every concave utility exactly when it arises from the call by pooling outcomes and enacting the block means (Strassen). If every group agrees safely, everyone holds at least the endowment; the outcome is the expected ideal of the eventual dictator given partial information about the draw, and the mean rule, which reveals nothing, is the least risky;
 - the call structure as a game (Section 3g): with complete information and a uniformly drawn proposer at every group, accepting exactly what is worth the call is weakly dominant, and the subgame-perfect outcome is one step of Raiffa's procedure in every group, so the calls carry no strategic remainder; the draw that removes can also recognise;
-- whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call game with private utilities.
+- private information (Section 3h): with public ideals and private attitudes, the mean is the only certain proposal every type accepts, and on a line the proposals every type accepts are exactly the safe ones; with private ideals the barrier returns: on a line the random ballot is the only strategy-proof lottery rule that harms no one, with no harm in the place of efficiency in Gibbard's theorem, and the always-call floor is what survives;
+- whatever comes of the questions in Section 6, in particular the sequential equilibrium and the call game with private ideals.
 
 ## References
 
@@ -311,13 +357,16 @@ The CORE paper stays as it is, a standalone introduction to the method. What is 
 - Canning, D. (1992). Rationality, computability, and Nash equilibrium. *Econometrica* 60, 877–888.
 - Diskin, A., Koppel, M. and Samet, D. (2011). Generalized Raiffa solutions. *Games and Economic Behavior* 73, 452–458.
 - Dutta, B., Peters, H. and Sen, A. (2007). Strategy-proof cardinal decision schemes. *Social Choice and Welfare* 28, 163–179; erratum 30 (2008), 701–702.
+- Ehlers, L., Peters, H. and Storcken, T. (2002). Strategy-proof probabilistic decision schemes for one-dimensional single-peaked preferences. *Journal of Economic Theory* 105, 408–434.
 - Gibbard, A. (1977). Manipulation of schemes that mix voting with chance. *Econometrica* 45, 665–681.
 - Gibbard, A. (1978). Straightforwardness of game forms with lotteries as outcomes. *Econometrica* 46, 595–614.
 - Heitzig, J. and Simmons, F. W. (2012). Some chance for consensus: voting methods for which consensus is an equilibrium. *Social Choice and Welfare* 38, 43–57.
 - Hylland, A. (1980). Strategy proofness of voting procedures with lotteries as outcomes and infinite sets of strategies. Mimeo, University of Oslo.
 - McLennan, A. (1980). Randomized preference aggregation: additivity of power and strategy proofness. *Journal of Economic Theory* 22, 1–11.
+- Moulin, H. (1980). On strategy-proofness and single peakedness. *Public Choice* 35, 437–455.
 - Myerson, R. B. (1991). *Game Theory: Analysis of Conflict.* Harvard University Press (pp. 393–394).
 - Raiffa, H. (1953). Arbitration schemes for generalized two-person games. In *Contributions to the Theory of Games II*, Princeton University Press, 361–387.
+- Renault, R. and Trannoy, A. (2005). Protecting minorities through the average voting rule. *Journal of Public Economic Theory* 7, 169–199.
 - Rothschild, M. and Stiglitz, J. E. (1970). Increasing risk: I. A definition. *Journal of Economic Theory* 2, 225–243.
 - Strassen, V. (1965). The existence of probability measures with given marginals. *Annals of Mathematical Statistics* 36, 423–439.
 - Trockel, W. (2011). An exact non-cooperative support for the sequential Raiffa solution. *Journal of Mathematical Economics* 47, 77–83.
