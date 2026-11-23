@@ -379,11 +379,27 @@ Part 2, one participant vetoes every proposal they may veto; the others play rat
 
 *(Computed.)*
 
+**Larger groups** (`scripts/core/larger_groups.py`; six to eight participants with n + 2 outcomes, 12, 10 and 6 instances, proposer groups of one, every group enumerated as before). The line with linear loss is left out, since every variant gives the mean of the ideals there.
+
+| family | participants | sequential | one-shot | veto kept | floor veto |
+|---|---|---|---|---|---|
+| independent uniform | 6 | +0.059 (31 %) | +0.047 (0) | +0.047 (0) | +0.048 (0) |
+| independent uniform | 7 | +0.054 (33 %) | +0.032 (0) | +0.028 (0) | +0.029 (0) |
+| independent uniform | 8 | +0.050 (31 %) | +0.049 (0) | +0.052 (0) | +0.052 (0) |
+| line, quadratic loss | 6 / 7 / 8 | +0.128 / +0.151 / +0.155 | +0.123 / +0.141 / +0.140 | +0.128 / +0.151 / +0.155 | +0.128 / +0.151 / +0.155 |
+| plane, distance | 6 / 7 / 8 | +0.079 / +0.104 / +0.063 | +0.068 / +0.090 / +0.061 | +0.078 / +0.104 / +0.062 | +0.078 / +0.104 / +0.063 |
+
+In the line and plane families nobody falls below the endowment, at any size or under any variant. In the uniform family the largest shortfall under sequential exclusion is 0.11 to 0.17.
+
+With one stubborn participant, the others keep +0.015 to +0.031 under sequential exclusion in the uniform family, but 27 to 41 percent of them end below their endowment. Under the floor veto they keep +0.016 to +0.020, and nobody is below. In the line and plane families the others keep about the same under both variants (+0.07 to +0.09 on the line, +0.02 to +0.04 in the plane), with nobody below.
+
+The samples are small. The variants are compared on the same instances, but differences between sizes are within the noise. *(Computed.)*
+
 *Reading.*
 - **Larger proposer groups gain more.** All but one gains most. With the one-shot fallback, proposer groups of all but one pass the sequential variant with single proposers in every family (in the uniform family, +0.0541 against +0.0515) without harming anyone.
-- **Harm comes from the threat point.** In unstructured utilities, the paper's sequential exclusion leaves about a sixth of participants below their endowment whatever the proposer groups, because the harm sits in the value of an exclusion.
+- **Harm comes from the threat point, and it grows with the group.** In unstructured utilities, the paper's sequential exclusion leaves participants below their endowment whatever the proposer groups, because the harm sits in the value of an exclusion. The share rises from about a sixth with three to five participants to about a third with six to eight.
 - **Protection and robustness pull apart.**
-  - *Keeping the veto* protects each member against the group: nobody falls below the endowment, and with rational play the gains stay.
+  - *Keeping the veto* protects each member against the group: nobody falls below the endowment. With rational play the gains stay in the line and plane families at every size computed, and in the uniform family up to five participants. For six and seven participants with unstructured utilities, the sequential variant gained clearly more (at seven, +0.054 against +0.028 on the same instances), while at eight the two were level.
   - *The sequential variant* protects the group against a stubborn member. There, one stubborn member costs most of the gain: in the uniform family the others keep +0.013 of about +0.05. Under a kept veto, or in the one-shot variant, they cost all of it.
   - *A checkable floor veto* has both properties. Stubbornness does not pay under it compared with rational play, but the stubborn member does get more than the others.
 - **What the design implies.** Which property matters more depends on the setting, outside the model. Where positions are public enough for floors to be checked, the floor veto combines the two. Where they are not, the choice is between a guarantee for each member and robustness against obstruction.

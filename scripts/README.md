@@ -34,6 +34,7 @@ Each script's docstring states what it checks. This file is the index; the notes
 | `call_game.py` | The call structure as a game with a uniformly drawn proposer at every group: backward induction with acceptance checked equals the Raiffa one-step rule; how often a proposer's optimum leaves the others' values open (only on the line with linear loss); what recognition is worth | *CORE and the Formal Results*, Section 3g |  |
 | `private_info.py` | Private information: with public ideals, the utilities that reject every off-mean proposal (plane) and every lottery riskier than the call (line) are constructed and checked; with private ideals on a line, the mean of declared ideals converges to Renault and Trannoy's median formula, and members end below their true endowment; on grids, the random ballot is the only strategy-proof lottery rule that harms no one (linear programs) | *CORE and the Formal Results*, Section 3h |  |
 | `proposer_groups.py` | Proposals inside the call: a call draws a proposer group of one, half or all but one, which finds its proposal by the same protocol; exclusion sequential, one-shot, with the veto kept or with a floor veto; gains over the endowment and shares below it; what one stubborn member costs | *CORE and the Formal Results*, Section 3i |  |
+| `larger_groups.py` | The comparisons of Sections 3d and 3i for six to eight participants, with a single proposer: four kinds of exclusion and one stubborn participant | *CORE and the Formal Results*, Section 3i |  |
 
 ## Strategy (`strategy/`)
 
