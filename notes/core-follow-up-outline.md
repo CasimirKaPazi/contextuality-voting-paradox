@@ -53,7 +53,7 @@ Appendix: the computations, with scripts and the settings of every table.
 **Settled (proved, or computed with an exact method):**
 - the martingale and the decomposition of holdings (both also checked in Lean);
 - the rational floor as a linear program;
-- the theorem for one dimension and the proposition on concave loss;
+- the theorem for one dimension (also checked in Lean) and the proposition on concave loss;
 - the mean of the peaks on a line;
 - the mean rule beyond the line (also checked in Lean);
 - safe agreements as poolings;
@@ -82,6 +82,6 @@ Beyond eight participants, nothing has been computed, and larger groups are not 
 
 1. *Done:* the characterisation of Ehlers, Peters and Storcken used in Section 3h is checked against their paper (Theorem 4.1, formula (12), Proposition 5.2), and the proof there is written in their terms.
 2. *Done up to eight participants:* the comparisons of Sections 3d and 3i, with a single proposer, for six to eight participants. The harm in unstructured utilities grows with the group, and the spatial families stay free of harm. Not pursued beyond that.
-3. *Done:* the martingale and the fair call, the decomposition of holdings, the veto-kept induction and the mean rule's safety are checked in Lean (`lean/CoreDraw.lean`), all from one induction on the size of the stage. The theorem for one dimension and safe agreements as poolings are not formalised.
+3. *Done:* the martingale and the fair call, the decomposition of holdings, the veto-kept induction and the mean rule's safety are checked in Lean (`lean/CoreDraw.lean`), all from one induction on the size of the stage. So is the theorem for one dimension. Safe agreements as poolings are not formalised.
 4. Settle the notation once. The working note uses e, h, c, s and G for endowment, holding, call, surplus and floor, D for the eventual dictator and R(S) for the outcome law from a group (Section 3b).
 5. Choose the title and the relation to the first paper. The working title is *CORE II: The Draw, Safe Agreements and the Call as a Game*.

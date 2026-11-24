@@ -43,8 +43,20 @@ at `S` is the average of `i`'s utilities `U i j` for the ideals of the members `
   outcomes and for any other utility `b − a |x − q|` with `a ≥ 0`, whether or not `q` is an
   outcome.
 
-Not formalised here: the proposition on concave loss (Section 3b), safe agreements as poolings
-(Section 3f), and the computations.
+* **The mean of the peaks on a line** (`line_mean`; Section 3d). With the same lotteries and
+  members, every group's outcome law puts all its mass between the lowest and the highest ideal of
+  its members and has the mean of their ideals as its mean. The two members at the edges do the
+  work: their distances add up to at least the length of the interval, with equality exactly
+  when the mass stays inside it.
+* **Safe agreements** (`safe_ge_endowment`, `safe_mean`, `safe_le_mean`; Section 3f). Outcomes are
+  finitely many points `pos x` of a real vector space. If every group's outcome is worth at least
+  its call to every concave utility, it is worth at least the random ballot to every concave
+  utility; every linear functional takes the value it has at the mean of the members' ideals; and
+  every concave utility weakly prefers that mean to the outcome.
+
+Not formalised here: the proposition on concave loss (Section 3b), Strassen's characterisation of
+safe agreements as poolings and the outcome as the expected ideal of the eventual dictator
+(Section 3f, part 3), and the computations.
 -/
 
 open Finset
@@ -396,6 +408,32 @@ lemma avg_lin (S : Finset V) (hS : S.Nonempty) (T : Finset V) (a : V → ℝ) (g
     ring
   · rw [← mul_assoc, inv_mul_cancel₀ hc, one_mul]
 
+omit [DecidableEq V] in
+lemma inv_card_mul (S : Finset V) (hS : S.Nonempty) (b : ℝ) :
+    ((S.card : ℝ))⁻¹ * (S.card * b) = b := by
+  have hc : (S.card : ℝ) ≠ 0 := by exact_mod_cast hS.card_pos.ne'
+  rw [← mul_assoc, inv_mul_cancel₀ hc, one_mul]
+
+omit [DecidableEq V] in
+lemma avg_affine (S : Finset V) (hS : S.Nonempty) (b a : ℝ) (g : V → ℝ) :
+    avg S (fun k => b - a * g k) = b - a * avg S g := by
+  unfold avg
+  rw [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum, mul_sub,
+    inv_card_mul S hS]
+  ring
+
+omit [DecidableEq V] in
+lemma avg_sub_const (S : Finset V) (hS : S.Nonempty) (g : V → ℝ) (c : ℝ) :
+    avg S (fun k => g k - c) = avg S g - c := by
+  unfold avg
+  rw [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, mul_sub, inv_card_mul S hS]
+
+omit [DecidableEq V] in
+lemma avg_const_sub (S : Finset V) (hS : S.Nonempty) (g : V → ℝ) (c : ℝ) :
+    avg S (fun k => c - g k) = c - avg S g := by
+  unfold avg
+  rw [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, mul_sub, inv_card_mul S hS]
+
 lemma abs_tri (a b : ℝ) : |a + b| ≤ |a| + |b| :=
   abs_le.mpr ⟨by linarith [neg_abs_le a, neg_abs_le b], by linarith [le_abs_self a, le_abs_self b]⟩
 
@@ -680,6 +718,270 @@ theorem line_ge_endowment (pos : X → ℝ) (ideal : V → X) (α β : V → ℝ
     (S.card - 1) S (by have := hS.card_pos; omega) (lineUtil b a q pos)
     ⟨b, a, q, ha, rfl⟩
 
+
+/-! ### The mean of the peaks on a line -/
+
+lemma eu_congr_supp (L : X → ℝ) {f g : X → ℝ} (h : ∀ x, L x ≠ 0 → f x = g x) :
+    eu L f = eu L g := by
+  unfold eu
+  apply Finset.sum_congr rfl
+  intro x _
+  by_cases hx : L x = 0
+  · rw [hx, zero_mul, zero_mul]
+  · rw [h x hx]
+
+lemma eu_sub_const (L : X → ℝ) (hL : ∑ x, L x = 1) (f : X → ℝ) (c : ℝ) :
+    eu L (fun x => f x - c) = eu L f - c := by
+  unfold eu
+  have h : ∑ x, L x * (f x - c) = ∑ x, L x * f x - (∑ x, L x) * c := by
+    rw [Finset.sum_mul, ← Finset.sum_sub_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    ring
+  rw [h, hL, one_mul]
+
+lemma eu_const_sub (L : X → ℝ) (hL : ∑ x, L x = 1) (f : X → ℝ) (c : ℝ) :
+    eu L (fun x => c - f x) = c - eu L f := by
+  unfold eu
+  have h : ∑ x, L x * (c - f x) = (∑ x, L x) * c - ∑ x, L x * f x := by
+    rw [Finset.sum_mul, ← Finset.sum_sub_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    ring
+  rw [h, hL, one_mul]
+
+lemma eu_add_sub (L : X → ℝ) (hL : ∑ x, L x = 1) (f g : X → ℝ) (c : ℝ) :
+    eu L (fun x => f x + g x - c) = eu L f + eu L g - c := by
+  unfold eu
+  have h : ∑ x, L x * (f x + g x - c) = ∑ x, L x * f x + ∑ x, L x * g x - (∑ x, L x) * c := by
+    rw [Finset.sum_mul, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    ring
+  rw [h, hL, one_mul]
+
+lemma eu_line (L : X → ℝ) (hL : ∑ x, L x = 1) (b a q : ℝ) (pos : X → ℝ) :
+    eu L (lineUtil b a q pos) = b - a * eu L (fun x => |pos x - q|) := by
+  unfold eu lineUtil
+  have h : ∑ x, L x * (b - a * |pos x - q|) = (∑ x, L x) * b - a * ∑ x, L x * |pos x - q| := by
+    rw [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    ring
+  rw [h, hL, one_mul]
+
+/-- A non-negative function with expectation at most zero vanishes wherever the lottery has
+mass. -/
+lemma eu_eq_zero_of_nonneg (L : X → ℝ) (hL : ∀ x, 0 ≤ L x) (g : X → ℝ) (hg : ∀ x, 0 ≤ g x)
+    (h : eu L g ≤ 0) : ∀ x, L x ≠ 0 → g x = 0 := by
+  intro x hx
+  unfold eu at h
+  have hn : ∀ y ∈ (Finset.univ : Finset X), 0 ≤ L y * g y := fun y _ => mul_nonneg (hL y) (hg y)
+  have hsum : ∑ y, L y * g y = 0 := le_antisymm h (Finset.sum_nonneg hn)
+  have h0 := (Finset.sum_eq_zero_iff_of_nonneg hn).mp hsum x (Finset.mem_univ x)
+  rcases mul_eq_zero.mp h0 with h0 | h0
+  · exact absurd h0 hx
+  · exact h0
+
+/-- Induction on the size of the group, for `line_mean`. -/
+theorem line_mean_aux [DecidableEq X] (pos : X → ℝ) (ideal : V → X) (α β : V → ℝ)
+    (hα : ∀ m, 0 < α m) (R : Finset V → X → ℝ) (hR0 : ∀ S x, 0 ≤ R S x)
+    (hR1 : ∀ S, ∑ x, R S x = 1) (hδ : ∀ j x, R {j} x = if x = ideal j then 1 else 0)
+    (hIR : ∀ S : Finset V, 2 ≤ S.card → ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu (R S) (lineUtil (β m) (α m) (pos (ideal m)) pos)) :
+    ∀ n : ℕ, ∀ S : Finset V, S.card = n + 1 →
+      (∀ x, R S x ≠ 0 → ∃ m1 ∈ S, ∃ m2 ∈ S, pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2)) ∧
+      eu (R S) pos = avg S (fun k => pos (ideal k)) := by
+  intro n
+  induction n with
+  | zero =>
+    intro S hS
+    have hS' : S.card = 1 := by omega
+    obtain ⟨j, rfl⟩ := Finset.card_eq_one.mp hS'
+    refine ⟨fun x hx => ?_, ?_⟩
+    · rw [hδ] at hx
+      split_ifs at hx with hxj
+      · subst hxj
+        exact ⟨j, Finset.mem_singleton_self j, j, Finset.mem_singleton_self j, le_rfl, le_rfl⟩
+      · exact absurd rfl hx
+    · rw [avg_singleton]
+      unfold eu
+      simp [hδ]
+  | succ n ih =>
+    intro S hS
+    have h2 : 2 ≤ S.card := by omega
+    have hne : S.Nonempty := Finset.card_pos.mp (by omega)
+    -- the members at the two edges
+    obtain ⟨m1, hm1, hmin⟩ := Finset.exists_min_image S (fun m => pos (ideal m)) hne
+    obtain ⟨m2, hm2, hmax⟩ := Finset.exists_max_image S (fun m => pos (ideal m)) hne
+    have ihk : ∀ k ∈ S, (∀ x, R (S.erase k) x ≠ 0 → ∃ a ∈ S.erase k, ∃ b ∈ S.erase k,
+        pos (ideal a) ≤ pos x ∧ pos x ≤ pos (ideal b)) ∧
+        eu (R (S.erase k)) pos = avg (S.erase k) (fun l => pos (ideal l)) := by
+      intro k hk
+      exact ih (S.erase k) (by rw [Finset.card_erase_of_mem hk]; omega)
+    have hin : ∀ k ∈ S, ∀ x, R (S.erase k) x ≠ 0 →
+        pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2) := by
+      intro k hk x hx
+      obtain ⟨a, ha, b, hb, hax, hxb⟩ := (ihk k hk).1 x hx
+      exact ⟨(hmin a (Finset.mem_of_mem_erase ha)).trans hax,
+        hxb.trans (hmax b (Finset.mem_of_mem_erase hb))⟩
+    -- the call, measured by the distances from the two edges
+    have hk1 : ∀ k ∈ S, eu (R (S.erase k)) (fun x => |pos x - pos (ideal m1)|)
+        = avg (S.erase k) (fun l => pos (ideal l)) - pos (ideal m1) := by
+      intro k hk
+      rw [eu_congr_supp (R (S.erase k)) (f := fun x => |pos x - pos (ideal m1)|)
+        (g := fun x => pos x - pos (ideal m1))
+        (fun x hx => abs_of_nonneg (show 0 ≤ pos x - pos (ideal m1) by
+          linarith [(hin k hk x hx).1])),
+        eu_sub_const _ (hR1 _) pos (pos (ideal m1)), (ihk k hk).2]
+    have hk2 : ∀ k ∈ S, eu (R (S.erase k)) (fun x => |pos x - pos (ideal m2)|)
+        = pos (ideal m2) - avg (S.erase k) (fun l => pos (ideal l)) := by
+      intro k hk
+      rw [eu_congr_supp (R (S.erase k)) (f := fun x => |pos x - pos (ideal m2)|)
+        (g := fun x => pos (ideal m2) - pos x)
+        (fun x hx => (abs_of_nonpos (show pos x - pos (ideal m2) ≤ 0 by
+          linarith [(hin k hk x hx).2])).trans (neg_sub _ _)),
+        eu_const_sub _ (hR1 _) pos (pos (ideal m2)), (ihk k hk).2]
+    have hc1 : avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m1)|))
+        = avg S (fun k => pos (ideal k)) - pos (ideal m1) := by
+      rw [avg_congr S hk1, avg_sub_const S hne, avg_erase S _ h2]
+    have hc2 : avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m2)|))
+        = pos (ideal m2) - avg S (fun k => pos (ideal k)) := by
+      rw [avg_congr S hk2, avg_const_sub S hne, avg_erase S _ h2]
+    -- individual rationality: no member's expected distance exceeds the call's
+    have hd : ∀ m ∈ S, eu (R S) (fun x => |pos x - pos (ideal m)|)
+        ≤ avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m)|)) := by
+      intro m hm
+      have h := hIR S h2 m hm
+      rw [eu_line _ (hR1 S), avg_congr S (fun k _ => eu_line (R (S.erase k)) (hR1 _) (β m) (α m)
+        (pos (ideal m)) pos), avg_affine S hne] at h
+      have h' : α m * eu (R S) (fun x => |pos x - pos (ideal m)|)
+          ≤ α m * avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m)|)) := by
+        linarith
+      exact le_of_mul_le_mul_left h' (hα m)
+    have H1 := hd m1 hm1
+    rw [hc1] at H1
+    have H2 := hd m2 hm2
+    rw [hc2] at H2
+    -- the mass stays between the edges
+    have hg : ∀ x, 0 ≤ |pos x - pos (ideal m1)| + |pos x - pos (ideal m2)|
+        - (pos (ideal m2) - pos (ideal m1)) := fun x => by
+      linarith [le_abs_self (pos x - pos (ideal m1)), neg_abs_le (pos x - pos (ideal m2))]
+    have hz := eu_eq_zero_of_nonneg (R S) (hR0 S)
+      (fun x => |pos x - pos (ideal m1)| + |pos x - pos (ideal m2)|
+        - (pos (ideal m2) - pos (ideal m1))) hg
+      (by rw [eu_add_sub _ (hR1 S)]; linarith)
+    have hsupp : ∀ x, R S x ≠ 0 → pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2) := by
+      intro x hx
+      have hzx : |pos x - pos (ideal m1)| + |pos x - pos (ideal m2)|
+          - (pos (ideal m2) - pos (ideal m1)) = 0 := hz x hx
+      constructor
+      · linarith [neg_abs_le (pos x - pos (ideal m1)), neg_abs_le (pos x - pos (ideal m2))]
+      · linarith [le_abs_self (pos x - pos (ideal m1)), le_abs_self (pos x - pos (ideal m2))]
+    -- inside the interval the distances are linear, and the mean is pinned
+    have e1 : eu (R S) (fun x => |pos x - pos (ideal m1)|) = eu (R S) pos - pos (ideal m1) := by
+      rw [eu_congr_supp (R S) (f := fun x => |pos x - pos (ideal m1)|)
+        (g := fun x => pos x - pos (ideal m1))
+        (fun x hx => abs_of_nonneg (show 0 ≤ pos x - pos (ideal m1) by
+          linarith [(hsupp x hx).1])),
+        eu_sub_const _ (hR1 S) pos (pos (ideal m1))]
+    have e2 : eu (R S) (fun x => |pos x - pos (ideal m2)|) = pos (ideal m2) - eu (R S) pos := by
+      rw [eu_congr_supp (R S) (f := fun x => |pos x - pos (ideal m2)|)
+        (g := fun x => pos (ideal m2) - pos x)
+        (fun x hx => (abs_of_nonpos (show pos x - pos (ideal m2) ≤ 0 by
+          linarith [(hsupp x hx).2])).trans (neg_sub _ _)),
+        eu_const_sub _ (hR1 S) pos (pos (ideal m2))]
+    refine ⟨fun x hx => ⟨m1, hm1, m2, hm2, hsupp x hx⟩, ?_⟩
+    rw [e1] at H1
+    rw [e2] at H2
+    linarith
+
+/-- **The mean of the peaks** (Section 3d). On a line with losses proportional to distance, if
+every group's outcome is worth at least its call to each member, then the outcome law from every
+group puts all its mass between the lowest and the highest ideal of its members, and its mean is
+the mean of their ideals. -/
+theorem line_mean [DecidableEq X] (pos : X → ℝ) (ideal : V → X) (α β : V → ℝ)
+    (hα : ∀ m, 0 < α m) (R : Finset V → X → ℝ) (hR0 : ∀ S x, 0 ≤ R S x)
+    (hR1 : ∀ S, ∑ x, R S x = 1) (hδ : ∀ j x, R {j} x = if x = ideal j then 1 else 0)
+    (hIR : ∀ S : Finset V, 2 ≤ S.card → ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu (R S) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+    (S : Finset V) (hS : S.Nonempty) :
+    (∀ x, R S x ≠ 0 → ∃ m1 ∈ S, ∃ m2 ∈ S, pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2)) ∧
+      eu (R S) pos = avg S (fun k => pos (ideal k)) :=
+  line_mean_aux pos ideal α β hα R hR0 hR1 hδ hIR (S.card - 1) S (by have := hS.card_pos; omega)
+
 end Lotteries
+
+/-! ### Safe agreements -/
+
+section Safe
+
+variable {X : Type*} [Fintype X] {E : Type*} [AddCommGroup E] [Module ℝ E]
+
+/-- **Safe agreements leave everyone at least the endowment** (Section 3f, part 1). Outcomes are
+finitely many points `pos x` of a real vector space. If every group's outcome is worth at least
+its call to every concave utility, then to every concave utility it is worth at least the random
+ballot over the group's members. -/
+theorem safe_ge_endowment (pos : X → E) (ideal : V → X) (R : Finset V → X → ℝ)
+    (h1 : ∀ j u, eu (R {j}) u = u (ideal j))
+    (hsafe : ∀ f : E → ℝ, ConcaveOn ℝ Set.univ f → ∀ S : Finset V, 2 ≤ S.card →
+      avg S (fun k => eu (R (S.erase k)) (fun x => f (pos x))) ≤ eu (R S) (fun x => f (pos x)))
+    {f : E → ℝ} (hf : ConcaveOn ℝ Set.univ f) (S : Finset V) (hS : S.Nonempty) :
+    avg S (fun k => f (pos (ideal k))) ≤ eu (R S) (fun x => f (pos x)) :=
+  floor (fun k => f (pos (ideal k))) (fun T => eu (R T) (fun x => f (pos x)))
+    (fun j => h1 j _) (hsafe f hf) S hS
+
+/-- **Safe agreements have the mean of the ideals as their mean** (Section 3f, part 2): every
+linear functional, being concave together with its negative, takes on the outcome the value it
+has at the mean of the members' ideals. -/
+theorem safe_mean (pos : X → E) (ideal : V → X) (R : Finset V → X → ℝ)
+    (h1 : ∀ j u, eu (R {j}) u = u (ideal j))
+    (hsafe : ∀ f : E → ℝ, ConcaveOn ℝ Set.univ f → ∀ S : Finset V, 2 ≤ S.card →
+      avg S (fun k => eu (R (S.erase k)) (fun x => f (pos x))) ≤ eu (R S) (fun x => f (pos x)))
+    (ℓ : E →ₗ[ℝ] ℝ) (S : Finset V) (hS : S.Nonempty) :
+    eu (R S) (fun x => ℓ (pos x)) = ℓ (mean S (fun k => pos (ideal k))) := by
+  have hle := safe_ge_endowment pos ideal R h1 hsafe (ℓ.concaveOn convex_univ) S hS
+  have hge := safe_ge_endowment pos ideal R h1 hsafe ((-ℓ).concaveOn convex_univ) S hS
+  have hmean : avg S (fun k => ℓ (pos (ideal k))) = ℓ (mean S (fun k => pos (ideal k))) := by
+    unfold avg mean
+    rw [map_smul, map_sum, smul_eq_mul]
+  simp only [LinearMap.neg_apply] at hge
+  rw [avg_neg] at hge
+  have e : eu (R S) (fun x => -ℓ (pos x)) = -eu (R S) (fun x => ℓ (pos x)) := by
+    unfold eu
+    rw [← Finset.sum_neg_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    ring
+  rw [e] at hge
+  rw [← hmean]
+  linarith
+
+/-- **The mean is the least risky safe agreement** (Section 3f, part 2): every concave utility
+weakly prefers the mean of the members' ideals to the outcome of any safe behaviour. -/
+theorem safe_le_mean (pos : X → E) (ideal : V → X) (R : Finset V → X → ℝ)
+    (hR0 : ∀ S x, 0 ≤ R S x) (hR1 : ∀ S, ∑ x, R S x = 1)
+    (h1 : ∀ j u, eu (R {j}) u = u (ideal j))
+    (hsafe : ∀ f : E → ℝ, ConcaveOn ℝ Set.univ f → ∀ S : Finset V, 2 ≤ S.card →
+      avg S (fun k => eu (R (S.erase k)) (fun x => f (pos x))) ≤ eu (R S) (fun x => f (pos x)))
+    {f : E → ℝ} (hf : ConcaveOn ℝ Set.univ f) (S : Finset V) (hS : S.Nonempty) :
+    eu (R S) (fun x => f (pos x)) ≤ f (mean S (fun k => pos (ideal k))) := by
+  have hJ : ∑ x, R S x • f (pos x) ≤ f (∑ x, R S x • pos x) :=
+    hf.le_map_sum (fun x _ => hR0 S x) (hR1 S) (fun _ _ => Set.mem_univ _)
+  have hm : ∑ x, R S x • pos x = mean S (fun k => pos (ideal k)) := by
+    rw [← sub_eq_zero]
+    apply (Module.forall_dual_apply_eq_zero_iff (R := ℝ) (v := _)).mp
+    intro φ
+    rw [map_sub, map_sum]
+    simp only [map_smul, smul_eq_mul]
+    rw [← safe_mean pos ideal R h1 hsafe φ S hS]
+    unfold eu
+    exact sub_self _
+  unfold eu
+  simpa only [smul_eq_mul, hm] using hJ
+
+end Safe
 
 end CoreDraw
