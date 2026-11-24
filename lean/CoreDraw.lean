@@ -32,6 +32,10 @@ at `S` is the average of `i`'s utilities `U i j` for the ideals of the members `
   `C(|S|, |T|)`, the number of groups of that size. The step is a count: a group `T` is reached
   from `S` after one removal from exactly `|S| − |T|` of the sets `S ∖ {k}`, and
   `(|S| − |T|) · C(|S|, |T|) = |S| · C(|S| − 1, |T|)`.
+  Two consequences (`holdings_ge_outside`, `outside_weight`): if every group containing a
+  participant leaves that participant a non-negative surplus, the participant's shortfall below
+  the endowment comes only from groups without them; and the groups of size `k < |S|` without a
+  given member carry total weight `(|S| − k) / |S|`.
 
 * **No harm on a line** (`random_ballot_floor`, `line_star`, `line_ge_endowment`; Section 3b).
   Outcomes form a finite type `X`, a lottery is a function `L : X → ℝ`, and `eu L u` is its
@@ -327,6 +331,55 @@ surpluses. -/
 theorem holdings_decomposition (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j)
     (S : Finset V) (hS : S.Nonempty) : h S = avg S u + surplusSum h S :=
   holdings_decomposition_aux u h h1 (S.card - 1) S (by have := hS.card_pos; omega)
+
+/-- **Where the shifts come from** (Section 3a). If every group of two or more that contains `i`
+leaves `i` a non-negative surplus over its call, as it does when `i` accepts only what is worth at
+least a call, then `i`'s value at `S` is at least the average of `u` plus the weighted surpluses of
+the groups without `i`. -/
+theorem holdings_ge_outside (u : V → ℝ) (h : Finset V → ℝ) (h1 : ∀ j, h {j} = u j) (i : V)
+    (hs : ∀ T : Finset V, i ∈ T → 2 ≤ T.card → 0 ≤ surplus h T) (S : Finset V)
+    (hS : S.Nonempty) :
+    avg S u + ∑ T ∈ S.powerset,
+      (if 2 ≤ T.card ∧ i ∉ T then surplus h T / (S.card.choose T.card : ℝ) else 0) ≤ h S := by
+  have hterm : ∀ T ∈ S.powerset,
+      (if 2 ≤ T.card ∧ i ∉ T then surplus h T / (S.card.choose T.card : ℝ) else 0)
+        ≤ (if 2 ≤ T.card then surplus h T / (S.card.choose T.card : ℝ) else 0) := by
+    intro T _
+    by_cases h2 : 2 ≤ T.card
+    · by_cases hi : i ∈ T
+      · rw [ite_eq_right (fun hc => hc.2 hi), ite_eq_left h2]
+        exact div_nonneg (hs T hi h2) (Nat.cast_nonneg _)
+      · exact le_of_eq (by rw [ite_eq_left ⟨h2, hi⟩, ite_eq_left h2])
+    · exact le_of_eq (by rw [ite_eq_right (fun hc => h2 hc.1), ite_eq_right h2])
+  have hsum := Finset.sum_le_sum hterm
+  rw [holdings_decomposition u h h1 S hS]
+  unfold surplusSum
+  linarith
+
+/-- **The weight of the groups without a member** (Section 3a): among the groups of size `k < |S|`
+inside `S`, those without the member `i` carry total weight `(|S| − k) / |S|`, each group weighted
+by `1 / C(|S|, k)`. It is the probability that `i` has been removed by the time `k` remain. -/
+theorem outside_weight (S : Finset V) (i : V) (hi : i ∈ S) (k : ℕ) (hk : k < S.card) :
+    ((S.powerset.filter (fun T => T.card = k ∧ i ∉ T)).card : ℝ) / (S.card.choose k : ℝ)
+      = ((S.card : ℝ) - k) / S.card := by
+  have hset : S.powerset.filter (fun T => T.card = k ∧ i ∉ T) = (S.erase i).powersetCard k := by
+    ext T
+    simp only [Finset.mem_filter, Finset.mem_powerset, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨hTS, hTk, hiT⟩
+      refine ⟨fun x hx => Finset.mem_erase.mpr ⟨fun hxi => hiT ?_, hTS hx⟩, hTk⟩
+      rw [← hxi]
+      exact hx
+    · rintro ⟨hT, hTk⟩
+      exact ⟨fun x hx => (Finset.mem_erase.mp (hT hx)).2, hTk,
+        fun hiT => (Finset.mem_erase.mp (hT hiT)).1 rfl⟩
+  rw [hset, Finset.card_powersetCard, Finset.card_erase_of_mem hi]
+  have hc : (((S.card - 1).choose k : ℕ) : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.choose_pos (by omega)).ne'
+  have key := term_eq S.card k (((S.card - 1).choose k : ℕ) : ℝ) hk
+  rw [div_self hc, mul_one] at key
+  rw [← key]
+  ring
 
 /-! ### The mean rule -/
 

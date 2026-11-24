@@ -65,7 +65,7 @@ Its consequences:
 
   h_i(V) ≥ e_i(V) + Σ_{S ∌ i} s_i(S) / C(n, |S|).
 
-  Every shortfall below the endowment comes from groups that formed without i, through the surplus they captured over their own call, as seen by i. The weights of the groups of size k that do not contain i add up to (n − k)/n, the probability that i has been removed by the time k participants are left.
+  Every shortfall below the endowment comes from groups that formed without i, through the surplus they captured over their own call, as seen by i. The weights of the groups of size k that do not contain i add up to (n − k)/n, the probability that i has been removed by the time k participants are left. *(Both checked in Lean: `holdings_ge_outside` and `outside_weight` in `lean/CoreDraw.lean`.)*
 - **The examples of Section 7 of the CORE paper.** In the first, the pair of participants 2 and 3 agrees on D, with surplus (−105, 4, 4) over the pair's call; the other pairs reach no agreement. The decomposition gives the value of a call at the full group as (6.67, 3.33, 3.33) + (−105, 4, 4)/3 = (−28.33, 4.67, 4.67), the paper's table. In the second example the same term is positive for participant 1.
 - **The endowment is one possible holding.** The lottery a call would lead to is always acceptable, weakly, to every member of a group. If every group adopts exactly that, all surpluses vanish and everyone holds their endowment. The value shifts of the sequential variant are therefore the surpluses of smaller groups. They come from those groups agreeing on something better than their own fallback, which is the purpose of the sequential variant.
 
@@ -159,7 +159,7 @@ Sections 3a–3c bound what groups can do. A definite rule closes the selection 
 - **Raiffa, one step:** each member's best individually rational lottery, averaged. This is random dictatorship over the improvements, one level up (Section 5);
 - **Raiffa:** that step repeated from the new point until it stops.
 
-**Proposition (mean of the peaks).** Let the outcomes be points on a line, u_j(x) = β_j − α_j|x − p_j| with α_j > 0, and let every peak be an available outcome. Under any individually rational behaviour of the groups, every group S that agrees picks a lottery inside the interval of its members' peaks, whose mean is μ_S, the mean of those peaks. A Pareto-efficient agreement gives every participant, member or not, the value of the point μ_S. So every efficient rule leads to the same holdings, the value of the mean of all peaks, in the one-shot and in the sequential variant alike. *(Proved.)*
+**Proposition (mean of the peaks).** Let the outcomes be points on a line, u_j(x) = β_j − α_j|x − p_j| with α_j > 0, and let every peak be an available outcome. Under any individually rational behaviour of the groups, every group S that agrees picks a lottery inside the interval of its members' peaks, whose mean is μ_S, the mean of those peaks. A Pareto-efficient agreement gives every participant, member or not, the value of the point μ_S. So every efficient rule leads to the same holdings, the value of the mean of all peaks, in the one-shot and in the sequential variant alike. *(Proved. The first part, that every individually rational outcome stays in the interval of the peaks with mean μ_S, is checked in Lean for finitely many outcomes: `line_mean` in `lean/CoreDraw.lean`.)*
 
 *Proof.* By induction, every reached group's call is a lottery inside the interval of its peaks with mean μ_S. For a single participant this is the ideal. A call averages the laws of the groups S ∖ {k}, whose means μ_{S∖{k}} average to μ_S.
 - **The mean is pinned.** For the two members at the edges of S, the sum of the expected distances E|X − q₁| + E|X − q_s| is at least q_s − q₁, with equality exactly when X stays in the interval. The call attains it. Individual rationality for both therefore keeps X in the interval and fixes E X − q₁ and q_s − E X, so E X = μ_S.
@@ -217,7 +217,7 @@ Let the outcomes form a convex set X in a finite-dimensional space, and compare 
 2. Every agreement has mean μ_S, the mean of the members' ideals. The point μ_S is less risky than every lottery with that mean, so every participant with a concave utility weakly prefers it to every other safe agreement. The mean rule is the only rule whose agreements are safe and certain.
 3. The outcome from a reached group S can be realised as E[p_D | Z]: the expected ideal of the participant D who would be left last, given some partial information Z about the draw. The random ballot is the case of full information, the mean rule the case of none.
 
-*(Proved.)*
+*(Proved. Parts 1 and 2 are checked in Lean for finitely many outcomes in a real vector space: `safe_ge_endowment`, `safe_mean` and `safe_le_mean` in `lean/CoreDraw.lean`. Part 3 rests on Strassen's theorem and is not formalised.)*
 
 *Proof.* 1. By induction on the size of S. A call averages the outcomes of the groups S ∖ {k}, each less risky than the random ballot over S ∖ {k}, and averages of these ballots give the random ballot over S. Both pooling and averaging respect the order, and the order is transitive. 2. Pooling keeps the mean, and the random ballot over S has mean μ_S. Jensen's inequality gives the rest. 3. By 1 and Strassen's theorem, with B the ideal of a uniformly drawn member of S, which is how D is distributed given S (Section 3). ∎
 

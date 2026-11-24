@@ -60,9 +60,8 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
 
 8. **Gibbard (1978), Corollary 2**, now an assumption in `Lotteries.lean`. Effort: moderate to large.
 9. **CORE propositions** (*CORE and the Formal Results*).
-   - The martingale property and the decomposition of holdings are finite sums over subsets: small to moderate.
-   - The concave-loss results need invertibility and positivity of distance matrices: large.
-   - These matter once the CORE follow-up is written.
+   - Done in `CoreDraw.lean`: the draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks (interval and mean), the mean rule's safety, safe agreements (parts 1 and 2), the veto-kept floor.
+   - Still open: the efficiency half of the mean of the peaks (moderate); the call game of Section 3g, weak dominance and one Raiffa step per group (moderate); the concave-loss results, which need invertibility and positivity of distance matrices (large); Strassen's characterisation of safe agreements (large).
 10. **Gibbard (1977)**, the characterisation of strategy-proof decision schemes. Large; it would remove the hypothesis of Item 6.
 
 ## Not planned
