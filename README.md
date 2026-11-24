@@ -13,6 +13,16 @@ The guiding observation is that all of these have the same form: local pieces th
 - [`notes/where-the-symmetry-goes.md`](notes/where-the-symmetry-goes.md) — aggregation into a ranking must dispose of a symmetry; it ends up in the output (a paradox), in the rule (a dictator or tie-breaker), or in a fixed point (a lottery).
 - [`papers/CORE.md`](papers/CORE_13.md) — the application: a consensus procedure with a random fallback.
 
+## How to help
+
+### Lean
+
+The main bottle neck currently is in formalizing the existing work in Lean. This for this you don't need to understand what is going on, just a few tokens to burn. Setting up Lean is easy, and AI can help you with that too. If the Lean proof does not work or gives any other new information, then this is also valuable. Just give notice before you start working on something and stay in the lean directory with the changes to reduce conflicts.
+
+### Organizing
+
+The scope of this project will make it hard to navigate as it grows. So some help with organization (like [here](https://github.com/mccorvie/riemann-masullo) would make it easier.
+
 ## Contents
 
 ### Paper (`papers/`)
