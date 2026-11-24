@@ -1,5 +1,9 @@
-import Mathlib
-import PathPinning
+module
+
+public import Mathlib
+public import PathPinning
+
+@[expose] public section
 
 /-!
 # Theorem 5′: empirical models of Arrow's scenario are mixtures of dictatorships

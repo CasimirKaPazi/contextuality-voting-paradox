@@ -31,6 +31,10 @@
     "closed, χ = 1, non-orientable" into "real projective plane".
 -/
 
+module
+
+@[expose] public section
+
 set_option maxRecDepth 100000
 
 namespace Nerve

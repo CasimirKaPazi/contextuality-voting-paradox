@@ -5,6 +5,10 @@
   Uses only core Lean, no Mathlib.
 -/
 
+module
+
+@[expose] public section
+
 namespace ValueSpaces
 
 /-! ### Proposition 1: bounded line -/

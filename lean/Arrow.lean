@@ -29,6 +29,10 @@
   (rank = number of alternatives strictly above).
 -/
 
+module
+
+@[expose] public section
+
 namespace Arrow
 
 variable {X I : Type}

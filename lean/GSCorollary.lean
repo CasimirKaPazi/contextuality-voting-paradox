@@ -1,6 +1,10 @@
-import Mathlib
-import GSScenario
-import GSTopTwo
+module
+
+public import Mathlib
+public import GSScenario
+public import GSTopTwo
+
+@[expose] public section
 
 /-!
 # Mixtures of dictatorships in the Gibbard–Satterthwaite scenario

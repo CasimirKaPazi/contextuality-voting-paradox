@@ -1,6 +1,10 @@
-import Mathlib
-import PathPinning
-import JointDraws
+module
+
+public import Mathlib
+public import PathPinning
+public import JointDraws
+
+@[expose] public section
 
 /-!
 # One encoding of rankings

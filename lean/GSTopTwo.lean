@@ -1,5 +1,9 @@
-import Mathlib
-import GSScenario
+module
+
+public import Mathlib
+public import GSScenario
+
+@[expose] public section
 
 /-!
 # The random top two: a contextual model without unanimity

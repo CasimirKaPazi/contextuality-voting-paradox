@@ -15,6 +15,10 @@
   Outcomes and columns are finite. Uses only core Lean.
 -/
 
+module
+
+@[expose] public section
+
 namespace NonTight
 
 variable {A B X : Type}

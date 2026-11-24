@@ -19,6 +19,10 @@
   complete would need its own enumeration argument.
 -/
 
+module
+
+@[expose] public section
+
 set_option maxRecDepth 100000
 
 namespace RationalDiagonal

@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Joint draws from SD-strategy-proofness (Gibbard–Satterthwaite scenario, Proposition 1)

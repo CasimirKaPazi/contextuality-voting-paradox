@@ -9,6 +9,10 @@
   with ties.
 -/
 
+module
+
+@[expose] public section
+
 namespace Burial
 
 variable {V A : Type}

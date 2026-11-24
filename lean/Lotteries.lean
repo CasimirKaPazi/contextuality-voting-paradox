@@ -27,8 +27,12 @@
   Uses only core Lean.
 -/
 
-import Diagonal
-import Gibbard73
+module
+
+public import Diagonal
+public import Gibbard73
+
+@[expose] public section
 
 namespace Lotteries
 

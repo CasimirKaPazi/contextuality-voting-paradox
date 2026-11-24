@@ -20,7 +20,11 @@
   `allI`); strategy sets need not be.
 -/
 
-import Arrow
+module
+
+public import Arrow
+
+@[expose] public section
 
 namespace Gibbard73
 

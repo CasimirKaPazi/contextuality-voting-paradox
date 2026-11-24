@@ -27,6 +27,10 @@
   winner" is needed.
 -/
 
+module
+
+@[expose] public section
+
 namespace Consistency
 
 variable {V A : Type}

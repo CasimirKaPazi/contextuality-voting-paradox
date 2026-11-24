@@ -1,6 +1,10 @@
-import Mathlib
-import ProbabilisticArrow
-import ArrowGeneral
+module
+
+public import Mathlib
+public import ProbabilisticArrow
+public import ArrowGeneral
+
+@[expose] public section
 
 /-!
 # Theorem 5′ for any number of alternatives

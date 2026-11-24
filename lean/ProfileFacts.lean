@@ -7,6 +7,10 @@
   Uses only core Lean, no Mathlib.
 -/
 
+module
+
+@[expose] public section
+
 namespace ProfileFacts
 
 variable {V A : Type}

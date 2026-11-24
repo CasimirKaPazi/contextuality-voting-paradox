@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Lotteries on joins: Lemma 3 (necessity) and Theorem 4 of *Four Levels*

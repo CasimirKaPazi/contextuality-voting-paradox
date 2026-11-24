@@ -4,6 +4,10 @@
   Uses only core Lean, no Mathlib.
 -/
 
+module
+
+@[expose] public section
+
 namespace Condorcet
 
 inductive Alt where

@@ -1,6 +1,10 @@
-import Mathlib
-import Scenarios
-import Rankings
+module
+
+public import Mathlib
+public import Scenarios
+public import Rankings
+
+@[expose] public section
 
 /-!
 # The Gibbard–Satterthwaite scenario

@@ -9,8 +9,12 @@
   other players' strategies as the opposing profile.
 -/
 
-import Diagonal
-import Gibbard73
+module
+
+public import Diagonal
+public import Gibbard73
+
+@[expose] public section
 
 namespace Dichotomy
 

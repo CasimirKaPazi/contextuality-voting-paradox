@@ -21,6 +21,10 @@
   This uses only core Lean, no Mathlib.
 -/
 
+module
+
+@[expose] public section
+
 namespace Diagonal
 
 variable {B R O Env : Type}
