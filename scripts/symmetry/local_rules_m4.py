@@ -311,6 +311,44 @@ def part3():
             sol, _ = local_program(4, prof, NB4, fixed)
             row.append(f"{face_name(B)}: {'exists' if sol else 'none'}")
         print(f"  on {face_name(A)} x ...  " + "; ".join(row))
+    # the same for the smallest cell by an exact search that does not use the solver
+    A = next(F for F in through if face_name(F) == "{ab|cd}")
+    B = next(F for F in through if face_name(F) == "{a|bcd}")
+    prof = [(s, t) for s in A for t in B]
+    nbr = {p: [q for q in prof if q != p and ((q[0] == p[0] and q[1] in NB4[p[1]])
+                                              or (q[1] == p[1] and q[0] in NB4[p[0]]))] for p in prof}
+    assign = {}
+    for s in A:
+        assign[(s, r0)] = s
+    for t in B:
+        assign[(r0, t)] = t
+    free = sorted((p for p in prof if p not in assign), key=lambda p: -sum(q in assign for q in nbr[p]))
+    nodes = [0]
+
+    def rec(i):
+        nodes[0] += 1
+        if i == len(free):
+            return True
+        p = free[i]
+        cands = set(range(24))
+        for q in nbr[p]:
+            if q in assign:
+                cands &= {assign[q], *NB4[assign[q]]}
+        for v in sorted(cands):
+            assign[p] = v
+            if rec(i + 1):
+                return True
+            del assign[p]
+        return False
+    print(f"  exact search on {{ab|cd}} x {{a|bcd}}: exists {rec(0)} ({nodes[0]} nodes)")
+    auts = set()
+    for pi in itertools.permutations(range(4)):
+        for rev in (0, 1):
+            f = tuple(IDX4[tuple(pi[x] for x in (R4[i][::-1] if rev else R4[i]))] for i in range(24))
+            assert all(f[j] in NB4[f[i]] for i in range(24) for j in NB4[i])
+            auts.add(f)
+    print(f"  renamings and reversal: {len(auts)} automorphisms, transitive on rankings:"
+          f" {len({f[r0] for f in auts}) == 24}")
     print()
 
 
