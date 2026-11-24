@@ -6,6 +6,7 @@ Notes are revised as the picture becomes clearer. Each opens with a short statem
 |---|---|
 | [`roadmap.md`](roadmap.md) | Threads, status, suggested order |
 | [`alignment/roadmap.md`](alignment/roadmap.md) | Which part of the alignment question social choice can make precise, what is in hand, and the threads that follow |
+| [`alignment/undefinability.md`](alignment/undefinability.md) | A shared goal defined as a procedure over the participants' reports: dictatorship, a regress that cannot be computed from inside, or chance with ex ante inefficiency; revising the rule does not escape |
 | [`map-of-voting-paradoxes.md`](map-of-voting-paradoxes.md) | The known voting paradoxes grouped by what is varied, the theorems that connect them, and consistency as convexity |
 | [`consistency-as-extension.md`](consistency-as-extension.md) | Consistency over electorates as an extension problem in the space of vote shares; Young–Levenglick and the no-show theorem read ex ante and ex post; maximal lotteries |
 | [`contextuality-and-symmetry.md`](contextuality-and-symmetry.md) | Aggregation as a constraint network in which independence of irrelevant alternatives is non-contextuality; random rules as empirical models; agreement-type against symmetry-breaking obstructions |

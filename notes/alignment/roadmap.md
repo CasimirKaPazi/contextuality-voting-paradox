@@ -46,7 +46,7 @@ The threads are theory building and formalisation that can be done here. Each na
 
 *Exists.* Both theorems, checked in Lean or with one assumption from Gibbard.
 
-*First step.* A short section, in a note or in the follow-up to the CORE paper, with the statement and its limits. Check whether the reading as an undefinability theorem, in the sense of Tarski rather than of Gödel, has a precedent in the literature on social choice and computability.
+*Status.* Written up in *What Cannot Be Defined from Inside* (`undefinability.md`): the statement, the distinction between inside and outside, two senses of exploitation, a corollary that revising the rule by another fixed procedure does not escape, the conditions under which the barrier against rational others can vanish, and the limits. Open there: a precedent for the reading in Tarski's sense, a Lean check of the corollary, and whether the rational-opponent barrier survives composition.
 
 ### T2. A classification of conflicts
 
@@ -116,7 +116,7 @@ Earlier informal texts stated some points more strongly than the formal work sup
 
 ## 6. Suggested order
 
-1. T1, which is mostly writing, since the theorems exist.
+1. T1, written up; its open points are small.
 2. T2, the classification table and the question about level 2, which builds on the main roadmap's threads A and B.
 3. T3, starting from the martingale and the class of non-terminating procedures.
 4. T5, a computation on small cases.
