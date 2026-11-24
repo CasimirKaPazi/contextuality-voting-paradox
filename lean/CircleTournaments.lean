@@ -51,7 +51,7 @@ lemma key (s t : ℝ) (hs₀ : 0 < Int.fract s) (hs₁ : Int.fract s < 1 / 2)
       linarith
     · intro h₁
       constructor <;> linarith
-  · push_neg at h
+  · push Not at h
     have hf : Int.fract (t - s) = Int.fract t - Int.fract s + 1 := by
       rw [Int.fract_eq_iff]
       refine ⟨by linarith, by linarith, ⌊t⌋ - ⌊s⌋ - 1, ?_⟩

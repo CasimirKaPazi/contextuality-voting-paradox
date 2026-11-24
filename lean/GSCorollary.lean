@@ -127,7 +127,7 @@ theorem cor2 [Nonempty ι] (h3 : 3 ≤ Fintype.card α) {L : Prof ι α → α �
     (hmix : GibbardMixture L) (hun : Unanimous L) : IsMixtureDict L := by
   classical
   obtain ⟨n, w, K, hw0, hw1, hK0, hK1, hcomp, hL⟩ := hmix
-  haveI : Nonempty α := Fintype.card_pos_iff.mp (by omega)
+  have : Nonempty α := Fintype.card_pos_iff.mp (by omega)
   have hKle : ∀ j π x, K j π x ≤ 1 := fun j π x => by
     rw [← hK1 j π]
     exact single_le_sum (f := K j π) (fun y _ => hK0 j π y) (mem_univ x)
@@ -203,7 +203,7 @@ theorem cor2 [Nonempty ι] (h3 : 3 ≤ Fintype.card α) {L : Prof ι α → α �
     calc ∑ k, (if IsTop (π k) x then ∑ j, (if v j = k then w j else 0) else 0)
         = ∑ k, ∑ j, (if IsTop (π k) x then (if v j = k then w j else 0) else 0) := by
           refine sum_congr rfl (fun k _ => ?_)
-          split_ifs with h <;> simp [h]
+          split_ifs <;> simp
       _ = ∑ j, ∑ k, (if IsTop (π k) x then (if v j = k then w j else 0) else 0) := sum_comm
       _ = ∑ j, (if IsTop (π (v j)) x then w j else 0) := by
           refine sum_congr rfl (fun j _ => ?_)
@@ -215,6 +215,7 @@ theorem cor2 [Nonempty ι] (h3 : 3 ≤ Fintype.card α) {L : Prof ι α → α �
 
 /-! ### Mixtures of dictatorships are unanimous empirical models -/
 
+omit [DecidableEq ι] in
 lemma probU [Nonempty α] (lam : ι → ℝ) (π : Prof ι α) (U : Finset α) :
     ∑ x ∈ U, LD lam π x = ∑ k, (if topOf (π k) ∈ U then lam k else 0) := by
   unfold LD
@@ -237,8 +238,9 @@ lemma sdsp_LD [Nonempty α] {lam : ι → ℝ} (h0 : ∀ k, 0 ≤ lam k) : SDSPR
       rw [ite_eq_left hτ, ite_eq_left hρ]
     · rw [ite_eq_right hτ]
       split_ifs <;> simp [h0 k]
-  · simp [Function.update_apply, hk]
+  · simp [hk]
 
+omit [DecidableEq ι] in
 lemma LD_nonneg {lam : ι → ℝ} (h0 : ∀ k, 0 ≤ lam k) (π : Prof ι α) (x : α) : 0 ≤ LD lam π x :=
   sum_nonneg (fun k _ => by split_ifs <;> simp [h0 k])
 
@@ -247,6 +249,7 @@ lemma LD_sum [Nonempty α] {lam : ι → ℝ} (h1 : ∑ k, lam k = 1) (π : Prof
   rw [probU]
   simp [h1]
 
+omit [DecidableEq ι] in
 lemma LD_unanimous {lam : ι → ℝ} (h1 : ∑ k, lam k = 1) : Unanimous (LD (α := α) lam) := by
   intro π a ha
   unfold LD
@@ -258,7 +261,7 @@ theorem cor2_models [Nonempty ι] (hG : Gibbard1977 ι α) (h3 : 3 ≤ Fintype.c
     {L : Prof ι α → α → ℝ} (hL0 : ∀ π x, 0 ≤ L π x) (hL1 : ∀ π, ∑ x, L π x = 1) :
     ((∃ e, Model (GS : Scenario (Prof ι α) α) e ∧ HasMarginals e L) ∧ Unanimous L) ↔
       IsMixtureDict L := by
-  haveI : Nonempty α := Fintype.card_pos_iff.mp (by omega)
+  have : Nonempty α := Fintype.card_pos_iff.mp (by omega)
   constructor
   · rintro ⟨hm, hun⟩
     exact cor2 h3 (hG L hL0 hL1 ((gs_prop1 hL0 hL1).mp hm)) hun

@@ -118,6 +118,7 @@ lemma sw_inj {σ : α → ℕ} (hσ : Function.Injective σ) (x y : α) :
   unfold sw at h
   exact (Equiv.swap x y).injective (hσ h)
 
+omit [Fintype α] in
 /-- The three cases for an alternative under a swap, as statements about numbers. -/
 lemma sw_cases (σ τ : α → ℕ) (hσ : Function.Injective σ) (x y a : α) :
     (σ a = σ x ∧ τ a = τ x ∧ sw σ x y a = σ y) ∨ (σ a = σ y ∧ τ a = τ y ∧ sw σ x y a = σ x) ∨
@@ -232,15 +233,16 @@ section Kernel
 
 variable {x y : α}
 
+omit [Fintype α] in
 lemma stepK_nonneg (hne : x ≠ y) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r ≤ 1) (a b : α) :
     0 ≤ stepK r x y a b := by
   unfold stepK
   by_cases hax : a = x
   · rw [hax]
     by_cases hbx : b = x
-    · rw [hbx]; simp [hne] <;> linarith
+    · rw [hbx]; simp [hne]; linarith
     · by_cases hby : b = y
-      · rw [hby]; simp [hne, Ne.symm hne] <;> linarith
+      · rw [hby]; simp [hne, Ne.symm hne]; linarith
       · simp [hbx, hby, Ne.symm hbx]
   · by_cases hab : a = b
     · rw [hab] at hax ⊢; simp [hax]
@@ -286,7 +288,7 @@ lemma stepK_col_o (p : α → ℝ) (r : ℝ) {b : α} (hbx : b ≠ x) (hby : b �
     by_cases h : a = x
     · rw [h]; simp [hbx, hby, Ne.symm hbx]
     · by_cases hab : a = b
-      · rw [hab]; simp [hbx, hby]
+      · rw [hab]; simp [hbx]
       · simp [h, hab]
   rw [sum_congr rfl (fun a _ => key a)]
   simp

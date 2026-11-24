@@ -219,7 +219,7 @@ omit [Fintype C] [DecidableEq O] in
 lemma colBest_addCol_some (g : R → C → O) (o : O) (c : C) :
     colBest u (addCol g o) (some c) = colBest u g c := rfl
 
-omit [Fintype C] in
+omit [Fintype C] [DecidableEq O] in
 lemma colBest_addCol_none [Nonempty R] (g : R → C → O) (o : O) :
     colBest u (addCol g o) none = u o := by
   unfold colBest
