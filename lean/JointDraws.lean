@@ -343,6 +343,7 @@ section Swap
 
 variable {σ τ : α → ℕ} {x y : α}
 
+omit [Fintype α] in
 /-- A disagreement after the swap is one before it, in the same order. -/
 lemma inv_sub (hσ : Function.Injective σ) (hxy : σ x < σ y)
     (hadj : ∀ c, ¬ (σ x < σ c ∧ σ c < σ y)) (hyx : τ y < τ x) {a b : α}

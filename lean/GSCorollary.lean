@@ -248,6 +248,7 @@ omit [DecidableEq ι] in
 lemma LD_nonneg {lam : ι → ℝ} (h0 : ∀ k, 0 ≤ lam k) (π : Prof ι α) (x : α) : 0 ≤ LD lam π x :=
   sum_nonneg (fun k _ => by split_ifs <;> simp [h0 k])
 
+omit [DecidableEq ι] in
 lemma LD_sum [Nonempty α] {lam : ι → ℝ} (h1 : ∑ k, lam k = 1) (π : Prof ι α) :
     ∑ x, LD lam π x = 1 := by
   rw [probU]
