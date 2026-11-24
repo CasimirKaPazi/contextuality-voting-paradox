@@ -1,6 +1,6 @@
 # A tight form without a rational diagonal
 
-*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It gives a tight, non-dictatorial two-player game form with three outcomes in which, under every pair of strict preferences, both players have a strict Nash strategy. So the answer to the two-player question with strict preferences is no. The note gives the example, a proof that can be checked by hand, how the example was found, and where it sits relative to the positive results. Script: `scripts/strategy/rational_diagonal/tight_counterexample.py`.*
+*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It gives a tight, non-dictatorial two-player game form with three outcomes in which, under every pair of strict preferences, both players have a strict Nash strategy. So the answer to the two-player question with strict preferences is no. The note gives the example, a proof that can be checked by hand, and how it was found. For three outcomes it then gives the complete picture (Section 5): a form without a rational diagonal needs an outcome that both players can force, and with such an outcome there is an exact criterion. Scripts: `scripts/strategy/rational_diagonal/tight_counterexample.py`, `three_outcomes_veto.py`.*
 
 ## 1. The example
 
@@ -60,21 +60,65 @@ Whether a smaller tight counterexample exists without a c-border is open.
 
 For three outcomes, the working conditions of both kinds of opponent order depend on 24 yes-or-no properties of each player: forcing, leaving and reaching (Section 7 of *The rational diagonal on totally tight game forms*). On totally tight forms a short list of implications between these properties proves the theorem. The same search was run on tight forms: about 300,000 non-dictatorial tight forms (all forms up to 3 × 4 and 4 × 3, and 2 × 5 and 5 × 2, and random ones from 3 × 3 to 7 × 7) gave 12,256 joint values of the 48 properties. After 66 implications the search reached an assignment that no implication of up to four properties, valid on all collected forms, excludes. In it both players force c, and neither forces anything else. A local search over forms with a constant row and column c then realised the assignment as a 7 × 7 form, and deleting lines gave the 6 × 6 form above. The assignment only says that no configuration of the two kinds works; the direct check showed that no pair of strict preferences works at all.
 
-## 5. Where it sits
+## 5. Three outcomes: the complete picture
+
+A constant row and a constant column meet in a cell. So if both players force single outcomes, they force the same one, and only that one. Call it a *common veto* c. A form with a common veto has a constant row c and a constant column c, so it is tight (Section 2), and every line contains c.
+
+The words of Section 7 of *The rational diagonal on totally tight game forms* are used: a row *reaches* t from m if some m-cell of the row lies in a column holding t; it *leaves* w if some w-cell lies in a column holding another outcome; it is *inside* a set if all its cells lie in the set. The same words apply to columns. Fact (F1) of that note holds for every form: if the opponent does not force w, every row holding w leaves w.
+
+**Theorem A (no common veto).** Let a two-player form with three outcomes be non-dictatorial, with no outcome forced by both players. Then some player works with Q the reverse of P or its rotation.
+
+*Proof.* Some player o forces no single outcome, since otherwise there would be a common veto. Let i be the other player, and let t be an outcome i does not force; i is not a dictator. Let u and v be the other two outcomes.
+
+By (F1), every row holding any outcome leaves it, since o forces nothing. So the configuration (i, (t, m, w), reverse) works exactly when every row inside {t, m} holding m reaches t from m. Suppose this fails both for m = u and for m = v: there are rows r_u inside {t, u} and r_v inside {t, v}, holding u and v, whose u-cells and v-cells lie in columns without t.
+
+*Step 1.* Every column holding t reaches u from t. Otherwise take such a column c, all of whose t-cells lie in rows without u. The cell (r_u, c) lies in {t, u}. If it is u, it is a u-cell of r_u in a column holding t. If it is t, it is a t-cell of c in a row holding u. Both are excluded.
+
+*Step 2.* Every column inside {u, v} holding v leaves v. Otherwise take such a column c′, each of whose v-cells lies in a row holding only v. The cell (r_v, c′) lies in {t, v} ∩ {u, v}, so it is v. So r_v holds only v, and its v-cells lie in every column. Then no column holds t, and t does not occur.
+
+Now consider (o, (u, t, v), rotation), with i's order (t, v, u). By the working conditions of that note, read for columns, it works exactly when o does not force u, every column holding t reaches u from t, and every column inside {u, v} holding v leaves v. These are the hypothesis, Step 1 and Step 2. ∎
+
+The proof uses neither tightness nor recombination. On a form without a common veto, the three configurations (i, (t, u, v), reverse), (i, (t, v, u), reverse) and (o, (u, t, v), rotation) always contain a working one.
+
+**Theorem B (common veto).** Let a non-dictatorial form with three outcomes have a common veto c, and let a, b be the other outcomes. Read player i's strategies as rows. Call a row a *wall row* if all its c-cells lie in columns that are constant c. Then i has no rational diagonal exactly when all of the following hold, for (x, y) = (a, b) and (b, a):
+- (W) there is a wall row;
+- (A_x) some row inside {x, c} has its c-cells in columns without x;
+- (E_xy) some row holding y has its y-cells in columns without x, or some wall row does not hold y.
+
+*Proof.* Every row and every column holds c. A row whose favourite, for the opponent, is i's top is never refuted. Go through i's orders P.
+- *c on top.* The constant row c is never refuted.
+- *P = (x, c, y).* A row as in (A_x) has favourite x or c, and its c-cells lie in columns without x, the only better outcome. So it is never refuted. If (A_x) fails, i works under Q = (y, c, x). Rows holding y have favourite y, which is i's worst, and every column holds c. The other rows lie inside {x, c} and have favourite c, and each has a c-cell in a column holding x.
+- *P = (x, y, c), Q with c on top.* Every row has favourite c. A wall row is not refuted. Without a wall row, every row has a c-cell in a column holding x or y, and i works.
+- *P = (x, y, c), Q with x on top.* A row holding x has favourite x and is not refuted. Such a row exists, since x occurs.
+- *P = (x, y, c), Q = (y, x, c).* A row as in (A_x) holds x and not y, so its favourite is x: not refuted.
+- *P = (x, y, c), Q = (y, c, x).* Rows holding y have favourite y and are refuted exactly when some y-cell lies in a column holding x. Rows without y have favourite c and are refuted exactly when they are not wall rows. So i has a strict Nash strategy exactly when (E_xy) holds. ∎
+
+So a form with three outcomes has no rational diagonal exactly when it has a common veto and both players satisfy (W), (A_a), (A_b), (E_ab) and (E_ba). In the example, player 1's rows r0, r1, r4, r2, r3, r5 are the constant row, a wall row, the rows for (A_a) and (A_b), and the rows for (E_ab) and (E_ba).
+
+*Checks.* The criterion agrees with the brute-force test on all forms with a c-border and an inner part of 3 × 3, 2 × 4 or 3 × 4 (1,095,920 player checks), and on 28,859 random forms with a common veto. Theorem A held on 20,314 random forms without one.
+
+*Why small forms do not suffice.* One row can serve several conditions for player 1: a row holding a except for c in the constant-c columns is a wall row and satisfies (A_a) and (E_ab). But then every column that is not constant c holds a, so no column is inside {b, c}, and player 2 fails (A_b). The conditions of the two players pull against each other. *(Reading; the exact minimum is not known.)*
+
+**How Theorem A was found.** The implication search of Section 4 was rerun with the extra hypothesis that no outcome is forced by both players. It ended after 97 implications; up to renaming outcomes and swapping players, six of them suffice, and each has a short proof. For each pattern of forcing, a search for the fewest configurations of which one must work returned the three configurations of the proof.
+
+## 6. Where it sits
 
 - *Totally tight forms* and *games of perfect information* always admit a rational diagonal, by the reduction and the exact searches of *The rational diagonal on totally tight game forms*. The example is neither. Its 2 × 2 subform on rows r2, r3 and columns s2, s3 is (c, b | a, c), which has no constant line, so it is not totally tight. It also fails the recombination property (R) of that note, which every game tree has.
 - What fails is the step (F3) of the three-outcome proof, for the pair a, b: some row holding b reaches no a from b, and some column holding a reaches no b from a. On totally tight forms and on game trees this cannot happen.
-- The structure is a common veto: each player can impose c, and nobody can impose a or b. Every strategy then contains c, so the opponent can always fall back on c, and the constant c lines make that fallback safe against any refutation. With c at the top of P, i keeps the constant c line; with c in the middle, i has a line that holds only its top and c, whose c-cells lie in columns without its top; with c at the bottom, the remaining lines answer the four possible opponent orders one by one. *(Interpretation.)*
+- The structure is a common veto: each player can impose c, and nobody can impose a or b. With three outcomes this is necessary (Section 5). Every strategy then contains c, so the opponent can always fall back on c, and the constant c lines make that fallback safe against any refutation. With c at the top of P, i keeps the constant c line; with c in the middle, i has a line that holds only its top and c, whose c-cells lie in columns without its top; with c at the bottom, the remaining lines answer the four possible opponent orders one by one. *(Interpretation.)*
 - For the dichotomy of *Walls and Strategy* (Theorem 3) nothing changes: it uses arbitrary opponent programs. What changes is the strengthening to rational opponents. On this form, whatever the strict preferences, each player has a strategy that is right against every rational opponent: a best reply to every best reply.
 
-## 6. Open
+## 7. Open
 
 - Whether tight forms with property (R) always admit a rational diagonal. The chain of four configurations fails on some of them with four outcomes, but no form with (R) without a rational diagonal is known.
-- The smallest tight counterexample, and whether there are counterexamples without a common veto, for instance with the effectivity function of the cores of totally tight forms (each player forces any two of three outcomes and no single one).
+- With three outcomes, Section 5 settles the question. With four or more outcomes: whether a form without a rational diagonal still needs a common veto, whether Theorem A extends, and whether there is any counterexample at all. A local search over 7 × 7 forms with four outcomes found none, with or without a common veto; at best 18 of the 1,152 configurations still worked (computed, not exhaustive; `local_search.cpp`). Neither did turning one or two cells of the example into a fourth outcome.
+- The smallest counterexample.
 - More players: the question for three or more players is untouched.
 
 ## Scripts
 
 In `scripts/strategy/rational_diagonal/`:
 - `tight_counterexample.py`: the checks of Section 2 and the deletion check of Section 3; plain Python, no arguments;
-- `border_scan.cpp`: all inner forms of a given size inside a c-border, tested for a rational diagonal; `./border_scan n m [from to]` (4 × 5 takes about an hour on one core).
+- `border_scan.cpp`: all inner forms of a given size inside a c-border, tested for a rational diagonal; `./border_scan n m [from to]` (4 × 5 takes about an hour on one core);
+- `three_outcomes_veto.py`: Theorems A and B of Section 5 against the brute-force test, on random forms and on all small forms with a c-border;
+- `local_search.cpp`: local search for tight forms without a rational diagonal, with any number of outcomes and optional constraints; `./local_search n m seed restarts flags k`.

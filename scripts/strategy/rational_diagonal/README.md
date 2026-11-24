@@ -69,6 +69,11 @@ Note *A tight form without a rational diagonal*.
   isomorphism with its transpose.
 - `border_scan.cpp n m [from to]` — all n × m inner forms inside a c-row and a
   c-column (such forms are always tight), tested for a rational diagonal.
+- `three_outcomes_veto.py [seed]` — three outcomes: without a common veto some
+  player works (Theorem A); with one, the exact criterion (Theorem B); both
+  against the brute-force test.
+- `local_search.cpp n m seed restarts flags k` — local search for tight forms
+  without a rational diagonal, with k outcomes.
 
 ## Survival of a working configuration (`absorption/`)
 
