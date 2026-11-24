@@ -60,8 +60,8 @@ Proofs in the notes and drafts that are not yet formalised, ordered by how much 
 
 8. **Gibbard (1978), Corollary 2**, now an assumption in `Lotteries.lean`. Effort: moderate to large.
 9. **CORE propositions** (*CORE and the Formal Results*).
-   - Done in `CoreDraw.lean`: the draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks (interval and mean), the mean rule's safety, safe agreements (parts 1 and 2), the veto-kept floor.
-   - Still open: the efficiency half of the mean of the peaks (moderate); the call game of Section 3g, weak dominance and one Raiffa step per group (moderate); the concave-loss results, which need invertibility and positivity of distance matrices (large); Strassen's characterisation of safe agreements (large).
+   - Done in `CoreDraw.lean`: the draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks (interval and mean), the mean rule's safety, safe agreements (parts 1 and 2), the veto-kept floor, the stages of the call game (Section 3g).
+   - Still open: the efficiency half of the mean of the peaks (moderate); the call game as a whole tree with subgame perfection, and the uniqueness of its values (moderate); the concave-loss results, which need invertibility and positivity of distance matrices (large); Strassen's characterisation of safe agreements (large).
 10. **Gibbard (1977)**, the characterisation of strategy-proof decision schemes. Large; it would remove the hypothesis of Item 6.
 
 ## Not planned

@@ -58,6 +58,14 @@ at `S` is the average of `i`'s utilities `U i j` for the ideals of the members `
   utility; every linear functional takes the value it has at the mean of the members' ideals; and
   every concave utility weakly prefers that mean to the outcome.
 
+* **The call as a game** (`accept_weakly_dominant`, `proposer_best`, `raiffa_ir`,
+  `call_game_line`; Section 3g). A member's vote matters only when every other member accepts, so
+  accepting exactly what is worth at least the call is weakly dominant. Against that rule a
+  proposal is enacted exactly when every member weakly prefers it to the call, and a best
+  acceptable lottery is the proposer's best reply. Averaging these over a uniformly drawn proposer,
+  one Raiffa step, is individually rational at every group, so on a line with losses proportional
+  to distance the call game leaves no one below their endowment.
+
 Not formalised here: the proposition on concave loss (Section 3b), Strassen's characterisation of
 safe agreements as poolings and the outcome as the expected ideal of the eventual dictator
 (Section 3f, part 3), and the computations.
@@ -468,6 +476,11 @@ lemma inv_card_mul (S : Finset V) (hS : S.Nonempty) (b : ℝ) :
   rw [← mul_assoc, inv_mul_cancel₀ hc, one_mul]
 
 omit [DecidableEq V] in
+lemma avg_const (S : Finset V) (hS : S.Nonempty) (c : ℝ) : avg S (fun _ => c) = c := by
+  unfold avg
+  rw [Finset.sum_const, nsmul_eq_mul, inv_card_mul S hS]
+
+omit [DecidableEq V] in
 lemma avg_affine (S : Finset V) (hS : S.Nonempty) (b a : ℝ) (g : V → ℝ) :
     avg S (fun k => b - a * g k) = b - a * avg S g := by
   unfold avg
@@ -554,6 +567,52 @@ lemma abs_le_edge' (y p q : ℝ) (h : q ≤ p) :
   · intro hy
     rw [abs_of_nonpos (by linarith : y - p ≤ 0), abs_of_nonpos (by linarith : y - q ≤ 0)]
     ring
+
+/-! ### The call as a game: votes -/
+
+omit [DecidableEq V] in
+/-- The result of a vote at `S`: the proposal (worth `a`) if every member accepts, the call
+(worth `b`) otherwise. -/
+noncomputable def outcome (S : Finset V) (votes : V → Bool) (a b : ℝ) : ℝ :=
+  if ∀ k ∈ S, votes k = true then a else b
+
+/-- **Accepting what is worth the call is weakly dominant** (Section 3g, part 1). Whatever the
+other members vote, member `m` does at least as well by accepting exactly when the proposal is
+worth at least the call (`b ≤ a`) as by any other vote. -/
+theorem accept_weakly_dominant (S : Finset V) (m : V) (hm : m ∈ S) (a b : ℝ) (w : V → Bool)
+    (v : Bool) :
+    outcome S (Function.update w m v) a b ≤ outcome S (Function.update w m (decide (b ≤ a))) a b := by
+  unfold outcome
+  by_cases hO : ∀ k ∈ S, k ≠ m → w k = true
+  · -- every other member accepts: m's vote decides
+    have key : ∀ v' : Bool, (∀ k ∈ S, Function.update w m v' k = true) ↔ v' = true := by
+      intro v'
+      constructor
+      · intro h
+        simpa using h m hm
+      · intro hv k hk
+        by_cases hkm : k = m
+        · subst hkm
+          simp [hv]
+        · rw [Function.update_apply, ite_eq_right hkm]
+          exact hO k hk hkm
+    have hL : (if ∀ k ∈ S, Function.update w m v k = true then a else b) ≤ max a b := by
+      split_ifs <;> simp
+    have hR : (if ∀ k ∈ S, Function.update w m (decide (b ≤ a)) k = true then a else b)
+        = max a b := by
+      by_cases hab : b ≤ a
+      · rw [ite_eq_left ((key _).mpr (by simp [hab])), max_eq_left hab]
+      · rw [ite_eq_right (fun h => by have := (key _).mp h; simp [hab] at this),
+          max_eq_right (le_of_lt (not_le.mp hab))]
+    linarith
+  · -- another member calls: m's vote does not matter
+    have hno : ∀ v' : Bool, ¬ (∀ k ∈ S, Function.update w m v' k = true) := by
+      intro v' h
+      apply hO
+      intro k hk hkm
+      have := h k hk
+      rwa [Function.update_apply, ite_eq_right hkm] at this
+    exact le_of_eq (by rw [ite_eq_right (hno v), ite_eq_right (hno _)])
 
 section Line
 
@@ -964,6 +1023,76 @@ theorem line_mean [DecidableEq X] (pos : X → ℝ) (ideal : V → X) (α β : V
     (∀ x, R S x ≠ 0 → ∃ m1 ∈ S, ∃ m2 ∈ S, pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2)) ∧
       eu (R S) pos = avg S (fun k => pos (ideal k)) :=
   line_mean_aux pos ideal α β hα R hR0 hR1 hδ hIR (S.card - 1) S (by have := hS.card_pos; omega)
+
+
+/-! ### The call as a game: proposals -/
+
+/-- The lottery of a call at `S`: the average of the outcome laws one removal later. -/
+noncomputable def callLaw (R : Finset V → X → ℝ) (S : Finset V) : X → ℝ :=
+  fun x => avg S (fun k => R (S.erase k) x)
+
+omit [DecidableEq V] in
+lemma eu_avg (S : Finset V) (P : V → X → ℝ) (u : X → ℝ) :
+    eu (fun x => avg S (fun k => P k x)) u = avg S (fun k => eu (P k) u) := by
+  unfold eu avg
+  simp_rw [Finset.mul_sum, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro _ _
+  apply Finset.sum_congr rfl
+  intro _ _
+  ring
+
+omit [DecidableEq V] in
+/-- **The proposer's best reply** (Section 3g, part 2). Against the acceptance rule of
+`accept_weakly_dominant`, a proposal `L'` is enacted exactly when every member weakly prefers it
+to the call `C`, and otherwise the call follows. A lottery `Pk` that is best for the proposer `k`
+among the acceptable lotteries does at least as well for `k` as any proposal. -/
+theorem proposer_best (S : Finset V) (k : V) (U : V → X → ℝ) (C Pk : X → ℝ)
+    (hbest : ∀ L : X → ℝ, (∀ x, 0 ≤ L x) → ∑ x, L x = 1 →
+      (∀ m ∈ S, eu C (U m) ≤ eu L (U m)) → eu L (U k) ≤ eu Pk (U k))
+    (hC0 : ∀ x, 0 ≤ C x) (hC1 : ∑ x, C x = 1)
+    (L' : X → ℝ) (hL0 : ∀ x, 0 ≤ L' x) (hL1 : ∑ x, L' x = 1) :
+    eu (if ∀ m ∈ S, eu C (U m) ≤ eu L' (U m) then L' else C) (U k) ≤ eu Pk (U k) := by
+  split_ifs with h
+  · exact hbest L' hL0 hL1 h
+  · exact hbest C hC0 hC1 (fun _ _ => le_refl _)
+
+/-- **One Raiffa step is individually rational** (Section 3g). If at every group of two or more
+the outcome law is the average, over a uniformly drawn proposer `k`, of proposals `P S k` that
+every member weakly prefers to the call, then every member weakly prefers the outcome to the
+call. -/
+theorem raiffa_ir (U : V → X → ℝ) (R : Finset V → X → ℝ) (P : Finset V → V → X → ℝ)
+    (hR : ∀ S : Finset V, 2 ≤ S.card → R S = fun x => avg S (fun k => P S k x))
+    (hacc : ∀ S : Finset V, 2 ≤ S.card → ∀ k ∈ S, ∀ m ∈ S,
+      eu (callLaw R S) (U m) ≤ eu (P S k) (U m)) :
+    ∀ S : Finset V, 2 ≤ S.card → ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (U m)) ≤ eu (R S) (U m) := by
+  intro S hS m hm
+  have hne : S.Nonempty := Finset.card_pos.mp (by omega)
+  have hcall : eu (callLaw R S) (U m) = avg S (fun k => eu (R (S.erase k)) (U m)) :=
+    eu_avg S (fun k => R (S.erase k)) (U m)
+  rw [hR S hS, eu_avg, ← hcall]
+  calc eu (callLaw R S) (U m) = avg S (fun _ => eu (callLaw R S) (U m)) :=
+        (avg_const S hne _).symm
+    _ ≤ avg S (fun k => eu (P S k) (U m)) := avg_mono S (fun k hk => hacc S hS k hk m hm)
+
+/-- **The call game harms no one on a line** (Sections 3g and 3b). With losses proportional to
+distance, if every group's outcome is one Raiffa step over proposals that every member weakly
+prefers to the call, then to every utility `b − a |pos x − q|` with `a ≥ 0` the outcome from
+every group is worth at least the random ballot over its members. -/
+theorem call_game_line (pos : X → ℝ) (ideal : V → X) (α β : V → ℝ) (hα : ∀ m, 0 < α m)
+    (R : Finset V → X → ℝ) (P : Finset V → V → X → ℝ)
+    (hR0 : ∀ S x, 0 ≤ R S x) (hR1 : ∀ S, ∑ x, R S x = 1)
+    (h1 : ∀ j u, eu (R {j}) u = u (ideal j))
+    (hR : ∀ S : Finset V, 2 ≤ S.card → R S = fun x => avg S (fun k => P S k x))
+    (hacc : ∀ S : Finset V, 2 ≤ S.card → ∀ k ∈ S, ∀ m ∈ S,
+      eu (callLaw R S) (lineUtil (β m) (α m) (pos (ideal m)) pos)
+        ≤ eu (P S k) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+    (b a q : ℝ) (ha : 0 ≤ a) (S : Finset V) (hS : S.Nonempty) :
+    avg S (fun k => lineUtil b a q pos (ideal k)) ≤ eu (R S) (lineUtil b a q pos) :=
+  line_ge_endowment pos ideal α β hα R hR0 hR1 h1
+    (raiffa_ir (fun m => lineUtil (β m) (α m) (pos (ideal m)) pos) R P hR hacc) b a q ha S hS
 
 end Lotteries
 
