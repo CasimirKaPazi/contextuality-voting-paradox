@@ -52,6 +52,11 @@ at `S` is the average of `i`'s utilities `U i j` for the ideals of the members `
   its members and has the mean of their ideals as its mean. The two members at the edges do the
   work: their distances add up to at least the length of the interval, with equality exactly
   when the mass stays inside it.
+  The efficiency half (`line_ir_le_mean`, `line_efficient`): every lottery that each member
+  weakly prefers to the call gives each member at most the value of the point at the mean, by
+  Jensen's inequality, and the mixture of the member ideals next to the mean attains it for all
+  members at once. So an agreement that is efficient for the members gives each of them exactly
+  the value of the mean.
 * **Safe agreements** (`safe_ge_endowment`, `safe_mean`, `safe_le_mean`; Section 3f). Outcomes are
   finitely many points `pos x` of a real vector space. If every group's outcome is worth at least
   its call to every concave utility, it is worth at least the random ballot to every concave
@@ -479,6 +484,18 @@ omit [DecidableEq V] in
 lemma avg_const (S : Finset V) (hS : S.Nonempty) (c : ℝ) : avg S (fun _ => c) = c := by
   unfold avg
   rw [Finset.sum_const, nsmul_eq_mul, inv_card_mul S hS]
+
+omit [DecidableEq V] in
+lemma avg_ge_min (S : Finset V) (hS : S.Nonempty) (g : V → ℝ) (m : V) (hm : ∀ k ∈ S, g m ≤ g k) :
+    g m ≤ avg S g :=
+  calc g m = avg S (fun _ => g m) := (avg_const S hS _).symm
+    _ ≤ avg S g := avg_mono S hm
+
+omit [DecidableEq V] in
+lemma avg_le_max (S : Finset V) (hS : S.Nonempty) (g : V → ℝ) (m : V) (hm : ∀ k ∈ S, g k ≤ g m) :
+    avg S g ≤ g m :=
+  calc avg S g ≤ avg S (fun _ => g m) := avg_mono S hm
+    _ = g m := avg_const S hS _
 
 omit [DecidableEq V] in
 lemma avg_affine (S : Finset V) (hS : S.Nonempty) (b a : ℝ) (g : V → ℝ) :
@@ -1024,6 +1041,241 @@ theorem line_mean [DecidableEq X] (pos : X → ℝ) (ideal : V → X) (α β : V
       eu (R S) pos = avg S (fun k => pos (ideal k)) :=
   line_mean_aux pos ideal α β hα R hR0 hR1 hδ hIR (S.card - 1) S (by have := hS.card_pos; omega)
 
+
+/-! ### Efficiency on a line -/
+
+lemma mix_exists (μ a c : ℝ) (h1 : a ≤ μ) (h2 : μ ≤ c) :
+    ∃ l : ℝ, 0 ≤ l ∧ l ≤ 1 ∧ μ = l * a + (1 - l) * c := by
+  by_cases hac : a = c
+  · refine ⟨1, zero_le_one, le_rfl, ?_⟩
+    have hμ : μ = a := le_antisymm (hac ▸ h2) h1
+    rw [hμ]
+    ring
+  · have hd : 0 < c - a := by
+      have := lt_of_le_of_ne (h1.trans h2) hac
+      linarith
+    have hl' : (c - μ) / (c - a) * (c - a) = c - μ := by field_simp [hd.ne']
+    refine ⟨(c - μ) / (c - a), div_nonneg (by linarith) hd.le, ?_, ?_⟩
+    · rw [div_le_one hd]
+      linarith
+    · linear_combination hl'
+
+/-- Jensen's inequality for the distance from a point. -/
+lemma jensen_abs (L : X → ℝ) (hL0 : ∀ x, 0 ≤ L x) (hL1 : ∑ x, L x = 1) (pos : X → ℝ) (p : ℝ) :
+    |eu L pos - p| ≤ eu L (fun x => |pos x - p|) := by
+  rw [← eu_sub_const L hL1 pos p]
+  unfold eu
+  calc |∑ x, L x * (pos x - p)| ≤ ∑ x, |L x * (pos x - p)| := Finset.abs_sum_le_sum_abs _ _
+    _ = ∑ x, L x * |pos x - p| := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rw [abs_mul, abs_of_nonneg (hL0 x)]
+
+lemma eu_two [DecidableEq X] (lo hi : X) (l : ℝ) (f : X → ℝ) :
+    eu (fun x => (if x = lo then l else 0) + (if x = hi then 1 - l else 0)) f
+      = l * f lo + (1 - l) * f hi := by
+  unfold eu
+  simp only [add_mul, ite_mul, zero_mul, Finset.sum_add_distrib, Finset.sum_ite_eq',
+    Finset.mem_univ, ↓reduceIte]
+
+lemma sum_two [DecidableEq X] (lo hi : X) (l : ℝ) :
+    ∑ x, ((if x = lo then l else 0) + (if x = hi then 1 - l else 0)) = 1 := by
+  simp only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
+  ring
+
+/-- **Individually rational lotteries on a line** (Section 3d). On a line with losses proportional
+to distance, every lottery `L` that each member of `S` weakly prefers to the call stays between
+the lowest and the highest ideal of the members, has the mean of their ideals as its mean, and
+gives each member at most the value of the point at that mean. -/
+theorem line_ir_le_mean [DecidableEq X] (pos : X → ℝ) (ideal : V → X) (α β : V → ℝ)
+    (hα : ∀ m, 0 < α m) (R : Finset V → X → ℝ) (hR0 : ∀ S x, 0 ≤ R S x)
+    (hR1 : ∀ S, ∑ x, R S x = 1) (hδ : ∀ j x, R {j} x = if x = ideal j then 1 else 0)
+    (hIR : ∀ S : Finset V, 2 ≤ S.card → ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu (R S) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+    (S : Finset V) (h2 : 2 ≤ S.card) (L : X → ℝ) (hL0 : ∀ x, 0 ≤ L x) (hL1 : ∑ x, L x = 1)
+    (hLir : ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu L (lineUtil (β m) (α m) (pos (ideal m)) pos)) :
+    (∀ x, L x ≠ 0 → ∃ m1 ∈ S, ∃ m2 ∈ S, pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2)) ∧
+      eu L pos = avg S (fun k => pos (ideal k)) ∧
+      ∀ m ∈ S, eu L (lineUtil (β m) (α m) (pos (ideal m)) pos)
+        ≤ β m - α m * |avg S (fun k => pos (ideal k)) - pos (ideal m)| := by
+  have hne : S.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨m1, hm1, hmin⟩ := Finset.exists_min_image S (fun m => pos (ideal m)) hne
+  obtain ⟨m2, hm2, hmax⟩ := Finset.exists_max_image S (fun m => pos (ideal m)) hne
+  have ihk : ∀ k ∈ S, (∀ x, R (S.erase k) x ≠ 0 → ∃ a ∈ S.erase k, ∃ b ∈ S.erase k,
+      pos (ideal a) ≤ pos x ∧ pos x ≤ pos (ideal b)) ∧
+      eu (R (S.erase k)) pos = avg (S.erase k) (fun l => pos (ideal l)) := by
+    intro k hk
+    exact line_mean pos ideal α β hα R hR0 hR1 hδ hIR (S.erase k)
+      (by rw [← Finset.card_pos, Finset.card_erase_of_mem hk]; omega)
+  have hin : ∀ k ∈ S, ∀ x, R (S.erase k) x ≠ 0 →
+      pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2) := by
+    intro k hk x hx
+    obtain ⟨a, ha, b, hb, hax, hxb⟩ := (ihk k hk).1 x hx
+    exact ⟨(hmin a (Finset.mem_of_mem_erase ha)).trans hax,
+      hxb.trans (hmax b (Finset.mem_of_mem_erase hb))⟩
+  have hk1 : ∀ k ∈ S, eu (R (S.erase k)) (fun x => |pos x - pos (ideal m1)|)
+      = avg (S.erase k) (fun l => pos (ideal l)) - pos (ideal m1) := by
+    intro k hk
+    rw [eu_congr_supp (R (S.erase k)) (f := fun x => |pos x - pos (ideal m1)|)
+      (g := fun x => pos x - pos (ideal m1))
+      (fun x hx => abs_of_nonneg (show 0 ≤ pos x - pos (ideal m1) by
+        linarith [(hin k hk x hx).1])),
+      eu_sub_const _ (hR1 _) pos (pos (ideal m1)), (ihk k hk).2]
+  have hk2 : ∀ k ∈ S, eu (R (S.erase k)) (fun x => |pos x - pos (ideal m2)|)
+      = pos (ideal m2) - avg (S.erase k) (fun l => pos (ideal l)) := by
+    intro k hk
+    rw [eu_congr_supp (R (S.erase k)) (f := fun x => |pos x - pos (ideal m2)|)
+      (g := fun x => pos (ideal m2) - pos x)
+      (fun x hx => (abs_of_nonpos (show pos x - pos (ideal m2) ≤ 0 by
+        linarith [(hin k hk x hx).2])).trans (neg_sub _ _)),
+      eu_const_sub _ (hR1 _) pos (pos (ideal m2)), (ihk k hk).2]
+  have hc1 : avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m1)|))
+      = avg S (fun k => pos (ideal k)) - pos (ideal m1) := by
+    rw [avg_congr S hk1, avg_sub_const S hne, avg_erase S _ h2]
+  have hc2 : avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m2)|))
+      = pos (ideal m2) - avg S (fun k => pos (ideal k)) := by
+    rw [avg_congr S hk2, avg_const_sub S hne, avg_erase S _ h2]
+  have hd : ∀ m ∈ S, eu L (fun x => |pos x - pos (ideal m)|)
+      ≤ avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m)|)) := by
+    intro m hm
+    have h := hLir m hm
+    rw [eu_line _ hL1, avg_congr S (fun k _ => eu_line (R (S.erase k)) (hR1 _) (β m) (α m)
+      (pos (ideal m)) pos), avg_affine S hne] at h
+    have h' : α m * eu L (fun x => |pos x - pos (ideal m)|)
+        ≤ α m * avg S (fun k => eu (R (S.erase k)) (fun x => |pos x - pos (ideal m)|)) := by
+      linarith
+    exact le_of_mul_le_mul_left h' (hα m)
+  have H1 := hd m1 hm1
+  rw [hc1] at H1
+  have H2 := hd m2 hm2
+  rw [hc2] at H2
+  have hg : ∀ x, 0 ≤ |pos x - pos (ideal m1)| + |pos x - pos (ideal m2)|
+      - (pos (ideal m2) - pos (ideal m1)) := fun x => by
+    linarith [le_abs_self (pos x - pos (ideal m1)), neg_abs_le (pos x - pos (ideal m2))]
+  have hz := eu_eq_zero_of_nonneg L hL0
+    (fun x => |pos x - pos (ideal m1)| + |pos x - pos (ideal m2)|
+      - (pos (ideal m2) - pos (ideal m1))) hg
+    (by rw [eu_add_sub _ hL1]; linarith)
+  have hsupp : ∀ x, L x ≠ 0 → pos (ideal m1) ≤ pos x ∧ pos x ≤ pos (ideal m2) := by
+    intro x hx
+    have hzx : |pos x - pos (ideal m1)| + |pos x - pos (ideal m2)|
+        - (pos (ideal m2) - pos (ideal m1)) = 0 := hz x hx
+    constructor
+    · linarith [neg_abs_le (pos x - pos (ideal m1)), neg_abs_le (pos x - pos (ideal m2))]
+    · linarith [le_abs_self (pos x - pos (ideal m1)), le_abs_self (pos x - pos (ideal m2))]
+  have e1 : eu L (fun x => |pos x - pos (ideal m1)|) = eu L pos - pos (ideal m1) := by
+    rw [eu_congr_supp L (f := fun x => |pos x - pos (ideal m1)|)
+      (g := fun x => pos x - pos (ideal m1))
+      (fun x hx => abs_of_nonneg (show 0 ≤ pos x - pos (ideal m1) by
+        linarith [(hsupp x hx).1])),
+      eu_sub_const _ hL1 pos (pos (ideal m1))]
+  have e2 : eu L (fun x => |pos x - pos (ideal m2)|) = pos (ideal m2) - eu L pos := by
+    rw [eu_congr_supp L (f := fun x => |pos x - pos (ideal m2)|)
+      (g := fun x => pos (ideal m2) - pos x)
+      (fun x hx => (abs_of_nonpos (show pos x - pos (ideal m2) ≤ 0 by
+        linarith [(hsupp x hx).2])).trans (neg_sub _ _)),
+      eu_const_sub _ hL1 pos (pos (ideal m2))]
+  rw [e1] at H1
+  rw [e2] at H2
+  have hmean : eu L pos = avg S (fun k => pos (ideal k)) := by linarith
+  refine ⟨fun x hx => ⟨m1, hm1, m2, hm2, hsupp x hx⟩, hmean, ?_⟩
+  intro m _
+  rw [eu_line _ hL1]
+  have hj := jensen_abs L hL0 hL1 pos (pos (ideal m))
+  rw [hmean] at hj
+  have := mul_le_mul_of_nonneg_left hj (hα m).le
+  linarith
+
+/-- **Efficient agreements on a line** (Section 3d). If a lottery `L` that each member of `S` weakly
+prefers to the call cannot be improved for the members, in the sense that every individually
+rational lottery weakly better for every member is no better for any, then `L` gives every member
+exactly the value of the point at the mean of the members' ideals. The improvement used is the
+mixture of the two member ideals next to the mean that has the mean as its mean. -/
+theorem line_efficient [DecidableEq X] (pos : X → ℝ) (ideal : V → X) (α β : V → ℝ)
+    (hα : ∀ m, 0 < α m) (R : Finset V → X → ℝ) (hR0 : ∀ S x, 0 ≤ R S x)
+    (hR1 : ∀ S, ∑ x, R S x = 1) (hδ : ∀ j x, R {j} x = if x = ideal j then 1 else 0)
+    (hIR : ∀ S : Finset V, 2 ≤ S.card → ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu (R S) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+    (S : Finset V) (h2 : 2 ≤ S.card) (L : X → ℝ) (hL0 : ∀ x, 0 ≤ L x) (hL1 : ∑ x, L x = 1)
+    (hLir : ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu L (lineUtil (β m) (α m) (pos (ideal m)) pos))
+    (heff : ∀ L' : X → ℝ, (∀ x, 0 ≤ L' x) → ∑ x, L' x = 1 →
+      (∀ m ∈ S,
+        avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+          ≤ eu L' (lineUtil (β m) (α m) (pos (ideal m)) pos)) →
+      (∀ m ∈ S, eu L (lineUtil (β m) (α m) (pos (ideal m)) pos)
+        ≤ eu L' (lineUtil (β m) (α m) (pos (ideal m)) pos)) →
+      ∀ m ∈ S, eu L' (lineUtil (β m) (α m) (pos (ideal m)) pos)
+        ≤ eu L (lineUtil (β m) (α m) (pos (ideal m)) pos)) :
+    ∀ m ∈ S, eu L (lineUtil (β m) (α m) (pos (ideal m)) pos)
+      = β m - α m * |avg S (fun k => pos (ideal k)) - pos (ideal m)| := by
+  have hne : S.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨_, _, hbound⟩ :=
+    line_ir_le_mean pos ideal α β hα R hR0 hR1 hδ hIR S h2 L hL0 hL1 hLir
+  -- the member ideals next to the mean
+  obtain ⟨m1, hm1, hmin⟩ := Finset.exists_min_image S (fun m => pos (ideal m)) hne
+  obtain ⟨m2, hm2, hmax⟩ := Finset.exists_max_image S (fun m => pos (ideal m)) hne
+  have hμ1 : pos (ideal m1) ≤ avg S (fun k => pos (ideal k)) :=
+    avg_ge_min S hne (fun k => pos (ideal k)) m1 hmin
+  have hμ2 : avg S (fun k => pos (ideal k)) ≤ pos (ideal m2) :=
+    avg_le_max S hne (fun k => pos (ideal k)) m2 hmax
+  have hLo : (S.filter (fun m => pos (ideal m) ≤ avg S (fun k => pos (ideal k)))).Nonempty :=
+    ⟨m1, Finset.mem_filter.mpr ⟨hm1, hμ1⟩⟩
+  have hHi : (S.filter (fun m => avg S (fun k => pos (ideal k)) ≤ pos (ideal m))).Nonempty :=
+    ⟨m2, Finset.mem_filter.mpr ⟨hm2, hμ2⟩⟩
+  obtain ⟨lo, hlo, hlomax⟩ := Finset.exists_max_image _ (fun m => pos (ideal m)) hLo
+  obtain ⟨hi, hhi, himin⟩ := Finset.exists_min_image _ (fun m => pos (ideal m)) hHi
+  rw [Finset.mem_filter] at hlo hhi
+  obtain ⟨l, hl0, hl1, hμl⟩ := mix_exists _ _ _ hlo.2 hhi.2
+  -- the mixture of the two
+  obtain ⟨M, hM⟩ : ∃ M : X → ℝ,
+      M = fun x => (if x = ideal lo then l else 0) + (if x = ideal hi then 1 - l else 0) :=
+    ⟨_, rfl⟩
+  have hM0 : ∀ x, 0 ≤ M x := by
+    intro x
+    simp only [hM]
+    apply add_nonneg <;> split_ifs <;> linarith
+  have hM1 : ∑ x, M x = 1 := by
+    rw [hM]
+    exact sum_two (ideal lo) (ideal hi) l
+  have hMv : ∀ f : X → ℝ, eu M f = l * f (ideal lo) + (1 - l) * f (ideal hi) := by
+    intro f
+    rw [hM]
+    exact eu_two (ideal lo) (ideal hi) l f
+  -- it gives every member the value of the mean
+  have hMm : ∀ m ∈ S, eu M (lineUtil (β m) (α m) (pos (ideal m)) pos)
+      = β m - α m * |avg S (fun k => pos (ideal k)) - pos (ideal m)| := by
+    intro m hm
+    rw [hMv]
+    simp only [lineUtil]
+    by_cases hside : pos (ideal m) ≤ avg S (fun k => pos (ideal k))
+    · have hmlo : pos (ideal m) ≤ pos (ideal lo) :=
+        hlomax m (Finset.mem_filter.mpr ⟨hm, hside⟩)
+      rw [abs_of_nonneg (by linarith [hlo.2, hhi.2] : 0 ≤ pos (ideal lo) - pos (ideal m)),
+        abs_of_nonneg (by linarith [hlo.2, hhi.2] : 0 ≤ pos (ideal hi) - pos (ideal m)),
+        abs_of_nonneg (by linarith [hlo.2, hhi.2] : 0 ≤ avg S (fun k => pos (ideal k)) - pos (ideal m)), hμl]
+      ring
+    · have hmhi : pos (ideal hi) ≤ pos (ideal m) :=
+        himin m (Finset.mem_filter.mpr ⟨hm, (not_le.mp hside).le⟩)
+      rw [abs_of_nonpos (by linarith [hlo.2, hhi.2] : pos (ideal lo) - pos (ideal m) ≤ 0),
+        abs_of_nonpos (by linarith [hlo.2, hhi.2] : pos (ideal hi) - pos (ideal m) ≤ 0),
+        abs_of_nonpos (by linarith [hlo.2, hhi.2] : avg S (fun k => pos (ideal k)) - pos (ideal m) ≤ 0), hμl]
+      ring
+  have hML : ∀ m ∈ S, eu L (lineUtil (β m) (α m) (pos (ideal m)) pos)
+      ≤ eu M (lineUtil (β m) (α m) (pos (ideal m)) pos) :=
+    fun m hm => (hbound m hm).trans (hMm m hm).ge
+  have hMir : ∀ m ∈ S,
+      avg S (fun k => eu (R (S.erase k)) (lineUtil (β m) (α m) (pos (ideal m)) pos))
+        ≤ eu M (lineUtil (β m) (α m) (pos (ideal m)) pos) :=
+    fun m hm => (hLir m hm).trans (hML m hm)
+  intro m hm
+  exact le_antisymm (hbound m hm)
+    ((hMm m hm).symm.le.trans (heff M hM0 hM1 hMir hML m hm))
 
 /-! ### The call as a game: proposals -/
 

@@ -54,7 +54,7 @@ Appendix: the computations, with scripts and the settings of every table.
 - the martingale and the decomposition of holdings (both also checked in Lean);
 - the rational floor as a linear program;
 - the theorem for one dimension (also checked in Lean) and the proposition on concave loss;
-- the mean of the peaks on a line (the interval and the mean also checked in Lean);
+- the mean of the peaks on a line (also checked in Lean, for the members; corrected for participants outside a group whose peak lies between the members' peaks next to its mean);
 - the mean rule beyond the line (also checked in Lean);
 - safe agreements as poolings (parts 1 and 2 also checked in Lean);
 - the call game with complete information (each stage and its individual rationality also checked in Lean);
@@ -82,6 +82,6 @@ Beyond eight participants, nothing has been computed, and larger groups are not 
 
 1. *Done:* the characterisation of Ehlers, Peters and Storcken used in Section 3h is checked against their paper (Theorem 4.1, formula (12), Proposition 5.2), and the proof there is written in their terms.
 2. *Done up to eight participants:* the comparisons of Sections 3d and 3i, with a single proposer, for six to eight participants. The harm in unstructured utilities grows with the group, and the spatial families stay free of harm. Not pursued beyond that.
-3. *Done:* the martingale and the fair call, the decomposition of holdings, the veto-kept induction and the mean rule's safety are checked in Lean (`lean/CoreDraw.lean`), all from one induction on the size of the stage. So are the theorem for one dimension, the interval and the mean of individually rational outcomes on a line, and the first two parts of the proposition on safe agreements. Not formalised: the proposition on concave loss, Strassen's characterisation of safe agreements, the efficiency half of the mean of the peaks, and the call game's tree and uniqueness (its stages are checked).
+3. *Done:* the martingale and the fair call, the decomposition of holdings, the veto-kept induction and the mean rule's safety are checked in Lean (`lean/CoreDraw.lean`), all from one induction on the size of the stage. So are the theorem for one dimension, the interval and the mean of individually rational outcomes on a line and the value of efficient ones to the members, and the first two parts of the proposition on safe agreements. Not formalised: the proposition on concave loss, Strassen's characterisation of safe agreements, and the call game's tree and uniqueness (its stages are checked).
 4. Settle the notation once. The working note uses e, h, c, s and G for endowment, holding, call, surplus and floor, D for the eventual dictator and R(S) for the outcome law from a group (Section 3b).
 5. Choose the title and the relation to the first paper. The working title is *CORE II: The Draw, Safe Agreements and the Call as a Game*.
