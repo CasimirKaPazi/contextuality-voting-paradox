@@ -18,6 +18,7 @@ Notes are revised as the picture becomes clearer. Each opens with a short statem
 | [`equality-criterion.md`](equality-criterion.md) | The Equality Criterion of Wolk, Quinn and Ogren as blindness to the reversal-symmetric part of a profile |
 | [`two-kinds-of-loop.md`](two-kinds-of-loop.md) | Condorcet cycles (integer winding) against the Liar (parity), the Klein bottle seam, strategy and computability |
 | [`loops-of-relations.md`](loops-of-relations.md) | One frame for the Liar, the Condorcet cycle and the strategic diagonal: sections of a loop of contexts as fixed points of its monodromy |
+| [`covers-and-division.md`](covers-and-division.md) | Every empirical model of a loop of contexts is the division of a non-contextual model on a finite cover; the cover is at the level of symmetry breaking for its deck group, the converse of the division proposition of *Four Levels* |
 | [`fixed-point-switch.md`](fixed-point-switch.md) | Literature on the switch between fixed point and no fixed point: acyclic covers, odd and even loops through negation, partiality |
 | [`rational-diagonal-totally-tight.md`](rational-diagonal-totally-tight.md) | The rational diagonal on totally tight two-player game forms |
 | [`tight-form-without-rational-diagonal.md`](tight-form-without-rational-diagonal.md) | A tight two-player game form with three outcomes on which neither player admits a rational diagonal; for three outcomes, exactly when this happens |

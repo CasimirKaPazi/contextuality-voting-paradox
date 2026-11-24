@@ -20,6 +20,7 @@ Each script's docstring states what it checks. This file is the index; the notes
 | Script | What it checks | Used in | Also in Lean |
 |---|---|---|---|
 | `condorcet_contextuality.py` | A Condorcet cycle has no valid model on a finite line, is consistent on a circle, and is strongly contextual only on an unbounded line; a choice-based encoding cannot tell cycles from orders | *Cycles and Twists* §3 | `ValueSpaces.lean` (Propositions 1–4) |
+| `loop_covers.py` | Empirical models of loops of contexts by flow decomposition: every sampled vertex is a mixture of sections of finite covers, of winding at least 2 where the loop has no section; the Liar on a triangle (winding 2); the CHSH loop with 16 deterministic boxes (winding 1) and 8 PR boxes (winding 2); random and planted loops. Takes about half a minute | *Covers and Division* |  |
 
 ## CORE (`core/`)
 

@@ -56,14 +56,14 @@ The threads are theory building and formalisation that can be done here. Each na
 
 *First steps.*
 - A table of known incompatibilities placed by level and exit, extending the placements in *Where the Symmetry Goes*, Section 6, and *Four Levels*, Section 3a.
-- Is every contextual (level-2) scenario in social choice the division of a symmetry-breaking one by its symmetry, or are there level-2 obstructions of another origin? The electorate scenario at eight voters is the test case.
+- Is every contextual (level-2) scenario in social choice the division of a symmetry-breaking one by its symmetry, or are there level-2 obstructions of another origin? *Answered for loops of contexts* in *Covers and Division*: every empirical model of a finite loop is the division of a non-contextual model on a finite cover, which is at level 3 for its deck group (the vertex form is a theorem of Kharoof, Okay and Ipek; the cover reading is new as far as found). Open beyond loops: divisions by actions that are not free (Arrow's scenario, where Theorems 5 and 5′ give the converse by another argument), complexes of contexts without covers, and the electorate scenario at eight voters as the test case.
 - *Resolution.* Merging participants into composite participants changes the level. The strata of *Equivariant Obstructions*, where two voters become one composite voter, are a first formal instance. State how levels behave under merging and under dividing by a symmetry.
 
 ### T3. The paradox placed in time
 
 *Question.* A voting rule halts by construction, and the barrier of T1 then appears as strategy. A procedure without a fixed end can carry the barrier in its course instead, with a definite state at every moment. Make this a third option beside "dictatorship" and "inefficient lottery".
 
-*Exists.* The martingale of the CORE draw, which gives every intermediate state an expected outcome; the call structure solved by backward induction under complete information, and its split under private information (*CORE and the Formal Results*, Sections 3, 3g, 3h); sections of a contextual loop on a cover, where the Liar becomes an alternation in time (*Loops of Relations*).
+*Exists.* The martingale of the CORE draw, which gives every intermediate state an expected outcome; the call structure solved by backward induction under complete information, and its split under private information (*CORE and the Formal Results*, Sections 3, 3g, 3h); sections of a contextual loop on a cover, where the Liar becomes an alternation in time (*Loops of Relations*); on loops every model is the average over rounds of consistent histories on a finite cover (*Covers and Division*, Proposition 2).
 
 *First steps.*
 - Define a class of procedures that need not terminate but assign a value to every finite stage, and ask which guarantees of CORE characterise it.
