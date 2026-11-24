@@ -4,20 +4,20 @@ Work in progress on a common description of the impossibility results of social 
 
 The guiding observation is that all of these have the same form: local pieces that each make sense do not fit into a consistent whole, and every attempt to force a fit either produces a contradiction, imposes an arbitrary choice, or introduces chance.
 
-**Status.** Apart from the CORE paper, everything here is a draft. Notes are revised as the picture becomes clearer; papers that reach a stable form are moved to `papers/` and then left unchanged. Claims are marked throughout as cited theorems, results proved in the text, results checked by computation on small cases, or interpretation.
+**Status.** Apart from the CORE paper, everything here is a draft. Notes are revised as the picture becomes clearer; papers that reach a stable form are moved to `papers/` and then left unchanged. Claims are marked throughout as cited theorems, results proved in the text, results checked by computation on small cases, or interpretation; proofs checked in Lean are marked as such.
 
 ## Where to start
 
 - [`notes/roadmap.md`](notes/roadmap.md) — overview of all threads, what is in hand and what is missing.
 - [`notes/map-of-voting-paradoxes.md`](notes/map-of-voting-paradoxes.md) — the known voting paradoxes, grouped by what is varied, with the theorems that connect them.
 - [`notes/where-the-symmetry-goes.md`](notes/where-the-symmetry-goes.md) — aggregation into a ranking must dispose of a symmetry; it ends up in the output (a paradox), in the rule (a dictator or tie-breaker), or in a fixed point (a lottery).
-- [`papers/CORE_13.md`](papers/CORE_13.md) — the application: a consensus procedure with a random fallback.
+- [`papers/CORE.md`](papers/CORE_13.md) — the application: a consensus procedure with a random fallback.
 
 ## Contents
 
 ### Paper (`papers/`)
 
-*CORE: Consensus Or Random Exclusion* ([`CORE_13.md`](papers/CORE_13.md), typeset as [`CORE-13.pdf`](papers/CORE-13.pdf)). A procedure for groups that have to agree on a single course of action: the participants deliberate toward unanimous agreement, and at any time any of them may call for one participant, drawn uniformly and possibly the caller, to be removed. If removals continue, the procedure ends in random dictatorship, so that each participant's fallback is a fair lottery over the participants' ideals. The paper is complete and stays as it is; results that bear on it are collected in [`notes/core-connection.md`](notes/core-connection.md) for a follow-up.
+*CORE: Consensus Or Random Exclusion* ([`CORE.md`](papers/CORE.md), typeset as [`CORE.pdf`](papers/CORE.pdf)). A procedure for groups that have to agree on a single course of action: the participants deliberate toward unanimous agreement, and at any time any of them may call for one participant, drawn uniformly and possibly the caller, to be removed. If removals continue, the procedure ends in random dictatorship, so that each participant's fallback is a fair lottery over the participants' ideals. The paper is complete and stays as it is; results that bear on it are collected in [`notes/core-connection.md`](notes/core-connection.md) for a follow-up, outlined in [`notes/core-follow-up-outline.md`](notes/core-follow-up-outline.md).
 
 ### Paper drafts (`papers/drafts/`)
 
@@ -33,11 +33,11 @@ Notes on the individual threads, revised as the work goes on. The index is [`not
 
 ### Scripts (`scripts/`)
 
-Short Python computations that check statements on small cases, grouped by topic. The index, with what each script checks and where it is used, is [`scripts/README.md`](scripts/README.md).
+Short computations that check statements on small cases, grouped by topic: Python, with a few C++ programs for the exhaustive searches. The index, with what each script checks and where it is used, is [`scripts/README.md`](scripts/README.md).
 
 ### Formal proofs (`lean/`)
 
-Lean 4 files that check statements from the notes and the drafts, as one Lake project with Mathlib (`lake build` in `lean/`). The index is [`lean/README.md`](lean/README.md).
+Lean 4 files that check statements from the notes and the drafts, as one Lake project with Mathlib (`lake build` in `lean/`). The index is [`lean/README.md`](lean/README.md); proofs not yet formalised are listed in [`lean/roadmap.md`](lean/roadmap.md).
 
 ## Related work
 
@@ -51,6 +51,9 @@ The work was developed in conversation: questions, ideas and direction from Hive
 
 ## License
 
-All content in this repository — text and code — is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/) (CC BY-SA 4.0). See [`LICENSE`](LICENSE).
+- **Code** — everything in `lean/` and `scripts/` — is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0), as Mathlib is. See [`LICENSE`](LICENSE).
+- **Text** — everything else, including the papers and the working notes — is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/) (CC BY-SA 4.0). See [`LICENSE-CC-BY-SA`](LICENSE-CC-BY-SA).
+
+Copyright 2026 Hiveism and Claude (Anthropic).
 
 Suggested citation: Hiveism and Claude, *Impossibility, Self-Reference and Collective Choice* (work in progress), 2026.

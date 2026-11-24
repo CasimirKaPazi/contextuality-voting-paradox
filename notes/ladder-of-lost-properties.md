@@ -11,7 +11,7 @@ The normed division algebras are the reals (dimension 1), complex numbers (2), q
 - quaternions → octonions: **associativity** is lost; the symmetry of Spin(8) acquires **triality**, an outer symmetry permuting three eight-dimensional representations, none of them privileged;
 - beyond the octonions (sedenions): **division** is lost; there are non-zero elements whose product is zero.
 
-The same four cases appear as the Hopf fibrations and, through Adams' theorem, as the only spheres that are parallelisable or carry such fibrations. The note *The Shape of a Distinction* uses this list as an a priori constraint on how a relation can present itself.
+The same four cases appear as the Hopf fibrations and, through Adams' theorem, as the only spheres that are parallelisable or carry such fibrations.
 
 ## Organising picture: holes and the symmetry around them
 

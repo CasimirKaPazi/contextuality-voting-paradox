@@ -86,10 +86,6 @@ Theorem 6 of *Walls and Strategy* gives a formal frame: the random fallback avoi
    - private attitudes costing nothing and private ideals bringing the barrier back;
    - proposals inside the call, with the trade-off between protecting excluded members and robustness against a stubborn member.
 
-   Next: the steps listed before drafting in the outline, then the open questions (a closed form of the floor beyond the line, private ideals in the call game, credible stated positions, sizes of proposer groups). Then E; F is settled for now (see above).
+   The draw, the decomposition of holdings, the veto-kept floor and the mean rule's safety are checked in Lean (`CoreDraw.lean`). Next: the last steps before drafting in the outline (notation and title), then the open questions (a closed form of the floor beyond the line, private ideals in the call game, credible stated positions, sizes of proposer groups). Then E; F is settled for now (see above).
 
 Thread B runs alongside, as questions from the other threads land there (holonomy sets, the equivariant obstruction theory). Its global form has a first piece: Arrow's theorem as a degree, integer for rules and real for lotteries (*The Global Form*). The obstruction theory has its stages for three alternatives (*Equivariant Obstructions*).
-
-## Related project documents
-
-*The Shape of a Distinction* (minimal-relational-structure-4.md) places the social choice results in the wider framework of perspectives, boundaries and self-reference.
