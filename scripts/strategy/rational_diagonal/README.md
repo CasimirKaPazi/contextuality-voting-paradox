@@ -59,6 +59,17 @@ rows for player 1, columns for player 2. Preferences are strict rankings.
 - `trees.py seed count maxcells` — normal forms of random perfect-information
   game trees (no failure in 8,568 forms).
 
+## A tight form without a rational diagonal
+
+Note *A tight form without a rational diagonal*.
+
+- `tight_counterexample.py` — the 6 × 6 form with three outcomes: tightness,
+  non-dictatorship, the table of strict Nash strategies for every pair of strict
+  preferences and both players, minimality under deleting lines, and the
+  isomorphism with its transpose.
+- `border_scan.cpp n m [from to]` — all n × m inner forms inside a c-row and a
+  c-column (such forms are always tight), tested for a rational diagonal.
+
 ## Survival of a working configuration (`absorption/`)
 
 Towards a hand proof for totally tight forms (note *The rational diagonal on
