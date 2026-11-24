@@ -22,6 +22,9 @@ The script lists, for m = 3 and 4, n <= 8 and every block structure, whether the
 and which strata obstruct. Rows in which the top stage vanishes but a stratum does not are marked.
 Among them, for m = 4 with neutrality, is Proposition 5: blocks (2, 3), the stratum of a swap of the two
 voters combined with a transposition, Z/3.
+These are the primary obstructions only. For an even number of alternatives the cup square
+(Proposition 5) rules out every block structure without a block of size 1, whatever the group on the
+alternatives, so a row without obstructions is not an existence claim.
 Run: python3 strata_obstructions.py   (numpy; a few seconds; rows are printed for n <= 3 and wherever
      the top stage vanishes but a stratum obstructs)
 """
