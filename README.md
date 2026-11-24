@@ -12,7 +12,7 @@ The guiding observation is that all of these have the same form: local pieces th
 - [`notes/map-of-voting-paradoxes.md`](notes/map-of-voting-paradoxes.md) — the known voting paradoxes, grouped by what is varied, with the theorems that connect them.
 - [`notes/where-the-symmetry-goes.md`](notes/where-the-symmetry-goes.md) — aggregation into a ranking must dispose of a symmetry; it ends up in the output (a paradox), in the rule (a dictator or tie-breaker), or in a fixed point (a lottery).
 - [`papers/CORE.md`](papers/CORE_13.md) — the application: a consensus procedure with a random fallback.
-- [`notes/alignment-roadmap.md`](notes/alignment-roadmap.md) — an outlook on how this work can apply the the problem of AI alignment.
+- [`notes/alignment/roadmap.md`](notes/alignment/roadmap.md) — an outlook on how this work can apply to the problem of AI alignment.
 
 ## How to help
 
