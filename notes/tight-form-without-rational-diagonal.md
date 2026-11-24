@@ -1,6 +1,6 @@
 # A tight form without a rational diagonal
 
-*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It gives a tight, non-dictatorial two-player game form with three outcomes in which, under every pair of strict preferences, both players have a strict Nash strategy. So the answer to the two-player question with strict preferences is no. The note gives the example, a proof that can be checked by hand, and how it was found. For three outcomes it then gives the complete picture (Section 5): a form without a rational diagonal needs an outcome that both players can force, and with such an outcome there is an exact criterion. Scripts: `scripts/strategy/rational_diagonal/tight_counterexample.py`, `three_outcomes_veto.py`.*
+*Working note on open problem 1 of* Walls and Strategy *(rational diagonal on tight forms). It gives a tight, non-dictatorial two-player game form with three outcomes in which, under every pair of strict preferences, both players have a strict Nash strategy. So the answer to the two-player question with strict preferences is no. The note gives the example, a proof that can be checked by hand, and how it was found. For three outcomes it then gives the complete picture (Section 5): a form without a rational diagonal needs an outcome that both players can force, and with such an outcome there is an exact criterion. Section 6 turns to lotteries: in approval with a veto and a lottery on ties, approving what one prefers to the fallback is always a strict Nash strategy. Scripts: `scripts/strategy/rational_diagonal/tight_counterexample.py`, `three_outcomes_veto.py`.*
 
 ## 1. The example
 
@@ -101,19 +101,42 @@ So a form with three outcomes has no rational diagonal exactly when it has a com
 
 **How Theorem A was found.** The implication search of Section 4 was rerun with the extra hypothesis that no outcome is forced by both players. It ended after 97 implications; up to renaming outcomes and swapping players, six of them suffice, and each has a short proof. For each pattern of forcing, a search for the fewest configurations of which one must work returned the three configurations of the proof.
 
-## 6. Where it sits
+## 6. Lotteries on ties: approval with a veto
+
+A common veto is the shape of a consensus procedure with a fallback: either participant can refuse everything and so impose the fallback. The simplest such procedure shows what a lottery adds.
+
+**The procedure.** There is a finite set of proposals and a fallback F, which may itself be a lottery. Each of two players approves a set of proposals; the empty set is a veto. If the two sets meet in I, the outcome is a lottery λ_I over I that gives every member of I positive probability. If they do not meet, the outcome is F. The fallback is a common veto, so the form is tight.
+
+**Proposition (sincere approval is safe).** Let both players have expected utilities, generic in the sense that each player's utilities of F and of the proposals are all different. Then approving exactly the proposals one prefers to F is a strict Nash strategy: it is a best reply to every best reply of the opponent. So neither player has a rational diagonal.
+
+*Proof.* Let A be player i's sincere set and o the opponent. Against A, o obtains F or a lottery λ_J with J a non-empty subset of A. A lottery with full support on J is worth less to o than o's favourite in J unless J is a single proposal. Let y be o's favourite in A.
+- If o prefers y to F, o's best replies are exactly the sets B with B ∩ A = {y}. Every other proposal in B lies outside A, so i likes it less than F, and F less than y. Whatever i approves, it gets F or a lottery over B, worth at most y to i. Approving A gives y.
+- If o prefers F to y, or A is empty, o's best replies are the sets B that miss A, and the outcome is F. Every proposal in such a B lies outside A, so every lottery over B is worse for i than F. Approving A gives F. ∎
+
+The lottery on ties is what the proof uses. Two comparisons show that it is needed:
+- *Ties broken deterministically.* With two proposals a, b and ties going to a, each player still works under one pair of strict orders; with ties going to F, under four. With random utilities and two to four proposals and ties broken by a fixed order, between 3 and 8 percent of the players have a rational diagonal.
+- *The coin as a fourth outcome with arbitrary orders.* With two proposals, ties settled by a fair coin, and all strict orders on a, b, F and the coin, each player works under 36 pairs of orders. All of them rank the coin outside the interval between a and b, which no expected utility does. Among the orders an expected utility allows, none works.
+
+*(Proved; the comparisons computed, `approval_veto.py`. With random generic utilities and two to four proposals, no player has a rational diagonal and sincere approval was a strict Nash strategy in every case.)*
+
+Sincere approval is not dominant: if the opponent approves two proposals that i likes, i does better by approving only the better one. So with arbitrary opponents Lemma 2 of *Walls and Strategy* still applies, and the barrier of Theorem 3 remains. What the lottery removes is the rational diagonal: against an opponent who plays some best reply, the sincere set is always right, and it needs only i's own utilities and the fallback.
+
+*Reading.* In the 6 × 6 form the strict Nash strategies are combinatorial and depend on the order P; in approval with a veto there is one strategy, the same rule for every utility. The sequential call game of *CORE and the Formal Results* (Section 3g) arrives at the same rule: there accepting exactly the proposals worth at least the call is weakly dominant, by sequential rationality. In the simultaneous procedure the lottery on ties does the work of the visible turns. *(Interpretation.)*
+
+## 7. Where it sits
 
 - *Totally tight forms* and *games of perfect information* always admit a rational diagonal, by the reduction and the exact searches of *The rational diagonal on totally tight game forms*. The example is neither. Its 2 × 2 subform on rows r2, r3 and columns s2, s3 is (c, b | a, c), which has no constant line, so it is not totally tight. It also fails the recombination property (R) of that note, which every game tree has.
 - What fails is the step (F3) of the three-outcome proof, for the pair a, b: some row holding b reaches no a from b, and some column holding a reaches no b from a. On totally tight forms and on game trees this cannot happen.
 - The structure is a common veto: each player can impose c, and nobody can impose a or b. With three outcomes this is necessary (Section 5). Every strategy then contains c, so the opponent can always fall back on c, and the constant c lines make that fallback safe against any refutation. With c at the top of P, i keeps the constant c line; with c in the middle, i has a line that holds only its top and c, whose c-cells lie in columns without its top; with c at the bottom, the remaining lines answer the four possible opponent orders one by one. *(Interpretation.)*
 - For the dichotomy of *Walls and Strategy* (Theorem 3) nothing changes: it uses arbitrary opponent programs. What changes is the strengthening to rational opponents. On this form, whatever the strict preferences, each player has a strategy that is right against every rational opponent: a best reply to every best reply.
 
-## 7. Open
+## 8. Open
 
 - Whether tight forms with property (R) always admit a rational diagonal. The chain of four configurations fails on some of them with four outcomes, but no form with (R) without a rational diagonal is known.
 - With three outcomes, Section 5 settles the question. With four or more outcomes: whether a form without a rational diagonal still needs a common veto, whether Theorem A extends, and whether there is any counterexample at all. A local search over 7 × 7 forms with four outcomes found none, with or without a common veto; at best 18 of the 1,152 configurations still worked (computed, not exhaustive; `local_search.cpp`). Neither did turning one or two cells of the example into a fourth outcome.
 - The smallest counterexample.
-- More players: the question for three or more players is untouched.
+- More players: the question for three or more players is untouched. Approval with a veto has an obvious version for any number of players; whether sincere approval stays safe there is not checked.
+- Which consensus procedures with a random fallback, such as the call games of the CORE thread with simultaneous votes, admit a rational diagonal.
 
 ## Scripts
 
@@ -121,4 +144,5 @@ In `scripts/strategy/rational_diagonal/`:
 - `tight_counterexample.py`: the checks of Section 2 and the deletion check of Section 3; plain Python, no arguments;
 - `border_scan.cpp`: all inner forms of a given size inside a c-border, tested for a rational diagonal; `./border_scan n m [from to]` (4 × 5 takes about an hour on one core);
 - `three_outcomes_veto.py`: Theorems A and B of Section 5 against the brute-force test, on random forms and on all small forms with a c-border;
+- `approval_veto.py`: approval with a veto, Section 6; the ordinal comparisons and the random expected utilities;
 - `local_search.cpp`: local search for tight forms without a rational diagonal, with any number of outcomes and optional constraints; `./local_search n m seed restarts flags k`.

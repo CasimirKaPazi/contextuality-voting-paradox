@@ -72,6 +72,9 @@ Note *A tight form without a rational diagonal*.
 - `three_outcomes_veto.py [seed]` — three outcomes: without a common veto some
   player works (Theorem A); with one, the exact criterion (Theorem B); both
   against the brute-force test.
+- `approval_veto.py` — approval with a veto: sincere approval is a strict Nash
+  strategy when ties are settled by a lottery; comparisons with deterministic
+  ties and with orders no expected utility allows.
 - `local_search.cpp n m seed restarts flags k` — local search for tight forms
   without a rational diagonal, with k outcomes.
 
