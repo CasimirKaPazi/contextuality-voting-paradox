@@ -72,3 +72,61 @@ for k, trials in ((2, 3000), (3, 3000), (4, 800)):
         d, s = eu_run(k, trials, lottery)
         print(f"  k={k}, ties by {'a lottery' if lottery else 'the lowest index'}: {2 * trials} players, "
               f"{d} with a rational diagonal, sincere approval not strict Nash for {s}")
+
+# ---- 3. several players -------------------------------------------------------------------------
+def n_run(n, k, trials, lottery, seed=2):
+    rng = random.Random(seed)
+    S = subsets(range(k)); m = len(S)
+    w = [rng.uniform(.5, 2) for _ in range(k)]
+    diag = sincere_fail = 0
+    for _ in range(trials):
+        U = [[rng.random() for _ in range(k)] for _ in range(n)]; F = [rng.random() for _ in range(n)]
+        def val(p, prof):
+            I = frozenset(range(k))
+            for s in prof: I &= S[s]
+            if not I: return F[p]
+            return sum(w[x] * U[p][x] for x in I) / sum(w[x] for x in I) if lottery else U[p][min(I)]
+        for i in range(n):
+            others = [p for p in range(n) if p != i]
+            def full(b, c): prof = list(c); prof.insert(i, b); return prof
+            strict = []
+            for b in range(m):
+                ok = True
+                for c in itertools.product(range(m), repeat=n - 1):
+                    eq = all(val(p, full(b, c)) >= max(val(p, full(b, c[:t] + (d,) + c[t + 1:])) for d in range(m)) - 1e-12
+                             for t, p in enumerate(others))
+                    if eq and val(i, full(b, c)) < max(val(i, full(x, c)) for x in range(m)) - 1e-12: ok = False; break
+                if ok: strict.append(b)
+            diag += not strict
+            sincere_fail += S.index(frozenset(x for x in range(k) if U[i][x] > F[i])) not in strict
+    return diag, sincere_fail
+
+print("several players:")
+for n, k, trials in ((3, 2, 300), (3, 3, 60), (4, 2, 60)):
+    for lottery in (True, False):
+        d, s = n_run(n, k, trials, lottery)
+        print(f"  {n} players, k={k}, ties by {'a lottery' if lottery else 'the lowest index'}: {n * trials} players, "
+              f"{d} with a rational diagonal, sincere approval not strict Nash for {s}")
+
+# ---- 4. random ballot over declared ideals as the fallback --------------------------------------
+def rb_run(k, trials, seed=3):
+    rng = random.Random(seed)
+    S = subsets(range(k)); strat = [(a, d) for a in S for d in range(k)]; n = len(strat)
+    diag = 0
+    for _ in range(trials):
+        U = [[rng.random() for _ in range(k)] for _ in range(2)]
+        def val(p, s, t):          # s is player 0's strategy, t player 1's
+            I = s[0] & t[0]
+            return sum(U[p][x] for x in I) / len(I) if I else (U[p][s[1]] + U[p][t[1]]) / 2
+        for p in range(2):
+            def mine(a, b): return val(p, *((strat[a], strat[b]) if p == 0 else (strat[b], strat[a])))
+            def theirs(a, b): return val(1 - p, *((strat[a], strat[b]) if p == 0 else (strat[b], strat[a])))
+            strict = [a for a in range(n)
+                      if all(mine(a, b) >= max(mine(x, b) for x in range(n)) - 1e-12
+                             for b in range(n) if theirs(a, b) >= max(theirs(a, c) for c in range(n)) - 1e-12)]
+            diag += not strict
+    return diag
+
+print("random ballot over declared ideals as the fallback, ties by a uniform lottery:")
+for k in (2, 3):
+    print(f"  k={k}: 2000 players, {rb_run(k, 1000)} with a rational diagonal")
