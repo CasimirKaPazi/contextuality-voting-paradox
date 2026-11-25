@@ -1,5 +1,6 @@
-"""Two-voter local unanimous rules are dictatorships for five and six
-alternatives (note *Equivariant Obstructions*, Section 6.5a, Proposition 14).
+"""Two-voter local unanimous rules are dictatorships: an independent check of
+Proposition 14 for five and six alternatives (note *Equivariant
+Obstructions*, Section 6.5a; the proof there is by hand, for every m).
 
 A two-voter rule F(s, t) on rankings of m alternatives is local if a step of
 either voter moves the social ranking by at most one step, and unanimous if
@@ -19,7 +20,7 @@ constraints survives. For m = 5 and m = 6 every domain ends as the single
 ranking s, so F(s, t) = s: the rule is voter 1's dictatorship.
 
 Run: python3 two_voter_local.py 5   (under a second)
-     python3 two_voter_local.py 6   (about six minutes, about 1 GB of memory)
+     python3 two_voter_local.py 6   (about six minutes, about 0.5 GB of memory)
 """
 
 import itertools
