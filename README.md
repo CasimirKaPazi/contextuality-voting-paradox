@@ -26,7 +26,7 @@ The [`lean/README.md`](lean/README.md`) and [`lean/roadmap.md`](lean/roadmap.md`
 
 ### Organizing
 
-The scope of this project will make it hard to navigate as it grows. So some help with organization (like [here](https://github.com/mccorvie/riemann-masullo) would make it easier.
+The scope of this project will make it hard to navigate as it grows. Therefore some help with organization (like [here](https://github.com/mccorvie/riemann-masullo)) would make it easier.
 
 ## Contents
 

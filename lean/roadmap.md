@@ -25,7 +25,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5 (`NonTight.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`).
-- **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`).
+- **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`).
 
 ## 1. Foundations to build on
 
@@ -59,9 +59,9 @@ These are definitions and toolkits that several later items need. Doing them fir
 
 ## 2. Nearly finished: complete these
 
-1. **Strategic Information, Proposition 4.** The steps are in `LeaderRule.lean`. Two things are left:
-   - the counting that turns the steps into the bound 2(m − 1);
-   - that the leader rule and the plurality vote are the best replies under the assumption (T) on ties.
+1. **Strategic Information, Proposition 4.** The steps are in `LeaderRule.lean`; the counting, for an abstract sequence of leaders, and the best replies in the finite corner (Proposition 6) are in `StrategicInformation.lean`. Left:
+   - the walk itself: leaders and runners-up as the top two eligible tallies, so that the hypotheses of `walk_settles` and `settled_in` follow from the steps;
+   - a bridge between the two encodings, positions in `LeaderRule.lean` and real utilities in `StrategicInformation.lean`.
 
    Effort: small to moderate.
 2. **The corollary of *What Cannot Be Defined from Inside*** (`notes/alignment/undefinability.md`, Section 6). A procedure that composes finite game forms is again a finite game form, so Theorem 3 applies to it. This goes on top of `Dichotomy.lean`. Effort: small.

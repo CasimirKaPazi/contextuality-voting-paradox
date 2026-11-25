@@ -32,12 +32,19 @@ strict (continuous) utilities, for impartial culture and a two-dimensional spati
    further starting polls, on random profiles with three to eight candidates (walks with ties
    among eligible tallies skipped): the walk ends in the Smith set and its last change of leader
    comes by round 2(m - 1); on the profile of item 6 it reaches the Condorcet winner.
+8. Away from the corner (Propositions 5 and 6), with the value of a ballot linear in the weights of
+   ties: for random weights, the best approval ballot (brute force) approves exactly the candidates
+   preferred to their virtual opponent, the best plurality vote is approved, and a voter and the
+   opposite voter cast complementary approval ballots; reported: how often the best approval
+   ballot is insincere. For random weights within the bound 2 delta D < g of Proposition 6, every
+   voter's best replies are the leader rule and the preferred front-runner. The example of
+   Section 8 in which opposite plurality votes go to a and d.
 5. Targets (no claim, reported): on profiles with a Condorcet winner, how often the best winner of a
    self-confirming plurality poll has a higher sum of utilities than the Condorcet winner, and how
    often the worst one is not the Condorcet winner.
 
 Ties in tallies are broken by candidate index; profiles where a tie decides a check are counted
-separately and skipped. Run: python3 strategic_information.py   (needs numpy; about two minutes)
+separately and skipped. Run: python3 strategic_information.py   (needs numpy; about three minutes)
 """
 import itertools
 import numpy as np
@@ -287,7 +294,69 @@ def check_memory_walk(trials=200):
     print(f"walk with memory: {'ok' if ok else 'FAIL'} on {walks} walks ({skipped} skipped for ties)")
 
 
+def coefficients(u, P):
+    m = len(u)
+    return np.array([sum(P[x, y] * (u[x] - u[y]) for y in range(m) if y != x) for x in range(m)])
+
+
+def best_approval(u, P):
+    m, best = len(u), None
+    for s in itertools.product((0, 1), repeat=m):
+        v = sum(P[x, y] * (s[x] - s[y]) * (u[x] - u[y]) for x in range(m) for y in range(x + 1, m))
+        if best is None or v > best[0] + 1e-12:
+            best = (v, s)
+    return best[1]
+
+
+def check_away_from_corner(trials=3000):
+    ok5 = True
+    insincere = 0
+    for t in range(trials):
+        m = int(rng.integers(3, 6))
+        u = rng.random(m)
+        W = rng.random((m, m)) ** 3
+        P = (W + W.T) / 2
+        np.fill_diagonal(P, 0)
+        c = coefficients(u, P)
+        s = best_approval(u, P)
+        virtual = (P @ u) / P.sum(axis=1)
+        ok5 &= s == tuple(int(u[x] > virtual[x]) for x in range(m))
+        ok5 &= s[int(np.argmax(c))] == 1
+        ok5 &= all(a + b == 1 for a, b in zip(s, best_approval(-u, P)))
+        order = np.argsort(-u)
+        insincere += any(s[order[k]] == 0 and s[order[k + 1]] == 1 for k in range(m - 1))
+    ok6 = True
+    for t in range(trials):
+        m, n = int(rng.integers(3, 7)), int(rng.integers(5, 40))
+        U = rng.random((n, m))
+        g = min(abs(U[i, x] - U[i, y]) for i in range(n) for x in range(m) for y in range(x + 1, m))
+        D = max(U[i].max() - U[i].min() for i in range(n))
+        delta = 0.999 * g / (2 * D)
+        a1, a2 = (int(v) for v in rng.choice(m, 2, replace=False))
+        others = [x for x in range(m) if x not in (a1, a2)]
+        P = np.zeros((m, m))
+        P[a1, a2] = P[a2, a1] = 1.0
+        for x in others:
+            P[x, a1] = P[a1, x] = (0.1 + 0.9 * rng.random()) * delta / m
+        q = delta * min([P[x, a1] for x in others] + [1.0]) / m
+        for x, y in itertools.combinations([x for x in range(m) if x != a1], 2):
+            P[x, y] = P[y, x] = q * rng.random()
+        for u in U:
+            c = coefficients(u, P)
+            lr = [int(u[x] > u[a1]) for x in range(m)]
+            lr[a1] = int(u[a1] > u[a2])
+            ok6 &= tuple(int(v > 0) for v in c) == tuple(lr)
+            ok6 &= int(np.argmax(c)) == (a1 if u[a1] > u[a2] else a2)
+    u = np.array([4.0, 3.0, 2.0, 1.0])
+    P = np.array([[0, 1, .1, .1], [1, 0, .1, .1], [.1, .1, 0, .9], [.1, .1, .9, 0]])
+    pair = (int(np.argmax(coefficients(u, P))), int(np.argmax(coefficients(-u, P))))
+    print(f"away from the corner: Proposition 5 {'ok' if ok5 else 'FAIL'} "
+          f"(insincere best ballots: {insincere}/{trials}), Proposition 6 {'ok' if ok6 else 'FAIL'}, "
+          f"opposite plurality votes in the example of Section 8: {pair} {'ok' if pair == (0, 3) else 'FAIL'}")
+
+
 if __name__ == "__main__":
     run()
     smith_counterexample()
     check_memory_walk()
+    check_away_from_corner()

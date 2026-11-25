@@ -1,6 +1,6 @@
 # Strategic Information: Plurality and Approval under a Common Rationale
 
-*Working note, first draft. It proposes a way to compare voting methods by how much of the electorate's information they can use when every voter follows the same strategic rationale, and carries the comparison out for plurality and approval voting, with score voting as a first extension. Statements are marked as cited, proved here, computed on random profiles, or interpretation. References marked † are cited from memory and have not been checked against the original. The checks are in `scripts/information/strategic_information.py`; Propositions 1 to 3, the statement on the Smith set and the steps of Proposition 4 are checked in Lean in `lean/LeaderRule.lean`, with the best replies as definitions.*
+*Working note, first draft. It proposes a way to compare voting methods by how much of the electorate's information they can use when every voter follows the same strategic rationale, and carries the comparison out for plurality and approval voting, with score voting as a first extension. Statements are marked as cited, proved here, computed on random profiles, or interpretation. References marked † are cited from memory and have not been checked against the original. The checks are in `scripts/information/strategic_information.py`; Propositions 1 to 3, the statement on the Smith set and the steps of Proposition 4 are checked in Lean in `lean/LeaderRule.lean`, with the best replies as definitions; Propositions 5 and 6 and the counting of Proposition 4 in `lean/StrategicInformation.lean`.*
 
 ## 1. The question
 
@@ -108,11 +108,43 @@ The memory is not an assumption about voters. Voters still cast leader-rule ball
 
 *Proof.* Parts 1 to 3 are the arguments of Proposition 3 with all candidates replaced by the eligible ones: the old leader's tally is N(L > R) and the runner-up's is N(R > L), both computed against an eligible runner-up, so a candidate who overtakes both beats L, and if L keeps the lead while beaten by an eligible candidate, its strongest eligible challenger becomes runner-up and wins the next tally. For 3, the eligible set does not change while the leader stays, so N(L > R) > n/2 > N(x > L) for every eligible x holds in every later round. For 4, every new leader is new, so there are at most m − 1 changes; after each change the next one comes within two rounds by 2 or never by 3, and the same holds for the first. For 5, once the leader is in the Smith set it stays there by 1. If the final leader were outside, no member of the Smith set would ever have led, so all of them would be eligible and would beat it, and by 2 it would not be final. If the walk stops because every candidate has led, members of the Smith set have led, so the final leader is in it. It beats every candidate that never led, since by 2 an eligible candidate beating it would take the lead. ∎
 
-*(Proved; steps 1 to 3 and the step from a dominant set to an eligible challenger are checked in Lean, the counting in 4 is not yet; checked on random profiles, where the bound 2(m − 1) is attained.)* On the profile of Section 4a the walk with memory runs a, d, b, c and stays at c, the Condorcet winner.
+*(Proved; steps 1 to 3 and the step from a dominant set to an eligible challenger are checked in Lean, and so is the counting in 4 and 5 for any sequence of leaders with the properties the steps give; that the walk has these properties is not yet formalised as one statement; checked on random profiles, where the bound 2(m − 1) is attained.)* On the profile of Section 4a the walk with memory runs a, d, b, c and stays at c, the Condorcet winner.
 
 The walk with memory satisfies the criterion asked for in Section 9, question 7, with N = 2(m − 1). It does so by using information that a single tally does not hold, the record of who has led. Without that record the information of Proposition 1, the whole row of the leader, is exactly what leads the walk to the strongest defeat. With it, the row is used to choose among candidates not yet tried. *(Interpretation.)*
 
 As an explicit counting method on ranked ballots, started from the plurality count, the walk with memory is a Smith-efficient method of the agenda type: it follows defeats through the candidates, each tried at most once as leader, and stops at the last leader, who beats every candidate not yet tried. The winner within the Smith set depends on the start and on the order of the walk, as with an agenda chosen by the tallies. The method is a consequence of the analysis, not a model of how voters or polls behave.
+
+## 4c. Away from the corner
+
+Assumption (T) is a limit: each candidate's most likely tie is infinitely more likely than its others. The valuation of Section 2 is defined for any weights. Let p(x, y) = p(y, x) ≥ 0 be the weights of the ties, shared by all voters as part of the poll. A ballot that adds s(x) to the tally of x has the value Σ p(x, y)(s(x) − s(y))(u_x − u_y) over pairs, and this value is linear in s, with the coefficient
+
+  c(x) = Σ_y p(x, y)(u_x − u_y) = w(x)(u_x − E_{π_x} u)
+
+for candidate x, where w(x) = Σ_y p(x, y) and π_x is the lottery that gives each other candidate y the probability p(x, y)/w(x). Call π_x the *virtual opponent* of x.
+
+**Proposition 5 (any weights).** For every system of weights:
+
+1. the best approval ballot approves x exactly when the voter prefers x to its virtual opponent, u_x > E_{π_x} u, so the approval tally of x is the number of voters who prefer x to π_x;
+2. the best plurality vote goes to a candidate maximising c(x), and that candidate is approved in the best approval ballot;
+3. a voter and the opposite voter (utility −u, the same poll) cast complementary best approval ballots, so together they add one approval to every candidate.
+
+*Proof.* 1 is the sign of the coefficient c(x). For 2, the coefficients sum to zero, since each pair contributes p(x, y)(u_x − u_y) + p(y, x)(u_y − u_x) = 0, so the largest is positive (generically) and the candidate is approved. For 3, replacing u by −u replaces every c(x) by −c(x). ∎
+
+In the corner (T), π_x is the leader for every x ≠ a₁ and the runner-up for a₁, and part 1 is Proposition 1: the tally N(x > a₁) is the special case of a count against a lottery. For any weights the favourite is approved and the least preferred candidate is not, since their coefficients are positive and negative; with three candidates the ballot is therefore sincere. Beyond that, away from the corner the approval ballot need not be sincere: with random weights on three to five candidates, about 4 percent of best ballots approve a candidate while leaving out one the voter prefers (*computed*). The inclusion in part 2 holds everywhere. That the plurality ballot is a function of the approval ballot holds only in the corner; in general the plurality vote is the approved candidate with the largest coefficient, which the approval ballot does not show.
+
+**Proposition 6 (a finite corner).** Let g be the smallest difference between the utilities of two candidates for any voter, and D the largest range of a voter's utilities. Suppose that for some δ with 2δD < g:
+
+- Σ_{y ≠ a₁, a₂} p(a₁, y) ≤ δ p(a₁, a₂), and the same for a₂;
+- for every other candidate x: Σ_{y ≠ a₁} p(x, y) ≤ δ p(x, a₁);
+- for every other candidate x: Σ_y p(x, y) ≤ δ p(a₁, a₂).
+
+Then the best approval ballot is the leader-rule ballot and the best plurality vote goes to the preferred of a₁ and a₂, for every voter. The last condition is needed only for plurality.
+
+*Proof.* For x ≠ a₁, c(x) = p(x, a₁)(u_x − u_{a₁}) plus terms whose total size is at most δ p(x, a₁) D < p(x, a₁) g, so its sign is that of u_x − u_{a₁}; the same argument with a₂ in place of a₁ decides a₁. For plurality, the preferred front-runner has a coefficient of at least p(a₁, a₂)(g − δD), the other front-runner a negative one, and every other candidate at most δ p(a₁, a₂) D, which is smaller since 2δD < g. ∎
+
+*(Proved; checked in Lean, and on 3000 random systems of weights within the bound.)* So Propositions 1 to 4 do not need the limit, only that at every poll involved each candidate's main tie outweighs its others by a factor above 2D/g. The factor is set by the finest distinction of preference in the electorate. Applied voter by voter, the same proof bounds the damage when the condition fails for some voters: the ballots differ from the leader rule only for voters whose smallest utility difference is at most 2δ times their range, so each tally moves by at most their number, and every strict inequality between tallies in Propositions 1 to 4 with a margin above twice that number survives. The conclusions degrade continuously as the weights leave the corner. *(Proved.)*
+
+What is not yet available away from the corner is the walk: Propositions 2 to 4 also use how the poll, and with it the weights, follows from the tally of the previous round. In the corner this is the ranking of the tallies; in general it needs a model of how tie probabilities depend on the tallies (binomial errors as in Laslier, or Poisson populations).
 
 ## 5. Best and worst case
 
@@ -133,7 +165,7 @@ Under the same rationale, score voting with scores 0 to k reduces to approval wi
 
 ## 7. What is assumed, and where it may break
 
-- **The order of ties.** The whole comparison rests on (T), a large-electorate idealisation with distinct poll scores. Without any order of ties, the best approval ballot in the approximation of Myerson and Weber is a threshold at the mean utility of the candidates, weighted by the probabilities of the ties with each (†, not yet checked against the paper); (T) is the corner in which all weight lies on one tie per candidate. Section 2a is a first step away from that corner. In large Poisson games, a counterexample to the Condorcet consistency of approval voting is known (Núñez 2010†), so the conclusion of Section 4 depends on the strength of this assumption, not only on large numbers. Durand, Macé and Núñez (2019) study which equilibria of approval in Poisson games are stable and how often they elect the Condorcet winner.
+- **The order of ties.** The whole comparison rests on (T), a large-electorate idealisation with distinct poll scores. Without any order of ties, the best approval ballot is a threshold against a virtual opponent, a lottery over the other candidates weighted by the ties (Section 4c, Proposition 5); (T) is the corner in which all weight lies on one tie per candidate. Proposition 6 replaces the limit by a finite ratio, and Section 2a treats exact ties in the poll. The dependence of the weights on the tallies, which the walk needs, is not modelled away from the corner. In large Poisson games, a counterexample to the Condorcet consistency of approval voting is known (Núñez 2010†), so the conclusion of Section 4 depends on the strength of this assumption, not only on large numbers. Durand, Macé and Núñez (2019) study which equilibria of approval in Poisson games are stable and how often they elect the Condorcet winner.
 - **A shared poll.** All voters respond to the same leader and runner-up. Polls that differ between groups of voters are not covered.
 - **Strict preferences, a single winner, no abstention.** Indifferences change the leader rule at the margin; abstention is absent from both methods here.
 - **Information in the poll.** Section 5 shows that the comparison depends on whether information arriving through the poll is counted. This is a question of definition, not of mathematics, and it should be settled before the framework is extended.
@@ -141,18 +173,20 @@ Under the same rationale, score voting with scores 0 to k reduces to approval wi
 
 ## 8. Connection with the Equality Criterion
 
-Approval passes the Equality Criterion (an approval ballot and its complement add one approval to every candidate) and plurality fails it (*The Equality Criterion and Reversal*, Section 2). In Proposition 1 the extra information of approval is the row of the leader, and each of its entries is a pairwise count, a quantity on which a ballot and its opposite cancel. Whether the criterion is the structural reason why the additional information is unbiased, and whether failing it always shows up as a choice of self-confirming poll made from outside the profile, is open. *(Interpretation and question.)*
+Approval passes the Equality Criterion (an approval ballot and its complement add one approval to every candidate) and plurality fails it (*The Equality Criterion and Reversal*, Section 2). The criterion concerns sincere ballots. Proposition 5, part 3, carries it over to strategic ballots for approval: under the common rationale, with any weights of ties, a voter and the opposite voter cast complementary best ballots, so the pair changes no comparison between candidates. *(Proved.)* Under plurality the two best votes go to the candidates with the largest and the smallest coefficient. In the corner these are the two front-runners, and the pair cancels in their race. Away from it they need not belong to one race: with ties between a and b and between c and d both likely, a voter with a > b > c > d votes for a and the opposite voter for d, and the pair tilts both races (*computed example*).
+
+So under the common rationale approval keeps equal and opposite votes for every poll, and plurality keeps them only when a single race dominates. In Proposition 1 the extra information of approval is the row of the leader, each entry a pairwise count on which a ballot and its opposite cancel. Whether failing the criterion always shows up as a choice of self-confirming poll made from outside the profile is open. *(Interpretation and question.)*
 
 ## 9. Open questions
 
 1. Settle the definition of the best case (Section 5), and with it state the dominance order on methods in general.
 2. Instant runoff and plurality under the same rationale; then a Condorcet method against approval.
 3. Score against approval when (T) fails: does any intermediate score become a best reply, and does it carry information the tally uses?
-4. Weaken (T): which conclusions survive if a challenger's tie with the runner-up can be as likely as its tie with the leader, as with correlated uncertainty (Poisson populations, where Núñez 2010 finds a counterexample)? Section 2a treats the case of exact ties in the poll.
+4. Correlated uncertainty: Poisson populations, where Núñez (2010) finds a counterexample to the Condorcet consistency of approval; which condition of Proposition 6 fails there?
 5. Measure the gap in the Ballot Front Finder Lab: the share of profiles in which the strategic outcome depends on the starting poll, per method.
-6. The link with the Equality Criterion of Section 8.
+6. The link with the Equality Criterion of Section 8, beyond Proposition 5, part 3.
 7. A criterion in the spirit of the Smith set: a method reaches the Smith set under the common rationale within N rounds from every poll. Approval with the leader rule fails it (Section 4a), rarely; with memory of who has led it holds with N = 2(m − 1) (Section 4b). Which other methods satisfy it, and is 2(m − 1) the right bound for a rule that does not stop?
-8. The general rationale without (T): pivot-weighted thresholds for approval and the corresponding plurality best reply, and whether Propositions 1 to 3 hold in a neighbourhood of the corner (T).
+8. The walk away from the corner: a model of how the weights of ties follow from the tallies, and with it the self-confirming polls and the walk for arbitrary weights. With a continuum of voters and weights that depend continuously on the tallies, Brouwer's theorem would give a self-confirming poll for every profile; where it sits when there is no Condorcet winner is the question.
 
 ## References
 
