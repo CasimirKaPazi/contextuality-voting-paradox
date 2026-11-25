@@ -22,7 +22,7 @@ Any help is appreciated.
 
 The main bottle neck currently is in formalizing the existing work in Lean. This for this you don't need to understand what is going on, just a few tokens to burn. Setting up Lean is easy, and AI can help you with that too. If the Lean proof does not work or gives any other new information, then this is also valuable. Just give notice before you start working on something and stay in the lean directory with the changes to reduce conflicts.
 
-The [`lean/README.md`](lean/README.md`) and [`lean/roadmap.md`](lean/roadmap.md`) should be read first.
+The [`lean/README.md`](lean/README.md) and [`lean/roadmap.md`](lean/roadmap.md) should be read first.
 
 ### Organizing
 
