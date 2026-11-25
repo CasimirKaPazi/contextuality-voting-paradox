@@ -25,7 +25,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5 (`NonTight.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`).
-- **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`); Proposition 4 as one statement for the walk with memory, and the bridge from positions to utilities (`MemoryWalk.lean`).
+- **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`); Proposition 4 as one statement for the walk with memory, with ties (Proposition 7) and without, and the bridge from positions to utilities (`MemoryWalk.lean`).
 
 ## 1. Foundations to build on
 

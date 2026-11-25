@@ -9,6 +9,11 @@ to a candidate that beats or ties it; in both cases the final leader is in the S
 every non-member), and the last change comes by round 2(m - 1) with any tie-break in odd electorates and with the fixed
 tie-break in even ones. With random tie-breaks in even electorates the bound can be exceeded, and the final leader beats or ties every
 candidate that never led. Reported: how often a change goes along a tie.
+The Schwartz set (union of the smallest sets no outsider beats), on profiles where it differs from the
+Smith set: reported how often the walk with memory ends in it with each tie-break; and, when a tie for
+the lead never dethrones the current leader (every change then a strict defeat), checked that the walk
+without memory never leaves the Schwartz set once its leader is in it, reported how often each walk ends
+there.
 Run: python3 ties.py   (needs numpy; a few seconds)
 """
 import itertools
@@ -92,5 +97,63 @@ def main(trials=1500):
                   f"changes along ties: {tie_moves}/{moves}")
 
 
+def schwartz(N, m):
+    R = [[N[x, y] > N[y, x] or x == y for y in range(m)] for x in range(m)]
+    for k in range(m):
+        for i in range(m):
+            for j in range(m):
+                R[i][j] = R[i][j] or (R[i][k] and R[k][j])
+    return {x for x in range(m) if all(R[x][y] for y in range(m) if R[y][x])}
+
+
+def incumbent_walk(N, m, start, memory, rounds=120):
+    (L, R), led, leaders = start, {start[0]}, [start[0]]
+    for r in range(rounds):
+        t = [N[L, R] if x == L else N[x, L] for x in range(m)]
+        E = [x for x in range(m) if not memory or x not in led or x == L]
+        top = max(t[x] for x in E)
+        L = L if t[L] == top else random.choice([x for x in E if t[x] == top])
+        led.add(L)
+        leaders.append(L)
+        rest = [x for x in range(m) if x != L and (not memory or x not in led)]
+        if not rest:
+            break
+        R = random.choice([x for x in rest if t[x] == max(t[y] for y in rest)])
+    return leaders
+
+
+def schwartz_checks(trials=4000):
+    for rule in ("fixed", "random"):
+        differ = inside = 0
+        for t in range(trials):
+            n, m = random.choice((4, 6, 8, 10)), random.choice((3, 4, 5, 6))
+            N = counts(profile(n, m, random.choice(("impartial", "spatial"))), m)
+            Sw = schwartz(N, m)
+            if smith(N, m) == Sw:
+                continue
+            differ += 1
+            L, led, ch = memory_walk(N, m, tuple(random.sample(range(m), 2)), rule, 60)
+            inside += L in Sw
+        print(f"Schwartz set, walk with memory, {rule} tie-break: ends in it {inside}/{differ}")
+    for memory in (False, True):
+        differ = inside = 0
+        never_left = True
+        for t in range(trials):
+            n, m = random.choice((4, 6, 8, 10)), random.choice((3, 4, 5, 6))
+            N = counts(profile(n, m, random.choice(("impartial", "spatial"))), m)
+            Sw = schwartz(N, m)
+            if smith(N, m) == Sw:
+                continue
+            differ += 1
+            leaders = incumbent_walk(N, m, tuple(random.sample(range(m), 2)), memory)
+            k = next((i for i, x in enumerate(leaders) if x in Sw), None)
+            if k is not None:
+                never_left &= all(x in Sw for x in leaders[k:])
+            inside += (set(leaders[-30:]) <= Sw) if not memory else leaders[-1] in Sw
+        print(f"incumbent keeps tied leads, {'with' if memory else 'without'} memory: never leaves the "
+              f"Schwartz set: {'ok' if never_left else 'FAIL'}; ends in it {inside}/{differ}")
+
+
 if __name__ == "__main__":
     main()
+    schwartz_checks()
