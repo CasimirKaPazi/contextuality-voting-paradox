@@ -84,6 +84,12 @@ Each script's docstring states what it checks. This file is the index; the notes
 | `circle_tournaments.py` | Every round (locally transitive) tournament up to eight alternatives has a placement on the circle, and up to five alternatives the placeable tournaments are exactly the locally transitive ones | *Cycles and Twists* §3 | `CircleTournaments.lean` (one direction, and the four-alternative example) |
 | `comparison_complexes.py` | The complexes of comparisons on n alternatives (sets in one strict order; sets without a reversed pair) and their quotients by reversal: homology of spheres and projective spaces for n ≤ 5 and n ≤ 4, the three-alternative annulus divided by reversal is a Möbius strip, and the four-alternative complex fails to be a homology manifold exactly where one alternative beats or is beaten by all others | *Cycles and Twists*, Proposition 6 |  |
 
+## Information (`information/`)
+
+| Script | What it checks | Used in | Also in Lean |
+|---|---|---|---|
+| `strategic_information.py` | Plurality and approval as best replies to a shared poll with lexicographic pivots: the best replies by brute force (the preferred front-runner; the leader rule), the counting of Proposition 1 (equal tallies for the front-runners, plurality ballot a function of the approval ballot, N(x > leader) for the others), the self-confirming polls of Proposition 2 (every majority-oriented pair for plurality, the Condorcet winner with its strongest challenger for approval), the majority switch of Proposition 3 (a change of leader goes to a majority defeater; a beaten leader never leads two rounds in a row), and the constructed profile in which the Condorcet winner never leads; reported: poll dynamics from every start and from the plurality count, and how often plurality's best self-confirming winner beats the Condorcet winner in total utility. Impartial culture and a spatial model, three to six candidates. Takes about a minute and a half | *Strategic Information* |  |
+
 ## Exploratory (`exploratory/`)
 
 | Script | What it checks | Used in | Also in Lean |
