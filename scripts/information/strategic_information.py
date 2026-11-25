@@ -27,12 +27,17 @@ strict (continuous) utilities, for impartial culture and a two-dimensional spati
    in groups of 35, 34, 33, c second for all but four voters of each group and last for those four.
    c is the Condorcet winner with no first preferences; from the plurality count the leader cycles
    through a, d, b with every tally strict, and c never leads.
+7. The walk with memory (Proposition 4): a candidate who has led once is no longer eligible, and
+   leader and runner-up are the top two eligible tallies. From the plurality count and from six
+   further starting polls, on random profiles with three to eight candidates (walks with ties
+   among eligible tallies skipped): the walk ends in the Smith set and its last change of leader
+   comes by round 2(m - 1); on the profile of item 6 it reaches the Condorcet winner.
 5. Targets (no claim, reported): on profiles with a Condorcet winner, how often the best winner of a
    self-confirming plurality poll has a higher sum of utilities than the Condorcet winner, and how
    often the worst one is not the Condorcet winner.
 
 Ties in tallies are broken by candidate index; profiles where a tie decides a check are counted
-separately and skipped. Run: python3 strategic_information.py   (needs numpy; about a minute and a half)
+separately and skipped. Run: python3 strategic_information.py   (needs numpy; about two minutes)
 """
 import itertools
 import numpy as np
@@ -222,10 +227,67 @@ def smith_counterexample():
         poll = (f, s)
         leaders.append(f)
     ok &= c not in leaders and leaders[-3:] in ([a, d, b], [d, b, a], [b, a, d])
+    mem, _ = memory_walk(N, (order[0], order[1]), 8)
+    ok &= mem[-1] == c
     print(f"Condorcet winner outside the walk (note, Section 4a): {'ok' if ok else 'FAIL'}; "
           f"leaders {leaders[:7]}")
+
+
+def smith_set(N):
+    m = len(N)
+    order = sorted(range(m), key=lambda x: -sum(N[x, y] > N[y, x] for y in range(m)))
+    for k in range(1, m + 1):
+        S = set(order[:k])
+        if all(N[x, y] > N[y, x] for x in S for y in range(m) if y not in S):
+            return S
+
+
+def memory_walk(N, start, rounds):
+    """Leaders of the walk with memory, computed from the pairwise counts (Proposition 1 gives the
+    leader-rule tallies: N[L, R] for the leader, N[x, L] for every other candidate)."""
+    m = len(N)
+    (L, R), led, leaders, tied = start, {start[0]}, [start[0]], False
+    for r in range(rounds):
+        t = [N[L, R] if x == L else N[x, L] for x in range(m)]
+        E = sorted((x for x in range(m) if x not in led or x == L), key=lambda x: (-t[x], x))
+        tied |= len(E) > 1 and t[E[0]] == t[E[1]]
+        if E[0] != L:
+            L = E[0]
+            led.add(L)
+        rest = sorted((x for x in range(m) if x not in led), key=lambda x: (-t[x], x))
+        if not rest:
+            leaders += [L] * (rounds - r)
+            break
+        tied |= len(rest) > 1 and t[rest[0]] == t[rest[1]]
+        R = rest[0]
+        leaders.append(L)
+    return leaders, tied
+
+
+def check_memory_walk(trials=200):
+    ok, walks, skipped = True, 0, 0
+    for model in ("impartial", "spatial"):
+        for m in range(3, 9):
+            for t in range(trials):
+                U = profile(101, m, model)
+                N = beats(U)
+                S = smith_set(N)
+                tops = np.bincount(np.argmax(U, axis=1), minlength=m)
+                order = sorted(range(m), key=lambda q: (-tops[q], q))
+                starts = [(order[0], order[1])] + list(itertools.permutations(range(m), 2))[:6]
+                for start in starts:
+                    leaders, tied = memory_walk(N, start, 4 * m)
+                    if tied:
+                        skipped += 1
+                        continue
+                    walks += 1
+                    last = max([i for i in range(1, len(leaders)) if leaders[i] != leaders[i - 1]],
+                               default=0)
+                    ok &= leaders[-1] in S and last <= 2 * (m - 1)
+    print(f"walk with memory: {'ok' if ok else 'FAIL'} on {walks} walks ({skipped} skipped for ties)")
 
 
 if __name__ == "__main__":
     run()
     smith_counterexample()
+    check_memory_walk()

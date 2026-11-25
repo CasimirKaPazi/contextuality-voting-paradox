@@ -24,6 +24,13 @@
     lead at the next poll; a Condorcet winner as leader keeps the lead.
   * The Smith set: a set of candidates each of whom beats every candidate
     outside it is never left once the leader is in it.
+  * Proposition 4, the walk with memory, its steps: with the tally
+    restricted to the eligible candidates (those that never led, and the
+    current leader), a new leader beats the old one, a leader beaten by an
+    eligible candidate falls at the next poll, a leader beating every eligible
+    candidate keeps the lead, and a leader outside a dominant set whose
+    members are all eligible is beaten by an eligible candidate. The counting
+    that turns these steps into the bound 2(m − 1) is not formalised yet.
 
   Uses only core Lean, no Mathlib. A ballot is a function giving each
   candidate a position (smaller is better); preferences are strict.
@@ -332,5 +339,82 @@ theorem stays_dominant (p : V → A → Nat) (hs : Strict p) (vs : List V) {a1 a
   have hb' := hS a1 L ha1 hSL
   unfold beats at hb hb'
   omega
+
+/-! ### Proposition 4: the steps of the walk with memory -/
+
+/-- `L` leads the approval tally among the eligible candidates `E`. -/
+def LeadsIn (p : V → A → Nat) (vs : List V) (E : A → Prop) (a1 a2 L : A) : Prop :=
+  ∀ y, E y → y ≠ L → tally p vs a1 a2 y < tally p vs a1 a2 L
+
+/-- `c` is strictly second among the eligible candidates, behind `a1`. -/
+def SecondIn (p : V → A → Nat) (vs : List V) (E : A → Prop) (a1 a2 c : A) : Prop :=
+  ∀ y, E y → y ≠ a1 → y ≠ c → tally p vs a1 a2 y < tally p vs a1 a2 c
+
+/-- Step 1: with an eligible leader and runner-up, a new leader among the
+    eligible candidates beats the old leader by majority. -/
+theorem new_leader_beats_in (p : V → A → Nat) (hs : Strict p) (vs : List V)
+    {E : A → Prop} {a1 a2 L : A} (h12 : a1 ≠ a2) (hE1 : E a1) (hE2 : E a2)
+    (hL1 : L ≠ a1) (hL : LeadsIn p vs E a1 a2 L) : beats p vs L a1 := by
+  have h21 : a2 ≠ a1 := fun h => h12 h.symm
+  unfold beats
+  have hsum := pref_add p hs vs h12
+  have hsL := pref_add p hs vs hL1
+  have ha1 := hL a1 hE1 (fun h => hL1 h.symm)
+  rw [tally_leader, tally_other p vs a1 a2 hL1] at ha1
+  by_cases hL2 : L = a2
+  · subst hL2
+    omega
+  · have ha2 := hL a2 hE2 (fun h => hL2 h.symm)
+    rw [tally_other p vs a1 a2 h21, tally_other p vs a1 a2 hL1] at ha2
+    omega
+
+/-- Step 2: if an eligible candidate beats `a1` and `a1` keeps the lead, the
+    eligible runner-up `c` beats `a1` and wins the tally at the poll `(a1, c)`. -/
+theorem beaten_leader_falls_in (p : V → A → Nat) (hs : Strict p) (vs : List V)
+    {E : A → Prop} {a1 a2 c : A} (hc1 : c ≠ a1) (hsec : SecondIn p vs E a1 a2 c)
+    (hbeaten : ∃ b, E b ∧ b ≠ a1 ∧ beats p vs b a1) :
+    beats p vs c a1 ∧ tally p vs a1 c a1 < tally p vs a1 c c := by
+  obtain ⟨b, hEb, hb1, hb⟩ := hbeaten
+  unfold beats at hb
+  have hsb := pref_add p hs vs hb1
+  have hsc := pref_add p hs vs hc1
+  have hcb : pref p vs b a1 ≤ pref p vs c a1 := by
+    by_cases hbc : b = c
+    · subst hbc; exact Nat.le_refl _
+    · have := hsec b hEb hb1 hbc
+      rw [tally_other p vs a1 a2 hb1, tally_other p vs a1 a2 hc1] at this
+      exact Nat.le_of_lt this
+  have hwin : beats p vs c a1 := by
+    unfold beats
+    omega
+  refine ⟨hwin, ?_⟩
+  rw [tally_leader, tally_other p vs a1 c hc1]
+  exact hwin
+
+/-- Step 3: a leader who beats every eligible candidate, with an eligible
+    runner-up, leads the eligible tally. -/
+theorem keeps_in (p : V → A → Nat) (hs : Strict p) (vs : List V) {E : A → Prop}
+    {a1 a2 : A} (h12 : a1 ≠ a2) (hE2 : E a2)
+    (hw : ∀ y, E y → y ≠ a1 → beats p vs a1 y) : LeadsIn p vs E a1 a2 a1 := by
+  intro y hEy hy
+  have h21 : a2 ≠ a1 := fun h => h12 h.symm
+  have hw2 := hw a2 hE2 h21
+  have hwy := hw y hEy hy
+  unfold beats at hw2 hwy
+  have hs2 := pref_add p hs vs h12
+  have hy' : a1 ≠ y := fun h => hy h.symm
+  have hsy := pref_add p hs vs hy'
+  rw [tally_leader, tally_other p vs a1 a2 hy]
+  omega
+
+omit [DecidableEq A] in
+/-- Step 4: a leader outside a dominant set, all of whose members are
+    eligible, is beaten by an eligible candidate. -/
+theorem dominant_challenger (p : V → A → Nat) (vs : List V) {E S : A → Prop} {L s : A}
+    (hS : Dominant p vs S) (hL : ¬ S L) (hs : S s) (hE : ∀ x, S x → E x) :
+    E s ∧ s ≠ L ∧ beats p vs s L := by
+  refine ⟨hE s hs, ?_, hS s L hs hL⟩
+  intro h
+  exact hL (h ▸ hs)
 
 end LeaderRule

@@ -1,6 +1,6 @@
 # Strategic Information: Plurality and Approval under a Common Rationale
 
-*Working note, first draft. It proposes a way to compare voting methods by how much of the electorate's information they can use when every voter follows the same strategic rationale, and carries the comparison out for plurality and approval voting, with score voting as a first extension. Statements are marked as cited, proved here, computed on random profiles, or interpretation. References marked † are cited from memory and have not been checked against the original. The checks are in `scripts/information/strategic_information.py`; Propositions 1 to 3 and the statement on the Smith set are checked in Lean in `lean/LeaderRule.lean`, with the best replies as definitions.*
+*Working note, first draft. It proposes a way to compare voting methods by how much of the electorate's information they can use when every voter follows the same strategic rationale, and carries the comparison out for plurality and approval voting, with score voting as a first extension. Statements are marked as cited, proved here, computed on random profiles, or interpretation. References marked † are cited from memory and have not been checked against the original. The checks are in `scripts/information/strategic_information.py`; Propositions 1 to 3, the statement on the Smith set and the steps of Proposition 4 are checked in Lean in `lean/LeaderRule.lean`, with the best replies as definitions.*
 
 ## 1. The question
 
@@ -90,6 +90,30 @@ Entering is not guaranteed. The walk follows the strongest defeat of the current
 
 The same walk can be read in two ways. As a model of strategic voters under approval, its rounds are successive polls. As a counting method on ranked ballots, its rounds are computed from the ballots themselves, starting from the plurality count, and Proposition 3 then describes the count. Such a method obtains the outcome that the poll dynamics would reach without depending on voters to carry the dynamics out. It is implemented as Leader-AV-r (r counting rounds) in the Ballot Front Finder Lab. *(Interpretation.)*
 
+## 4b. Memory: reaching the Smith set
+
+The walk of Section 4a fails to enter the Smith set because it always moves to the strongest defeat of the current leader, and a cycle outside the Smith set can hold all the strongest defeats. One change of the poll rule removes this: a candidate who has led once does not lead again.
+
+The memory is not an assumption about voters. Voters still cast leader-rule ballots against whatever poll they are shown, and nothing in their rationale would make them exclude a former leader. The rule belongs to whoever produces the poll, or, read as a counting method, to the method itself. Its role here is to separate the two walks under the criterion of reaching the Smith set: the walk of Section 4a fails it, the walk with memory meets it.
+
+**The walk with memory.** At each round the poll is (L, R). A candidate is *eligible* if it has never led, or is the current leader L; R is always eligible. Voters cast leader-rule ballots against (L, R). The next leader is the eligible candidate with the highest tally, and the next runner-up the eligible candidate with the highest tally after it. The walk stops when no eligible candidate other than the leader is left.
+
+**Proposition 4.** Let the walk with memory start from any poll with an eligible runner-up, and suppose that no two eligible candidates tie in a tally. Then, with m candidates:
+
+1. whenever the leader changes, the new leader has never led before and beats the old leader by majority;
+2. a leader beaten by an eligible candidate loses the lead within two rounds;
+3. a leader who beats every eligible candidate keeps the lead for good;
+4. the leader changes at most m − 1 times, and not after round 2(m − 1);
+5. the final leader is in the Smith set and beats every candidate that never led.
+
+*Proof.* Parts 1 to 3 are the arguments of Proposition 3 with all candidates replaced by the eligible ones: the old leader's tally is N(L > R) and the runner-up's is N(R > L), both computed against an eligible runner-up, so a candidate who overtakes both beats L, and if L keeps the lead while beaten by an eligible candidate, its strongest eligible challenger becomes runner-up and wins the next tally. For 3, the eligible set does not change while the leader stays, so N(L > R) > n/2 > N(x > L) for every eligible x holds in every later round. For 4, every new leader is new, so there are at most m − 1 changes; after each change the next one comes within two rounds by 2 or never by 3, and the same holds for the first. For 5, once the leader is in the Smith set it stays there by 1. If the final leader were outside, no member of the Smith set would ever have led, so all of them would be eligible and would beat it, and by 2 it would not be final. If the walk stops because every candidate has led, members of the Smith set have led, so the final leader is in it. It beats every candidate that never led, since by 2 an eligible candidate beating it would take the lead. ∎
+
+*(Proved; steps 1 to 3 and the step from a dominant set to an eligible challenger are checked in Lean, the counting in 4 is not yet; checked on random profiles, where the bound 2(m − 1) is attained.)* On the profile of Section 4a the walk with memory runs a, d, b, c and stays at c, the Condorcet winner.
+
+The walk with memory satisfies the criterion asked for in Section 9, question 7, with N = 2(m − 1). It does so by using information that a single tally does not hold, the record of who has led. Without that record the information of Proposition 1, the whole row of the leader, is exactly what leads the walk to the strongest defeat. With it, the row is used to choose among candidates not yet tried. *(Interpretation.)*
+
+As an explicit counting method on ranked ballots, started from the plurality count, the walk with memory is a Smith-efficient method of the agenda type: it follows defeats through the candidates, each tried at most once as leader, and stops at the last leader, who beats every candidate not yet tried. The winner within the Smith set depends on the start and on the order of the walk, as with an agenda chosen by the tallies. The method is a consequence of the analysis, not a model of how voters or polls behave.
+
 ## 5. Best and worst case
 
 With Propositions 1 and 2 the two steps of Section 1 can be carried out, but the result depends on the target by which outcomes are judged.
@@ -127,7 +151,7 @@ Approval passes the Equality Criterion (an approval ballot and its complement ad
 4. Weaken (T): which conclusions survive if a challenger's tie with the runner-up can be as likely as its tie with the leader, as with correlated uncertainty (Poisson populations, where Núñez 2010 finds a counterexample)? Section 2a treats the case of exact ties in the poll.
 5. Measure the gap in the Ballot Front Finder Lab: the share of profiles in which the strategic outcome depends on the starting poll, per method.
 6. The link with the Equality Criterion of Section 8.
-7. A criterion in the spirit of the Smith set: a method reaches the Smith set under the common rationale within N rounds from every poll, with N the number of candidates or a bound still to be found. Approval with the leader rule fails it (Section 4a), rarely. Which methods, or which rules for updating the poll, satisfy it?
+7. A criterion in the spirit of the Smith set: a method reaches the Smith set under the common rationale within N rounds from every poll. Approval with the leader rule fails it (Section 4a), rarely; with memory of who has led it holds with N = 2(m − 1) (Section 4b). Which other methods satisfy it, and is 2(m − 1) the right bound for a rule that does not stop?
 8. The general rationale without (T): pivot-weighted thresholds for approval and the corresponding plurality best reply, and whether Propositions 1 to 3 hold in a neighbourhood of the corner (T).
 
 ## References
