@@ -25,7 +25,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5 (`NonTight.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`).
-- **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`).
+- **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`); Proposition 4 as one statement for the walk with memory, and the bridge from positions to utilities (`MemoryWalk.lean`).
 
 ## 1. Foundations to build on
 
@@ -59,25 +59,20 @@ These are definitions and toolkits that several later items need. Doing them fir
 
 ## 2. Nearly finished: complete these
 
-1. **Strategic Information, Proposition 4.** The steps are in `LeaderRule.lean`; the counting, for an abstract sequence of leaders, and the best replies in the finite corner (Proposition 6) are in `StrategicInformation.lean`. Left:
-   - the walk itself: leaders and runners-up as the top two eligible tallies, so that the hypotheses of `walk_settles` and `settled_in` follow from the steps;
-   - a bridge between the two encodings, positions in `LeaderRule.lean` and real utilities in `StrategicInformation.lean`.
-
-   Effort: small to moderate.
-2. **The corollary of *What Cannot Be Defined from Inside*** (`notes/alignment/undefinability.md`, Section 6). A procedure that composes finite game forms is again a finite game form, so Theorem 3 applies to it. This goes on top of `Dichotomy.lean`. Effort: small.
-3. **Proposition 5″ of *Walls and Strategy*.** It concerns one explicit 6 × 6 form with three outcomes:
+1. **The corollary of *What Cannot Be Defined from Inside*** (`notes/alignment/undefinability.md`, Section 6). A procedure that composes finite game forms is again a finite game form, so Theorem 3 applies to it. This goes on top of `Dichotomy.lean`. Effort: small.
+2. **Proposition 5″ of *Walls and Strategy*.** It concerns one explicit 6 × 6 form with three outcomes:
    - the form is tight and not dictatorial;
    - under every pair of strict preferences, each player has a strict Nash strategy.
 
    This is a finite check by `decide`, in the style of `RationalDiagonal.lean`. It is the counterexample that bounds Proposition 5′. Effort: small.
-4. **The Equality Criterion, Propositions 1 and 2** (`notes/equality-criterion.md`).
+3. **The Equality Criterion, Propositions 1 and 2** (`notes/equality-criterion.md`).
    - Proposition 1 follows from Theorem 5′: with anonymity, which the criterion includes, a mixture of dictatorships is uniform random dictatorship, and that fails the criterion.
    - Proposition 2 follows from Gibbard (1977) in the same way, with the theorem as a hypothesis as in `GSCorollary.lean`; Pareto-optimality gives the unanimity that `cor2` needs.
 
    Effort: small.
-5. **Covers and division, Proposition 1** (`notes/covers-and-division.md`). The sections of a loop are the sections of its k-fold cover fixed by ℤ/k. It extends `LoopsOfRelations.lean`. Proposition 2 and the corollary, the converse of division, are a moderate further step. Effort: small, then moderate.
-6. **The reduction proposition of *Consistency as an Extension Problem*, Section 3c.** It needs only Item 1.3. Effort: small once Lemma 3 has both directions.
-7. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
+4. **Covers and division, Proposition 1** (`notes/covers-and-division.md`). The sections of a loop are the sections of its k-fold cover fixed by ℤ/k. It extends `LoopsOfRelations.lean`. Proposition 2 and the corollary, the converse of division, are a moderate further step. Effort: small, then moderate.
+5. **The reduction proposition of *Consistency as an Extension Problem*, Section 3c.** It needs only Item 1.3. Effort: small once Lemma 3 has both directions.
+6. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
    - Its stages are checked.
    - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.
 
@@ -113,7 +108,7 @@ These are the results the project's claims stand on, by thread. Details below th
   - Cautious proposers (Section 3h): moderate.
   - Strassen's characterisation of safe agreements (Section 3f, part 3): large.
 - **The two theorems taken as hypotheses.**
-  - Gibbard (1977), used in `GSCorollary.lean` and in Item 2.4.
+  - Gibbard (1977), used in `GSCorollary.lean` and in Item 2.3.
   - Gibbard (1978), Corollary 2, used in `Lotteries.lean`.
 
   Each is large. Removing them would make Corollary 2 of the scenario note and Theorem 6 of *Walls and Strategy* unconditional.
