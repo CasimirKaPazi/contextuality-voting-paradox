@@ -9,7 +9,7 @@ public import Mathlib
 
 * **Lemma 3, necessary direction** (`lemma3_nec`). If winners `X ~ μ`, `Y ~ ν`, `Z ~ λ` can be
   drawn jointly so that `X = Y` implies `Z = X`, then `λ a ≥ μ a + ν a − 1` for every candidate
-  `a`. (The converse, that the inequality suffices, is not formalised here.)
+  `a`. (The converse, that the inequality suffices, is `Couplings.lemma3_suff`.)
 * **Theorem 4** (`joint_unbeaten`, `no_joint_consistent`). A lottery rule that elects a Condorcet
   winner with certainty, and admits for every join of two electorates such a joint draw of the
   winners at the two electorates and at their union, gives probability zero to every candidate

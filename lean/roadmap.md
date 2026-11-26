@@ -8,9 +8,11 @@ Each line names the main results already checked, by thread of the project roadm
 
 - **A (consistency as non-contextuality).**
   - Theorem 2 (`Consistency.lean`).
-  - Theorem 4 with the necessary direction of Lemma 3 (`JoinLotteries.lean`).
+  - Theorem 4 with the necessary direction of Lemma 3 (`JoinLotteries.lean`), and Lemma 3 in both directions with the coupling lemma behind it (`Couplings.lean`).
   - The frame of scenarios and the four levels, with Proposition 1, division (`Scenarios.lean`).
-- **B (where the symmetry goes).** The isotropy lemma for any group action (`Isotropy.lean`).
+- **B (where the symmetry goes).**
+  - The isotropy lemma for any group action (`Isotropy.lean`).
+  - The discrete degree for three alternatives, Lemmas 1–3 of *The Global Form* (`GlobalForm.lean`).
 - **Arrow and Gibbard–Satterthwaite as scenarios.**
   - Theorems 5 and 5′ of *Four Levels* (`ProbabilisticArrow.lean`, `PathPinning.lean`, `ArrowGeneral.lean`, `ArrowBase.lean`).
   - Arrow's scenario as an instance of the frame: every empirical model is non-contextual (Theorem 5′), the global sections are the dictatorships (Arrow's theorem, derived from Theorem 5′), level 3 for the voters' permutations, and division (`ArrowScenario.lean`).
@@ -42,26 +44,15 @@ These are definitions and toolkits that several later items need. Doing them fir
    - Value: Propositions 5‴ and 7 and the assembly of Proposition 5′ (Sections 2 and 3) can then be stated once.
    - Effort: moderate.
 2. **Lotteries and joint draws as a toolkit.**
-   - The sufficient direction of Lemma 3: a joint draw exists when λ(a) ≥ μ(a) + ν(a) − 1 for every candidate. It is a transport argument of Hall type.
-   - Moving the couplings and kernels out of `JointDraws.lean` into a file of their own.
-   - Value: the reduction proposition of *Consistency as an Extension Problem*, Section 3c (conditions J and E, Item 2.2), needs both directions of Lemma 3.
-   - Effort: small to moderate.
-3. **The discrete degree for three alternatives** (*The Global Form*).
-   - What it is: a loop of a voter's rankings around the hexagon, and the winding of the social ranking along it.
-   - Lemmas 1–3 of *The Global Form*:
-     - invariance under IIA;
-     - the degrees sum to the winding of the diagonal;
-     - rigidity: under IIA every degree is −1, 0 or 1.
-   - Value: thread B rests on these. They are the base of the following:
-     - Arrow's theorem as a degree (Proposition 1 there);
-     - Gibbard–Satterthwaite in the same form (Lemmas 5–6, Proposition 3);
-     - the stages of *Equivariant Obstructions* for three alternatives (Propositions 1–4).
-   - Effort: moderate. Everything is finite: six rankings, steps of one transposition.
+   - In place: Lemma 3 in both directions and the coupling lemma (`Couplings.lean`).
+   - Open: monotone couplings on a chain from stochastic dominance (Strassen for chains), which condition (E) of the reduction proposition needs; the construction along adjacent swaps in `JointDraws.lean` may give it. Also moving the couplings and kernels of `JointDraws.lean` next to them, if a second use appears.
+   - Value: the reduction proposition of *Consistency as an Extension Problem*, Section 3c (conditions J and E, Item 2.2).
+   - Effort: small.
 
 ## 2. Nearly finished: complete these
 
 1. **Covers and division, Proposition 2 and the corollary** (`notes/covers-and-division.md`). Every empirical model of a finite loop is a mixture of descents of symmetric models on finite covers, by flow decomposition of the circulation in the layered graph; the converse of division follows with Proposition 1 (`Covers.lean`). Effort: moderate.
-2. **The reduction proposition of *Consistency as an Extension Problem*, Section 3c.** It needs only Item 1.2. Effort: small once Lemma 3 has both directions.
+2. **The reduction proposition of *Consistency as an Extension Problem*, Section 3c.** Condition (J) is Lemma 3 (`Couplings.lean`); condition (E) needs monotone couplings on a chain (Item 1.2). Effort: small.
 3. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
    - Its stages are checked.
    - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.
@@ -79,7 +70,7 @@ These are the results the project's claims stand on, by thread. Details below th
 
   The impossibility side is a certificate: three joins around the doubled Condorcet profile for lotteries, and a case split on ten profiles for deterministic rules. Checking these in Lean on top of `JoinLotteries.lean` is moderate. The existence side needs the models found by search as data, which is heavier.
 - **B. Arrow's theorem as a degree, and the stages of the symmetry problem for three alternatives** (*The Global Form*, Propositions 1–3; *Equivariant Obstructions*, Propositions 1–4).
-  - These are discrete and rest on Item 1.3.
+  - These are discrete and rest on Lemmas 1–3 of *The Global Form*, now in `GlobalForm.lean`. Next: Lemma 4 (no mask) and Proposition 1, Arrow's theorem as a degree; then Lemmas 5–6 and Proposition 3 for strategy-proof rules, with the same method of tables. Effort: small to moderate.
   - For four alternatives, Theorem 10 (local rules have at most one voter of non-zero degree) and Proposition 14 rest on computations of the permutohedron's fillings. A certificate check would be large.
 - **D. Proposition 5′: every totally tight form, and every game of perfect information, admits a rational diagonal.** The proof combines three parts:
   - the structure theorem of Boros, Gurvich, Makino and Papp, taken from the literature;
