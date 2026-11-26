@@ -1,6 +1,6 @@
 # Instant Runoff and Plurality under a Common Rationale
 
-*Working note, part of [Strategic Information](README.md), first draft. It compares instant runoff (IRV) with plurality for three candidates under the rationale of [The Common Rationale](rationale.md), extended to the pivot events of a ranked method. Conventions as in the README. The checks are in `scripts/information/irv_three.py` (the corner) and `irv_smooth.py` (the smooth model).*
+*Working note, part of [Strategic Information](README.md), first draft. It compares instant runoff (IRV) with plurality for three candidates under the rationale of [The Common Rationale](rationale.md), extended to the pivot events of a ranked method. Conventions as in the README. The checks are in `scripts/information/irv_three.py` (the corner), `irv_smooth.py` (the smooth model) and `irv_bits.py` (stage 2 in bits).*
 
 ## 1. Polls and pivot events for instant runoff
 
@@ -43,7 +43,7 @@ Plurality's winners include every candidate that beats another (*Plurality and A
 
 In the corner F before E, with three candidates: plurality uses no more strategic information than instant runoff (Proposition 2), and wherever instant runoff has a self-confirming poll it elects the Condorcet winner, which plurality need not (Proposition 3). For the majority target plurality lies below instant runoff, as it lies below approval. Where instant runoff has no self-confirming poll, its worst case has to be read from the dynamics of the polls, as for approval without a Condorcet winner ([README](README.md), Section 7, question 1). *(From Propositions 2 and 3.)*
 
-Earlier work points to the limits of the corner. For the two-round majority runoff, Bouton and Gratton (2015) characterise large-election equilibria in which the Condorcet winner may not even reach the second round (cited), and Bouton (2013) finds equilibria of runoff elections in which the Condorcet winner gets no votes (cited from a working-paper version). Eggers and Nowacki (2024) compute best replies with Dirichlet beliefs over the vote shares and iterated polls, which converge under instant runoff to an interior fixed point (cited). Section 6 tests the conclusions in such a smooth model, where three-way races in the first round carry weight.
+Earlier work points to the limits of the corner. For the two-round majority runoff, Bouton and Gratton (2015) characterise large-election equilibria in which the Condorcet winner may not even reach the second round (cited), and Bouton (2013) finds equilibria of runoff elections in which the Condorcet winner gets no votes (cited from a working-paper version). Eggers and Nowacki (2024) compute best replies with Dirichlet beliefs over the vote shares and iterated polls, which converge under instant runoff to an interior fixed point (cited). Sections 6 and 7 test the conclusions in such a smooth model, where three-way races in the first round carry weight.
 
 ## 6. A smooth model
 
@@ -57,11 +57,22 @@ The corner keeps two events and drops the rest. In a smooth model every voter we
 
 *Reading.* Between the corner and the smooth model the picture is stable in its main line: instant runoff's settled outcomes are nearly always the Condorcet winner where plurality's often are not. What changes is that the exact statements of the corner become frequencies. *(Interpretation.)*
 
-## 6. Open questions
+## 7. Stage 2 in bits
 
-1. The smooth model of Section 6 with exact fixed points instead of settled runs, more profiles and starting polls, and a binomial model of mistakes as in Laslier: what do the exceptions to Proposition 3 look like, and how does their frequency depend on the precision? And the stage 2 comparison there, by mutual information or by an approximate garbling.
+By the lemma of the [README](README.md), Section 2, Blackwell's order at a poll holds exactly when the plurality ballot is a function of the IRV ballot, voter by voter, and the conditional entropy H(β_plur | β_IRV) measures how far it fails. The entropies are estimated from 4000 voters drawn from the culture of each profile, at polls of the smooth model of Section 6 reached from the sincere ballots (*computed*, `scripts/information/irv_bits.py`; 15 to 20 polls per model and precision). The capacities of stage 1 are log₂ 6 = 2.58 bits for a ranking and log₂ 3 = 1.58 bits for a name. The polls of the two methods have to be matched, and two matchings are used.
+
+**Each method at its own settled poll.** The strategic IRV ballot carries 2.0 to 2.6 bits (close to its capacity under impartial culture, where sincere rankings already carry 2.58), the plurality ballot 0.9 to 1.0 bit, nearly the single comparison of the corner. H(β_plur | β_IRV) is 0.03 to 0.10 bits on average (at most 0.31 at one poll); it is zero at 14 of 20 spatial polls with s = 85 and at almost none under impartial culture. H(β_IRV | β_plur) is 1.0 to 1.6 bits. The two methods settle on the same winner at 12 to 19 of the polls.
+
+**The plurality poll given by the first preferences of the IRV poll** (the matching induced by stage 1). Here the first round is often a close race of three, and the plurality ballot carries 1.1 to 1.6 bits; H(β_plur | β_IRV) rises to 0.08 to 0.33 bits. Most of it concerns intensities: the plurality ballot is not a function of the ranking (H(β_plur | ranking) is 0.09 to 0.34 bits), and given both the IRV ballot and the ranking 0.07 to 0.27 bits remain. A voter deserting a favourite in a three-way race weighs how much better the favourite is, and that decision is information about intensities that a ballot close to the ranking does not record.
+
+*Reading.* Away from the corner neither strategic ballot is a function of the other, so the pair is not ordered by Blackwell's order in the strict sense of the [README](README.md), Section 3. In bits the asymmetry is large: instant runoff's ballot carries one to one and a half bits that plurality's lacks, plurality's carries a few hundredths to a third of a bit that instant runoff's lacks, mostly about intensities. Together with the worst case of Section 6, instant runoff is ahead of plurality on both steps of the comparison, but by a margin rather than by dominance. *(Interpretation.)*
+
+## 8. Open questions
+
+1. The smooth model of Section 6 with exact fixed points instead of settled runs, more profiles and starting polls, and a binomial model of mistakes as in Laslier: what do the exceptions to Proposition 3 look like, and how does their frequency depend on the precision?
 2. More than three candidates: the events multiply with the order of eliminations. Is there a corner in which the strategic IRV count still contains the final count of the two front-runners?
 3. Approval against instant runoff: both elect the Condorcet winner at every self-confirming poll in their corners, and their strategic counts carry different information (the leader's row for approval, the final pair and the shifts of first preferences for instant runoff). Are they comparable in Blackwell's order?
+4. The order of the README, Section 3, is strict; Section 7 shows a pair that it leaves unordered by a small margin. Should the order allow a tolerance in bits, and how would that combine with the worst case?
 
 ## References
 
