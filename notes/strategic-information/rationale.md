@@ -36,7 +36,7 @@ What this means for approval and plurality is in [Plurality and Approval](approv
 - **A shared poll.** All voters respond to the same leader and runner-up. Polls that differ between groups of voters are not covered.
 - **Ties.** Pairwise ties and ties between tallies are treated in *Plurality and Approval*, Section 8; only the strictness of defeats along the walk and, with random tie-breaking, the bound on rounds depend on them.
 - **Strict preferences, a single winner, no abstention.** Indifferences change the leader rule at the margin; abstention is absent from both methods here.
-- **Information in the poll.** *Plurality and Approval*, Section 10, shows that the comparison depends on whether information arriving through the poll is counted. This is a question of definition, not of mathematics, and it should be settled before the framework is extended.
+- **Information in the poll.** *Plurality and Approval*, Section 10, shows that the comparison depends on whether information arriving through the poll is counted. This is a question of definition, not of mathematics; it is settled in the [README](README.md), Section 3, by counting only the information carried by the strategic ballots.
 - **Other methods.** The rationale is stated for any method, but best replies under ranked methods (instant runoff, Condorcet methods) are not "one comparison per candidate", and Proposition 1 of *Plurality and Approval* has no analogue yet. A ladder in which a well-played Condorcet method reveals the full matrix is plausible and unproved.
 
 ## 5. Open questions

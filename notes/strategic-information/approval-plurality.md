@@ -32,7 +32,7 @@ Write N(x > y) for the number of voters who prefer x to y.
 
 The approval tallies in 1 and 3 are Laslier's Theorem 2 (2006, cited), stated there for equilibrium score vectors and proved from the best replies alone, so that it holds for any poll. The comparison with plurality is the addition here. Parts 1 and 2 use (T) only for the front-runners, so they also hold in Laslier's model of ballot mistakes; part 3 uses the rest of (T) (Section 9).
 
-*Reading.* In the matrix of pairwise counts, strategic plurality reveals one entry, the comparison of the two front-runners. Strategic approval reveals that entry and the whole row of the leader: how every candidate fares against a₁. In the language of Blackwell (1953)†, the plurality ballot is a garbling of the approval ballot, so any use that can be made of the strategic plurality ballots can also be made of the strategic approval ballots, and not conversely. This is the first step of the [README](README.md), Section 1, for this pair, for a fixed poll. *(Proved; the interpretation as a Blackwell comparison is ours.)*
+*Reading.* In the matrix of pairwise counts, strategic plurality reveals one entry, the comparison of the two front-runners. Strategic approval reveals that entry and the whole row of the leader: how every candidate fares against a₁. In the terms of Blackwell (1953), the strategic approval ballot is sufficient for the strategic plurality ballot (the plurality ballot is a garbling of the approval ballot, see the [README](README.md), Section 2), so any use that can be made of the strategic plurality ballots can also be made of the strategic approval ballots, and not conversely. This is the first step of the [README](README.md), Section 1, for this pair, for a fixed poll. *(Proved; the interpretation as a Blackwell comparison is ours.)*
 
 ## 4. Which polls confirm themselves
 
@@ -98,7 +98,7 @@ The memory is not an assumption about voters. Voters still cast leader-rule ball
 
 *(Proved; steps 1 to 3 and the step from a dominant set to an eligible challenger are checked in Lean, and so are parts 4 and 5 for the walk given by its properties, with no pairwise ties between candidates; checked on random profiles, where the bound 2(m − 1) is attained.)* On the profile of Section 5 the walk with memory runs a, d, b, c and stays at c, the Condorcet winner.
 
-The walk with memory satisfies the criterion asked for in the [README](README.md), Section 5, question 5, with N = 2(m − 1). It does so by using information that a single tally does not hold, the record of who has led. Without that record the information of Proposition 1, the whole row of the leader, is exactly what leads the walk to the strongest defeat. With it, the row is used to choose among candidates not yet tried. *(Interpretation.)*
+The walk with memory satisfies the criterion asked for in the [README](README.md), Section 7, question 5, with N = 2(m − 1). It does so by using information that a single tally does not hold, the record of who has led. Without that record the information of Proposition 1, the whole row of the leader, is exactly what leads the walk to the strongest defeat. With it, the row is used to choose among candidates not yet tried. *(Interpretation.)*
 
 As an explicit counting method on ranked ballots, started from the plurality count, the walk with memory is a Smith-efficient method of the agenda type: it follows defeats through the candidates, each tried at most once as leader, and stops at the last leader, who beats every candidate not yet tried. For sequential pairwise procedures with an agenda, ending in the top cycle is classical (Miller 1977†). The winner within the Smith set depends on the start and on the order of the walk, as with an agenda chosen by the tallies. The method is a consequence of the analysis, not a model of how voters or polls behave.
 
@@ -175,9 +175,11 @@ With Propositions 1 and 2 the two steps of the [README](README.md), Section 1, c
 - the best over all self-confirming polls, which credits a method with information that arrives through the poll;
 - the best use of the information carried by the ballots, which credits plurality with one comparison and approval with a row, and under which approval dominates for any target that depends only on the majority relation.
 
+The second is the one adopted, through Blackwell's order on experiments ([README](README.md), Section 3).
+
 ## References
 
-- Blackwell, D. (1953). Equivalent comparisons of experiments. *Annals of Mathematical Statistics* 24, 265–272. †
+- Blackwell, D. (1953). Equivalent comparisons of experiments. *Annals of Mathematical Statistics* 24, 265–272. Pages checked against the original; the volume number from memory.
 - Brams, S. J. and Fishburn, P. C. (1983). *Approval Voting.* Birkhäuser, Boston. (Cited via Laslier 2006.)
 - Durand, F., Macé, A. and Núñez, M. (2019). Analysis of approval voting in Poisson games. Working paper, Paris School of Economics.
 - Goertz, J. M. M. and Maniquet, F. (2011). On the informational efficiency of simple scoring rules. *Journal of Economic Theory* 146, 1464–1480. doi:10.1016/j.jet.2011.03.001.
