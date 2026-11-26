@@ -56,8 +56,9 @@ Every voter best-responds to the same poll (a leader and a runner-up) under the 
 |---|---|---|
 | Plurality and approval | [approval-plurality.md](approval-plurality.md) | Approval's strategic ballot refines plurality's, and its self-confirming polls are among plurality's; plurality lies below approval for targets that depend on the majority relation (under the order of ties). |
 | Score and approval | [score-approval.md](score-approval.md) | Score reduces to approval in large electorates for any weights of ties; intermediate scores help only through windows in small electorates. |
+| Instant runoff and plurality | [irv-plurality.md](irv-plurality.md) | Three candidates, first draft: in the corner where the final of the two front-runners decides first, plurality uses no more strategic information than instant runoff, and every self-confirming IRV poll elects the Condorcet winner, though often there is none. In a smooth model of beliefs these become frequencies: settled IRV polls elect another candidate in a few per cent of the profiles with a Condorcet winner (plurality in most), and stage 2 holds only approximately. |
 
-Planned: instant runoff and plurality; a Condorcet method and instant runoff, with the Condorcet side from the bottom-two-runoff family (ranked ballots, candidates ordered by an initial count such as plurality, repeated runoffs between the lowest two still in the race; Smith-efficient for any initial order, which can be swapped out); Borda and score; strict and weak rankings.
+Planned: the supplementary vote (a first and a second choice; the two candidates with the most first choices go to a final), a step between plurality and instant runoff; a Condorcet method and instant runoff, with the Condorcet side from the bottom-two-runoff family (ranked ballots, candidates ordered by an initial count such as plurality, repeated runoffs between the lowest two still in the race; Smith-efficient for any initial order, which can be swapped out); Borda and score; strict and weak rankings.
 
 ## 6. Connection with the Equality Criterion
 
@@ -68,12 +69,12 @@ So under the common rationale approval keeps equal and opposite votes for every 
 ## 7. Open questions
 
 1. The worst case without self-confirming polls: when a method has none for a profile (approval without a Condorcet winner), what takes their place in the order, the cycles of the walk or the endpoints of the walk with memory?
-2. The further pairs of Section 5: instant runoff and plurality, a bottom-two-runoff method and instant runoff, Borda and score, strict and weak rankings; and whether a method can lie below another at stage 1 and above it at stage 2.
+2. The further pairs of Section 5: a bottom-two-runoff method and instant runoff, approval and instant runoff, Borda and score, strict and weak rankings; and whether a method can lie below another at stage 1 and above it at stage 2.
 3. Measure the gap in the Ballot Front Finder Lab: the share of profiles in which the strategic outcome depends on the starting poll, per method.
 4. The link with the Equality Criterion of Section 6, beyond Proposition 5, part 3.
 5. A criterion in the spirit of the Smith set: a method reaches the Smith set under the common rationale within N rounds from every poll. Approval with the leader rule fails it (*Plurality and Approval*, Section 5), rarely; with memory of who has led it holds with N = 2(m − 1) (Section 6 there). Which other methods satisfy it, and is 2(m − 1) the right bound for a rule that does not stop?
 
 ## References
 
-- Blackwell, D. (1953). Equivalent comparisons of experiments. *Annals of Mathematical Statistics* 24, 265–272. Pages checked against the original; the volume number from memory.
+- Blackwell, D. (1953). Equivalent comparisons of experiments. *Annals of Mathematical Statistics* 24(2), 265–272. doi:10.1214/aoms/1177729032.
 - *The Equality Criterion and Reversal* (working notes and drafts in this repository).
