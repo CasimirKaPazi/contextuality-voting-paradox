@@ -7,8 +7,8 @@ public import Mathlib
 /-!
 # Strategic information: virtual opponents, a finite corner, and the walk with memory
 
-Statements from the working note *Strategic Information* (`notes/strategic-information.md`),
-Sections 4b and 4c. `LeaderRule.lean` takes the best replies as definitions; this file derives
+Statements from the working note *Plurality and Approval* (`notes/strategic-information/approval-plurality.md`),
+Sections 6 and 7. `LeaderRule.lean` takes the best replies as definitions; this file derives
 them from the valuation of ballots by ties, and adds the counting of Proposition 4.
 
 Candidates form a finite type `A`, a voter's utilities are `u : A → ℝ`, and the weights of the

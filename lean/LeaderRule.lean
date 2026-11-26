@@ -1,6 +1,7 @@
 /-
-  The base case of *Strategic Information*: plurality and approval under one
-  strategic rationale, a shared poll with leader `a1` and runner-up `a2`.
+  The base case of *Strategic Information*
+  (`notes/strategic-information/approval-plurality.md`): plurality and
+  approval under one strategic rationale, a shared poll with leader `a1` and runner-up `a2`.
 
   The best replies are taken as definitions here: under plurality a voter
   votes for the preferred of `a1` and `a2`; under approval she follows the

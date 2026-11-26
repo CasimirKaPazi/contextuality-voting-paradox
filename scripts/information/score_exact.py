@@ -1,4 +1,4 @@
-"""Score voting with scores 0..k in Laslier's binomial model (Strategic Information, Section 6).
+"""Score voting with scores 0..k in Laslier's binomial model (*Score and Approval*, Section 1).
 
 The other voters give each candidate 0 or k points, the voter any score from 0 to k; each mark is
 uncounted with probability 1/20, and the winner is drawn among the highest totals. Exact best ballots,

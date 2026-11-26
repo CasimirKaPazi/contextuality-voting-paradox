@@ -1,4 +1,4 @@
-"""Ties in the walk of *Strategic Information*, Section 4d. Ballots are strict rankings drawn from
+"""Ties in the walk of *Plurality and Approval*, Section 8. Ballots are strict rankings drawn from
 impartial culture or a two-dimensional spatial model, with odd and even numbers of voters, so that
 pairwise counts can tie. Tallies are the leader-rule tallies (N(L > R) for the leader, N(x > L) for
 every other candidate), and ties among the eligible tallies are broken by a fixed order or at random.

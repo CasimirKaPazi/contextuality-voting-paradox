@@ -9,8 +9,8 @@ public import StrategicInformation
 /-!
 # The walk with memory as one statement, and positions as utilities
 
-Statements from the working note *Strategic Information* (`notes/strategic-information.md`),
-Sections 4b and 4c, joining `LeaderRule.lean` (ballots as positions, the best replies as
+Statements from the working note *Plurality and Approval* (`notes/strategic-information/approval-plurality.md`),
+Sections 6 and 7, joining `LeaderRule.lean` (ballots as positions, the best replies as
 definitions) and `StrategicInformation.lean` (real utilities, weights of ties, the counting).
 
 * **The walk with memory** (`IsWalk`, `memory_walk`). At round `t` the poll is `(L t, R t)`.

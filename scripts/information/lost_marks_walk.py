@@ -1,4 +1,4 @@
-"""The walks of *Strategic Information* when ballot mistakes only lose marks (Section 4e).
+"""The walks of *Plurality and Approval* when ballot mistakes only lose marks (Section 9).
 
 Voters respond to the previous tally as poll. The front-runners are decided as under the leader rule;
 a candidate x ranked third or lower is approved when it is preferred to the lottery over the candidates
@@ -6,10 +6,10 @@ ranked above it with weights (s_y - s_x)^2, the limiting ratios of its ties in L
 marks (see ballot_mistakes.py). This is compared with the leader rule, on random profiles of 101 voters
 (impartial culture and a two-dimensional spatial model) with three to five candidates, starting from
 the plurality count. Reported, no claim:
-- the walk of Section 4a (poll = previous tally): how often a new leader does not beat the old one by
+- the walk of Section 5 (poll = previous tally): how often a new leader does not beat the old one by
   majority, how often the walk reaches the Condorcet winner, settles elsewhere, cycles, and ends in
   the Smith set;
-- the walk with memory of Section 4b: how often it ends in the Smith set.
+- the walk with memory of Section 6: how often it ends in the Smith set.
 Run: python3 lost_marks_walk.py   (needs numpy; a few seconds)
 """
 import itertools

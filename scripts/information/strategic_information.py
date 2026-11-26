@@ -38,7 +38,7 @@ strict (continuous) utilities, for impartial culture and a two-dimensional spati
    opposite voter cast complementary approval ballots; reported: how often the best approval
    ballot is insincere. For random weights within the bound 2 delta D < g of Proposition 6, every
    voter's best replies are the leader rule and the preferred front-runner. The example of
-   Section 8 in which opposite plurality votes go to a and d.
+   Section 4 of the README of *Strategic Information* in which opposite plurality votes go to a and d.
 5. Targets (no claim, reported): on profiles with a Condorcet winner, how often the best winner of a
    self-confirming plurality poll has a higher sum of utilities than the Condorcet winner, and how
    often the worst one is not the Condorcet winner.
@@ -236,7 +236,7 @@ def smith_counterexample():
     ok &= c not in leaders and leaders[-3:] in ([a, d, b], [d, b, a], [b, a, d])
     mem, _ = memory_walk(N, (order[0], order[1]), 8)
     ok &= mem[-1] == c
-    print(f"Condorcet winner outside the walk (note, Section 4a): {'ok' if ok else 'FAIL'}; "
+    print(f"Condorcet winner outside the walk (note, Section 5): {'ok' if ok else 'FAIL'}; "
           f"leaders {leaders[:7]}")
 
 
@@ -352,7 +352,7 @@ def check_away_from_corner(trials=3000):
     pair = (int(np.argmax(coefficients(u, P))), int(np.argmax(coefficients(-u, P))))
     print(f"away from the corner: Proposition 5 {'ok' if ok5 else 'FAIL'} "
           f"(insincere best ballots: {insincere}/{trials}), Proposition 6 {'ok' if ok6 else 'FAIL'}, "
-          f"opposite plurality votes in the example of Section 8: {pair} {'ok' if pair == (0, 3) else 'FAIL'}")
+          f"opposite plurality votes in the example of README Section 4: {pair} {'ok' if pair == (0, 3) else 'FAIL'}")
 
 
 if __name__ == "__main__":
