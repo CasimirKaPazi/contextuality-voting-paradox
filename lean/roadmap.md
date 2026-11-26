@@ -15,6 +15,7 @@ Each line names the main results already checked, by thread of the project roadm
   - The isotropy lemma for any group action (`Isotropy.lean`).
   - The discrete degree for three alternatives, Lemmas 1–4 and Proposition 1 of *The Global Form*, Arrow's theorem as a degree (`GlobalForm.lean`).
   - The degree for strategy-proof rules, Lemmas 5–6 and Proposition 3 of *The Global Form*, the Gibbard–Satterthwaite theorem for three alternatives as a degree (`GlobalFormSP.lean`).
+  - The real degree and Proposition 2 of *The Global Form* for mixtures of dictatorships and anti-dictatorships (`GlobalFormReal.lean`).
 - **Arrow and Gibbard–Satterthwaite as scenarios.**
   - Theorems 5 and 5′ of *Four Levels* (`ProbabilisticArrow.lean`, `PathPinning.lean`, `ArrowGeneral.lean`, `ArrowBase.lean`).
   - Arrow's scenario as an instance of the frame: every empirical model is non-contextual (Theorem 5′), the global sections are the dictatorships (Arrow's theorem, derived from Theorem 5′), level 3 for the voters' permutations, and division (`ArrowScenario.lean`).
@@ -23,7 +24,7 @@ Each line names the main results already checked, by thread of the project roadm
 - **C (cycles and twists).**
   - Propositions 1–5 and remark (d) of *Cycles and Twists* (`ValueSpaces.lean`, `ProbLine.lean`, `CircleTournaments.lean`, `Nerve.lean`).
   - Propositions 1–3 of *Loops of Relations* (`LoopsOfRelations.lean`).
-  - Proposition 1 of *Covers and Division* (`Covers.lean`).
+  - Propositions 1 and 2 of *Covers and Division* and part 1 of the corollary (`Covers.lean`, `CoversDecomp.lean`).
 - **D (strategy as a halting problem).**
   - Gibbard (1973), Lemma 2 and Theorem 3 (`Arrow.lean`, `Gibbard73.lean`, `Diagonal.lean`, `Dichotomy.lean`).
   - The corollary of *What Cannot Be Defined from Inside*: composite procedures (`Composition.lean`).
@@ -54,7 +55,7 @@ These are definitions and toolkits that several later items need. Doing them fir
 
 ## 2. Nearly finished: complete these
 
-1. **Covers and division, Proposition 2 and the corollary** (`notes/covers-and-division.md`). Every empirical model of a finite loop is a mixture of descents of symmetric models on finite covers, by flow decomposition of the circulation in the layered graph; the converse of division follows with Proposition 1 (`Covers.lean`). Effort: moderate.
+1. **Covers and division, the rest of Section 2** (`notes/covers-and-division.md`). Proposition 2 and part 1 of the corollary are in place (`CoversDecomp.lean`). Open: the bound k ≤ min |V_i| (decomposition into simple cycles), the single ℤ/K-invariant distribution on the K-fold cover, and parts 2–3 of the corollary in the language of levels (*Scenarios*). Effort: small to moderate.
 2. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
    - Its stages are checked.
    - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.
@@ -72,7 +73,7 @@ These are the results the project's claims stand on, by thread. Details below th
 
   The impossibility side is a certificate: three joins around the doubled Condorcet profile for lotteries, and a case split on ten profiles for deterministic rules. Checking these in Lean on top of `JoinLotteries.lean` is moderate. The existence side needs the models found by search as data, which is heavier.
 - **B. Arrow's theorem as a degree, and the stages of the symmetry problem for three alternatives** (*The Global Form*, Propositions 1–3; *Equivariant Obstructions*, Propositions 1–4).
-  - These are discrete and rest on Lemmas 1–3 of *The Global Form*, now in `GlobalForm.lean`. Lemmas 1–6 and Propositions 1 and 3 are there (`GlobalForm.lean`, `GlobalFormSP.lean`). Next: Proposition 2 (real degrees of mixtures, with Theorem 5′) and Propositions 4–5 (one-voter SD-SP lotteries and the contextual fraction); then the stages of *Equivariant Obstructions* for three alternatives. Effort: moderate.
+  - These are discrete and rest on Lemmas 1–3 of *The Global Form*, now in `GlobalForm.lean`. Lemmas 1–6 and Propositions 1 and 3 are there (`GlobalForm.lean`, `GlobalFormSP.lean`). Proposition 2 is there for mixtures (`GlobalFormReal.lean`). Next: the real degree as the expected winding of compatible joint draws, and the link to Theorem 5′, which needs the rankings of `ArrowGeneral.lean` for three candidates matched with the hexagon; Propositions 4–5 (one-voter SD-SP lotteries and the contextual fraction); then the stages of *Equivariant Obstructions* for three alternatives. Effort: moderate.
   - For four alternatives, Theorem 10 (local rules have at most one voter of non-zero degree) and Proposition 14 rest on computations of the permutohedron's fillings. A certificate check would be large.
 - **D. Proposition 5′: every totally tight form, and every game of perfect information, admits a rational diagonal.** The proof combines three parts:
   - the structure theorem of Boros, Gurvich, Makino and Papp, taken from the literature;
