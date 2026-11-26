@@ -9,6 +9,7 @@ Each line names the main results already checked, by thread of the project roadm
 - **A (consistency as non-contextuality).**
   - Theorem 2 (`Consistency.lean`).
   - Theorem 4 with the necessary direction of Lemma 3 (`JoinLotteries.lean`), and Lemma 3 in both directions with the coupling lemma behind it (`Couplings.lean`).
+  - The reduction proposition of *Consistency as an Extension Problem*, Section 3c (`ConsistencyScenario.lean`).
   - The frame of scenarios and the four levels, with Proposition 1, division (`Scenarios.lean`).
 - **B (where the symmetry goes).**
   - The isotropy lemma for any group action (`Isotropy.lean`).
@@ -46,15 +47,15 @@ These are definitions and toolkits that several later items need. Doing them fir
    - Effort: moderate.
 2. **Lotteries and joint draws as a toolkit.**
    - In place: Lemma 3 in both directions and the coupling lemma (`Couplings.lean`).
-   - Open: monotone couplings on a chain from stochastic dominance (Strassen for chains), which condition (E) of the reduction proposition needs; the construction along adjacent swaps in `JointDraws.lean` may give it. Also moving the couplings and kernels of `JointDraws.lean` next to them, if a second use appears.
-   - Value: the reduction proposition of *Consistency as an Extension Problem*, Section 3c (conditions J and E, Item 2.2).
+   - In place as well: Strassen's theorem for a chain, on the positions of a ranking (`mono_iff_dom`).
+   - Open: moving the couplings and kernels of `JointDraws.lean` next to them, if a second use appears.
+   - Value: the reduction proposition of *Consistency as an Extension Problem*, Section 3c (conditions J and E), now in place (`ConsistencyScenario.lean`).
    - Effort: small.
 
 ## 2. Nearly finished: complete these
 
 1. **Covers and division, Proposition 2 and the corollary** (`notes/covers-and-division.md`). Every empirical model of a finite loop is a mixture of descents of symmetric models on finite covers, by flow decomposition of the circulation in the layered graph; the converse of division follows with Proposition 1 (`Covers.lean`). Effort: moderate.
-2. **The reduction proposition of *Consistency as an Extension Problem*, Section 3c.** Condition (J) is Lemma 3 (`Couplings.lean`); condition (E) needs monotone couplings on a chain (Item 1.2). Effort: small.
-3. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
+2. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
    - Its stages are checked.
    - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.
 

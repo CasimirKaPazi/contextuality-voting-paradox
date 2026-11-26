@@ -12,4 +12,4 @@ srcDir = "."
 roots = ["Diagonal", "Condorcet", "Nerve", "ValueSpaces", "Burial", "RationalDiagonal",
          "Consistency", "ProfileFacts", "Arrow", "Gibbard73", "Dichotomy", "Lotteries", "NonTight",
          "ProbLine", "CircleTournaments", "LoopsOfRelations",
-         "ProbabilisticArrow", "PathPinning", "ArrowGeneral", "ArrowBase", "JointDraws", "Scenarios", "Rankings", "GSScenario", "JoinLotteries", "Isotropy", "SummaryAutomaton", "GSTopTwo", "GSCorollary", "CoreDraw", "LeaderRule", "StrategicInformation", "MemoryWalk", "TightCounterexample", "Composition", "EqualityCriterion", "Covers", "ArrowScenario", "Couplings", "GlobalForm", "GlobalFormSP"]
+         "ProbabilisticArrow", "PathPinning", "ArrowGeneral", "ArrowBase", "JointDraws", "Scenarios", "Rankings", "GSScenario", "JoinLotteries", "Isotropy", "SummaryAutomaton", "GSTopTwo", "GSCorollary", "CoreDraw", "LeaderRule", "StrategicInformation", "MemoryWalk", "TightCounterexample", "Composition", "EqualityCriterion", "Covers", "ArrowScenario", "Couplings", "GlobalForm", "GlobalFormSP", "ConsistencyScenario"]

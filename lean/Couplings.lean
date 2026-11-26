@@ -21,6 +21,12 @@
 
   The coupling lemma is the transport fact behind the joint draw, of Hall
   type, and is stated separately for reuse.
+
+  Strassen's theorem for a chain (`mono_iff_dom`): on the positions of a
+  ranking, a coupling that moves probability only upwards exists exactly when
+  one lottery stochastically dominates the other. The coupling is the quantile
+  coupling, by overlaps of intervals (`ov`). This is condition (E) of the
+  reduction proposition of *Consistency as an Extension Problem*, Section 3c.
 -/
 
 module
@@ -422,5 +428,159 @@ theorem lemma3 {μ ν lam : α → ℝ} (hμ0 : ∀ a, 0 ≤ μ a) (hν0 : ∀ a
     JoinLotteries.JointDraw3 μ ν lam ↔ ∀ a, μ a + ν a - 1 ≤ lam a :=
   ⟨fun hj a => JoinLotteries.lemma3_nec hν1 hj a,
     lemma3_suff hμ0 hν0 hl0 hμ1 hν1 hl1⟩
+
+/-! ### Monotone couplings on a chain
+
+Strassen's theorem for a total order, the condition (E) of the reduction
+proposition (*Consistency as an Extension Problem*, Section 3c). Candidates are
+the positions 0, 1, …, n − 1 of a ranking, 0 the best. A lottery q
+first-order stochastically dominates p when every top segment {0, …, k − 1}
+has at least as much probability under q (`cum p k ≤ cum q k`). A monotone
+coupling moves probability only upwards: J a b ≠ 0 implies b ≤ a.
+
+The coupling is the quantile coupling: lay p and q out as consecutive
+intervals of [0, T), best position first, and let J a b be the length of the
+overlap of the interval of a under p with the interval of b under q (`ov`). -/
+
+/-- The length of the overlap of [x₁, x₂) and [y₁, y₂). -/
+noncomputable def ov (x₁ x₂ y₁ y₂ : ℝ) : ℝ := max 0 (min x₂ y₂ - max x₁ y₁)
+
+lemma ov_nonneg (x₁ x₂ y₁ y₂ : ℝ) : 0 ≤ ov x₁ x₂ y₁ y₂ := le_max_left _ _
+
+lemma ov_comm (x₁ x₂ y₁ y₂ : ℝ) : ov x₁ x₂ y₁ y₂ = ov y₁ y₂ x₁ x₂ := by
+  unfold ov
+  rw [min_comm x₂ y₂, max_comm x₁ y₁]
+
+/-- Overlaps add over adjacent intervals. -/
+lemma ov_add {x₁ x₂ a b c : ℝ} (hx : x₁ ≤ x₂) (hab : a ≤ b) (hbc : b ≤ c) :
+    ov x₁ x₂ a b + ov x₁ x₂ b c = ov x₁ x₂ a c := by
+  unfold ov
+  simp only [max_def, min_def]
+  split_ifs <;> linarith
+
+lemma ov_self {x₁ x₂ : ℝ} (hx : x₁ ≤ x₂) (a : ℝ) : ov x₁ x₂ a a = 0 := by
+  unfold ov
+  simp only [max_def, min_def]
+  split_ifs <;> linarith
+
+lemma ov_full {x₁ x₂ y₁ y₂ : ℝ} (hx : x₁ ≤ x₂) (h1 : y₁ ≤ x₁) (h2 : x₂ ≤ y₂) :
+    ov x₁ x₂ y₁ y₂ = x₂ - x₁ := by
+  unfold ov
+  simp only [max_def, min_def]
+  split_ifs <;> linarith
+
+lemma ov_zero_of {x₁ x₂ y₁ y₂ : ℝ} (h : min x₂ y₂ ≤ max x₁ y₁) : ov x₁ x₂ y₁ y₂ = 0 :=
+  max_eq_left (sub_nonpos.mpr h)
+
+/-- The intervals of a monotone sequence tile: the overlaps add up. -/
+lemma ov_sum (y : ℕ → ℝ) (hy : Monotone y) {x₁ x₂ : ℝ} (hx : x₁ ≤ x₂) :
+    ∀ n, ∑ b ∈ range n, ov x₁ x₂ (y b) (y (b + 1)) = ov x₁ x₂ (y 0) (y n)
+  | 0 => by simp [ov_self hx]
+  | n + 1 => by
+    rw [sum_range_succ, ov_sum y hy hx n, ov_add hx (hy (Nat.zero_le n)) (hy (Nat.le_succ n))]
+
+/-- The probability of the top k positions. -/
+def cum (p : ℕ → ℝ) (k : ℕ) : ℝ := ∑ i ∈ range k, p i
+
+lemma cum_zero (p : ℕ → ℝ) : cum p 0 = 0 := by simp [cum]
+
+lemma cum_succ (p : ℕ → ℝ) (k : ℕ) : cum p (k + 1) = cum p k + p k := sum_range_succ _ _
+
+lemma cum_mono {p : ℕ → ℝ} (h0 : ∀ i, 0 ≤ p i) : Monotone (cum p) :=
+  monotone_nat_of_le_succ fun k => by rw [cum_succ]; linarith [h0 k]
+
+lemma cum_nonneg {p : ℕ → ℝ} (h0 : ∀ i, 0 ≤ p i) (k : ℕ) : 0 ≤ cum p k := by
+  have := cum_mono h0 (Nat.zero_le k)
+  rwa [cum_zero] at this
+
+/-- A coupling of p and q on the positions below n that moves probability only
+    upwards. -/
+def MonoCoupling (n : ℕ) (p q : ℕ → ℝ) : Prop :=
+  ∃ J : ℕ → ℕ → ℝ, (∀ a b, 0 ≤ J a b) ∧ (∀ a < n, ∑ b ∈ range n, J a b = p a) ∧
+    (∀ b < n, ∑ a ∈ range n, J a b = q b) ∧ ∀ a b, J a b ≠ 0 → b ≤ a
+
+/-- A monotone coupling makes q dominate p. -/
+theorem dom_of_mono {n : ℕ} {p q : ℕ → ℝ} (h : MonoCoupling n p q) :
+    ∀ k ≤ n, cum p k ≤ cum q k := by
+  obtain ⟨J, h0, hr, hc, hs⟩ := h
+  intro k hk
+  unfold cum
+  calc ∑ a ∈ range k, p a = ∑ a ∈ range k, ∑ b ∈ range n, J a b :=
+        sum_congr rfl fun a ha => (hr a (lt_of_lt_of_le (mem_range.mp ha) hk)).symm
+    _ = ∑ a ∈ range k, ∑ b ∈ range k, J a b := by
+        refine sum_congr rfl fun a ha => ?_
+        rw [← sum_range_add_sum_Ico _ hk]
+        have hz : ∑ b ∈ Ico k n, J a b = 0 := by
+          refine sum_eq_zero fun b hb => ?_
+          by_contra hne
+          have := hs a b hne
+          have ha' := mem_range.mp ha
+          have hb' := (mem_Ico.mp hb).1
+          omega
+        rw [hz, add_zero]
+    _ ≤ ∑ a ∈ range n, ∑ b ∈ range k, J a b :=
+        sum_le_sum_of_subset_of_nonneg (range_mono hk)
+          (fun a _ _ => sum_nonneg fun b _ => h0 a b)
+    _ = ∑ b ∈ range k, ∑ a ∈ range n, J a b := sum_comm
+    _ = ∑ b ∈ range k, q b :=
+        sum_congr rfl fun b hb => hc b (lt_of_lt_of_le (mem_range.mp hb) hk)
+
+/-- **Strassen for a chain, sufficient direction.** If q dominates p and both
+    have the same total on the positions below n, the quantile coupling is a
+    monotone coupling. -/
+theorem mono_of_dom {n : ℕ} {p q : ℕ → ℝ} (hp0 : ∀ i, 0 ≤ p i) (hq0 : ∀ i, 0 ≤ q i)
+    (htot : cum p n = cum q n) (h : ∀ k ≤ n, cum p k ≤ cum q k) : MonoCoupling n p q := by
+  have hP := cum_mono hp0
+  have hQ := cum_mono hq0
+  refine ⟨fun a b => if a < n ∧ b < n then
+      ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0, ?_, ?_, ?_, ?_⟩
+  · intro a b
+    show 0 ≤ (if a < n ∧ b < n then ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0)
+    split_ifs
+    · exact ov_nonneg _ _ _ _
+    · exact le_refl 0
+  · intro a ha
+    show ∑ b ∈ range n, (if a < n ∧ b < n then
+      ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0) = p a
+    have e : ∑ b ∈ range n, (if a < n ∧ b < n then
+        ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0) =
+        ∑ b ∈ range n, ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) :=
+      sum_congr rfl fun b hb => by rw [ite_eq_left ⟨ha, mem_range.mp hb⟩]
+    rw [e]
+    have hx : cum p a ≤ cum p (a + 1) := hP (Nat.le_succ a)
+    rw [ov_sum (cum q) hQ hx n, ov_full hx (by rw [cum_zero]; exact cum_nonneg hp0 a)
+      (by rw [← htot]; exact hP (by omega)), cum_succ]
+    ring
+  · intro b hb
+    show ∑ a ∈ range n, (if a < n ∧ b < n then
+      ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0) = q b
+    have e : ∑ a ∈ range n, (if a < n ∧ b < n then
+        ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0) =
+        ∑ a ∈ range n, ov (cum q b) (cum q (b + 1)) (cum p a) (cum p (a + 1)) :=
+      sum_congr rfl fun a ha => by rw [ite_eq_left ⟨mem_range.mp ha, hb⟩, ov_comm]
+    rw [e]
+    have hx : cum q b ≤ cum q (b + 1) := hQ (Nat.le_succ b)
+    rw [ov_sum (cum p) hP hx n, ov_full hx (by rw [cum_zero]; exact cum_nonneg hq0 b)
+      (by rw [htot]; exact hQ (by omega)), cum_succ]
+    ring
+  · intro a b hne
+    by_contra hba
+    apply hne
+    show (if a < n ∧ b < n then
+      ov (cum p a) (cum p (a + 1)) (cum q b) (cum q (b + 1)) else 0) = 0
+    split_ifs with hab
+    · apply ov_zero_of
+      have h1 : cum p (a + 1) ≤ cum q (a + 1) := h (a + 1) (by omega)
+      have h2 : cum q (a + 1) ≤ cum q b := hQ (by omega)
+      calc min (cum p (a + 1)) (cum q (b + 1)) ≤ cum p (a + 1) := min_le_left _ _
+        _ ≤ cum q b := h1.trans h2
+        _ ≤ max (cum p a) (cum q b) := le_max_right _ _
+    · rfl
+
+/-- **Strassen for a chain.** For nonnegative p and q of equal total on the
+    positions below n, a monotone coupling exists exactly when q dominates p. -/
+theorem mono_iff_dom {n : ℕ} {p q : ℕ → ℝ} (hp0 : ∀ i, 0 ≤ p i) (hq0 : ∀ i, 0 ≤ q i)
+    (htot : cum p n = cum q n) : MonoCoupling n p q ↔ ∀ k ≤ n, cum p k ≤ cum q k :=
+  ⟨dom_of_mono, mono_of_dom hp0 hq0 htot⟩
 
 end Couplings
