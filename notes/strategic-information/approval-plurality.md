@@ -177,6 +177,20 @@ With Propositions 1 and 2 the two steps of the [README](README.md), Section 1, c
 
 The second is the one adopted, through Blackwell's order on experiments ([README](README.md), Section 3).
 
+## 11. Stage 2 in bits
+
+By the lemma of the [README](README.md), Section 2, Blackwell's order at a poll holds exactly when the plurality ballot is a function of the approval ballot, voter by voter, and H(β_plur | β_appr) measures how far it fails. *(Checks in `scripts/information/stage2_bits.py`.)*
+
+**In the corner.** The plurality ballot is the preferred front-runner, a function of the approval ballot (Proposition 1), so H(β_plur | β_appr) = 0 for every culture. Under impartial culture, H(β_plur) = 1 bit and
+
+  H(β_appr) = log₂ m + (1/m) Σ_{j=0}^{m−1} log₂ C(m − 1, j),
+
+which is 1.92, 2.79, 3.64 and 4.47 bits for three to six candidates, against capacities of log₂ m and m bits. *(Proved: the approval ballot of the leader rule determines, and is determined by, the set T of candidates the voter ranks above a₁, since a₁ is approved exactly when a₂ is not in T; under impartial culture the size of T is uniform on 0, …, m − 1 and T is uniform given its size.)* With three candidates the strategic approval ballot already carries more than plurality's capacity of 1.58 bits. In the spatial model the values are lower (0.78 to 0.87 bits for plurality, 1.43 to 2.60 for approval, three to six candidates), and H(β_plur | β_appr) is zero at every poll (*computed*).
+
+**Away from the corner.** With weights moved from the corner by a random system, P = P₀ + λR, where P₀ puts 1 on the tie of the front-runners and 0.001 on the ties of the others with the leader, H(β_plur | β_appr) grows smoothly with λ: from 0.003 to 0.005 bits at λ = 0 (the residue of the finite 0.001) through 0.04 to 0.13 at λ = 0.03 to 0.34, 0.66 and 0.94 bits at λ = 1 for three, four and five candidates, while H(β_appr | β_plur) stays between 0.9 and 3.3 bits (*computed*, 40 weight systems each). The plurality vote is always approved (Proposition 5); what plurality adds is which of the approved candidates gets the single vote, which depends on intensities.
+
+**Ballot mistakes.** In Laslier's model of uncounted marks (exact best replies, 100 other voters), H(β_plur | β_appr) = 0 at polls with the third candidate well behind ([55, 45, 35], [52, 48, 30], [55, 45, 35, 20]). At [52, 48, 45] four voters in 400 approve both front-runners or neither, and it is 0.008 bits. At polls taken from impartial-culture profiles, where the third approval tally is often close to the runner-up's, it is 0.016 bits on average for three candidates and 0.049 for four (zero at 17 and 8 of 30 polls). *(Computed.)* So the front-runner part of Proposition 1 holds in that model once the front-runners' ties have separated from the third candidate's, as Section 9 says for large electorates, and not yet at a hundred voters when the race for second place is close. The comparison here is voter by voter; the noise the mistakes add to the count is left aside.
+
 ## References
 
 - Blackwell, D. (1953). Equivalent comparisons of experiments. *Annals of Mathematical Statistics* 24(2), 265–272. doi:10.1214/aoms/1177729032.
