@@ -12,7 +12,7 @@ The **k-fold cover** is the loop of length kn with variables y₀, …, y_{kn−
 
 **Proposition 1 (sections).** The global sections of the loop are exactly the global sections of the k-fold cover fixed by ℤ/k.
 
-*Proof.* A section fixed by the shift by n is periodic with period n, so its first n values form a section of the loop; conversely a section of the loop, repeated k times, is a fixed section of the cover. ∎
+*Proof.* A section fixed by the shift by n is periodic with period n, so its first n values form a section of the loop; conversely a section of the loop, repeated k times, is a fixed section of the cover. ∎ *(Checked in Lean, `lean/Covers.lean`.)*
 
 An empirical model on the cover that is fixed by ℤ/k **descends** to the loop: give the context C_i the distribution of any of its k lifts, which agree by symmetry. The result is an empirical model of the loop, since overlaps of lifted contexts lie over overlaps of contexts.
 

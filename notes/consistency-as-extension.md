@@ -62,7 +62,7 @@ For a rule whose outcome is a lottery, consistency over electorates can be read 
 
 **Lemma (joint draw).** For lotteries μ, ν and λ over the candidates, winners X ~ μ, Y ~ ν and Z ~ λ can be drawn jointly with "X = Y implies Z = X" exactly when λ(a) ≥ μ(a) + ν(a) − 1 for every candidate a.
 
-*Proof.* Necessity: the event X = Y = a has probability at least μ(a) + ν(a) − 1, and Z = a on it. Sufficiency: the numbers μ(a) + ν(a) add up to 2, so at most one candidate a has μ(a) + ν(a) > 1. Put d = max(0, μ(a) + ν(a) − 1) on X = Y = Z = a. The remaining masses μ − d·δ_a and ν − d·δ_a have total 1 − d, and each candidate b carries at most 1 − d of them together. That is the condition for drawing X and Y from them with X ≠ Y throughout. Draw Z from the remaining part of λ, which is non-negative because λ(a) ≥ d. ∎
+*Proof.* Necessity: the event X = Y = a has probability at least μ(a) + ν(a) − 1, and Z = a on it. Sufficiency: the numbers μ(a) + ν(a) add up to 2, so at most one candidate a has μ(a) + ν(a) > 1. Put d = max(0, μ(a) + ν(a) − 1) on X = Y = Z = a. The remaining masses μ − d·δ_a and ν − d·δ_a have total 1 − d, and each candidate b carries at most 1 − d of them together. That is the condition for drawing X and Y from them with X ≠ Y throughout. Draw Z from the remaining part of λ, which is non-negative because λ(a) ≥ d. ∎ *(Both directions checked in Lean, `lean/Couplings.lean`.)*
 
 So a rule L is consistent ex post exactly when L(t p + (1 − t) q)(a) ≥ L(p)(a) + L(q)(a) − 1 for all shares p and q, all t and all candidates a. For deterministic rules this is ordinary consistency. Every rule whose lottery is an affine function of the shares satisfies it, random dictatorship among them.
 

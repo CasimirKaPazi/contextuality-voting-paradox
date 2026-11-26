@@ -30,7 +30,13 @@
   * `lemma3` (rigidity): every degree is 0 or 1, and a voter of degree 1 is
     pivotal on every pair at every context (`pivotal`). The note states
     −1, 0 or 1; for rules into rankings −1 does not occur, since the
-    anti-dictatorship also has degree 1.
+    anti-dictatorship also has degree 1;
+  * Lemma 4 (no mask): a table that winds once is the identity or the
+    negation (`checkG1`), and it is the same at every context (`gOf_indep`);
+  * `prop1` (Proposition 1): all degrees are 0, or exactly one voter has
+    degree 1 and the rule is that voter's dictatorship or anti-dictatorship
+    (the reverse ranking, the half rotation k ↦ k + 3);
+  * `arrow`: with unanimity the rule is a dictatorship.
 -/
 
 module
@@ -139,27 +145,26 @@ def mkH (x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 : Bool) : Fin 3 → Bool → Bool
 
 def bools : List Bool := [true, false]
 
-def allG : Bool :=
+/-- Whether P holds for all 64 tables g. -/
+def allGOf (P : (Fin 3 → Bool → Bool) → Prop) [DecidablePred P] : Bool :=
   bools.all fun x0 => bools.all fun x1 => bools.all fun x2 => bools.all fun x3 =>
-  bools.all fun x4 => bools.all fun x5 => decide (CheckG (mkG x0 x1 x2 x3 x4 x5))
+  bools.all fun x4 => bools.all fun x5 => decide (P (mkG x0 x1 x2 x3 x4 x5))
 
-def allH : Bool :=
+/-- Whether P holds for all 4096 tables h. -/
+def allHOf (P : (Fin 3 → Bool → Bool → Bool) → Prop) [DecidablePred P] : Bool :=
   bools.all fun x0 => bools.all fun x1 => bools.all fun x2 => bools.all fun x3 =>
   bools.all fun x4 => bools.all fun x5 => bools.all fun x6 => bools.all fun x7 =>
   bools.all fun x8 => bools.all fun x9 => bools.all fun x10 => bools.all fun x11 =>
-  decide (CheckH (mkH x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11))
-
-theorem allG_eq : allG = true := by decide +kernel
-
-theorem allH_eq : allH = true := by decide +kernel
+  decide (P (mkH x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11))
 
 lemma all_bools {f : Bool → Bool} (h : bools.all f = true) (x : Bool) : f x = true := by
   cases x <;> simp_all [bools]
 
-theorem checkG (g : Fin 3 → Bool → Bool) : CheckG g := by
-  have h : decide (CheckG (mkG (g 0 true) (g 0 false) (g 1 true) (g 1 false) (g 2 true)
+theorem of_allG {P : (Fin 3 → Bool → Bool) → Prop} [DecidablePred P] (hP : allGOf P = true)
+    (g : Fin 3 → Bool → Bool) : P g := by
+  have h : decide (P (mkG (g 0 true) (g 0 false) (g 1 true) (g 1 false) (g 2 true)
       (g 2 false))) = true :=
-    all_bools (all_bools (all_bools (all_bools (all_bools (all_bools allG_eq
+    all_bools (all_bools (all_bools (all_bools (all_bools (all_bools hP
       (g 0 true)) (g 0 false)) (g 1 true)) (g 1 false)) (g 2 true)) (g 2 false)
   have hg : mkG (g 0 true) (g 0 false) (g 1 true) (g 1 false) (g 2 true) (g 2 false) = g := by
     funext e b
@@ -167,12 +172,13 @@ theorem checkG (g : Fin 3 → Bool → Bool) : CheckG g := by
   rw [hg] at h
   exact of_decide_eq_true h
 
-theorem checkH (h : Fin 3 → Bool → Bool → Bool) : CheckH h := by
-  have hd : decide (CheckH (mkH (h 0 true true) (h 0 true false) (h 0 false true)
+theorem of_allH {P : (Fin 3 → Bool → Bool → Bool) → Prop} [DecidablePred P]
+    (hP : allHOf P = true) (h : Fin 3 → Bool → Bool → Bool) : P h := by
+  have hd : decide (P (mkH (h 0 true true) (h 0 true false) (h 0 false true)
       (h 0 false false) (h 1 true true) (h 1 true false) (h 1 false true) (h 1 false false)
       (h 2 true true) (h 2 true false) (h 2 false true) (h 2 false false))) = true :=
     all_bools (all_bools (all_bools (all_bools (all_bools (all_bools (all_bools (all_bools
-      (all_bools (all_bools (all_bools (all_bools allH_eq
+      (all_bools (all_bools (all_bools (all_bools hP
       (h 0 true true)) (h 0 true false)) (h 0 false true)) (h 0 false false))
       (h 1 true true)) (h 1 true false)) (h 1 false true)) (h 1 false false))
       (h 2 true true)) (h 2 true false)) (h 2 false true)) (h 2 false false)
@@ -183,6 +189,33 @@ theorem checkH (h : Fin 3 → Bool → Bool → Bool) : CheckH h := by
     fin_cases e <;> cases a <;> cases b <;> rfl
   rw [hh] at hd
   exact of_decide_eq_true hd
+
+theorem checkG : ∀ g, CheckG g := of_allG (by decide +kernel)
+
+theorem checkH : ∀ h, CheckH h := of_allH (by decide +kernel)
+
+/-- No mask, one walker: a table that winds once is the identity or the negation. -/
+def CheckG1 (g : Fin 3 → Bool → Bool) : Prop :=
+  ValidG g → Wg g = 6 → (∀ e b, g e b = b) ∨ (∀ e b, g e b = !b)
+
+/-- No mask, two walkers: if one side of a square winds once, it is the same
+    wherever the other walker stands. -/
+def CheckH2 (h : Fin 3 → Bool → Bool → Bool) : Prop :=
+  ValidH h → ∀ p p' : Fin 6, Wg (fun e b => h e b (bit e p)) = 6 →
+    ∀ e b, h e b (bit e p) = h e b (bit e p')
+
+instance (g : Fin 3 → Bool → Bool) : Decidable (CheckG1 g) := by
+  unfold CheckG1 ValidG; infer_instance
+
+instance (h : Fin 3 → Bool → Bool → Bool) : Decidable (CheckH2 h) := by
+  unfold CheckH2 ValidH; infer_instance
+
+theorem checkG1 : ∀ g, CheckG1 g := of_allG (by decide +kernel)
+
+theorem checkH2 : ∀ h, CheckH2 h := of_allH (by decide +kernel)
+
+/-- Negating every comparison is the half rotation of the hexagon (the reverse ranking). -/
+lemma decode_neg : ∀ k : Fin 6, decode (fun e => !bit e k) = k + 3 := by decide
 
 /-! ### Rules and their walks -/
 
@@ -459,5 +492,147 @@ theorem degree_sum (hF : IIA F) (hU : Unanimous F) (c : ι → Fin 6) : ∑ i, d
   have := lemma2 hF c
   rw [W_univ hU] at this
   omega
+
+/-! ### Lemma 4 and Proposition 1: Arrow's theorem as a degree -/
+
+omit [Fintype ι] in
+lemma setS_setS (S : Finset ι) (k p : Fin 6) (d : ι → Fin 6) :
+    setS S k (setS S p d) = setS S k d := by
+  funext x
+  unfold setS
+  by_cases hx : x ∈ S <;> simp [hx]
+
+omit [Fintype ι] in
+/-- A side of the square of {i} and {j} is the table of i at a context moved by j. -/
+lemma slice_eq (hF : IIA F) {i j : ι} (hij : i ≠ j) (c : ι → Fin 6) (p : Fin 6) (e : Fin 3)
+    (b : Bool) : hOf F {i} {j} c e b (bit e p) = gOf F {i} (setS {j} p c) e b := by
+  have hd : Disjoint ({i} : Finset ι) {j} := Finset.disjoint_singleton.mpr hij
+  show bit e (F (setS {j} (rep (bit e p)) (setS {i} (rep b) c))) =
+    bit e (F (setS {i} (rep b) (setS {j} p c)))
+  rw [setS_comm hd (rep b) p c]
+  apply hF e
+  intro x
+  unfold setS
+  split_ifs <;> first | rfl | exact bit_rep e _
+
+omit [Fintype ι] in
+lemma gOf_upd (hF : IIA F) {i j : ι} (hij : i ≠ j) (c : ι → Fin 6) (p : Fin 6)
+    (h6 : W F {i} c = 6) (e : Fin 3) (b : Bool) :
+    gOf F {i} (setS {j} p c) e b = gOf F {i} c e b := by
+  have hs : ∀ q, (fun e b => hOf F {i} {j} c e b (bit e q)) = gOf F {i} (setS {j} q c) :=
+    fun q => funext fun e => funext fun b => slice_eq hF hij c q e b
+  have h1 : Wg (fun e b => hOf F {i} {j} c e b (bit e (c j))) = 6 := by
+    rw [hs, setS_self, ← W_eq hF]
+    exact h6
+  have hc := checkH2 _ (validH_of hF {i} {j} c) (c j) p h1 e b
+  rw [slice_eq hF hij, slice_eq hF hij, setS_self] at hc
+  exact hc.symm
+
+/-- **Lemma 4 (no mask), across contexts.** The table of a voter of degree 1
+    is the same at every context. -/
+theorem gOf_indep (hF : IIA F) (i : ι) (c c' : ι → Fin 6) (h6 : W F {i} c = 6) (e : Fin 3)
+    (b : Bool) : gOf F {i} c' e b = gOf F {i} c e b := by
+  have key : ∀ U : Finset ι,
+      gOf F {i} (fun x => if x ∈ U then c' x else c x) e b = gOf F {i} c e b := by
+    intro U
+    induction U using Finset.induction_on with
+    | empty => simp
+    | @insert j U _ ih =>
+      have hmix : (fun x => if x ∈ insert j U then c' x else c x) =
+          setS {j} (c' j) (fun x => if x ∈ U then c' x else c x) := by
+        funext x
+        unfold setS
+        by_cases hxj : x = j
+        · subst hxj
+          simp
+        · simp [hxj]
+      rw [hmix]
+      by_cases hji : j = i
+      · subst hji
+        have : gOf F {j} (setS {j} (c' j) (fun x => if x ∈ U then c' x else c x)) =
+            gOf F {j} (fun x => if x ∈ U then c' x else c x) := by
+          funext e b
+          unfold gOf
+          rw [setS_setS]
+        rw [this, ih]
+      · have h6' : W F {i} (fun x => if x ∈ U then c' x else c x) = 6 := by
+          rw [W_indep hF {i} _ c]
+          exact h6
+        rw [gOf_upd hF (Ne.symm hji) _ _ h6', ih]
+  have := key univ
+  simpa using this
+
+/-- A voter of degree 1 is a dictator or an anti-dictator. -/
+theorem dict_or_anti (hF : IIA F) (i : ι) (c : ι → Fin 6) (h6 : W F {i} c = 6) :
+    (∀ π, F π = π i) ∨ (∀ π, F π = π i + 3) := by
+  have hF' : ∀ π, F π = walkG (gOf F {i} π) (π i) := by
+    intro π
+    have := walk_eq hF {i} π (π i)
+    rw [setS_self] at this
+    exact this
+  rcases checkG1 (gOf F {i} c) (validG_of hF {i} c) (by rw [← W_eq hF]; exact h6) with
+    hid | hneg
+  · left
+    intro π
+    rw [hF' π]
+    unfold walkG
+    have : (fun e => gOf F {i} π e (bit e (π i))) = fun e => bit e (π i) :=
+      funext fun e => by rw [gOf_indep hF i c π h6, hid]
+    rw [this, decode_bits]
+  · right
+    intro π
+    rw [hF' π]
+    unfold walkG
+    have : (fun e => gOf F {i} π e (bit e (π i))) = fun e => !bit e (π i) :=
+      funext fun e => by rw [gOf_indep hF i c π h6, hneg]
+    rw [this, decode_neg]
+
+/-- **Proposition 1.** For three alternatives and any finite set of voters, an
+    IIA rule into rankings either gives every voter degree 0, or gives exactly
+    one voter degree 1 and is that voter's dictatorship or anti-dictatorship. -/
+theorem prop1 (hF : IIA F) :
+    (∀ i c, deg F i c = 0) ∨
+      ∃ i, (∀ j c, deg F j c = if j = i then 1 else 0) ∧
+        ((∀ π, F π = π i) ∨ (∀ π, F π = π i + 3)) := by
+  by_cases h : ∃ i c, deg F i c ≠ 0
+  · right
+    obtain ⟨i, c, hic⟩ := h
+    have hd1 : ∀ c', deg F i c' = 1 := by
+      intro c'
+      rcases lemma3 hF i c' with h0 | h1
+      · exact absurd ((lemma1 hF i c c').trans h0) hic
+      · exact h1
+    have h6 : W F {i} c = 6 := by
+      rw [six_deg hF, hd1]
+      norm_num
+    have hform := dict_or_anti hF i c h6
+    refine ⟨i, fun j c' => ?_, hform⟩
+    by_cases hji : j = i
+    · rw [ite_eq_left hji, hji]
+      exact hd1 c'
+    · rw [ite_eq_right hji]
+      have hconst : (fun k => F (setS {j} k c')) = fun _ => F c' := by
+        funext k
+        rcases hform with hf | hf <;> rw [hf, hf] <;> unfold setS <;> simp [Ne.symm hji]
+      unfold deg W
+      rw [hconst]
+      simp [wind, delta_self]
+  · left
+    push Not at h
+    exact h
+
+/-- **Arrow's theorem as a degree.** With unanimity the degrees sum to 1, so
+    some voter has degree 1, and the anti-dictatorship is not unanimous: the
+    rule is a dictatorship. -/
+theorem arrow (hF : IIA F) (hU : Unanimous F) : ∃ i, ∀ π, F π = π i := by
+  have hs := degree_sum hF hU (fun _ => 0)
+  rcases prop1 hF with h0 | ⟨i, -, hform⟩
+  · simp [h0] at hs
+  · refine ⟨i, ?_⟩
+    rcases hform with hf | hf
+    · exact hf
+    · exfalso
+      have h2 : (0 : Fin 6) = 0 + 3 := (hU 0).symm.trans (hf (fun _ => 0))
+      exact absurd h2 (by decide)
 
 end GlobalForm

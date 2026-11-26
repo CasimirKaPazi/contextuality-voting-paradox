@@ -51,7 +51,7 @@ Gibbard's theorem turns non-dictatorship into the first; Lemma 2 turns the first
 
 A natural response is to let the participants revise the rule. The revision is itself a procedure, and the dichotomy applies to the whole.
 
-**Corollary.** Let h be a game form whose outcomes are game forms g₁, …, g_k among the same participants, and let the composite procedure be: play h, then play the form g_j that h selects, each participant seeing the result of h. If the composite procedure can reach at least three outcomes, it is dictatorial or some participant at some preference has no universally correct strategist. The same holds for any finite depth of such composition. *(Proved here.)*
+**Corollary.** Let h be a game form whose outcomes are game forms g₁, …, g_k among the same participants, and let the composite procedure be: play h, then play the form g_j that h selects, each participant seeing the result of h. If the composite procedure can reach at least three outcomes, it is dictatorial or some participant at some preference has no universally correct strategist. The same holds for any finite depth of such composition. *(Proved here; checked in Lean for any finite depth, `lean/Composition.lean`.)*
 
 *Proof.* A strategy in the composite procedure is a strategy s_i in h together with a strategy t_i^j in each g_j, a contingency plan for every rule that may be selected. These sets are finite, and the composite assigns to each profile the outcome g_{h(s)}(t^{h(s)}), one of finitely many. So the composite procedure is a game form in Gibbard's sense, and Theorem 3 applies to it. For greater depth, compose repeatedly. ∎
 
@@ -80,7 +80,7 @@ Nor does the statement say that no good outcome exists, that strategic behaviour
 ## 9. Open points
 
 1. Check whether the reading of Section 4, existence from outside and non-computability from inside as undefinability in Tarski's sense, has a precedent, for instance in the literature following Binmore (1987) and Anderlini (1990).
-2. Formalise the corollary of Section 6 in Lean on top of `lean/Dichotomy.lean`. It needs only that the composite of finite game forms is a finite game form.
+2. *Done:* the corollary of Section 6 is checked in Lean for any finite depth of composition (`lean/Composition.lean`), with the outcomes of the composite taken as its range.
 3. Does the rational-opponent barrier survive composition? Composition introduces visible turns, which by Section 7 can remove it. Which composites keep it is not settled.
 4. State the analogue of the corollary for Theorem 6: a composite of procedures with lotteries as outcomes is again such a procedure, so the trade-off between regress and ex ante efficiency applies to the whole.
 

@@ -46,7 +46,7 @@ Each row of the table follows by reading one row and at most two columns. In the
 
 **Strict Nash strategies of player 2.** The form is isomorphic to its transpose. Reorder the rows as r0, r2, r4, r5, r3, r1 and the columns as s0, s5, s1, s4, s2, s3: the result is the transpose. So player 2's situation is player 1's. Explicitly, the table for player 2 (columns now play the role of rows) reads: c on top, s0; acb, s2; bca, s1; c at the bottom and Q top c or top equal to P's top, s5; abc against bac, s2; abc against bca, s4; bac against abc, s1; bac against acb, s3. ∎
 
-The script checks the table for both players against the matrix, checks tightness directly (every one of the 36 pairs of strict preferences has a pure equilibrium) and checks the isomorphism. The repository's brute-force test, `diag2.works_brute`, independently finds no rational diagonal.
+The script checks the table for both players against the matrix, checks tightness directly (every one of the 36 pairs of strict preferences has a pure equilibrium) and checks the isomorphism. The repository's brute-force test, `diag2.works_brute`, independently finds no rational diagonal. The theorem is also checked in Lean (`lean/TightCounterexample.lean`): tightness through the common veto, non-dictatorship, and for both players a strict Nash strategy under every pair of strict preferences, reduced to the 36 pairs of rankings.
 
 ## 3. How small it is
 
