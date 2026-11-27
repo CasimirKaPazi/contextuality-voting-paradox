@@ -8,11 +8,12 @@ in lexicographic order.
   1. score voting: this is the tie-breaker "random voters in turn" of Section 7;
   2. ranked pairs and the Schulze method on rankings with equal ranks, with an order of the candidates
      drawn along the tree of clone sets as the last ballot: independence of clones on random profiles
-     outside the exception, and how often several winners remain at the end (shared equally).
-     Pairs with equal vectors are locked in every order.
+     outside the exception. For ranked pairs, pairs with equal lists are ordered by the last ballot
+     (Proposition 19); locked in every order they can leave two winners. For Schulze several winners
+     at the end share equally.
   3. for the same two rules, every tie found is removed by one ballot added to ten copies of the
      profile (condition 2').
-Run: python3 equality_votes_again_rules.py   (needs numpy and scipy; about a minute)
+Run: python3 equality_votes_again_rules.py   (needs numpy and scipy; under a minute)
 """
 import itertools
 import numpy as np
@@ -148,7 +149,77 @@ def rule(profile,m,winners,name):
     return go([],types)
 
 
-for name, winners in [("ranked pairs", rp_winners), ("Schulze", schulze_winners)]:
+def ranked_pairs_again(profile, m):
+    """Ranked pairs with the voters voting again: every ballot is drawn, then an order of the candidates
+    along the tree of clone sets; pairs with equal lists are ordered by that order as Zavist and Tideman
+    order tied pairs by a ballot (by the higher candidate of the pair, then by the lower)."""
+    types = {}
+    for r in profile:
+        types[r] = types.get(r, 0) + 1
+    orders = tree_orders(list(types), m)
+
+    def winner(V, pos):
+        zero = tuple(0 for _ in next(iter(V.values())))
+        pairs = sorted([p for p in V if V[p] > zero],
+                       key=lambda p: (tuple(-v for v in V[p]), min(pos[p[0]], pos[p[1]]), max(pos[p[0]], pos[p[1]])))
+        locked = set()
+        for a, b in pairs:
+            stack, seen = [b], {b}
+            while stack:
+                u = stack.pop()
+                for c, d in locked:
+                    if c == u and d not in seen:
+                        seen.add(d)
+                        stack.append(d)
+            if a not in seen:
+                locked.add((a, b))
+        return next(x for x in range(m) if not any(b == x for _, b in locked))
+
+    def go(added, left):
+        out = np.zeros(m)
+        if not left:
+            for order, w in orders.items():
+                pos = tuple(order.index(x) for x in range(m))
+                out[winner(vectors(profile, m, added + [pos]), pos)] += w
+            return out
+        total = sum(left.values())
+        return sum(c / total * go(added + [t], {u: v for u, v in left.items() if u != t}) for t, c in left.items())
+
+    return go([], types)
+
+
+# a profile at which locking equal lists in every order leaves two winners at the last step
+read = lambda text: tuple(text.index(x) for x in "abcd")
+seven = [read(t) for t in ["abcd"] * 2 + ["cdab"] * 2 + ["dbca", "dbac", "bdca"]]
+last = vectors(seven, 4, [read(t) for t in ["abcd", "cdab", "dbca", "dbac", "bdca"]] + [read("abcd")])
+assert rp_winners(last, 4) == {1, 3}
+L = ranked_pairs_again(seven, 4)
+for x in range(4):
+    for level in (-0.5, 0.5):
+        L2 = ranked_pairs_again([canonical(list(r) + [r[x] + level]) for r in seven], 5)
+        merged = L2[:4].copy()
+        merged[x] += L2[4]
+        assert np.allclose(merged, L)
+print("2. ranked pairs, seven voters, four candidates: with equal lists locked in every order two winners are left"
+      " at a last step;\n   with equal lists ordered by the last ballot the lottery is", L.round(4),
+      "and is independent of clones")
+
+for m, trials in [(3, 300), (4, 150)]:
+    W = weak_orders(m)
+    tested = 0
+    for _ in range(trials):
+        prof = [W[i] for i in rng.integers(len(W), size=int(rng.integers(1, 6)))]
+        x = int(rng.integers(m))
+        if any(all(r[y] == r[x] for r in prof) for y in range(m) if y != x):
+            continue
+        tested += 1
+        L, L2 = ranked_pairs_again(prof, m), ranked_pairs_again(clone(prof, x, m), m + 1)
+        merged = L2[:m].copy()
+        merged[x] += L2[m]
+        assert np.allclose(merged, L, atol=1e-9), (prof, x, L, L2)
+    print(f"2. ranked pairs, {m} candidates: independent of clones on {tested} random profiles outside the exception")
+
+for name, winners in [("Schulze", schulze_winners)]:
     for m, trials in [(3, 200), (4, 60)]:
         W = weak_orders(m)
         tested = 0
