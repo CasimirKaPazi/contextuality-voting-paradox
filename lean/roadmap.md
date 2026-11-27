@@ -24,7 +24,7 @@ Each line names the main results already checked, by thread of the project roadm
 - **C (cycles and twists).**
   - Propositions 1–5 and remark (d) of *Cycles and Twists* (`ValueSpaces.lean`, `ProbLine.lean`, `CircleTournaments.lean`, `Nerve.lean`).
   - Propositions 1–3 of *Loops of Relations* (`LoopsOfRelations.lean`).
-  - Propositions 1 and 2 of *Covers and Division* and part 1 of the corollary (`Covers.lean`, `CoversDecomp.lean`).
+  - Propositions 1 and 2 of *Covers and Division*, with the bound and the K-fold cover, and part 1 of the corollary (`Covers.lean`, `CoversDecomp.lean`).
 - **D (strategy as a halting problem).**
   - Gibbard (1973), Lemma 2 and Theorem 3 (`Arrow.lean`, `Gibbard73.lean`, `Diagonal.lean`, `Dichotomy.lean`).
   - The corollary of *What Cannot Be Defined from Inside*: composite procedures (`Composition.lean`).
@@ -55,7 +55,7 @@ These are definitions and toolkits that several later items need. Doing them fir
 
 ## 2. Nearly finished: complete these
 
-1. **Covers and division, the rest of Section 2** (`notes/covers-and-division.md`). Proposition 2 and part 1 of the corollary are in place (`CoversDecomp.lean`). Open: the bound k ≤ min |V_i| (decomposition into simple cycles), the single ℤ/K-invariant distribution on the K-fold cover, and parts 2–3 of the corollary in the language of levels (*Scenarios*). Effort: small to moderate.
+1. **Covers and division, parts 2–3 of the corollary** (`notes/covers-and-division.md`). Proposition 2 with the bound k ≤ m and the K-fold cover, and part 1 of the corollary, are in place (`CoversDecomp.lean`). Open: parts 2–3 in the language of levels (*Scenarios*): the K-fold cover at level 3 relative to ℤ/K, and level 1 of the loop. Effort: small to moderate.
 2. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
    - Its stages are checked.
    - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.

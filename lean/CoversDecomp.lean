@@ -12,8 +12,9 @@
 
   * `exists_walk`: from a node with positive outflow, following positive
     edges by a fixed choice never gets stuck, since inflow equals outflow.
-    Two of its values at layer 0 agree, by pigeonhole, which closes a walk of
-    k rounds: a global section of the k-fold cover (`Cyc`).
+    Two of its values at a chosen layer agree, by pigeonhole; the first
+    repetition closes a walk of k rounds, a global section of the k-fold
+    cover (`Cyc`), which passes that layer at k distinct values.
   * `decomp`: every circulation is a non-negative combination of such walks,
     each counted by how often it uses an edge in one period (`Cyc.cnt`). Each
     step removes as much of one walk as fits, the least ratio of weight to
@@ -28,11 +29,16 @@
     finite cover gives an empirical model, so a loop has an empirical model
     exactly when some finite cover has a global section (the corollary, for
     relations of period n).
+  * `prop2_cover`, `prop2_lcm`: the bound and one cover. The walk closes at
+    the first value that repeats at a chosen context j, so it has at most |S|
+    rounds when the pairs allowed at j start in S; taking j and S with the
+    least |S| gives the note's bound k ≤ m. With K = lcm(1, …, |S|), every
+    walk is a section of the K-fold cover, and the model is a mixture of
+    descents of uniform rotation mixtures on that one cover.
 
-  Not formalised here: the bound k ≤ min |V_i| (it needs simple walks); the
-  form with one ℤ/K-invariant distribution on the K-fold cover,
-  K = lcm(1, …, m); and the corollary's statements in terms of the levels of
-  obstruction.
+  Not formalised here: the corollary's parts 2 and 3, in terms of the levels
+  of obstruction. The walks pass the chosen context at distinct values but
+  need not be simple cycles elsewhere.
 -/
 
 module
@@ -156,44 +162,74 @@ def walk (step : ℕ → V → V) (x₀ : V) : ℕ → V
   | m + 1 => step m (walk step x₀ m)
 
 omit [DecidableEq V] in
-/-- From a node of layer 0 with positive outflow, the walk along positive edges
-    closes after some rounds: a closed walk all of whose edges are positive. -/
-theorem exists_walk {f : ℕ → V → V → ℝ} (h : Circ n f) (x₀ : V)
-    (hx₀ : ∃ y, 0 < f 0 x₀ y) : ∃ c : Cyc V n, ∀ m, 0 < f (m % n) (c.s m) (c.s (m + 1)) := by
-  let W := walk (fun m w => nextOf (f m) w) x₀
-  have hW : ∀ m, W (m + 1) = nextOf (f m) (W m) := fun m => rfl
+/-- From a node of layer j₀ with positive outflow, the walk along positive edges
+    closes after some rounds: a closed walk all of whose edges are positive.
+    It closes at the first value at layer j₀ that repeats, so its rounds pass
+    layer j₀ at distinct values: there are at most |S| of them when every
+    positive edge out of layer j₀ starts in S. -/
+theorem exists_walk {f : ℕ → V → V → ℝ} (h : Circ n f) {j₀ : ℕ} (hj : j₀ < n) (S : Finset V)
+    (hS : ∀ x y, 0 < f j₀ x y → x ∈ S) (x₀ : V) (hx₀ : ∃ y, 0 < f j₀ x₀ y) :
+    ∃ c : Cyc V n, c.k ≤ S.card ∧ ∀ m, 0 < f (m % n) (c.s m) (c.s (m + 1)) := by
+  classical
+  let W := walk (fun m w => nextOf (f (j₀ + m)) w) x₀
+  have hW : ∀ m, W (m + 1) = nextOf (f (j₀ + m)) (W m) := fun m => rfl
   -- every node of the walk has positive outflow, and every edge is positive
-  have hpos : ∀ m, ∃ y, 0 < f m (W m) y := by
+  have hpos : ∀ m, ∃ y, 0 < f (j₀ + m) (W m) y := by
     intro m
     induction m with
     | zero => exact hx₀
     | succ m ih =>
-      have he : 0 < f m (W m) (W (m + 1)) := by
+      show ∃ y, 0 < f (j₀ + m + 1) (W (m + 1)) y
+      have he : 0 < f (j₀ + m) (W m) (W (m + 1)) := by
         rw [hW]
         unfold nextOf
         split_ifs
         exact ih.choose_spec
       by_contra hno
       push Not at hno
-      have h1 : ∑ z, f (m + 1) (W (m + 1)) z ≤ 0 := sum_nonpos fun z _ => hno z
-      have h2 : f m (W m) (W (m + 1)) ≤ ∑ x, f m x (W (m + 1)) :=
-        single_le_sum (fun x _ => h.nonneg m x (W (m + 1))) (mem_univ (W m))
+      have h1 : ∑ z, f (j₀ + m + 1) (W (m + 1)) z ≤ 0 := sum_nonpos fun z _ => hno z
+      have h2 : f (j₀ + m) (W m) (W (m + 1)) ≤ ∑ x, f (j₀ + m) x (W (m + 1)) :=
+        single_le_sum (f := fun x => f (j₀ + m) x (W (m + 1)))
+          (fun x _ => h.nonneg (j₀ + m) x (W (m + 1))) (mem_univ (W m))
       rw [h.cons] at h2
       linarith
-  have hedge : ∀ m, 0 < f m (W m) (W (m + 1)) := by
+  have hedge : ∀ m, 0 < f (j₀ + m) (W m) (W (m + 1)) := by
     intro m
     rw [hW]
     unfold nextOf
     split_ifs with hh
     · exact hh.choose_spec
     · exact absurd (hpos m) hh
-  -- two values at layer 0 agree
+  -- the values at layer j₀ lie in S
+  have hWS : ∀ q, W (q * n) ∈ S := by
+    intro q
+    have := hedge (q * n)
+    rw [f_per_mul h j₀ q] at this
+    exact hS _ _ this
+  -- two values at layer j₀ agree; take the first repetition
   obtain ⟨a', b', hab', heq⟩ := Fintype.exists_ne_map_eq_of_card_lt
     (fun j : Fin (Fintype.card V + 1) => W (j.val * n)) (by simp)
-  obtain ⟨a, b, hab, hW'⟩ : ∃ a b : ℕ, a < b ∧ W (a * n) = W (b * n) := by
+  have hex : ∃ b, ∃ a < b, W (a * n) = W (b * n) := by
     rcases lt_or_gt_of_ne (Fin.val_ne_of_ne hab') with h' | h'
-    · exact ⟨a'.val, b'.val, h', heq⟩
-    · exact ⟨b'.val, a'.val, h', heq.symm⟩
+    · exact ⟨b'.val, a'.val, h', heq⟩
+    · exact ⟨a'.val, b'.val, h', heq.symm⟩
+  obtain ⟨b, ⟨a, hab, hW'⟩, hmin⟩ : ∃ b, (∃ a < b, W (a * n) = W (b * n)) ∧
+      ∀ b' < b, ¬ ∃ a < b', W (a * n) = W (b' * n) :=
+    ⟨Nat.find hex, Nat.find_spec hex, fun b' hb' => Nat.find_min hex hb'⟩
+  -- before round b the values at layer j₀ are distinct
+  have hb : b ≤ S.card := by
+    calc b = (range b).card := (card_range b).symm
+      _ ≤ S.card := by
+        refine card_le_card_of_injOn (fun q => W (q * n)) ?_ ?_
+        · intro q _
+          exact hWS q
+        · intro q₁ hq₁ q₂ hq₂ hh
+          have h₁ : q₁ < b := by simpa using hq₁
+          have h₂ : q₂ < b := by simpa using hq₂
+          rcases lt_trichotomy q₁ q₂ with hlt | heq | hgt
+          · exact (hmin q₂ h₂ ⟨q₁, hlt, hh⟩).elim
+          · exact heq
+          · exact (hmin q₁ h₁ ⟨q₂, hgt, hh.symm⟩).elim
   -- from round a the walk repeats with period (b − a) · n
   have hper : ∀ m, W (a * n + m + (b - a) * n) = W (a * n + m) := by
     intro m
@@ -205,15 +241,27 @@ theorem exists_walk {f : ℕ → V → V → ℝ} (h : Circ n f) (x₀ : V)
       exact hW'.symm
     | succ m ih =>
       rw [show a * n + (m + 1) + (b - a) * n = a * n + m + (b - a) * n + 1 by ring,
-        show a * n + (m + 1) = a * n + m + 1 by ring, hW, hW, ih, f_per_mul h]
-  refine ⟨⟨b - a, by omega, fun m => W (a * n + m), fun m => ?_⟩, fun m => ?_⟩
-  · show W (a * n + (m + (b - a) * n)) = W (a * n + m)
-    rw [← add_assoc]
-    exact hper m
-  · show 0 < f (m % n) (W (a * n + m)) (W (a * n + m + 1))
-    have := hedge (a * n + m)
-    have hm : (a * n + m) % n = m % n := by rw [Nat.add_comm, Nat.add_mul_mod_self_right]
-    rwa [f_mod h (a * n + m), hm] at this
+        show a * n + (m + 1) = a * n + m + 1 by ring, hW, hW, ih,
+        show j₀ + (a * n + m + (b - a) * n) = j₀ + (a * n + m) + (b - a) * n by ring,
+        f_per_mul h]
+  have hkn : n ≤ (b - a) * n := Nat.le_mul_of_pos_left n (by omega)
+  -- the walk read from layer 0: index m is the step a·n + (m + (b − a)·n − j₀)
+  refine ⟨⟨b - a, by omega, fun m => W (a * n + (m + (b - a) * n - j₀)), fun m => ?_⟩,
+    by show b - a ≤ S.card; omega, fun m => ?_⟩
+  · show W (a * n + (m + (b - a) * n + (b - a) * n - j₀)) = W (a * n + (m + (b - a) * n - j₀))
+    rw [show a * n + (m + (b - a) * n + (b - a) * n - j₀) =
+      a * n + (m + (b - a) * n - j₀) + (b - a) * n by omega]
+    exact hper _
+  · show 0 < f (m % n) (W (a * n + (m + (b - a) * n - j₀)))
+      (W (a * n + (m + 1 + (b - a) * n - j₀)))
+    have he := hedge (a * n + (m + (b - a) * n - j₀))
+    rw [show a * n + (m + (b - a) * n - j₀) + 1 = a * n + (m + 1 + (b - a) * n - j₀) by omega]
+      at he
+    have hm : (j₀ + (a * n + (m + (b - a) * n - j₀))) % n = m % n := by
+      rw [show j₀ + (a * n + (m + (b - a) * n - j₀)) = m + (a + (b - a)) * n by
+        rw [add_mul]; omega]
+      exact Nat.add_mul_mod_self_right _ _ _
+    rwa [f_mod h, hm] at he
 
 /-! ### Flow decomposition -/
 
@@ -238,16 +286,19 @@ noncomputable def suppCard (n : ℕ) (f : ℕ → V → V → ℝ) : ℕ :=
   ((range n ×ˢ (univ ×ˢ univ)).filter fun e : ℕ × V × V => f e.1 e.2.1 e.2.2 ≠ 0).card
 
 /-- **Flow decomposition.** A circulation is a non-negative combination of
-    closed walks along its positive edges, each weighted by its use of an edge. -/
-theorem decomp (hn : 0 < n) :
-    ∀ N (f : ℕ → V → V → ℝ), Circ n f → suppCard n f = N →
+    closed walks along its positive edges, each weighted by its use of an edge.
+    When the positive edges out of layer j₀ start in S, every walk has at most
+    |S| rounds. -/
+theorem decomp (hn : 0 < n) {j₀ : ℕ} (hj : j₀ < n) (S : Finset V) :
+    ∀ N (f : ℕ → V → V → ℝ), Circ n f → (∀ x y, 0 < f j₀ x y → x ∈ S) → suppCard n f = N →
       ∃ L : List (ℝ × Cyc V n),
-        (∀ c ∈ L, 0 ≤ c.1 ∧ ∀ m, 0 < f (m % n) (c.2.s m) (c.2.s (m + 1))) ∧
+        (∀ c ∈ L, 0 ≤ c.1 ∧ c.2.k ≤ S.card ∧
+          ∀ m, 0 < f (m % n) (c.2.s m) (c.2.s (m + 1))) ∧
         ∀ i x y, f i x y = (L.map fun c => c.1 * (c.2.cnt i x y : ℝ)).sum := by
   intro N
   induction N using Nat.strong_induction_on with
   | _ N ih =>
-    intro f h hN
+    intro f h hSf hN
     by_cases hz : ∀ i < n, ∀ x y, f i x y = 0
     · refine ⟨[], by simp, fun i x y => ?_⟩
       rw [f_mod h i]
@@ -255,16 +306,16 @@ theorem decomp (hn : 0 < n) :
     push Not at hz
     obtain ⟨i₀, hi₀, x₁, y₁, hne⟩ := hz
     have hpos₁ : 0 < f i₀ x₁ y₁ := lt_of_le_of_ne (h.nonneg _ _ _) (Ne.symm hne)
-    -- some edge of layer 0 is positive
-    have hT : 0 < ∑ x, ∑ y, f 0 x y := by
-      rw [← total_eq h i₀]
+    -- some edge of layer j₀ is positive
+    have hT : 0 < ∑ x, ∑ y, f j₀ x y := by
+      rw [total_eq h j₀, ← total_eq h i₀]
       have := single_le_sum (f := fun x => ∑ y, f i₀ x y)
         (fun x _ => sum_nonneg fun y _ => h.nonneg i₀ x y) (mem_univ x₁)
       have := single_le_sum (f := fun y => f i₀ x₁ y) (fun y _ => h.nonneg i₀ x₁ y) (mem_univ y₁)
       linarith
     obtain ⟨x₀, -, hx₀⟩ := pos_of_sum_pos hT
     obtain ⟨y₀, -, hy₀⟩ := pos_of_sum_pos hx₀
-    obtain ⟨c, hc⟩ := exists_walk h x₀ ⟨y₀, hy₀⟩
+    obtain ⟨c, hck, hc⟩ := exists_walk h hj S hSf x₀ ⟨y₀, hy₀⟩
     -- edges used by the walk are positive
     have hcpos : ∀ i x y, 0 < c.cnt i x y → 0 < f i x y := by
       intro i x y hcnt
@@ -346,13 +397,19 @@ theorem decomp (hn : 0 < n) :
         have := hf'.nonneg e.1 e.2.1 e.2.2
         simp only [f'] at this
         linarith
-    obtain ⟨L, hL, hLeq⟩ := ih _ hlt f' hf' rfl
+    have hSf' : ∀ x y, 0 < f' j₀ x y → x ∈ S := by
+      intro x y hxy
+      refine hSf x y ?_
+      have := mul_nonneg ht0 (Nat.cast_nonneg (α := ℝ) (c.cnt j₀ x y))
+      simp only [f'] at hxy
+      linarith
+    obtain ⟨L, hL, hLeq⟩ := ih _ hlt f' hf' hSf' rfl
     refine ⟨(t, c) :: L, ?_, fun i x y => ?_⟩
     · intro d hd
       rcases List.mem_cons.mp hd with rfl | hd
-      · exact ⟨ht0, hc⟩
-      · refine ⟨(hL d hd).1, fun m => ?_⟩
-        have := (hL d hd).2 m
+      · exact ⟨ht0, hck, hc⟩
+      · refine ⟨(hL d hd).1, (hL d hd).2.1, fun m => ?_⟩
+        have := (hL d hd).2.2 m
         have := mul_nonneg ht0
           (Nat.cast_nonneg (α := ℝ) (c.cnt (m % n) (d.2.s m) (d.2.s (m + 1))))
         simp only [f'] at *
@@ -423,10 +480,10 @@ theorem prop2 (hn : 0 < n) {R : ℕ → V → V → Prop} {e : ℕ → V → V �
       (∀ c ∈ L, 0 ≤ c.1 ∧ Covers.IsSection (Covers.Cover R n) (c.2.k * n) c.2.s) ∧
       (L.map fun c => c.1 * (c.2.k : ℝ)).sum = 1 ∧
       ∀ i x y, e i x y = (L.map fun c => (c.1 * (c.2.k : ℝ)) * ((c.2.cnt i x y : ℝ) / c.2.k)).sum := by
-  obtain ⟨L, hL, hLeq⟩ := decomp hn _ e h.circ rfl
+  obtain ⟨L, hL, hLeq⟩ := decomp hn hn univ _ e h.circ (fun x _ _ => mem_univ x) rfl
   refine ⟨L, fun c hc => ⟨(hL c hc).1, fun m => c.2.per m, fun m => ?_⟩, ?_, fun i x y => ?_⟩
   · rw [Covers.cover_mod]
-    exact h.supp _ _ _ ((hL c hc).2 m)
+    exact h.supp _ _ _ ((hL c hc).2.2 m)
   · have htot := h.total
     simp only [hLeq 0, sum_list] at htot
     rw [← htot]
@@ -439,6 +496,108 @@ theorem prop2 (hn : 0 < n) {R : ℕ → V → V → Prop} {e : ℕ → V → V �
     refine List.map_congr_left fun c _ => ?_
     have hk : (c.2.k : ℝ) ≠ 0 := by exact_mod_cast c.2.hk.ne'
     field_simp
+
+/-! ### One cover for all walks -/
+
+/-- How often the walk, run for N rounds, uses the edge from (i, x) to
+    (i + 1, y). For a walk that is a section of the N-fold cover, divided by
+    N, this is the descent of the uniform mixture of the N rotations of the
+    section by the deck transformation. -/
+def Cyc.cntAt (c : Cyc V n) (N i : ℕ) (x y : V) : ℕ :=
+  ∑ m ∈ range (N * n), if m % n = i % n ∧ c.s m = x ∧ c.s (m + 1) = y then 1 else 0
+
+omit [Fintype V] [DecidableEq V] in
+/-- A sum over q periods of a periodic function is q times the sum over one. -/
+lemma sum_range_mul_period (g : ℕ → ℕ) (p : ℕ) (hg : ∀ m, g (m + p) = g m) :
+    ∀ q, ∑ m ∈ range (q * p), g m = q * ∑ m ∈ range p, g m := by
+  have hq : ∀ q m, g (m + q * p) = g m := fun q => Covers.periodic_mul hg q
+  intro q
+  induction q with
+  | zero => simp
+  | succ q ih =>
+    rw [show (q + 1) * p = q * p + p by ring, sum_range_add, ih]
+    have : ∑ j ∈ range p, g (q * p + j) = ∑ j ∈ range p, g j :=
+      sum_congr rfl fun j _ => by rw [add_comm, hq q j]
+    rw [this]
+    ring
+
+omit [Fintype V] in
+/-- Run for a multiple q · k of its k rounds, a walk uses each edge q times as often. -/
+lemma Cyc.cntAt_mul (c : Cyc V n) (q i : ℕ) (x y : V) :
+    c.cntAt (c.k * q) i x y = q * c.cnt i x y := by
+  unfold Cyc.cntAt Cyc.cnt
+  rw [show c.k * q * n = q * (c.k * n) by ring]
+  refine sum_range_mul_period
+    (fun m => if m % n = i % n ∧ c.s m = x ∧ c.s (m + 1) = y then 1 else 0) (c.k * n)
+    (fun m => ?_) q
+  have h1 : c.s (m + c.k * n + 1) = c.s (m + 1) := by
+    rw [show m + c.k * n + 1 = m + 1 + c.k * n by ring, c.per]
+  simp only [h1, Nat.add_mul_mod_self_right, c.per]
+
+omit [Fintype V] [DecidableEq V] in
+/-- lcm(1, …, m) is positive and divisible by every k with 1 ≤ k ≤ m. -/
+lemma lcm_Icc (m : ℕ) :
+    0 < (Icc 1 m).lcm id ∧ ∀ k, 0 < k → k ≤ m → k ∣ (Icc 1 m).lcm id := by
+  refine ⟨Nat.pos_of_ne_zero fun h0 => ?_, fun k hk hkm => Finset.dvd_lcm (mem_Icc.mpr ⟨hk, hkm⟩)⟩
+  rw [Finset.lcm_eq_zero_iff] at h0
+  simp at h0
+
+/-- **Proposition 2, with the bound and one cover.** Let S hold the starting
+    values of the edges allowed at context j. Then the walks of Proposition 2
+    can be taken with at most |S| rounds each. For any K divisible by all
+    numbers from 1 to |S|, each walk is a global section of the K-fold cover,
+    and the model is the mixture, with weights w · k summing to 1, of the
+    descents of the uniform mixtures of the K rotations of these sections.
+    A mixture of rotation-invariant distributions is rotation-invariant, so
+    this is one ℤ/K-invariant distribution on sections of the K-fold cover. -/
+theorem prop2_cover (hn : 0 < n) {R : ℕ → V → V → Prop} {e : ℕ → V → V → ℝ} (h : Model R n e)
+    {j : ℕ} (hj : j < n) (S : Finset V) (hS : ∀ x y, R j x y → x ∈ S) {K : ℕ} (hK : 0 < K)
+    (hdiv : ∀ k, 0 < k → k ≤ S.card → k ∣ K) :
+    ∃ L : List (ℝ × Cyc V n),
+      (∀ c ∈ L, 0 ≤ c.1 ∧ c.2.k ≤ S.card ∧ Covers.IsSection (Covers.Cover R n) (K * n) c.2.s) ∧
+      (L.map fun c => c.1 * (c.2.k : ℝ)).sum = 1 ∧
+      ∀ i x y, e i x y =
+        (L.map fun c => (c.1 * (c.2.k : ℝ)) * ((c.2.cntAt K i x y : ℝ) / K)).sum := by
+  obtain ⟨L, hL, hLeq⟩ := decomp hn hj S _ e h.circ (fun x y hxy => hS x y (h.supp j x y hxy)) rfl
+  refine ⟨L, fun c hc => ⟨(hL c hc).1, (hL c hc).2.1, fun m => ?_, fun m => ?_⟩, ?_,
+    fun i x y => ?_⟩
+  · obtain ⟨q, hq⟩ := hdiv c.2.k c.2.hk (hL c hc).2.1
+    rw [hq, show c.2.k * q * n = q * (c.2.k * n) by ring]
+    exact Covers.periodic_mul c.2.per q m
+  · rw [Covers.cover_mod]
+    exact h.supp _ _ _ ((hL c hc).2.2 m)
+  · have htot := h.total
+    simp only [hLeq 0, sum_list] at htot
+    rw [← htot]
+    congr 1
+    refine List.map_congr_left fun c _ => ?_
+    simp only [← mul_sum]
+    rw [c.2.total_cnt hn]
+  · rw [hLeq i x y]
+    congr 1
+    refine List.map_congr_left fun c hc => ?_
+    obtain ⟨q, hq⟩ := hdiv c.2.k c.2.hk (hL c hc).2.1
+    have hk : (c.2.k : ℝ) ≠ 0 := by exact_mod_cast c.2.hk.ne'
+    have hq0 : (q : ℝ) ≠ 0 := by
+      have : q ≠ 0 := by
+        rintro rfl
+        omega
+      exact_mod_cast this
+    rw [hq, c.2.cntAt_mul]
+    push_cast
+    rw [show (c.2.k : ℝ) * q = q * c.2.k by ring, mul_div_mul_left _ _ hq0]
+    field_simp
+
+/-- The note's form: K = lcm(1, …, |S|). -/
+theorem prop2_lcm (hn : 0 < n) {R : ℕ → V → V → Prop} {e : ℕ → V → V → ℝ} (h : Model R n e)
+    {j : ℕ} (hj : j < n) (S : Finset V) (hS : ∀ x y, R j x y → x ∈ S) :
+    ∃ L : List (ℝ × Cyc V n),
+      (∀ c ∈ L, 0 ≤ c.1 ∧ c.2.k ≤ S.card ∧
+        Covers.IsSection (Covers.Cover R n) ((Icc 1 S.card).lcm id * n) c.2.s) ∧
+      (L.map fun c => c.1 * (c.2.k : ℝ)).sum = 1 ∧
+      ∀ i x y, e i x y = (L.map fun c => (c.1 * (c.2.k : ℝ)) *
+        ((c.2.cntAt ((Icc 1 S.card).lcm id) i x y : ℝ) / ((Icc 1 S.card).lcm id : ℕ))).sum :=
+  prop2_cover hn h hj S hS (lcm_Icc _).1 (lcm_Icc _).2
 
 /-! ### The converse of division -/
 
