@@ -10,6 +10,8 @@ in lexicographic order.
      drawn along the tree of clone sets as the last ballot: independence of clones on random profiles
      outside the exception, and how often several winners remain at the end (shared equally).
      Pairs with equal vectors are locked in every order.
+  3. for the same two rules, every tie found is removed by one ballot added to ten copies of the
+     profile (condition 2').
 Run: python3 equality_votes_again_rules.py   (needs numpy and scipy; about a minute)
 """
 import itertools
@@ -165,4 +167,19 @@ for name, winners in [("ranked pairs", rp_winners), ("Schulze", schulze_winners)
         print(f"2. {name}, {m} candidates: independent of clones on {tested} random profiles outside the exception;"
               f" several winners left at the end in {stats[name]} of the last steps,"
               f" not a set of clones in {stats[name + ' other']}")
+
+# ---------- 3. condition 2': a tie is within one ballot added to ten copies ----------
+
+for name, winners in [("ranked pairs", rp_winners), ("Schulze", schulze_winners)]:
+    for m, trials in [(3, 150), (4, 40)]:
+        W = weak_orders(m)
+        ties = 0
+        for _ in range(trials):
+            prof = [W[i] for i in rng.integers(len(W), size=int(rng.integers(1, 6)))]
+            if len(winners(vectors(prof, m, []), m)) == 1:
+                continue
+            ties += 1
+            assert any(len(winners(vectors(prof * 10 + [r], m, []), m)) == 1 for r in W), (name, prof)
+        print(f"3. {name}, {m} candidates: each of {ties} ties among {trials} random profiles is removed by one ballot"
+              f" added to ten copies")
 print("all checks passed")
