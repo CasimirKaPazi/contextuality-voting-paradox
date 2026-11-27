@@ -1,5 +1,5 @@
 """Bottom-two runoff with plurality order (BTR-plurality) against instant runoff, three candidates, in
-the corner (*BTR and Instant Runoff*, Sections 3 and 4).
+the corner (*Instant Runoff and BTR-Plurality*, Sections 3 and 4).
 
 BTR-plurality orders the candidates once by first preferences (top T, middle M, bottom B); the
 bottom two meet in a pairwise runoff on the full rankings, the survivor meets T, and the winner of

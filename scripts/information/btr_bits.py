@@ -1,6 +1,6 @@
-"""Stage 2 in bits for BTR-plurality and instant runoff in the smooth model (*BTR and Instant Runoff*,
+"""Stage 2 in bits for BTR-plurality and instant runoff in the smooth model (*Instant Runoff and BTR-Plurality*,
 Section 6).  Both methods take ranked ballots, so a poll (a vector of expected ballot shares) is the
-same object for both: the ballots are compared at the settled IRV poll, at the settled BTR poll
+same object for both: the ballots are compared at the resting IRV poll, at the resting BTR poll
 (each reached from the sincere ballots) and with each method at its own poll.  Entropies over 4000
 voters from the profile's culture, as in irv_bits.py.  Run: python3 btr_bits.py MODEL PRECISION;
 about a quarter of an hour per call.

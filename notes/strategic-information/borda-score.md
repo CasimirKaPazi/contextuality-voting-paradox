@@ -16,7 +16,9 @@ So score asks of each coefficient only its sign, and Borda only the order of the
 
 ## 3. Stage 2
 
-**Proposition 2.** In the corner (T) with (E) and three candidates, the Borda ballot is a function of the score ballot: both show the preferred front-runner, and the Borda ballot shows nothing else, since the third candidate is always in the middle. So Borda uses no more strategic information than score. With four or more candidates neither ballot is a function of the other: the Borda ballot shows the order of the middle candidates, the score ballot shows which of them stand above the leader. *(Proved, from Proposition 1 and the lemma of the [README](README.md), Section 2.)*
+**Proposition 2.** In the corner (T) with (E) and three candidates, the Borda ballot is a function of the score ballot: both show the preferred front-runner, and the Borda ballot shows nothing else, since the third candidate is always in the middle. The counts follow: the Borda totals are 2N(a₁ > a₂), 2N(a₂ > a₁) and N for the third candidate, and the score totals contain the first two up to the factor. So Borda uses no more strategic information than score. With four or more candidates neither ballot is a function of the other: the Borda ballot shows the order of the middle candidates, the score ballot shows which of them stand above the leader. By the Lemma of the [README](README.md), Section 2, neither count is then a function of the other. *(Proved, from Proposition 1.)*
+
+In the count, Borda keeps m − 2 independent numbers about the electorate and score m − 1; the two have one in common, the comparison of the front-runners (*computed* for three to six candidates, `scripts/information/strategic_count.py`; README, Section 2, Proposition).
 
 In bits under impartial culture (exact over all rankings; *computed*):
 
@@ -27,7 +29,7 @@ In bits under impartial culture (exact over all rankings; *computed*):
 | 5 | 3.58 | 3.64 | 1.79 | 1.85 |
 | 6 | 5.58 | 4.47 | 3.27 | 2.15 |
 
-H(Borda) = 1 + log₂ (m − 2)!, one bit for the front-runners and the sincere order of the middle; H(score) is the formula of *Plurality and Approval*, Section 11. From six candidates on, the strategic Borda ballot carries more bits than the strategic score ballot, although each carries a part the other lacks. Away from the corner (weights P₀ + λR as in *Plurality and Approval*, Section 11) the zero for three candidates becomes 0.03 bits at λ = 0.01 and 0.74 bits at λ = 1, and for more candidates both conditional entropies stay large (*computed*). This is the trade-off that Giles and Postl describe for small electorates with private information: approval expresses intensity but does not convey the full ordinal ranking (cited). Here it appears among strategic ballots: score keeps one threshold per candidate, Borda one order.
+H(Borda) = 1 + log₂ (m − 2)!, one bit for the front-runners and the sincere order of the middle; H(score) is the formula of *Plurality and Approval*, Section 11. From six candidates on, the strategic Borda ballot carries more bits than the strategic score ballot, although each carries a part the other lacks. This is a statement about the ballots: the Borda count adds the ballots up into m − 2 numbers, one fewer than score's, whatever a single ballot carries. Away from the corner (weights P₀ + λR as in *Plurality and Approval*, Section 11) the zero for three candidates becomes 0.03 bits at λ = 0.01 and 0.74 bits at λ = 1, and for more candidates both conditional entropies stay large (*computed*). This is the trade-off that Giles and Postl describe for small electorates with private information: approval expresses intensity but does not convey the full ordinal ranking (cited). Here it appears among strategic ballots: score keeps one threshold per candidate, Borda one order.
 
 ## 4. Polls
 

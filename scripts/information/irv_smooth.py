@@ -9,12 +9,12 @@ voters).  Expectations are estimated with K samples, the same samples for every 
 the samples in which a ballot is pivotal make a difference.  Remaining ties between ballots are
 broken towards the sincere ballot.  Polls move as in Eggers and Nowacki: v <- (1 - lam) v + lam BR(v),
 lam = 0.05, for 300 rounds, from ten starting polls (sincere ballots, polls concentrated on each pair
-of front-runners, three random polls).  A run counts as settled if the winner of the poll is the same
+of front-runners, three random polls).  A run comes to rest (its last poll is a resting poll) if the winner of the poll is the same
 over the last 100 rounds and no share moved by more than 0.03 over them.
 
 For each profile (101 voters, impartial culture with random utilities and a two-dimensional spatial
-model) the script records whether some settled run ends with a winner other than the Condorcet
-winner, whether no run settles, and, at the settled IRV polls, how many best replies rank the two
+model) the script records whether some run that comes to rest ends with a winner other than the Condorcet
+winner, whether no run comes to rest, and, at the resting IRV polls, how many best replies rank the two
 finalists against the voter's preference.  About a quarter of an hour per model and precision.
 """
 import itertools
@@ -153,9 +153,9 @@ def main(model, s, profiles=40):
                 S['other'] += any(w != c for w in won)
     for method, S in stat.items():
         print(f"{model:8s} s = {s:g}  {method:9s} with a Condorcet winner ({S['cw']} profiles): some "
-              f"settled run elects another candidate {S['other']}, no run settles {S['none']}; without "
-              f"one ({S['no_cw']}): some run settles {S['no_cw_settled']}")
-    print(f"{model:8s} s = {s:g}  IRV best replies at settled polls ranking the finalists against the "
+              f"run at rest elects another candidate {S['other']}, no run comes to rest {S['none']}; without "
+              f"one ({S['no_cw']}): some run comes to rest {S['no_cw_settled']}")
+    print(f"{model:8s} s = {s:g}  IRV best replies at resting polls ranking the finalists against the "
           f"voter's preference: {misordered[0]}/{misordered[1]}")
 
 

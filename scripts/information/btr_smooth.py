@@ -1,8 +1,8 @@
-"""BTR-plurality in the smooth model of irv_smooth.py (*BTR and Instant Runoff*, Section 5): the same
+"""BTR-plurality in the smooth model of irv_smooth.py (*Instant Runoff and BTR-Plurality*, Section 5): the same
 Dirichlet beliefs, ballot weight, poll dynamics, starting polls and settling test, with the winner of
 BTR-plurality in place of the IRV winner.  For each profile (101 voters, 40 per model) it records
-whether some settled run elects a candidate other than the Condorcet winner, and whether no run
-settles.  Run: python3 btr_smooth.py MODEL PRECISION PROFILES (for instance ic 85 40); about half an
+whether some run that comes to rest elects a candidate other than the Condorcet winner, and whether
+no run comes to rest.  Run: python3 btr_smooth.py MODEL PRECISION PROFILES (for instance ic 85 40); about half an
 hour per call on one core.
 """
 import sys, itertools

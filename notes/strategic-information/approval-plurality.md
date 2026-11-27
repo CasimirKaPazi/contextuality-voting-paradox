@@ -98,7 +98,7 @@ The memory is not an assumption about voters. Voters still cast leader-rule ball
 
 *(Proved; steps 1 to 3 and the step from a dominant set to an eligible challenger are checked in Lean, and so are parts 4 and 5 for the walk given by its properties, with no pairwise ties between candidates; checked on random profiles, where the bound 2(m − 1) is attained.)* On the profile of Section 5 the walk with memory runs a, d, b, c and stays at c, the Condorcet winner.
 
-The walk with memory satisfies the criterion asked for in the [README](README.md), Section 7, question 5, with N = 2(m − 1). It does so by using information that a single tally does not hold, the record of who has led. Without that record the information of Proposition 1, the whole row of the leader, is exactly what leads the walk to the strongest defeat. With it, the row is used to choose among candidates not yet tried. *(Interpretation.)*
+The walk with memory satisfies the criterion asked for in the [README](README.md), Section 7, question 7, with N = 2(m − 1). It does so by using information that a single tally does not hold, the record of who has led. Without that record the information of Proposition 1, the whole row of the leader, is exactly what leads the walk to the strongest defeat. With it, the row is used to choose among candidates not yet tried. *(Interpretation.)*
 
 As an explicit counting method on ranked ballots, started from the plurality count, the walk with memory is a Smith-efficient method of the agenda type: it follows defeats through the candidates, each tried at most once as leader, and stops at the last leader, who beats every candidate not yet tried. For sequential pairwise procedures with an agenda, ending in the top cycle is classical (Miller 1977†). The winner within the Smith set depends on the start and on the order of the walk, as with an agenda chosen by the tallies. The method is a consequence of the analysis, not a model of how voters or polls behave.
 
@@ -179,7 +179,7 @@ The second is the one adopted, through Blackwell's order on experiments ([README
 
 ## 11. Stage 2 in bits
 
-By the lemma of the [README](README.md), Section 2, Blackwell's order at a poll holds exactly when the plurality ballot is a function of the approval ballot, voter by voter, and H(β_plur | β_appr) measures how far it fails. *(Checks in `scripts/information/stage2_bits.py`.)*
+By the Lemma of the [README](README.md), Section 2, Blackwell's order fails at a poll whenever the plurality ballot is not a function of the approval ballot, and H(β_plur | β_appr) measures by how much. In the corner the order holds for the counts themselves (Proposition 1): the strategic plurality count keeps one number about the electorate and the strategic approval count m − 1, the first among them (README, Section 2, Proposition; `scripts/information/strategic_count.py`). The polls of the two methods are matched by the same leader and runner-up. *(Checks in `scripts/information/stage2_bits.py`.)*
 
 **In the corner.** The plurality ballot is the preferred front-runner, a function of the approval ballot (Proposition 1), so H(β_plur | β_appr) = 0 for every culture. Under impartial culture, H(β_plur) = 1 bit and
 

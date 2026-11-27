@@ -1,4 +1,4 @@
-# Bottom-Two Runoff and Instant Runoff under a Common Rationale
+# Instant Runoff and BTR-Plurality under a Common Rationale
 
 *Working note, part of [Strategic Information](README.md), first draft. It compares a Condorcet method from the bottom-two-runoff family with instant runoff, for three candidates, under the rationale of [The Common Rationale](rationale.md) as extended to ranked methods in [Instant Runoff and Plurality](irv-plurality.md). Both methods take the same ranked ballots and differ only in the counting, so the pair tests stage 2 alone. Conventions as in the README. The checks are in `scripts/information/btr_three.py` (the corner), `btr_smooth.py` (the smooth model) and `btr_bits.py` (stage 2 in bits).*
 
@@ -6,9 +6,9 @@
 
 The bottom-two-runoff family goes back to BTR-IRV, proposed by Rob LeGrand in 2006: the two options with the fewest first preferences meet, the pairwise loser is eliminated, its ballots pass to their next preferences, and this repeats until one option remains (cited, Electowiki). A Smith-set member can never be eliminated in a runoff against a candidate outside the Smith set, so the method satisfies the Condorcet and Smith criteria (cited). BTR-score orders the candidates by their total scores and lets the two lowest meet in pairwise runoffs, the winner facing the next candidate up until one remains (Hiveism 2024).
 
-Here the redistribution of ballots is read as part of the instant-runoff half of BTR-IRV, not of the bottom-two runoff. **BTR-plurality** therefore keeps the initial count: the candidates are ordered once by first preferences, and the two lowest still in the race meet in a pairwise runoff on the full rankings until one remains. With a fixed order this is a sequential pairwise agenda from the bottom up, in which the candidate with the most first preferences enters last; it is Smith-efficient for any initial order, by the argument above. With three candidates BTR-plurality and BTR-IRV coincide, since after the first runoff only two candidates are left. In the Ballot Front Finder Lab (https://github.com/CasimirKaPazi/Ballot-Front-Finder-Lab) BTR-plurality is defined by `ballots("rank") >> btr(firsts, margins)`; the other methods of these notes are among the lab's default methods.
+Here the redistribution of ballots is read as part of the instant-runoff half of BTR-IRV, not of the bottom-two runoff. **BTR-plurality** therefore keeps the initial count: the candidates are ordered once by first preferences, and the two lowest still in the race meet in a pairwise runoff on the full rankings until one remains. With a fixed order this is a sequential pairwise agenda from the bottom up, in which the candidate with the most first preferences enters last; it is Smith-efficient for any initial order, by the argument above. With three candidates BTR-plurality and BTR-IRV coincide, since after the first runoff only two candidates are left. Ties are taken as for BTR-score in *Equality of Voters and Alternatives*, Section 7: a pairwise tie goes to the candidate higher in the order, and equal counts of first preferences are ordered by voters drawn at random, each by their own ranking. They play no part below. In the Ballot Front Finder Lab (https://github.com/CasimirKaPazi/Ballot-Front-Finder-Lab) BTR-plurality is defined by `ballots("rank") >> btr(firsts, margins)`; the other methods of these notes are among the lab's default methods.
 
-**Stage 1.** Both methods take rankings, m! ballots. BTR-plurality reads the first preferences and the pairwise counts; instant runoff reads the first preferences of each round, which for three candidates are the first preferences and the final pairwise count. Plurality embeds in both through the first preferences ([README](README.md), Section 2).
+**Stage 1.** Both methods take rankings, m! ballots. The count of BTR-plurality is the first preferences and the pairwise margins. With three candidates these determine the whole histogram of rankings, and instant runoff has the same count there ([README](README.md), Section 2), so at stage 1 the two methods do not differ for three candidates. Plurality embeds in both through the first preferences. Like instant runoff, BTR-plurality fails the Equality Criterion: without a Condorcet winner its outcome depends on the order by first preferences, which a ballot and its reverse can change (README, Section 6).
 
 ## 2. Polls and pivot events
 
@@ -43,23 +43,23 @@ So in the corner the two methods agree in the worst case: both elect the Condorc
 
 In the smooth model of *Instant Runoff and Plurality*, Section 6 (Dirichlet beliefs over the ballot shares, all pivot events weighed, polls moved towards the best replies, ten starting polls, 101 voters, 40 profiles per model), the counts are (*computed*):
 
-| | | IRV: another winner | IRV: no settled run | BTR: another winner | BTR: no settled run |
+| | | IRV: another winner | IRV: no run comes to rest | BTR: another winner | BTR: no run comes to rest |
 |---|---|---|---|---|---|
 | impartial culture (36 with a Condorcet winner) | s = 85 | 3 | 1 | 12 | 0 |
 | | s = 20 | 2 | 3 | 2 | 4 |
 | spatial (40 with a Condorcet winner) | s = 85 | 1 | 0 | 1 | 0 |
 | | s = 20 | 2 | 0 | 1 | 1 |
 
-Without a Condorcet winner (four profiles, impartial culture) both settle in every case. In the spatial model the two methods are alike. Under impartial culture with sharp beliefs, BTR-plurality settles on another candidate in a third of the profiles with a Condorcet winner, instant runoff in one twelfth.
+Without a Condorcet winner (four profiles, impartial culture) both come to rest in every case. In the spatial model the two methods are alike. Under impartial culture with sharp beliefs, BTR-plurality comes to rest on another candidate in a third of the profiles with a Condorcet winner, instant runoff in one twelfth.
 
-A case shows how. In one profile the Condorcet winner C beats A with 50.5 per cent of the sincere ballots, and the three candidates have a third of the first preferences each. At a settled poll C's first preferences have fallen to 2 per cent: its supporters rank B first, which puts C at the bottom of the order, where it meets A in the first runoff, and on the strategic ballots A beats C with 58 per cent. A Condorcet method guarantees the Condorcet winner on the ballots it receives; with a narrow sincere margin, the strategic ballots of a shared poll need not contain one. *(Computed case; interpretation.)* Whether these settled polls are true equilibria or slow parts of the dynamics, and how they depend on the margin of the Condorcet winner, is open.
+A case shows how. In one profile the Condorcet winner C beats A with 50.5 per cent of the sincere ballots, and the three candidates have a third of the first preferences each. At a resting poll C's first preferences have fallen to 2 per cent: its supporters rank B first, which puts C at the bottom of the order, where it meets A in the first runoff, and on the strategic ballots A beats C with 58 per cent. A Condorcet method guarantees the Condorcet winner on the ballots it receives; with a narrow sincere margin, the strategic ballots of a shared poll need not contain one. *(Computed case; interpretation.)* Whether these resting polls are true equilibria or slow parts of the dynamics, and how they depend on the margin of the Condorcet winner, is open.
 
 ## 6. Stage 2 in bits
 
-Both methods take the same ballots, so a poll (a vector of expected ballot shares) is the same object for both, and the ballots can be compared at one and the same poll. At the settled IRV poll, the settled BTR poll, and each method at its own poll (*computed*, `btr_bits.py`, 4000 voters, 10 to 20 polls per setting):
+Both methods take the same ballots, so a poll (a vector of expected ballot shares) is the same object for both, and the ballots can be compared at one and the same poll. At the resting IRV poll, the resting BTR poll, and each method at its own poll (*computed*, `btr_bits.py`, 4000 voters, 10 to 20 polls per setting):
 
 - in the spatial model with s = 85 neither ballot is a function of the other on average, but at more than half of the polls both are: H(BTR | IRV) and H(IRV | BTR) are 0.08 to 0.16 bits, zero at 11 to 14 of 17 to 20 polls;
-- in the other settings each carries 0.26 to 0.51 bits that the other lacks, and the two are of similar size, except at the settled BTR polls under impartial culture with s = 85, where the BTR ballot carries 1.95 bits against 2.53 and H(IRV | BTR) = 0.85 to 0.92 bits against H(BTR | IRV) = 0.27 to 0.32.
+- in the other settings each carries 0.26 to 0.51 bits that the other lacks, and the two are of similar size, except at the resting BTR polls under impartial culture with s = 85, where the BTR ballot carries 1.95 bits against 2.53 and H(IRV | BTR) = 0.85 to 0.92 bits against H(BTR | IRV) = 0.27 to 0.32.
 
 Both ballots depend on intensities (H(ballot | ranking) of 0.03 to 0.43 bits). *(Computed.)*
 
@@ -69,7 +69,7 @@ In the corner the two methods are alike in the worst case: every self-confirming
 
 ## 8. Open questions
 
-1. The settled polls of Section 5 at which BTR-plurality loses the Condorcet winner: exact fixed points or slow dynamics, and their dependence on the Condorcet winner's margin and on the precision.
+1. The resting polls of Section 5 at which BTR-plurality loses the Condorcet winner: exact fixed points or slow dynamics, and their dependence on the Condorcet winner's margin and on the precision.
 2. Four or more candidates, where BTR-plurality and BTR-IRV differ and the order by first preferences carries more of the outcome.
 3. Other initial orders (by score, as in BTR-score, or by approval), which change what the first stage asks of the ballot.
 4. BTR-plurality against plurality, the step that adds the runoffs to the same initial count.

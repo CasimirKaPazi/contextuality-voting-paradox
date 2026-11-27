@@ -13,9 +13,9 @@ with the profile's candidates) the script estimates, from 4000 fresh voters:
   H(IRV | plur)     the converse;
   H(plur | ranking), H(plur | IRV, ranking)   how much of the plurality ballot depends on intensities.
 
-Two ways of matching the polls of the two methods are used: (a) each method at its own settled poll,
+Two ways of matching the polls of the two methods are used: (a) each method at its own resting poll,
 reached from the sincere ballots as in `irv_smooth.py`; (b) the plurality poll given by the first
-preferences of the settled IRV poll (the matching induced by the embedding of stage 1).
+preferences of the resting IRV poll (the matching induced by the embedding of stage 1).
 Profiles of 101 voters, 20 per model, precisions 85 and 20.  A few minutes per model and precision.
 """
 import sys
@@ -61,11 +61,11 @@ def main(model, s, profiles=20):
         if sp:
             bp = list(best_replies(X, w, 'plurality', s, 0.002, rk, 20000))
             own.append((H(bi), H(bp), Hc(bp, bi), Hc(bi, bp), wi == wp))
-    for name, R in (('own settled polls', np.array(own, float)), ('first preferences', np.array(proj, float))):
+    for name, R in (('own resting polls', np.array(own, float)), ('first preferences', np.array(proj, float))):
         line = (f"{model:8s} s = {s:g}  {name:17s} ({len(R)} polls): H(IRV) {R[:, 0].mean():.2f}, "
                 f"H(plur) {R[:, 1].mean():.2f}, H(plur | IRV) {R[:, 2].mean():.3f} (max {R[:, 2].max():.3f}, "
                 f"zero at {(R[:, 2] < 1e-9).sum()}), H(IRV | plur) {R[:, 3].mean():.2f}")
-        if name == 'own settled polls':
+        if name == 'own resting polls':
             line += f"; same winner at {int(R[:, 4].sum())}"
         else:
             line += f"; H(plur | ranking) {R[:, 4].mean():.3f}, H(plur | IRV, ranking) {R[:, 5].mean():.3f}"
