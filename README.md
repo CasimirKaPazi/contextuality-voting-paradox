@@ -20,13 +20,9 @@ Any help is appreciated.
 
 ### Lean
 
-The main bottle neck currently is in formalizing the existing work in Lean. This for this you don't need to understand what is going on, just a few tokens to burn. Setting up Lean is easy, and AI can help you with that too. If the Lean proof does not work or gives any other new information, then this is also valuable. Just give notice before you start working on something and stay in the lean directory with the changes to reduce conflicts.
+The easiest way to help is in formalizing the existing work in Lean. This for this you don't need to understand what is going on, just a few tokens to burn. Setting up Lean is easy, and AI can help you with that too. If the Lean proof does not work or gives any other new information, then this is also valuable. Just give notice before you start working on something and stay in the lean directory with the changes to reduce conflicts.
 
-The [`lean/README.md`](lean/README.md) and [`lean/roadmap.md`](lean/roadmap.md) should be read first.
-
-### Organizing
-
-The scope of this project will make it hard to navigate as it grows. Therefore some help with organization (like [here](https://github.com/mccorvie/riemann-masullo)) would make it easier.
+The [`lean/README.md`](lean/README.md) and [`lean/roadmap.md`](lean/roadmap.md) should be read first. Make sure to stay on track, as it is easy to simulate progress by generating irrelevant proof in Lean.
 
 ## Contents
 
@@ -68,7 +64,5 @@ The work was developed in conversation: questions, ideas and direction from Hive
 
 - **Code** — everything in `lean/` and `scripts/` — is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0), as Mathlib is. See [`LICENSE`](LICENSE).
 - **Text** — everything else, including the papers and the working notes — is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/) (CC BY-SA 4.0). See [`LICENSE-CC-BY-SA`](LICENSE-CC-BY-SA).
-
-Copyright 2026 Hiveism and Claude (Anthropic).
 
 Suggested citation: Hiveism and Claude, *Impossibility, Self-Reference and Collective Choice* (work in progress), 2026.
