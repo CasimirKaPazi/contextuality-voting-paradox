@@ -89,7 +89,9 @@ lemma isLot_delta (ideal : V → X) (j : V) : IsLot (delta ideal {j}) := by
   refine ⟨fun x => ?_, ?_⟩
   · simp only [delta, sum_singleton]
     split_ifs <;> norm_num
-  · simp [delta]
+  · simp only [delta, sum_singleton]
+    rw [sum_eq_single (ideal j) (fun b _ hb => by simp [hb]) (fun h => absurd (mem_univ _) h)]
+    simp
 
 omit [DecidableEq V] [DecidableEq X] in
 /-- An average of lotteries is a lottery. -/
@@ -197,22 +199,37 @@ theorem spe_raiffa {U : V → X → ℝ} {σ : Profile V X} {ideal : V → X} {R
 
 /-! ### Existence by backward induction -/
 
-/-- A best acceptable lottery exists: the acceptable lotteries form a compact
-    set that contains the call, and expected utility is continuous. -/
 omit [DecidableEq V] [DecidableEq X] in
+/-- A best acceptable lottery exists: the acceptable lotteries form a compact
+    set (closed, inside the cube [0, 1]^X) that contains the call, and
+    expected utility is continuous. -/
 lemma exists_best (U : V → X → ℝ) (S : Finset V) {C : X → ℝ} (hC : IsLot C) (k : V) :
     ∃ P, BestAcc U S (fun m => eu C (U m)) k P := by
   have hcont : ∀ u : X → ℝ, Continuous fun L : X → ℝ => eu L u := fun u => by
     unfold eu
-    exact continuous_finset_sum _ fun x _ => (continuous_apply x).mul continuous_const
-  let B : Set (X → ℝ) := ⋂ m ∈ S, {L | eu C (U m) ≤ eu L (U m)}
-  have hB : IsClosed B :=
-    isClosed_iInter fun m => isClosed_iInter fun _ => isClosed_le continuous_const (hcont (U m))
-  have hA : IsCompact (stdSimplex ℝ X ∩ B) := (isCompact_stdSimplex (ι := X)).inter_right hB
-  have hCA : C ∈ stdSimplex ℝ X ∩ B := ⟨hC, Set.mem_iInter₂.mpr fun m _ => le_refl _⟩
+    fun_prop
+  let A : Set (X → ℝ) := {L | IsLot L ∧ ∀ m ∈ S, eu C (U m) ≤ eu L (U m)}
+  have hAeq : A = ((⋂ x, {L : X → ℝ | 0 ≤ L x}) ∩ {L | ∑ x, L x = 1}) ∩
+      ⋂ m, ⋂ (_ : m ∈ S), {L | eu C (U m) ≤ eu L (U m)} := by
+    ext L
+    simp [A, IsLot, and_assoc]
+  have hAc : IsClosed A := by
+    rw [hAeq]
+    exact ((isClosed_iInter fun x => isClosed_le continuous_const (continuous_apply x)).inter
+      (isClosed_eq (by fun_prop) continuous_const)).inter
+      (isClosed_iInter fun m => isClosed_iInter fun _ =>
+        isClosed_le continuous_const (hcont (U m)))
+  have hAsub : A ⊆ Set.pi Set.univ (fun _ => Set.Icc (0 : ℝ) 1) := by
+    intro L hL x _
+    refine ⟨hL.1.1 x, ?_⟩
+    have := single_le_sum (f := L) (fun y _ => hL.1.1 y) (mem_univ x)
+    rw [hL.1.2] at this
+    exact this
+  have hA : IsCompact A :=
+    (isCompact_univ_pi fun _ => isCompact_Icc).of_isClosed_subset hAc hAsub
+  have hCA : C ∈ A := ⟨hC, fun m _ => le_refl _⟩
   obtain ⟨P, hPA, hmax⟩ := hA.exists_isMaxOn ⟨C, hCA⟩ (hcont (U k)).continuousOn
-  refine ⟨P, ⟨hPA.1, fun m hm => Set.mem_iInter₂.mp hPA.2 m hm⟩, fun L hL => ?_⟩
-  exact isMaxOn_iff.mp hmax L ⟨hL.1, Set.mem_iInter₂.mpr fun m hm => hL.2 m hm⟩
+  exact ⟨P, hPA, fun L hL => isMaxOn_iff.mp hmax L hL⟩
 
 open Classical in
 /-- A chosen best acceptable lottery for the proposer k against the call C. -/
@@ -224,7 +241,7 @@ lemma best_spec (U : V → X → ℝ) (S : Finset V) {C : X → ℝ} (hC : IsLot
     BestAcc U S (fun m => eu C (U m)) k (best U S C k) := by
   unfold best
   split_ifs
-  all_goals first | exact Classical.choose_spec _ | contradiction
+  exact Classical.choose_spec _
 
 /-- The outcome law of backward induction, built group size by group size:
     `approx n` is correct on the groups of at most n members. -/
