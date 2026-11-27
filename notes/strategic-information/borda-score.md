@@ -37,7 +37,7 @@ H(Borda) = 1 + log₂ (m − 2)!, one bit for the front-runners and the sincere 
 
 *Proof.* At a poll (a₁, a₂) with a₁ ahead, a₁ gets (m − 1)N(a₁ > a₂) points and a₂ gets (m − 1)N(a₂ > a₁) with N(a₂ > a₁) < N/2. Every ballot gives the middle candidates the scores 1 to m − 2 between them, so their totals add up to N(m − 1)(m − 2)/2, and the largest is at least N(m − 1)/2, more than a₂'s. The runner-up is overtaken. ∎
 
-So the worst case of Borda has to be read from the walk of polls, where the next poll is the top two of the strategic tallies.
+So in the corner the worst case of Borda has to be read from the walk of polls, where the next poll is the top two of the strategic tallies. In a smooth model of beliefs with three candidates Borda's polls do come to rest, in 62 to 85 per cent of the runs, and elect the Condorcet winner about as often as the other methods ([The Smooth Model across Methods](smooth-model.md)); the proposition is a statement about the corner.
 
 **Proposition 4 (three candidates).** In the corner (T), the poll (a₁, a₂) is followed by the poll (w, x), where w is the winner of a₁ against a₂ by majority and x the third candidate. So from any poll the leader is the Condorcet winner after at most two rounds and stays so; without one the leader moves around the cycle. *(Proved; checked on random profiles.)*
 

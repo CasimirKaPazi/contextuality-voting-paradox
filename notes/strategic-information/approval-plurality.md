@@ -177,6 +177,8 @@ With Propositions 1 and 2 the two steps of the [README](README.md), Section 1, c
 
 The second is the one adopted, through Blackwell's order on experiments ([README](README.md), Section 3).
 
+All of this is in the corner (T). In a smooth model of beliefs, with three candidates, approval's polls come to rest at a candidate other than the Condorcet winner at 5 to 7 of 36 profiles under impartial culture, mostly at the candidate with the largest total utility, and plurality's at all 36 ([The Smooth Model across Methods](smooth-model.md)). The worst case still favours approval by a wide margin; the exact statement of Proposition 2 belongs to the corner.
+
 ## 11. Stage 2 in bits
 
 By the Lemma of the [README](README.md), Section 2, Blackwell's order fails at a poll whenever the plurality ballot is not a function of the approval ballot, and H(β_plur | β_appr) measures by how much. In the corner the order holds for the counts themselves (Proposition 1): the strategic plurality count keeps one number about the electorate and the strategic approval count m − 1, the first among them (README, Section 2, Proposition; `scripts/information/strategic_count.py`). The polls of the two methods are matched by the same leader and runner-up. *(Checks in `scripts/information/stage2_bits.py`.)*

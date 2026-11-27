@@ -67,12 +67,13 @@ Both ballots depend on intensities (H(ballot | ranking) of 0.03 to 0.43 bits). *
 
 In the corner the two methods are alike in the worst case: every self-confirming poll elects the Condorcet winner (Proposition 2 here, Proposition 3 of *Instant Runoff and Plurality*). Their strategic ballots differ, BTR moving the comparison of the two candidates in the first runoff, instant runoff the first preferences. In the smooth model the pair is unordered at stage 2 by a roughly symmetric margin, and in the worst case instant runoff is ahead under impartial culture with sharp beliefs, the two alike otherwise. A Condorcet method does not lie above instant runoff under this rationale. *(From the propositions and computations; interpretation.)*
 
+**Plurality.** In the corner plurality lies below BTR-plurality for the majority target, as it lies below instant runoff, with the two finalists S and T as plurality's front-runners. Every best reply ranks S and T sincerely (Proposition 1), so the strategic count of BTR-plurality contains N(S > T), which is the whole strategic count of plurality at that poll; and every self-confirming poll of BTR-plurality elects the Condorcet winner (Proposition 2), while plurality has a self-confirming poll for every pair of candidates of whom one beats the other. *(Proved, from Propositions 1 and 2 and* Plurality and Approval*, Proposition 2.)* So adding the runoffs to the count of first preferences moves the method up, in the corner, as far as replacing the count does. The smooth model is in *The Smooth Model across Methods*.
+
 ## 8. Open questions
 
 1. The resting polls of Section 5 at which BTR-plurality loses the Condorcet winner: exact fixed points or slow dynamics, and their dependence on the Condorcet winner's margin and on the precision.
 2. Four or more candidates, where BTR-plurality and BTR-IRV differ and the order by first preferences carries more of the outcome.
 3. Other initial orders (by score, as in BTR-score, or by approval), which change what the first stage asks of the ballot.
-4. BTR-plurality against plurality, the step that adds the runoffs to the same initial count.
 
 ## References
 
