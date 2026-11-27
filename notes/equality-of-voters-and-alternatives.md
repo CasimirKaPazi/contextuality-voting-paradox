@@ -137,13 +137,25 @@ In every computed case the set of maximal lotteries has dimension exactly the nu
 - Ties occur only in electorates of even size, and any one added ballot removes them. This is condition 2 for maximal lotteries, in a strong form. *(Proved, from (c); computed, part 6.)*
 - In vote shares the ties form a set of measure zero: for each even set S the Pfaffian of G_S is a polynomial in the shares that is not identically zero. This is the continuous counterpart of condition 2. *(Proved.)*
 
+**Proposition 8 (maximal lotteries as Pfaffians).** Let E be an odd number of candidates in some order e_1, …, e_n, and let v_j = (−1)^(j−1) Pf(G_{E∖e_j}), with the Pfaffian of the margins among the other members of E.
+
+(a) For every candidate y, the sum Σ_j v_j G_{e_j y} is the Pfaffian of the margins among e_1, …, e_n, y, in this order. It is zero when y belongs to E, so v lies in the kernel of G_E.
+(b) If the v_j are all positive or all negative, and for every y outside E the Pfaffian of (a) has their sign, then the lottery with probabilities v_j / Σ v is the unique maximal lottery.
+(c) If S is an even set of candidates with Pf(G_S) = 0, then for every z in S the vector v of S∖z, with zero for z, lies in the kernel of G_S.
+
+*Proof.* (a) is the expansion of a Pfaffian along its last row. When y is one of the e_j, the matrix has two equal rows and columns, and its Pfaffian is zero. (b) Let p be the lottery. By (a), pᵀG is zero on E and positive outside, so p is maximal. For another maximal lottery q, the proof of Proposition 7 (a) gives (pᵀG)_y = 0 wherever q_y > 0, so q gives probability only to E, and by Proposition 7 (a) it lies in the kernel of G_E. Some v_j is not zero, so G_E has an invertible part of size n − 1, its kernel is the line through v, and q = p. (c) By (a) the vector lies in the kernel of the margins among S∖z, and its product with the column of z is, up to sign, Pf(G_S). ∎
+
+Parts (a) and (b) are the conditions of Kaplansky (1995) for a symmetric game in which every strategy is used, applied to the candidates that carry the lottery. On 1500 random margin matrices with three to seven candidates the unique maximal lottery always has this form. For three candidates in a cycle, v = (m_bc, −m_ac, m_ab), the lottery of Section 2. *(Proved; computed, `scripts/symmetry/maximal_lottery_pfaffians.py`, parts 1 and 2.)*
+
+**Regions and walls.** Margin space is thus divided into regions, one for each odd set E that carries the lottery, and in each region the lottery is a ratio of Pfaffians of the margins. The walls are surfaces Pf(G_S) = 0 for even sets S: a member x of E reaches probability zero where Pf(G_{E∖x}) = 0, and a candidate y outside E stops losing to the lottery where Pf(G_{E∪y}) = 0. In 180 crossings of walls computed for four, five and six candidates the pattern is always the same. The Pfaffian of one even set S vanishes; on each side the lottery is carried by S without one candidate or by S with one more; and the maximal lotteries on the wall form the segment between the lotteries of the two sides, both of which lie in the kernel of G_S there, by (a) and (c). *(Computed, part 3; not proved beyond (c).)*
+
 **Ties of higher order.** For a pair the Pfaffian is the margin itself, so the first case of (b) is the pairwise tie. For four candidates it is
 
 Pf = m_ab m_cd − m_ac m_bd + m_ad m_bc,
 
 one product for each way of splitting the four into two pairs. It can vanish with no margin zero. The script builds a profile of 20 voters: b beats a by 4, c beats a and b by 4, a beats d by 2, d beats b by 2 and c by 4. The maximal lotteries form a segment from (0.4, 0, 0.2, 0.4), carried by the cycle a, c, d, to (0.25, 0.25, 0, 0.5), carried by the cycle a, b, d. Raising the margin of a over d makes the Pfaffian negative and leaves the first lottery's cycle; lowering it leaves the second. *(Computed, part 5.)*
 
-So a pairwise tie is a tie between two candidates inside a pair, and the tie of the next order is a tie between two cycles inside a group of four. In both cases the undecided set joins the outcomes on the two sides. A unique maximal lottery is carried by an odd set of candidates, and the surfaces Pf(G_S) = 0 for even S are where the carrying set can change. That the undecided set always joins the neighbouring outcomes in this way is not proved. *(Interpretation, from the computed cases.)*
+So a pairwise tie is a tie between two candidates inside a pair, and the tie of the next order is a tie between two cycles inside a group of four. These are the walls for S a pair and for S a group of four. Across the wall of a pair, the lottery is carried by one of its two candidates or by a cycle of three that contains the pair; across the wall of a group of four, by three of the four or by a group of five that contains them. *(Interpretation, from the computed cases.)*
 
 **Margins as rotations.** A skew-symmetric matrix generates a rotation, and its kernel is the axis. By (a), every maximal lottery is an axis of the rotation among the essential candidates. For three candidates every rotation has an axis, (m_bc, m_ca, m_ab), which is the lottery of the cycle found in Section 2. For four candidates a rotation in general has no axis: it turns two planes at two rates. It has one exactly when the Pfaffian vanishes. In quaternions, G acts on the four coordinates as x ↦ px + xq with imaginary quaternions
 
@@ -151,7 +163,7 @@ p = −½ (m_ab + m_cd, m_ac − m_bd, m_ad + m_bc), q = −½ (m_ab − m_cd, m
 
 one coordinate for each way of splitting the four candidates into two pairs, and Pf = |p|² − |q|². The tie of second order is a balance between the left and the right part of the margins, as the pairwise tie is a balance between two candidates. An odd renaming exchanges the two lengths and so changes the sign of the Pfaffian. *(Computed, parts 4 and 5; the standard decomposition of rotations in four dimensions.)*
 
-This is the step from the complex numbers to the quaternions of *A Ladder of Lost Properties*, here on the side of the alternatives: with three, the margins have one axis; with four, a left and a right part that do not commute into one. The count differs by one from the table there, which counts the dimension of the space of ballots. A balanced profile is also the fourth step of that note's table made exact: a non-trivial electorate whose parts cancel. Whether ties of third order, among six candidates, have a similar reading is open. *(Interpretation.)*
+This is the step from the complex numbers to the quaternions of *A Ladder of Lost Properties*, here on the side of the alternatives: with three, the margins have one axis; with four, a left and a right part that do not commute into one. The count differs by one from the table there, which counts the dimension of the space of ballots. A balanced profile is also the fourth step of that note's table made exact: a non-trivial electorate whose parts cancel. With five candidates that all carry the lottery, Proposition 8 makes the probability of each proportional to the Pfaffian of the other four, that is, to the balance |p|² − |q|² of their margins. Whether ties of third order, among six candidates, have a similar reading is open. *(Interpretation.)*
 
 ## 6. Equal rankings
 
@@ -167,7 +179,7 @@ Here a beats d, d beats c, c beats b and b beats a, each by one vote, while a ti
 
 A fraction of a vote always settles a tie:
 
-**Proposition 8.** For every profile p, every k ≥ 2 and every strict ballot r, the profile made of k copies of p and the ballot r has a unique maximal lottery.
+**Proposition 9.** For every profile p, every k ≥ 2 and every strict ballot r, the profile made of k copies of p and the ballot r has a unique maximal lottery.
 
 *Proof.* Its margin matrix is kG + R, with G the margin matrix of p and R that of r. A Pfaffian is a polynomial with integer coefficients in the entries, so for every even set S of candidates the Pfaffian of (kG + R)_S equals that of R_S modulo k. With the candidates of S listed in the order of r, R_S has +1 everywhere above the diagonal, and its Pfaffian is 1 (expanding along the first row gives an alternating sum of an odd number of ones); another listing changes at most the sign. So for k ≥ 2 no even Pfaffian vanishes, and Proposition 7 (b) applies. ∎
 
@@ -183,7 +195,7 @@ Proposition 7 (c) is the same argument modulo 2, applied to the margins themselv
 
 **Clones with equal rankings.** Tideman's definition of a set of clones (1987) excludes ties with outsiders: no voter ranks a candidate outside the set equal to a member or between two members. Replacing x by clones is then defined only if no ballot ranks x equal to another candidate, and for ballots with few levels the criterion almost never applies. A wider definition applies more often: X is a set of clones if on every ballot every outsider is above all of X, below all of X or equal to all of X. Put differently, removing all members of X but one gives the same profile whichever member is kept, up to its name. The clones then have the margins of x against every outsider, and the Lemma of Section 4 holds with the same proof. But a second exception is forced.
 
-**Proposition 9.** With clones in the wider sense, let L be neutral and independent of clones, and let p be a profile in which every ballot ranks a and x equal. Then L(p) gives a and x probability zero.
+**Proposition 10.** With clones in the wider sense, let L be neutral and independent of clones, and let p be a profile in which every ballot ranks a and x equal. Then L(p) gives a and x probability zero.
 
 *Proof.* Exchanging a and x maps p to itself, so by neutrality they have the same probability q. Replace x by x and x′, ranked equal on every ballot. On every ballot each other candidate, a included, compares in the same way with both, so they are clones. In the new profile a, x and x′ can be exchanged, so each has the same probability q′. Independence of clones gives q′ = q for a and 2q′ = q for the clones. Hence q = 0. ∎
 
@@ -191,7 +203,7 @@ A rule that gives probability to two candidates that no ballot distinguishes can
 
 1′. **Equal alternatives, except for candidates no ballot distinguishes.** L is independent of clones in the wider sense, for every set of clones X such that no outsider is ranked equal to X on every ballot.
 
-On strict rankings 1′ is condition 1. *(Proposition 9 proved; computed example, part 4.)*
+On strict rankings 1′ is condition 1. *(Proposition 10 proved; computed example, part 4.)*
 
 **The tie-breaker.** With equal ranks a ballot orders classes of candidates, and one voter's best maximal lottery need not be unique. Draw voters at random, one after another. Each narrows the current set of maximal lotteries to those that are best for the voter's ballot: the largest total probability for its first class, then the largest for its second, and so on. When every ballot of the profile has been drawn, a random strict order of the candidates decides what is still open, in the same way. The order in which new ballots come up depends only on their shares. On strict rankings the first voter decides everything, and this is the tie-breaker of Proposition 6.
 
@@ -208,9 +220,9 @@ How the last order is drawn then matters. With a uniformly random order of the c
 
 Draw the order along the tree: at every node the children are put in a uniformly random order, except in a line, where one of its two directions is drawn; then the same inside each child. A set of clones is then consecutive in the order unless it consists of some, but not all, of a group of candidates that no ballot distinguishes, which is the exception of 1′. Berker et al. (2025) use the same tree to make deterministic rules consistent under cloning. With this order the rule is independent of clones in the example: a has 1/16, and its clones together have 1/16.
 
-**Proposition 10.** Maximal lotteries on rankings with equal ranks, with ties broken by random voters in turn and then by an order of the candidates drawn along the tree of clone sets, satisfy EC-VA.
+**Proposition 11.** Maximal lotteries on rankings with equal ranks, with ties broken by random voters in turn and then by an order of the candidates drawn along the tree of clone sets, satisfy EC-VA.
 
-*Proof.* The rule is anonymous and neutral and depends only on the shares of the ballots. Where the maximal lottery is unique the rule depends on margins only, so these profiles are settled, and 2′ follows from Proposition 8. Condition 1′ is proved in the Appendix: the set of maximal lotteries after cloning is a product of the set before and a set of divisions among the clones, every voter narrows the two factors separately, and an order in which the clones are consecutive does the same. ∎
+*Proof.* The rule is anonymous and neutral and depends only on the shares of the ballots. Where the maximal lottery is unique the rule depends on margins only, so these profiles are settled, and 2′ follows from Proposition 9. Condition 1′ is proved in the Appendix: the set of maximal lotteries after cloning is a product of the set before and a set of divisions among the clones, every voter narrows the two factors separately, and an order in which the clones are consecutive does the same. ∎
 
 *(Proved, with the decomposition tree taken from the cited theorem. Computed: 496 random profiles with three and four candidates outside the exception, where the voters leave only indistinguishable candidates open and both ways of drawing the order agree, and the example, parts 5 and 6.)*
 
@@ -228,7 +240,7 @@ Draw the order along the tree: at every node the children are put in a uniformly
 
 2′. **Equal voters, except at ties within a fraction of a vote.** For every tie p there are a number k ≥ 1 and a ballot r such that k copies of p together with r form a settled profile.
 
-For rankings with equal ranks, a candidate outside a set of clones is indistinguishable from a member exactly when it is ranked equal to the set on every ballot, so 1′ is the condition stated above. For strict rankings no two candidates are indistinguishable and 1′ is condition 1, so a rule on strict rankings that depends only on shares and satisfies the first form of Section 3 satisfies the definition. Proposition 9 holds for ballots of any kind, with "indistinguishable" in place of "ranked equal on every ballot" and the same proof.
+For rankings with equal ranks, a candidate outside a set of clones is indistinguishable from a member exactly when it is ranked equal to the set on every ballot, so 1′ is the condition stated above. For strict rankings no two candidates are indistinguishable and 1′ is condition 1, so a rule on strict rankings that depends only on shares and satisfies the first form of Section 3 satisfies the definition. Proposition 10 holds for ballots of any kind, with "indistinguishable" in place of "ranked equal on every ballot" and the same proof.
 
 The kind of ballot is part of what is judged. Ballots that name a single candidate have no reverses among them, and a ballot naming a candidate has no counterpart naming two clones, so neither condition can be stated for a rule on such ballots. As a rule on rankings, plurality fails both (Section 4).
 
@@ -236,7 +248,7 @@ The kind of ballot is part of what is judged. Ballots that name a single candida
 
 A score ballot gives every candidate a score from 0 to K; an approval ballot is the case K = 1. The reverse of a ballot gives K minus the score, and removing a candidate leaves the other scores as they are. A set of clones is then a set of candidates with the same score on every ballot, and two candidates are indistinguishable when they have the same score on every ballot. Score voting elects the candidates with the largest total. Ties are broken as in Section 6: voters are drawn at random one after another, each narrows the tied candidates to those the voter scores highest among them, and when every ballot has been drawn the remaining candidates share the probability equally.
 
-**Proposition 11.** Score voting with any range, approval voting included, with ties broken by random voters in turn, satisfies EC-VA.
+**Proposition 12.** Score voting with any range, approval voting included, with ties broken by random voters in turn, satisfies EC-VA.
 
 *Proof.* The rule depends only on the shares of the ballots. *2′.* A ballot and its reverse add K to every total, so a profile with a single winner is settled. At a tie, one more ballot that gives K to one of the tied candidates and 0 to the others leaves a single winner; k = 1 suffices. *1′.* Clones have equal totals, so after x is replaced by X the winners are the same, with X in place of x. Every voter scores the members of X alike, so each step of the tie-breaker treats X as it treated x. When every ballot has been drawn, the remaining candidates have the same score on every ballot. If a member of X remains together with an outsider, the two are indistinguishable, which the exception excludes. Otherwise X receives in total what x received. ∎
 
@@ -250,7 +262,7 @@ Three limits of this result:
 
 **BTR-score.** A score ballot can also be read for pairwise preferences: a voter prefers x to y when x has the higher score. BTR-score (Hiveism, *Four levels of voting methods*) puts the candidates in the order of their totals and compares the two lowest pairwise; the loser is eliminated and the winner meets the next candidate up, until one is left. A pairwise tie goes to the candidate higher in the order. Equal totals are ordered as ties are broken for score voting: random voters in turn put tied candidates in the order of their scores, and candidates with the same score on every ballot are ordered at random. A candidate who beats every other pairwise is elected whatever the totals.
 
-**Proposition 12.** BTR-score satisfies EC-VA, for every range and any number of candidates. A profile whose outcome does not depend on how equal totals are ordered is settled, and K + 1 copies of any profile together with one suitable ballot form such a profile.
+**Proposition 13.** BTR-score satisfies EC-VA, for every range and any number of candidates. A profile whose outcome does not depend on how equal totals are ordered is settled, and K + 1 copies of any profile together with one suitable ballot form such a profile.
 
 *Proof.* *1′.* Clones have the same score on every ballot, so they have the same total and the same margins against every other candidate, and they tie pairwise with each other. No voter separates them, and by the exception no outsider is still tied with them when every ballot has been drawn. So the clones are consecutive in the order, in the place of x. If the candidate coming from below beats x, it beats every clone in turn and passes them as it passed x. Otherwise the lowest clone takes over, each clone above takes over from the one below by the rule for pairwise ties, and the highest clone goes on as x did. A clone wins exactly when x won, and nothing else changes. *Settled.* A ballot and its reverse add K to every total and nothing to any margin, so the order of the totals, its ties and the possible outcomes stay the same. *2′.* For K = 1 the margin between two candidates is the difference of their totals, so the candidate highest in the order wins, and one more ballot for one of the candidates with the largest total decides. Let K ≥ 2, and consider a group of candidates with equal totals. Call a member w of the group a *king* if every member that beats w pairwise fails to beat some member, other than w, that does not beat w. Every group has a king: take a member w that as many members as possible do not beat, counting w itself. If u beat w and every other member that does not beat w, none of these would beat u, nor does u itself, and u would do better. Now let the ballot give, in every group, 2 to a king, 1 to the members that do not beat it, and 0 to the members that do, and add it to K + 1 copies of the profile. Groups with different totals stay in their order. Within a group the king is first, then the members that do not beat it, then the others, and a pairwise tie between candidates with different scores on the ballot now goes to the higher score, while the other comparisons are as before. Follow a group from below. A member that beats the king cannot pass the members that do not, since it fails to beat one of them; a member that does not beat the king loses to it or ties with it and has the lower score. So unless the candidate arriving from below beats every member of the group, the group passes on its king, and otherwise it passes on that candidate. Neither depends on the order of equal totals. Going up from the lowest group, the outcome does not depend on it either. ∎
 
@@ -258,21 +270,21 @@ The ballot of the proof uses three score levels, and with K ≥ 2 two are not al
 
 | Rule | Independent of clones, outside the exception | A ballot and its reverse cancel, away from the rule's own ties | Each of the rule's ties is within a fraction of a vote | EC-VA |
 |---|---|---|---|---|
-| Approval or score voting, ties broken by random voters in turn | yes (Proposition 11) | yes | yes, within one vote | **yes** |
+| Approval or score voting, ties broken by random voters in turn | yes (Proposition 12) | yes | yes, within one vote | **yes** |
 | Approval or score voting, ties broken by the uniform lottery over the tied winners | no | yes | yes | no |
-| BTR-score, equal totals ordered by random voters in turn | yes (Proposition 12) | yes | yes, within one vote added to K + 1 copies (Proposition 12) | **yes** |
+| BTR-score, equal totals ordered by random voters in turn | yes (Proposition 13) | yes | yes, within one vote added to K + 1 copies (Proposition 13) | **yes** |
 | STAR | no | yes (Wolk, Quinn and Ogren 2023) | not checked | no |
-| Maximal lotteries on rankings with equal ranks, ties broken by random voters in turn and an order drawn along the tree of clone sets (Section 6) | yes (Proposition 10) | yes, depends on margins only | yes (Proposition 8) | **yes** |
+| Maximal lotteries on rankings with equal ranks, ties broken by random voters in turn and an order drawn along the tree of clone sets (Section 6) | yes (Proposition 11) | yes, depends on margins only | yes (Proposition 9) | **yes** |
 
 ## 8. Open questions
 
 1. Which tie-breakers keep maximal lotteries independent of clones, beyond the one of Proposition 6, and whether one of them can be characterised by proportionality to the voters.
-2. Whether the undecided set of maximal lotteries is always the join of the outcomes of the neighbouring decided regions, and which odd sets of candidates meet at a surface Pf(G_S) = 0.
+2. A proof of the pattern at the walls of Section 5: that on a wall in general position the maximal lotteries are exactly the segment between the lotteries of the two sides.
 3. Whether the set of Schulze winners is independent of clones at every tie, beyond the computed cases.
 4. Ranked pairs and the Schulze method with equal rankings.
 5. How EC-VA relates to the Strategic Information thread, where opposite voters cast complementary approval ballots.
 
-## Appendix. Proof of condition 1′ in Proposition 10
+## Appendix. Proof of condition 1′ in Proposition 11
 
 Let p′ be a profile of rankings with equal ranks, X a set of clones in p′ none of whose members is indistinguishable from a candidate outside X, and p the profile in which X is replaced by x. For a lottery q on the candidates of p′, its *merge* μ(q) adds the probabilities of X up into x. For a set S of lotteries on the candidates of p and a set E of lotteries on X, write
 
@@ -308,6 +320,8 @@ After narrowing, every class total of the ballot is constant on the set, and it 
 - Habib, M. and Paul, C. (2010). A survey of the algorithmic aspects of modular decomposition. *Computer Science Review* 4, 41–59.
 - Hiveism. Four levels of voting methods. https://hiveism.substack.com/p/four-levels-of-voting-methods
 - Holliday, W. H. and Pacuit, E. (2023). Split Cycle: a new Condorcet-consistent voting method independent of clones and immune to spoilers. *Public Choice* 197, 1–62. arXiv:2004.02350.
+- Kaplansky, I. (1945). A contribution to von Neumann's theory of games. *Annals of Mathematics* 46, 474–479.
+- Kaplansky, I. (1995). A contribution to von Neumann's theory of games II. *Linear Algebra and its Applications* 226–228. doi:10.1016/0024-3795(95)00167-P.
 - Laffond, G., Laslier, J.-F. and Le Breton, M. (1997). A theorem on symmetric two-player zero-sum games. *Journal of Economic Theory* 72, 426–431.
 - McGarvey, D. C. (1953). A theorem on the construction of voting paradoxes. *Econometrica* 21, 608–610.
 - Schulze, M. (2011). A new monotonic, clone-independent, reversal symmetric, and Condorcet-consistent single-winner election method. *Social Choice and Welfare* 36, 267–303.

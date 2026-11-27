@@ -4,7 +4,7 @@ Checks Section 6 of notes/equality-of-voters-and-alternatives.md:
   1. three voters, four candidates: a tie of maximal lotteries in an odd electorate that no single
      added ballot (of 75) settles, while twice the profile plus any strict ballot is settled;
   2. survey for four candidates with margins in -1..1: how many ties one ballot settles;
-  3. Proposition 8 on random profiles of weak orders: k times the profile plus any strict ballot has
+  3. Proposition 9 on random profiles of weak orders: k times the profile plus any strict ballot has
      a unique maximal lottery for k >= 2, and every even Pfaffian is +-1 modulo k;
   4. two candidates that no ballot distinguishes: cloning one of them changes the shares;
   5. the tie-breaker "random voters in turn, then a random order of the candidates", with the order
@@ -235,7 +235,7 @@ print(f"2. four candidates, margins in -1..1: {undecided} ties, {one_ballot} set
       f" {undecided - one_ballot} not (the profile of part 1 and its renamings)")
 assert undecided - one_ballot == 6
 
-# ---------- 3. Proposition 8 ----------
+# ---------- 3. Proposition 9 ----------
 assert all(pfaffian([[(j > i) - (j < i) for j in range(n)] for i in range(n)]) == 1 for n in (2, 4, 6))
 for m, trials in [(4, 120), (5, 60)]:
     W = weak_orders(m)

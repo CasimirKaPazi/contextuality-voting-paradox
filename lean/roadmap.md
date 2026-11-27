@@ -36,7 +36,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5‴, the exact criterion for three outcomes (`ThreeOutcomes.lean`), and the common frame for two-player forms (`TwoPlayer.lean`).
   - Proposition 7, approval with a veto (`ApprovalVeto.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
-- **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`).
+- **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`); the call game as one tree, with existence of a subgame-perfect equilibrium in undominated votes, every equilibrium one Raiffa step, and uniqueness of the values (`CallGame.lean`, Markov strategies).
 - **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`); Proposition 4 as one statement for the walk with memory, with ties (Proposition 7) and without, and the bridge from positions to utilities (`MemoryWalk.lean`).
 
 ## 1. Foundations to build on
@@ -58,11 +58,7 @@ These are definitions and toolkits that several later items need. Doing them fir
 
 ## 2. Nearly finished: complete these
 
-1. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
-   - Its stages are checked.
-   - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.
-
-   Effort: moderate.
+Nothing at the moment.
 
 ## 3. Main claims that still rest on proofs by hand or on computation
 

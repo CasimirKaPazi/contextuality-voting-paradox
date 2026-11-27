@@ -19,7 +19,7 @@ Checks, on random profiles with K = 1, 2, 5 and three or four candidates:
      by random voters in turn): profiles whose outcome does not depend on the order of tied totals
      stay so under reversal pairs; every tie is within one vote, also with more candidates than
      score levels and all totals equal; K + 1 copies of any profile plus the ballot of the kings
-     (Proposition 12) are decided; independent of clones with the same scores.
+     (Proposition 13) are decided; independent of clones with the same scores.
 Run: python3 equality_approval_score.py   (needs numpy; a few seconds)
 """
 import itertools
