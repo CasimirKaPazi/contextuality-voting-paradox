@@ -140,7 +140,7 @@ The proof uses the flows along the loop. Let α₁, …, α₆ ≥ 0 be the prob
 
   CF = 2 × Σ_i max(0, −deg_i).
 
-The contextual fraction is the least weight of a contextual part in a decomposition into a non-contextual model and another model of the scenario (Abramsky, Barbosa and Mansfield). *(Proved, from Gibbard 1977 and Proposition 4. Computed: vertices for one and two voters; the fraction by linear programming on random mixtures for one, two and three voters.)*
+The contextual fraction is the least weight of a contextual part in a decomposition into a non-contextual model and another model of the scenario (Abramsky, Barbosa and Mansfield). *(Proved, from Gibbard 1977 and Proposition 4. Computed: vertices for one and two voters; the fraction by linear programming on random mixtures for one, two and three voters. Checked in Lean, `lean/ContextualFraction.lean`, with Gibbard's theorem as a hypothesis that includes SD-SP components, and with non-contextual taken as a mixture of deterministic SP rules.)*
 
 Proof:
 - **The mixtures.** By Gibbard, an SD-SP rule is a mixture of SP unilateral and SP duple rules.
