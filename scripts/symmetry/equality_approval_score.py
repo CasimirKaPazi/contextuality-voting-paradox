@@ -18,7 +18,8 @@ Checks, on random profiles with K = 1, 2, 5 and three or four candidates:
      winner meets the next one up, a pairwise tie goes to the higher one; ties in the totals ordered
      by random voters in turn): profiles whose outcome does not depend on the order of tied totals
      stay so under reversal pairs; every tie is within one vote, also with more candidates than
-     score levels and all totals equal; independent of clones with the same scores.
+     score levels and all totals equal; K + 1 copies of any profile plus the ballot of the kings
+     (Proposition 12) are decided; independent of clones with the same scores.
 Run: python3 equality_approval_score.py   (needs numpy; a few seconds)
 """
 import itertools
@@ -228,12 +229,30 @@ for K, m, trials in [(2, 4, 150), (2, 5, 100), (2, 6, 30)]:   # more candidates 
             ties += 1
             assert any(len(possible(prof + [r], m)) == 1 for r in ballots)
     print(f"   scores 0..{K}, {m} candidates, all totals equal: {ties} ties of {trials} profiles, all within one vote")
-for K, m in [(3, 4), (5, 4), (5, 6)]:                       # at least as many levels as candidates
-    for _ in range(100):
+
+
+def king_ballot(profile, m):
+    """In every group of candidates with equal totals: 2 for a member that as many members as
+    possible do not beat (a king), 1 for the members that do not beat it, 0 for those that do."""
+    ballot = [0] * m
+    for group in tied_groups(profile, m):
+        king = max(group, key=lambda x: sum(margin(profile, y, x) <= 0 for y in group))
+        for x in group:
+            ballot[x] = 2 if x == king else 1 if margin(profile, x, king) <= 0 else 0
+    return tuple(ballot)
+
+
+for K, m, trials in [(2, 4, 300), (2, 5, 300), (2, 6, 100), (5, 5, 200)]:
+    ties = 0
+    for _ in range(trials):
         prof = random_profile(m, K, int(rng.integers(1, 6)))
-        strict = tuple(int(v) for v in rng.permutation(K + 1)[:m])
-        assert len(set(totals(prof * (K + 1) + [strict], m).tolist())) == m
-print("   K + 1 copies of a profile plus a ballot with distinct scores: all totals distinct (300 cases)")
+        if rng.random() < 0.5:                              # many equal totals
+            b = prof[0]
+            prof = [b[i:] + b[:i] for i in range(m)] + prof[1:] + [reverse(r, K) for r in prof[1:]]
+        ties += len(possible(prof, m)) > 1
+        assert len(possible(prof * (K + 1) + [king_ballot(prof, m)], m)) == 1
+    print(f"   scores 0..{K}, {m} candidates: K + 1 copies plus the ballot of the kings are decided in all"
+          f" {trials} profiles ({ties} ties)")
 
 # seven candidates, scores 0..2, all totals equal, pairwise comparisons of the Paley tournament
 m = 7
