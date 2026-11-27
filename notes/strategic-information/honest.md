@@ -1,6 +1,6 @@
 # The Honest Axis
 
-*Working note, part of [Strategic Information](README.md), first draft. The other notes compare methods under strategy. This note adds the second axis that a complete comparison needs: what a method achieves when every voter is honest. The two axes are not of the same kind. Honest voting with the utilitarian target is the ideal, the best result if nobody looks at the polls; strategic voting is where voters who do look at them are drawn, and its natural target is the majority relation. The note defines the honest measure in the terms of the README, shows which methods hold the utilitarian sum under honesty, and describes the direction from the honest end to the strategic one as the sharpening of the voters' beliefs. Proved statements and interpretation are marked; nothing is computed. Conventions as in the README; the normalisations as in [Intensities and the Utilitarian Target](intensity.md).*
+*Working note, part of [Strategic Information](README.md), first draft. The other notes compare methods under strategy. This note adds the second axis that a complete comparison needs: what a method achieves when every voter is honest. The two axes are not of the same kind. Honest voting with the utilitarian target is the ideal, the best result if nobody looks at the polls; strategic voting is where voters who do look at them are drawn, and its natural target is the majority relation. The note defines the honest measure in the terms of the README, shows which methods hold the utilitarian sum under honesty, and describes the direction from the honest end to the strategic one as the sharpening of the voters' beliefs. Proved statements, the computed tables of Section 5 and interpretation are marked. Conventions as in the README; the normalisations as in [Intensities and the Utilitarian Target](intensity.md).*
 
 ## 1. Honest ballots and the honest count
 
@@ -69,10 +69,41 @@ Three things can be read from the table.
 
 No method is at the top of both columns. The honest column is led by ballots that are linear in the utilities, the strategic column by counts that keep the margins, and a count of totals cannot be both (*Intensities and the Utilitarian Target*, Proposition 4). *(Interpretation.)*
 
-## 5. Open questions
+## 5. In numbers
+
+The honest measure for three candidates, on 4000 profiles of 101 voters per model (*computed*, `scripts/information/honest_methods.py`). The utilitarian winner is the candidate with the largest total of the utilities as drawn, as in *The Smooth Model across Methods*; the mean utility is on the scale where the average candidate is 0 and the best is 1. Each cell: impartial culture, then the spatial model.
+
+| Honest voters | Condorcet winner elected (per cent) | Utilitarian winner elected (per cent) | Winner by range-normalised utilities (per cent) | Mean utility |
+|---|---|---|---|---|
+| Plurality | 78, 83 | 67, 82 | 72, 74 | 0.65, 0.85 |
+| Approval (above the mean) | 76, 87 | 76, 88 | 86, 95 | 0.78, 0.96 |
+| Score 0 to 2 | 81, 90 | 79, 90 | 93, 98 | 0.82, 0.97 |
+| Score 0 to 5 | 83, 90 | 80, 90 | 97, 99 | 0.83, 0.97 |
+| Score, continuous | 83, 90 | 80, 90 | 100, 100 | 0.84, 0.97 |
+| Round ballots | 84, 90 | 80, 91 | 98, 99 | 0.83, 0.98 |
+| Borda | 90, 93 | 76, 92 | 84, 93 | 0.77, 0.97 |
+| Instant runoff | 97, 96 | 71, 92 | 78, 86 | 0.71, 0.95 |
+| BTR-plurality | 100, 100 | 73, 96 | 80, 90 | 0.74, 0.99 |
+
+The table shows the two axes in one place. Down the Condorcet column the methods on rankings lead and the score ballots are in the middle; down the column of range-normalised utilities the order is that of Propositions 1 to 3, with score voting approaching 100 per cent as the scale gets finer. The normalisation matters: a continuous honest score ballot elects the winner by range-normalised utilities always and the winner by the utilities as drawn in 80 and 90 per cent, which is the gap that Proposition 1 of *Intensities and the Utilitarian Target* leaves open. In the spatial model the utilities as drawn are distances on a common scale, the utilitarian winner is usually the Condorcet winner, and the methods on rankings do well in both columns.
+
+**Honest against strategic, on the same profiles.** The mean utility of the honest winner on the 40 profiles of *The Smooth Model across Methods*, beside the mean utility over the runs at rest there (s = 85 and s = 20):
+
+| | Impartial culture: honest | at rest | Spatial: honest | at rest |
+|---|---|---|---|---|
+| Plurality | 0.44 | 0.56, 0.58 | 0.90 | 0.88, 0.86 |
+| Approval | 0.86 | 0.90, 0.93 | 0.98 | 0.99, 1.00 |
+| Borda | 0.69 | 0.95, 0.96 | 0.98 | 1.00, 1.00 |
+| Instant runoff | 0.71 | 0.86, 0.94 | 0.99 | 1.00, 0.98 |
+| BTR-plurality | 0.71 | 0.69, 0.84 | 0.99 | 0.99, 1.00 |
+| Score, continuous, and round ballots (honest only) | 0.94 | | 0.99 | |
+
+Under impartial culture every one of the five methods does at least as well at rest as with honest voters, by total utility, and Borda and instant runoff do much better. Only the honest ballots that are linear in the utilities, score with a fine scale and round ballots, reach the level of the best strategic outcomes. So the honest end is the ideal for a method whose ballot can carry the utilities. For a method with a coarse ballot the honest ballot is a reduction of the utilities, and the strategic ballot puts some of what was reduced away back in: a voter who decides by a belief decides by intensities (*Plurality and Approval*, Section 11; *Instant Runoff and Plurality*, Section 7). Strategy costs utility where the ballot could have said more honestly, as for score voting, and gains it where the ballot could not. *(Computed; the reading is interpretation. Forty profiles, and the runs at rest are a chosen set of starting polls, not a sample, so the comparison shows a direction and not a size.)*
+
+## 6. Open questions
 
 1. The loss along the line. For each method, the utilitarian quality of the strategic count as a function of the sharpness of the belief, from the empty poll to the corner. In the smooth model the precision s is this parameter, and approval's runs move from the utilitarian winner towards the Condorcet winner as it grows (*The Smooth Model across Methods*, Section 4).
-2. The honest measure in numbers, for the methods and profiles of *The Smooth Model across Methods*: how often the honest winner is the utilitarian winner and the Condorcet winner, to set beside the resting polls. The Ballot Front Finder Lab measures the same under its own strategies.
+2. The comparison of Section 5 with more profiles and with strategic outcomes that are a proper sample; and round ballots and score voting in the smooth model, to see what their honest advantage becomes as beliefs sharpen. The Ballot Front Finder Lab measures the same under its own strategies.
 3. Round ballots under sharpening beliefs: self-confirming polls and worst case.
 4. The honest ballot under methods on rankings as a best reply: at which beliefs the sincere ranking is a best reply under instant runoff and BTR-plurality.
 5. The convention for honest approval, and whether a statement like Proposition 4 singles one out.
