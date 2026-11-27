@@ -13,7 +13,11 @@ Checks Section 8 of notes/equality-of-voters-and-alternatives.md.
      on (Proposition 6), and the one that gives the least to the voter's last candidate, then to the
      second last, and so on. Both are independent of clones on random profiles; they differ at the
      20-voter tie between two cycles.
-Run: python3 equality_tie_breakers.py   (needs numpy and scipy; about half a minute)
+  3. A third tie-breaker, "the drawn voter votes again": the limit of the maximal lottery of k copies
+     of the profile plus the voter's ballot (Proposition 15). It is independent of clones for every k,
+     gives a maximal lottery in the limit, is random ballot at full ties, and differs from the other
+     two at the 20-voter tie.
+Run: python3 equality_tie_breakers.py   (needs numpy and scipy; about a minute)
 """
 import itertools
 import numpy as np
@@ -192,4 +196,44 @@ for x in range(4):
         for mode in both:
             assert np.allclose(merged(rule(cloned, 4 + extra, mode), x, 4), both[mode], atol=1e-7)
 print("   both independent of clones at this profile, with any candidate replaced by two or three clones")
+
+# ---------- 3. the drawn voter votes again ----------
+def lottery(G):
+    m = len(G)
+    return linprog(np.zeros(m), A_ub=-G.T, b_ub=np.zeros(m), A_eq=np.ones((1, m)), b_eq=[1],
+                   bounds=(0, 1), method="highs").x
+
+
+def votes_again(profile, m, k=10 ** 4):
+    G = margins(profile, m)
+    return sum(profile.count(r) / len(profile) * lottery(k * G + margins([r], m)) for r in set(profile))
+
+
+cases = 0
+for m, extra, trials in [(3, 1, 300), (3, 2, 100), (4, 1, 100)]:
+    ranks = list(itertools.permutations(range(m)))
+    for _ in range(trials):
+        prof = [ranks[i] for i in rng.integers(len(ranks), size=int(rng.choice([2, 4, 6])))]
+        x = int(rng.integers(m))
+        cloned = clone(prof, x, m, extra)
+        for k in (2, 7, 10 ** 4):
+            assert np.allclose(merged(votes_again(cloned, m + extra, k), x, m), votes_again(prof, m, k), atol=1e-6)
+        L = votes_again(prof, m)
+        assert np.all(L @ margins(prof, m) >= -1e-3)                     # maximal in the limit
+        if not margins(prof, m).any():
+            T = np.array([sum(r[0] == y for r in prof) for y in range(m)]) / len(prof)
+            assert np.allclose(L, T, atol=1e-6)
+        cases += 1
+third = votes_again(tie, 4)
+print(f"3. the drawn voter votes again: independent of clones for 2, 7 and 10000 copies on {cases} random"
+      f" profiles; at the 20-voter tie {third.round(4)}")
+ends = {"best first": 0, "worst last": 0, "neither rule": 0, "both": 0}
+for ballot in itertools.permutations(range(4)):
+    e = lottery(10 ** 4 * G + margins([ballot], 4))
+    same = [mode for mode in both if np.allclose(e, choose(G, ballot, mode), atol=1e-3)]
+    ends["both" if len(same) == 2 else same[0] if same else "neither rule"] += 1
+print(f"   over the 24 possible ballots it chooses as both other rules, as best first only, as worst last only:"
+      f" {ends['both']}, {ends['best first']}, {ends['worst last']}")
+assert ends["neither rule"] == 0 and ends["best first"] and ends["worst last"]
+assert not np.allclose(third, both["best first"], atol=1e-3) and not np.allclose(third, both["worst last"], atol=1e-3)
 print("all checks passed")
