@@ -103,7 +103,7 @@ The first row needs no computation and no model of beliefs beyond the linear reg
 
 ## 7. Open questions
 
-1. The third level of Section 5. At which polls do the strategic counts of instant runoff, BTR-plurality and other ranked methods certify the whole majority relation? A voter whose strategic ballot reveals the whole ranking at every poll is close to a sincere voter, so the theorem of Gibbard and Satterthwaite should bound how often this can hold; a precise statement is missing.
+1. The third level of Section 5. [What a Ballot Reveals](revelation.md) shows that no level above the first holds at sharp beliefs, and that the theorem of Gibbard and Satterthwaite excludes a revealing ballot that is the same at every belief. At which polls the strategic counts of instant runoff, BTR-plurality and other ranked methods certify the whole majority relation is still open.
 2. The even part of instant runoff and BTR-plurality: the rank e at their corner polls, and whether the profiles at which they rest on a wrong winner are those where the even part decides.
 3. Approximate certification, in the smooth model: how far the strategic count of approval is from the leader's row as the beliefs widen, as a number that bounds the worst case.
 4. A bound for the utilitarian target: how well the vertices of a ballot polytope can approximate the differences of utilities, and whether central symmetry enters there as it does in Corollary 5.
