@@ -101,6 +101,22 @@ In the example above every voter's best maximal lottery is the voter's favourite
 
 Zavist and Tideman order tied pairs by the ballot of one voter; drawing that voter at random keeps the rule anonymous. The computed cases for ranked pairs and Schulze are random profiles of two to six voters on three and four candidates, with the set of possible winners (part 9). *(Cited and computed as marked.)*
 
+**Further rules on strict rankings.** The same three questions for the common deterministic rules, on random profiles of three and four candidates with a candidate replaced by two or three clones (`scripts/symmetry/equality_rule_survey.py`). A rule that depends only on the margins cannot be changed by a ballot and its reverse.
+
+| Rule | A ballot and its reverse cancel, away from the rule's own ties | Independent of clones | EC-VA |
+|---|---|---|---|
+| Ranked pairs, Schulze | yes, depend on margins only | yes, as in the table above | **yes**, as in the table above |
+| Split Cycle | yes, depends on margins only | yes (Holliday and Pacuit 2023; no failure computed) | no: its ties are not within a fraction of a vote |
+| Minimax, Copeland, Kemeny, Black, Baldwin, Nanson, Borda | yes, depend on margins only | no (computed) | no |
+| Instant runoff | no (computed) | yes (Tideman 1987; no failure computed) | no |
+| Plurality, antiplurality, Bucklin, Coombs | no (computed) | no (computed) | no |
+
+Baldwin, Nanson and Black use Borda scores, which are sums of margins, among all or among the remaining candidates. In the computed cases minimax and Baldwin fail independence of clones only when a candidate is replaced by three clones that form a cycle among themselves; for minimax this is Tideman's observation (1987) that it is independent of clones in pairs but not in larger sets.
+
+Split Cycle fails by its ties alone. Let a beat b by 10, b beat c by 10, c beat a by 6, d beat c by 6, a beat d by 2 and d beat b by 2. Both a and d are undefeated, and they remain so in every multiple of the profile with one ballot added: the tie fills a region of profiles, not a boundary. At this profile ranked pairs elects a and Schulze elects d, and in all computed profiles their winners are among the winners of Split Cycle. They decide what Split Cycle leaves open, in two different ways. *(Computed.)*
+
+So of the rules examined, those that pass are the ones that depend on the margins only, are independent of clones and leave undecided only what a fraction of a vote decides: ranked pairs, Schulze and maximal lotteries. Instant runoff fails on the side of the voters, the other rules that depend on margins on the side of the alternatives. *(Computed and cited as marked.)*
+
 ## 5. Which profiles are ties
 
 For maximal lotteries the ties, the profiles at which the maximal lottery is not unique, can be described exactly. Let G be the margin matrix, G_xy the number of voters who prefer x to y minus the number who prefer y to x. A lottery p is maximal when Σ_x p_x G_xy ≥ 0 for every y. Call a candidate *essential* if some maximal lottery gives it positive probability, and let E be the set of essential candidates and G_E their margin matrix.
@@ -246,9 +262,9 @@ With more candidates than score levels no single ballot separates all equal tota
 
 1. Which tie-breakers keep maximal lotteries independent of clones, beyond the one of Proposition 6, and whether one of them can be characterised by proportionality to the voters.
 2. Whether the undecided set of maximal lotteries is always the join of the outcomes of the neighbouring decided regions, and which odd sets of candidates meet at a surface Pf(G_S) = 0.
-3. The Schulze method with its tie-breaking against independence of clones at ties; further rules for the table.
+3. The Schulze method with its tie-breaking against independence of clones at ties.
 4. With equal rankings: a proof that maximal lotteries with the tie-breaker of Section 6, the order drawn along the tree of clone sets, satisfy 1′.
-5. Ranked pairs and the Schulze method with equal rankings. BTR-score with more candidates than score levels: whether a fraction of one vote always settles a tie, and if not, whether 2′ should allow several ballots of small total share.
+5. Ranked pairs and the Schulze method with equal rankings. BTR-score with more candidates than score levels: whether a fraction of one vote always settles a tie, and if not, whether 2′ should allow several ballots of small total share. With scores 0 to 2, seven candidates, all totals equal and the pairwise comparisons of the Paley tournament, no ballot with two levels settles the tie and one with three levels does (computed).
 6. How EC-VA relates to the Strategic Information thread, where opposite voters cast complementary approval ballots.
 
 ## References
@@ -257,6 +273,7 @@ With more candidates than score levels no single ballot separates all equal tota
 - Brandl, F., Brandt, F. and Seedig, H. G. (2016). Consistent probabilistic social choice. *Econometrica* 84, 1839–1880.
 - Elkind, E., Faliszewski, P. and Slinko, A. (2012). Clone structures in voters' preferences. *Proceedings of the 13th ACM Conference on Electronic Commerce*, 496–513.
 - Fishburn, P. C. (1984). Probabilistic social choice based on simple voting comparisons. *Review of Economic Studies* 51, 683–692.
+- Holliday, W. H. and Pacuit, E. (2023). Split Cycle: a new Condorcet-consistent voting method independent of clones and immune to spoilers. *Public Choice* 197, 1–62. arXiv:2004.02350.
 - Hiveism. Four levels of voting methods. https://hiveism.substack.com/p/four-levels-of-voting-methods
 - Laffond, G., Laslier, J.-F. and Le Breton, M. (1997). A theorem on symmetric two-player zero-sum games. *Journal of Economic Theory* 72, 426–431.
 - McGarvey, D. C. (1953). A theorem on the construction of voting paradoxes. *Econometrica* 21, 608–610.

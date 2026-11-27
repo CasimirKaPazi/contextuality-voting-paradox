@@ -234,4 +234,35 @@ for K, m in [(3, 4), (5, 4), (5, 6)]:                       # at least as many l
         strict = tuple(int(v) for v in rng.permutation(K + 1)[:m])
         assert len(set(totals(prof * (K + 1) + [strict], m).tolist())) == m
 print("   K + 1 copies of a profile plus a ballot with distinct scores: all totals distinct (300 cases)")
+
+# seven candidates, scores 0..2, all totals equal, pairwise comparisons of the Paley tournament
+m = 7
+paley = [tuple(2 if y == x else 1 if (y - x) % 7 in (1, 2, 4) else 0 for y in range(7)) for x in range(7)]
+M0 = np.array([[margin(paley, x, y) for y in range(m)] for x in range(m)])
+assert len(set(totals(paley, m).tolist())) == 1 and (M0 == 0).sum() == m
+
+
+def decided_after(ballot, copies=3):
+    """Is the outcome of `copies` copies of the profile plus the ballot independent of the order of
+    equal totals? With all totals equal the candidates are ordered by the ballot's scores."""
+    add = np.array(ballot)
+    M = copies * M0 + np.sign(add[:, None] - add[None, :])
+    groups = [tuple(x for x in range(m) if ballot[x] == v) for v in sorted(set(ballot), reverse=True)]
+    seen = set()
+    for order in linear_orders(groups):
+        current = order[-1]
+        for higher in reversed(order[:-1]):
+            if M[current, higher] <= 0:
+                current = higher
+        seen.add(current)
+        if len(seen) > 1:
+            return False
+    return True
+
+
+two_levels = [b for b in itertools.product((0, 2), repeat=m) if decided_after(b)]
+three_levels = next(b for b in itertools.product(range(3), repeat=m) if decided_after(b))
+print(f"   seven candidates, Paley tournament, all totals equal: no ballot with two levels settles three copies"
+      f" ({len(two_levels)} of 128), the ballot {three_levels} does")
+assert not two_levels
 print("all checks passed")
