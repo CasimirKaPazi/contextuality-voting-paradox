@@ -1,6 +1,6 @@
 # Equality of Voters and Alternatives
 
-*Working note. The Equality Criterion of Wolk, Quinn and Ogren (2023) asks that a ballot together with its reverse never changes the outcome: opposite voters weigh the same. It is called EC-V here, equality of voters (see* The Equality Criterion and Reversal*). Independence of clones asks the same of alternatives: none gains or loses by having similar alternatives beside it. This note shows that no rule has both, that the conflict sits at ties, and that the exception is forced there. It proposes a criterion, equality of voters and alternatives (EC-VA), that makes the exception explicit: independence of clones everywhere, and EC-V except at ties that one vote can break. It gives a tie-breaker with which maximal lotteries pass, and describes which profiles are ties. Ballots are strict rankings in Sections 1 to 5; Section 6 allows equal rankings and restates the two conditions for them. Rules give lotteries over candidates and are defined for electorates of every size. Proved statements, computed checks (`scripts/symmetry/equality_voters_alternatives.py`, and `equality_equal_rankings.py` for Section 6) and interpretation are marked.*
+*Working note. The Equality Criterion of Wolk, Quinn and Ogren (2023) asks that a ballot together with its reverse never changes the outcome: opposite voters weigh the same. It is called EC-V here, equality of voters (see* The Equality Criterion and Reversal*). Independence of clones asks the same of alternatives: none gains or loses by having similar alternatives beside it. This note shows that no rule has both and that two exceptions are forced. It proposes a criterion, equality of voters and alternatives (EC-VA), that states them: EC-V, except at ties that a fraction of a vote can break, and independence of clones, except for candidates that no ballot distinguishes. The definition is in Section 6. Sections 1 to 5 reach it in steps for strict rankings, where only the first exception occurs and a whole vote suffices: the conflict at ties, a first form of the criterion, a tie-breaker with which maximal lotteries pass, and a description of the ties. Section 6 allows equal rankings and gives the definition; Section 7 checks approval and score voting. Rules give lotteries over candidates and are defined for electorates of every size. Proved statements, computed checks (`scripts/symmetry/equality_voters_alternatives.py`, `equality_equal_rankings.py` for Section 6, `equality_approval_score.py` for Section 7) and interpretation are marked.*
 
 ## 1. The two equalities conflict at ties
 
@@ -34,13 +34,13 @@ On a face of the cycle cone, for example z = 0 with x, y > 0 (a beats b, b beats
 
 *Reading.* A deterministic outcome divides the space into regions and has to assign each boundary point to one of them. A set of lotteries at the boundary does not have to: it contains the values of both sides and what lies between. *(Interpretation.)*
 
-## 3. The criterion
+## 3. The criterion, first form
 
-Equality of voters asks for EC-V, equality of alternatives for independence of clones, and by Proposition 2 no neutral rule has both. The criterion keeps both and states the exception.
+Equality of voters asks for EC-V, equality of alternatives for independence of clones, and by Proposition 2 no neutral rule has both. The criterion keeps both and states the exception. This section gives it in the form it takes for strict rankings; Section 6 gives the definition for ballots of any kind, of which this form is a special case.
 
 For a rule L, call a profile p *settled* if reversal pairs never change the outcome from p on: L(p + Q) = L(p) for every balanced profile Q. Otherwise p is a *tie*. EC-V says that every profile is settled.
 
-**Definition.** An anonymous and neutral rule L satisfies **equality of voters and alternatives (EC-VA)** if:
+**First form (strict rankings).** An anonymous and neutral rule L satisfies equality of voters and alternatives if:
 
 1. **Equal alternatives.** L is independent of clones, at every profile.
 2. **Equal voters, except at ties within one vote.** For every tie p there is a ballot r such that p + r is settled.
@@ -85,7 +85,7 @@ In the example above every voter's best maximal lottery is the voter's favourite
 
 *Reading.* Random ballot by itself is independent of clones. The failure of the second tie-breaker comes from combining a rule that decides with a fallback that forgets what was decided. In the third, the drawn voter decides only what was left undecided. *(Interpretation.)*
 
-**Which rules pass.** Rules are taken with a tie-breaker, since the criterion is about the complete rule. The second and third columns together are condition 2: a rule whose outcomes away from its own ties change under reversal pairs has ties, in the sense of the definition, that no single vote breaks.
+**Which rules pass.** The rules of this table are rules on strict rankings, judged by the first form. All of them depend only on the shares of the ballots, so passing the first form means passing the definition of Section 6. Rules are taken with a tie-breaker, since the criterion is about the complete rule. The second and third columns together are condition 2: a rule whose outcomes away from its own ties change under reversal pairs has ties, in the sense of the definition, that no single vote breaks.
 
 | Rule | Independent of clones | A ballot and its reverse cancel, away from the rule's own ties | Each of the rule's ties is within one vote | EC-VA |
 |---|---|---|---|---|
@@ -159,11 +159,11 @@ Proposition 7 (c) is the same argument modulo 2, applied to the margins themselv
 
 2′. **Equal voters, except at ties within a fraction of a vote.** For every tie p there are a number k ≥ 1 and a ballot r such that k copies of p together with r form a settled profile.
 
-- For strict rankings, condition 2 is the case k = 1 and implies 2′. Sections 3 and 4 use that case.
+- Condition 2 is the case k = 1 and implies 2′. Sections 3 and 4 use that case.
 - The fraction is not the resolution of the rule or of its ballots. A rule with coarse ballots, or one that uses little of what the ballots say, is measured in the same unit as every other rule and does not get a coarser one.
 - Because L depends only on shares, a tie is a tie in every multiple of the electorate, and 2′ applies to each multiple. Settled profiles therefore lie arbitrarily close to every tie in vote shares. A rule that counts every cycle as a tie still fails, since a cycle in a large electorate remains one when a vote is added. So does antiplurality: of three tied candidates two remain tied. A rule that treats a lead of fewer than some fixed number of votes as a tie is excluded as well, because it does not depend on shares only.
 
-**Clones with equal rankings.** Tideman's definition of a set of clones (1987) excludes ties with outsiders: no voter ranks a candidate outside the set equal to a member or between two members. Replacing x by clones is then defined only if no ballot ranks x equal to another candidate, and for ballots with few levels the criterion almost never applies. A wider definition applies more often: X is a set of clones if on every ballot every outsider is above all of X, below all of X or equal to all of X. The clones then have the margins of x against every outsider, and the Lemma of Section 4 holds with the same proof. But a second exception is forced.
+**Clones with equal rankings.** Tideman's definition of a set of clones (1987) excludes ties with outsiders: no voter ranks a candidate outside the set equal to a member or between two members. Replacing x by clones is then defined only if no ballot ranks x equal to another candidate, and for ballots with few levels the criterion almost never applies. A wider definition applies more often: X is a set of clones if on every ballot every outsider is above all of X, below all of X or equal to all of X. Put differently, removing all members of X but one gives the same profile whichever member is kept, up to its name. The clones then have the margins of x against every outsider, and the Lemma of Section 4 holds with the same proof. But a second exception is forced.
 
 **Proposition 9.** With clones in the wider sense, let L be neutral and independent of clones, and let p be a profile in which every ballot ranks a and x equal. Then L(p) gives a and x probability zero.
 
@@ -181,15 +181,52 @@ Maximal lotteries with this tie-breaker satisfy 2′, by Proposition 8. In the c
 
 *Reading.* The two exceptions are of one kind. Opposite voters cancel each other, and candidates that no ballot distinguishes cannot be told apart: in both cases the ballots say nothing about the choice that remains, and what is left to count is the candidates. With strict rankings only the first occurs. *(Interpretation.)*
 
-Rules for ballots with a fixed number of levels, such as approval or scores, are not checked here. For them the reverse of a ballot is its complement, and the definitions apply as they stand.
+**The definition.** The two restated conditions are the criterion. They can be stated for ballots of any kind for which three operations are defined: renaming the candidates, reversing a ballot, and removing a candidate from a ballot. Strict rankings, rankings with equal ranks, approval ballots and score ballots are of this kind.
 
-## 7. Open questions
+- A profile is *balanced* if every ballot occurs as often as its reverse. A profile p is *settled* for a rule L if L(p + Q) = L(p) for every balanced profile Q, and a *tie* otherwise.
+- A set X of candidates is a *set of clones* in a profile if removing all members of X but one gives the same profile whichever member is kept, up to its name. For strict rankings these are candidates adjacent on every ballot; for rankings with equal ranks it is the wider sense above. L is *independent of clones* for X if X receives in total the probability its remaining member has in the smaller profile, and every other candidate keeps its probability.
+- Two candidates are *indistinguishable* in a profile if exchanging them leaves every ballot unchanged.
+
+**Definition (EC-VA).** An anonymous and neutral rule L that depends only on the shares of the ballots satisfies **equality of voters and alternatives** if:
+
+1′. **Equal alternatives, except for candidates no ballot distinguishes.** L is independent of clones for every set of clones none of whose members is indistinguishable from a candidate outside the set.
+
+2′. **Equal voters, except at ties within a fraction of a vote.** For every tie p there are a number k ≥ 1 and a ballot r such that k copies of p together with r form a settled profile.
+
+For rankings with equal ranks, a candidate outside a set of clones is indistinguishable from a member exactly when it is ranked equal to the set on every ballot, so 1′ is the condition stated above. For strict rankings no two candidates are indistinguishable and 1′ is condition 1, so a rule on strict rankings that depends only on shares and satisfies the first form of Section 3 satisfies the definition. Proposition 9 holds for ballots of any kind, with "indistinguishable" in place of "ranked equal on every ballot" and the same proof.
+
+The kind of ballot is part of what is judged. Ballots that name a single candidate have no reverses among them, and a ballot naming a candidate has no counterpart naming two clones, so neither condition can be stated for a rule on such ballots. As a rule on rankings, plurality fails both (Section 4).
+
+## 7. Approval and scores
+
+A score ballot gives every candidate a score from 0 to K; an approval ballot is the case K = 1. The reverse of a ballot gives K minus the score, and removing a candidate leaves the other scores as they are. A set of clones is then a set of candidates with the same score on every ballot, and two candidates are indistinguishable when they have the same score on every ballot. Score voting elects the candidates with the largest total. Ties are broken as in Section 6: voters are drawn at random one after another, each narrows the tied candidates to those the voter scores highest among them, and when every ballot has been drawn the remaining candidates share the probability equally.
+
+**Proposition 10.** Score voting with any range, approval voting included, with ties broken by random voters in turn, satisfies EC-VA.
+
+*Proof.* The rule depends only on the shares of the ballots. *2′.* A ballot and its reverse add K to every total, so a profile with a single winner is settled. At a tie, one more ballot that gives K to one of the tied candidates and 0 to the others leaves a single winner; k = 1 suffices. *1′.* Clones have equal totals, so after x is replaced by X the winners are the same, with X in place of x. Every voter scores the members of X alike, so each step of the tie-breaker treats X as it treated x. When every ballot has been drawn, the remaining candidates have the same score on every ballot. If a member of X remains together with an outsider, the two are indistinguishable, which the exception excludes. Otherwise X receives in total what x received. ∎
+
+*(Proved; computed for K = 1, 2, 5 on random profiles with three and four candidates: every profile with a single winner is settled, every tie is within one vote, and the rule is independent of clones in all cases outside the exception, `scripts/symmetry/equality_approval_score.py`, parts 1 to 3.)*
+
+Three limits of this result:
+
+- **The usual tie-breaker fails.** With the uniform lottery over the tied winners, two tied candidates that some ballot separates have one half each, and cloning one of them gives its clones two thirds. Approval and score voting pass with ties broken by the voters, not with ties broken by lot among the candidates. *(Computed, part 3.)*
+- **Clones follow what the ballot records.** If candidates that are only adjacent in the order of every ballot counted as clones, as they do for rankings, score voting would not be independent of them. Three voters score a 5 and x 1, two score x 5 and a 0: a wins with 15 to 13. Add x′ next to x on every ballot, with 4 from the first three and 5 from the other two: x′ wins with 22. Under the definition x and x′ are not clones here, since removing one or the other leaves different profiles. A ranking cannot record how far apart adjacent candidates are; a score ballot does, and candidates it sets apart are not interchangeable. *(Computed, part 4; the last sentence interpretation.)*
+- **STAR fails.** STAR voting takes the two candidates with the largest totals and elects the one preferred by more voters. Three voters score a 1 and x 0, two score x 5 and a 0, and a third candidate scores less than both. The runoff is between x and a, and a wins three to two. With x replaced by two clones, the runoff is between the clones. Away from its ties STAR satisfies EC-V, since a ballot and its reverse add K to every total and cancel in every runoff (Wolk, Quinn and Ogren 2023), and it fails 1′. *(Computed, part 5.)*
+
+| Rule | Independent of clones, outside the exception | A ballot and its reverse cancel, away from the rule's own ties | Each of the rule's ties is within a fraction of a vote | EC-VA |
+|---|---|---|---|---|
+| Approval or score voting, ties broken by random voters in turn | yes (Proposition 10) | yes | yes, within one vote | **yes** |
+| Approval or score voting, ties broken by the uniform lottery over the tied winners | no | yes | yes | no |
+| STAR | no | yes (Wolk, Quinn and Ogren 2023) | not checked | no |
+| Maximal lotteries on rankings with equal ranks, ties broken by random voters in turn and a random order of the candidates (Section 6) | yes in the computed cases; not proved | yes, depends on margins only | yes (Proposition 8) | **yes**, with 1′ computed |
+
+## 8. Open questions
 
 1. Which tie-breakers keep maximal lotteries independent of clones, beyond the one of Proposition 6, and whether one of them can be characterised by proportionality to the voters.
 2. Whether the undecided set of maximal lotteries is always the join of the outcomes of the neighbouring decided regions, and which odd sets of candidates meet at a surface Pf(G_S) = 0.
 3. The Schulze method with its tie-breaking against independence of clones at ties; further rules for the table.
 4. With equal rankings: a proof that maximal lotteries with the tie-breaker of Section 6 satisfy 1′, and that what the voters leave open is always a division among candidates no ballot distinguishes.
-5. Rules on approval and score ballots against 1′ and 2′.
+5. Ranked pairs and the Schulze method with equal rankings; further rules on score ballots.
 6. How EC-VA relates to the Strategic Information thread, where opposite voters cast complementary approval ballots.
 
 ## References
