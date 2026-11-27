@@ -331,13 +331,23 @@ The lottery at a profile is the average, over the voters, of what the rule gives
 
 Proposition 3 says that a rule with EC-V that is continuous is constant, so every rule of interest jumps at the ties. The equation of Proposition 17 is what remains of continuity: at a jump the rule takes the mean of its values on the sides, and the sides are weighted by the voters who point to them. For rankings with equal ranks the equation does not determine the rule by the argument of (b), because a ballot may leave the tie in place; whether it determines the rule up to the choice at profiles that stay ties under every change of the weights is open (Section 9). *(This paragraph interpretation.)*
 
+**The same tie-breaker for other rules.** Score voting, ranked pairs, the Schulze method and BTR-score only compare sums over the ballots: totals, margins, or the smallest margin along a path. Such a rule can be applied to a profile with ballots added at infinitely small weights without taking a limit. Every sum becomes a list, its value in the profile, then its value on the first added ballot, on the second, and so on, and lists are compared in lexicographic order. So "the voters vote again in turn" is defined for each of these rules as in Proposition 16: voters are drawn until every ballot has come up or a single winner is left.
+
+**Proposition 18.** (a) For score voting, this is the tie-breaker of Section 7. (b) For every rule that only compares sums, the rule completed in this way satisfies the equation of Proposition 17, whatever is done when every ballot has come up, provided it depends only on which ballots occur.
+
+*Proof.* (a) The candidates with the largest list of totals are those with the largest total, among them those with the highest score on the first drawn ballot, and so on. (b) The proof of Proposition 17 (a) uses two facts about the rule. For a small weight δ the profile p + δr gives the comparisons of p with r added first, since the rule makes finitely many comparisons. And a ballot that occurs a second time further down a list changes no comparison of lists. Both hold here. ∎
+
+For ranked pairs and the Schulze method on rankings with equal ranks, take as the last ballot an order of the candidates drawn along the tree of clone sets, lock pairs with equal lists in every order, and let several remaining winners share equally. On random profiles with one to five voters and three and four candidates, both rules are then independent of clones in all cases outside the exception, 226 for ranked pairs and 222 for Schulze. Ranked pairs always ends with a single winner. Schulze sometimes ends with several, and in every such case they form a set of clones. *(Proposition proved; this paragraph computed, `scripts/symmetry/equality_votes_again_rules.py`, which also checks (a) for ranges 1, 2 and 5.)*
+
+Seen this way the tie-breaker is not an addition to the rule. A tie is a comparison that comes out equal, and it comes out equal only because every voter is counted at full weight or not at all. Counting the voters once more at weights below any vote, the rule decides by its own comparisons. *(This paragraph interpretation.)*
+
 So independence of clones and proportionality fix the tie value where everything is tied and leave a choice where the tie is partial. Best first and worst last read the ballot of the drawn voter from the top or from the bottom. The third rule needs no such choice. It uses only the operation that the exception of condition 2′ already names, a fraction of one more vote, and the vote is that of a random voter. *(The last two sentences interpretation.)*
 
 ## 9. Open questions
 
 1. The tie-breaker at partial ties (Section 8): whether every proportional tie-breaker that is independent of clones and chooses among the maximal lotteries is a mixture of rules of the three kinds. And whether the equation of Proposition 17 determines the rule of Proposition 16 also for rankings with equal ranks, up to the choice at profiles that stay ties under every change of the weights.
 2. Whether the set of Schulze winners is independent of clones at every tie, beyond the computed cases.
-3. Ranked pairs and the Schulze method with equal rankings.
+3. Ranked pairs and the Schulze method with equal rankings: a proof that, with the voters voting again (Section 8), they are independent of clones outside the exception, which is computed only, and condition 2′ for them.
 4. The side of the alternatives in the Strategic Information thread. Its README, Section 6, gives the Equality Criterion a strategic form (opposite voters cast ballots that cancel in the count); what independence of clones becomes when all voters follow the common rationale is not worked out.
 
 ## Appendix A. Proof of condition 1′ in Proposition 11
