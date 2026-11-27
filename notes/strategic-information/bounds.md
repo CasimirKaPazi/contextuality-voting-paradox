@@ -60,7 +60,35 @@ For methods that count totals the strategic form of the Equality Criterion is th
 
 **For methods that count more, the criterion is a cost and not a ceiling.** Instant runoff and BTR-plurality with three candidates count the whole histogram, five numbers where certification takes two. They do not keep opposite voters equal (README, Section 6), and by Proposition 4 some of their numbers go to even functions; enough remain, and in their corners both elect the Condorcet winner at every self-confirming poll (*Instant Runoff and Plurality*, Proposition 3; *Instant Runoff and BTR-Plurality*, Proposition 2). Failing the criterion does not put these methods below any bound found here. What it leaves is the even part itself: an outcome that can depend on how many pairs of opposite voters there are, which neither target can justify. Whether that dependence accounts for the profiles at which these methods rest on the wrong winner in the smooth model is open.
 
-## 5. What the bounds settle
+**Proposition 6 (the worst case sees what the count sees).** Let a method keep opposite voters equal at every poll, and suppose that what a pair of opposite voters adds to the count, which is then the same for every pair, does not change the summary of the count that a poll reports (the same number added to every total does not change their order). Then adding pairs of opposite voters to a profile changes neither which polls are self-confirming nor who wins at them: its worst case depends on the profile only through the odd functions, like the targets. For a method that does not keep opposite voters equal, pairs of opposite voters can make a poll self-confirming or undo it, at profiles between which neither target sees a difference.
+
+*Proof.* Every pair adds the same vector to the strategic count at a given poll, so the summary is unchanged, and with it the answer to whether the poll is reproduced. The second statement is the definition of failing: some two pairs add different vectors, and the count, on which self-confirmation depends, differs between two profiles with the same odd part. ∎ *(Proved. The second half says that the dependence is possible, not that it occurs at a given poll.)*
+
+## 5. A ladder of ceilings
+
+Lemma 1 and Propositions 2 and 3 are the case of one candidate compared with all others. The same argument gives a bound for any set of comparisons. Let G be a graph on the candidates, its edges the pairs whose majority comparison is in question. A method *certifies G* at a poll if the strategic count determines who beats whom for every edge of G.
+
+**Proposition 7.** If a method certifies G at a poll at which every ranking occurs among the types, then the strategic ballot of a voter determines the voter's preference on every edge of G; at least a(G) different count vectors are in use, where a(G) is the number of ways of directing the edges of G without a cycle; and the strategic count has rank at least the number of edges of G.
+
+*Proof.* As for Lemma 1 and Proposition 2, with the margins of the edges in place of the μ_x. The preferences of a ranking on the edges of G direct them without a cycle, and every such direction comes from a ranking. The margins of different pairs are independent as functions of the histogram of rankings. ∎ *(Proved. The number a(G) is 2^k for a tree with k edges, 2^{m−1} for the star of Proposition 2, and m! for the complete graph.)*
+
+This gives three levels, each with its price in vertices and in rank:
+
+| What the count certifies at a poll | Vertices in use | Rank | Who can |
+|---|---|---|---|
+| One comparison, the two front-runners | 2 | 1 | every method; plurality in its corner holds exactly this |
+| The leader's row: whether the leader is the Condorcet winner | 2^{m−1} | m − 1 | approval and score in their corner; no method with fewer vertices; the most a count of totals can hold |
+| The whole majority relation | m! | m(m − 1)/2 | only methods whose ballots can tell all rankings apart and whose count has that rank: ranked ballots with a count that contains the margins |
+
+**Corollary 8.** If a method does not certify the comparison of some pair x, y at a poll, there are two profiles with the same strategic count at that poll and different Condorcet winners. So a method that can name the Condorcet winner from its strategic count at a poll, whoever leads the poll, certifies the whole majority relation there.
+
+*Proof.* Take the two profiles h + v and h − v of Lemma 1 for the pair, and add to both the same voters, who rank x and y above all others, half of them with x first and half with y first, more of them than any margin of v. The counts are still equal, x and y beat every other candidate in both profiles, and x beats y in one and loses in the other. ∎ *(Proved.)*
+
+So the second level is tied to the poll: a method on it can confirm a leader who is the Condorcet winner and reject one who is not, but it cannot say who the Condorcet winner is. The right leader has to come from the poll, which is information from outside the ballots (README, Section 3), or from a sequence of polls, as in the walk with memory. This is the position of approval, and by Proposition 3 of every method that counts totals at best. Only the third level is free of the poll, and its price is that the strategic ballot reveals the voter's whole ranking. With three candidates that means all six rankings in use and rank three; instant runoff has corner polls with rank two (README, Section 2) and is not on the third level there.
+
+*(Interpretation of Propositions 3 and 7 and Corollary 8.)*
+
+## 6. What the bounds settle
 
 | Method | Vertices against 2^{m−1} | Rank against m − 1 | Opposite voters equal | Certifies its leader |
 |---|---|---|---|---|
@@ -73,9 +101,9 @@ The first row needs no computation and no model of beliefs beyond the linear reg
 
 *Limits.* Certification is about the majority target. For the utilitarian target the corresponding functions are the differences of total utilities, which take a continuum of values per voter, and no method with finitely many ballots holds them exactly; a bound for that target has to be about approximation, and none is given here. The bounds concern the information a method can hold at a poll. They are ceilings: they do not say that a method reaches its ceiling away from a corner, and approval in the smooth model does not (*The Smooth Model across Methods*, Section 4).
 
-## 6. Open questions
+## 7. Open questions
 
-1. A second ceiling above one row. Which counts can certify more than the leader, for instance the whole majority relation (all pairwise margins, rank m(m − 1)/2), and which methods' strategic counts do so at some poll?
+1. The third level of Section 5. At which polls do the strategic counts of instant runoff, BTR-plurality and other ranked methods certify the whole majority relation? A voter whose strategic ballot reveals the whole ranking at every poll is close to a sincere voter, so the theorem of Gibbard and Satterthwaite should bound how often this can hold; a precise statement is missing.
 2. The even part of instant runoff and BTR-plurality: the rank e at their corner polls, and whether the profiles at which they rest on a wrong winner are those where the even part decides.
 3. Approximate certification, in the smooth model: how far the strategic count of approval is from the leader's row as the beliefs widen, as a number that bounds the worst case.
 4. A bound for the utilitarian target: how well the vertices of a ballot polytope can approximate the differences of utilities, and whether central symmetry enters there as it does in Corollary 5.
