@@ -13,7 +13,12 @@ Checks, on random profiles with K = 1, 2, 5 and three or four candidates:
      of clones whenever no outsider has the same scores as the cloned candidate on every ballot;
      with the uniform tie-breaker it is not;
   4. clones that are only adjacent in the order of every ballot: score voting is not independent;
-  5. STAR (the two largest totals, then the majority between them) is not independent of clones.
+  5. STAR (the two largest totals, then the majority between them) is not independent of clones;
+  6. BTR-score (candidates in the order of their totals; the two lowest are compared pairwise, the
+     winner meets the next one up, a pairwise tie goes to the higher one; ties in the totals ordered
+     by random voters in turn): profiles whose outcome does not depend on the order of tied totals
+     stay so under reversal pairs; every tie is within one vote, also with more candidates than
+     score levels and all totals equal; independent of clones with the same scores.
 Run: python3 equality_approval_score.py   (needs numpy; a few seconds)
 """
 import itertools
@@ -130,4 +135,103 @@ before = [(1, 0, 0)] * 3 + [(0, 5, 1)] * 2                # candidates a, x, b
 after = [(1, 0, 0, 0)] * 3 + [(0, 5, 1, 5)] * 2           # x' = last, same scores as x
 assert star(before, 3) == {0} and star(after, 4) == {1, 3}
 print("5. STAR: a wins the runoff against x; with x cloned (same scores), x and x' fill the runoff")
+# 6. BTR-score
+def margin(profile, x, y):
+    return sum((r[x] > r[y]) - (r[x] < r[y]) for r in profile)
+
+
+def btr(order, profile):
+    """order: the candidates from the largest total to the smallest."""
+    current = order[-1]
+    for higher in reversed(order[:-1]):
+        if margin(profile, current, higher) <= 0:          # the higher one wins unless strictly beaten
+            current = higher
+    return current
+
+
+def tied_groups(profile, m):
+    t = totals(profile, m)
+    return [tuple(x for x in range(m) if t[x] == v) for v in sorted(set(t.tolist()), reverse=True)]
+
+
+def linear_orders(groups):
+    for parts in itertools.product(*[itertools.permutations(g) for g in groups]):
+        yield tuple(x for part in parts for x in part)
+
+
+def possible(profile, m):
+    """The winners over all ways of ordering candidates with equal totals."""
+    return {btr(order, profile) for order in linear_orders(tied_groups(profile, m))}
+
+
+def btr_rule(profile, m):
+    """Ties in the totals: random voters in turn put tied candidates in the order of their scores;
+    candidates that no ballot separates are ordered at random."""
+    types = {}
+    for r in profile:
+        types[r] = types.get(r, 0) + 1
+
+    def go(groups, left):
+        out = np.zeros(m)
+        if all(len(g) == 1 for g in groups) or not left:
+            orders = list(linear_orders(groups))
+            for order in orders:
+                out[btr(order, profile)] += 1 / len(orders)
+            return out
+        total = sum(left.values())
+        for t, count in left.items():
+            finer = [tuple(x for x in g if t[x] == v) for g in groups
+                     for v in sorted({t[x] for x in g}, reverse=True)]
+            out += count / total * go(finer, {u: v for u, v in left.items() if u != t})
+        return out
+
+    return go(tied_groups(profile, m), types)
+
+
+for K, m, trials in [(1, 3, 300), (2, 3, 300), (2, 4, 300), (5, 4, 300)]:
+    ballots = list(itertools.product(range(K + 1), repeat=m))
+    decided = ties = clone_cases = 0
+    for _ in range(trials):
+        prof = random_profile(m, K, int(rng.integers(1, 6)))
+        w = possible(prof, m)
+        if len(w) == 1:
+            decided += 1
+            extra = []
+            for _ in range(int(rng.integers(1, 4))):
+                b = random_profile(m, K, 1)[0]
+                extra += [b, reverse(b, K)]
+            assert possible(prof + extra, m) == w
+        else:
+            ties += 1
+            assert any(len(possible(prof + [r], m)) == 1 for r in ballots)
+        x = int(rng.integers(m))
+        cloned = [r + (r[x],) for r in prof]
+        L, L2 = btr_rule(prof, m), btr_rule(cloned, m + 1)
+        merged = L2[:m].copy()
+        merged[x] += L2[m]
+        if not any(all(r[y] == r[x] for r in prof) for y in range(m) if y != x):
+            clone_cases += 1
+            assert np.allclose(merged, L)
+    print(f"6. BTR-score, scores 0..{K}, {m} candidates: {decided} decided profiles stay decided under reversal"
+          f" pairs; {ties} ties, all within one vote; independent of clones in all {clone_cases} cases"
+          f" outside the exception")
+for K, m, trials in [(2, 4, 150), (2, 5, 100), (2, 6, 30)]:   # more candidates than levels, all totals equal
+    ballots = list(itertools.product(range(K + 1), repeat=m))
+    ties = 0
+    for _ in range(trials):
+        prof = []
+        for _ in range(int(rng.integers(1, 4))):
+            b = random_profile(m, K, 1)[0]
+            prof += [b[i:] + b[:i] for i in range(m)]
+        assert len(set(totals(prof, m).tolist())) == 1
+        if len(possible(prof, m)) > 1:
+            ties += 1
+            assert any(len(possible(prof + [r], m)) == 1 for r in ballots)
+    print(f"   scores 0..{K}, {m} candidates, all totals equal: {ties} ties of {trials} profiles, all within one vote")
+for K, m in [(3, 4), (5, 4), (5, 6)]:                       # at least as many levels as candidates
+    for _ in range(100):
+        prof = random_profile(m, K, int(rng.integers(1, 6)))
+        strict = tuple(int(v) for v in rng.permutation(K + 1)[:m])
+        assert len(set(totals(prof * (K + 1) + [strict], m).tolist())) == m
+print("   K + 1 copies of a profile plus a ballot with distinct scores: all totals distinct (300 cases)")
 print("all checks passed")

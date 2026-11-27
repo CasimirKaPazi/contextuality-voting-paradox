@@ -175,11 +175,24 @@ A rule that gives probability to two candidates that no ballot distinguishes can
 
 On strict rankings 1′ is condition 1. *(Proposition 9 proved; computed example, part 4.)*
 
-**The tie-breaker.** With equal ranks a ballot orders classes of candidates, and one voter's best maximal lottery need not be unique. Draw voters at random, one after another. Each narrows the current set of maximal lotteries to those that are best for the voter's ballot: the largest total probability for its first class, then the largest for its second, and so on. When every ballot of the profile has been drawn, a uniformly random strict order of the candidates decides what is still open, in the same way. The order in which new ballots come up depends only on their shares. On strict rankings the first voter decides everything, and this is the tie-breaker of Proposition 6.
+**The tie-breaker.** With equal ranks a ballot orders classes of candidates, and one voter's best maximal lottery need not be unique. Draw voters at random, one after another. Each narrows the current set of maximal lotteries to those that are best for the voter's ballot: the largest total probability for its first class, then the largest for its second, and so on. When every ballot of the profile has been drawn, a random strict order of the candidates decides what is still open, in the same way. The order in which new ballots come up depends only on their shares. On strict rankings the first voter decides everything, and this is the tie-breaker of Proposition 6.
 
-Maximal lotteries with this tie-breaker satisfy 2′, by Proposition 8. In the computed cases they satisfy 1′: on 502 random profiles with three and four candidates in which some ballot distinguishes every outsider from the cloned candidate, the rule is independent of clones; in the remaining 48 profiles cloning changes the shares in 21, as Proposition 9 requires when the candidates concerned receive probability. In all computed cases what the voters leave open is only the division of probability among candidates that no ballot distinguishes, which the last step divides equally. *(2′ proved; 1′ and the last statement computed, part 5, not proved.)*
+**What the voters leave open.** In the random profiles computed, the voters leave open only the division of probability among candidates that no ballot distinguishes. This is not always so. Six candidates, eight voters:
 
-*Reading.* The two exceptions are of one kind. Opposite voters cancel each other, and candidates that no ballot distinguishes cannot be told apart: in both cases the ballots say nothing about the choice that remains, and what is left to count is the candidates. With strict rankings only the first occurs. *(Interpretation.)*
+g > c=d > e > a=b;  c=d > e > a=b > g;  e=g > a=b > c=d;  a=b > c=d > e=g;
+e > b=d > g > a=c;  b=d > g > a=c > e;  e=g > a=c > b=d;  a=c > b=d > e=g.
+
+The candidates a, b, c, d tie pairwise; e beats a and b and loses to c and d; g beats a and c and loses to b and d. Every ballot ranks a, b, c, d as two pairs, a=b against c=d or a=c against b=d. When voters who rank a=b first and a=c first come up early, what remains is the segment of lotteries (t, ½ − t, ½ − t, t) on a, b, c, d, from ½b + ½c to ½a + ½d. Along it every class of every ballot keeps its total, so no further voter narrows it. The ballots distinguish the four candidates from each other, but not these lotteries. *(Computed, part 6.)*
+
+How the last order is drawn then matters. With a uniformly random order of the candidates the rule gives a the probability 1/16, and when a is replaced by two clones, the clones together receive 3/40. The order has to respect the clones.
+
+**The tree of clone sets.** If two clone sets overlap, their union, their intersection and their differences are clone sets, as one checks from the definition. As for the modules of a graph, the clone sets that overlap no other clone set then form a tree under inclusion, with the single candidates as leaves, and the children of a node are of one of three kinds: no union of several, but not all, of them is a clone set; or they form a line in which exactly the unions of neighbours are clone sets; or every union of them is a clone set. For strict rankings this is the tree of Elkind, Faliszewski and Slinko (2012). The third kind, with three or more children, occurs exactly for candidates that no ballot distinguishes: on a ballot that ranks a member of one child above a member of another, a member of a third child is above both or below both, and is then not placed alike against one of the two other unions. *(The tree by the standard argument for families closed in this way, not written out here; the script checks that the children divide each node.)*
+
+Draw the order along the tree: at every node the children are put in a uniformly random order, except in a line, where one of its two directions is drawn; then the same inside each child. A set of clones is then consecutive in the order unless it consists of some, but not all, of a group of candidates that no ballot distinguishes, which is the exception of 1′. Berker et al. (2025) use the same tree to make deterministic rules consistent under cloning. With this order the rule is independent of clones in the example: a has 1/16, and its clones together have 1/16.
+
+Maximal lotteries with this tie-breaker satisfy 2′, by Proposition 8. In the computed cases they satisfy 1′: on 496 random profiles with three and four candidates outside the exception, where the voters leave only indistinguishable candidates open and both ways of drawing the order agree, and in the example with the order along the tree. *(2′ proved; 1′ computed, parts 5 and 6, not proved.)*
+
+*Reading.* The two exceptions are of one kind. Opposite voters cancel each other, and candidates that no ballot distinguishes cannot be told apart: in both cases the ballots say nothing about the choice that remains, and what is left to count is the candidates. With strict rankings only the first occurs. The example above is a third case of the same kind, lotteries that no ballot distinguishes; it needs no exception, only a tie-breaker that knows the clones. *(Interpretation.)*
 
 **The definition.** The two restated conditions are the criterion. They can be stated for ballots of any kind for which three operations are defined: renaming the candidates, reversing a ballot, and removing a candidate from a ballot. Strict rankings, rankings with equal ranks, approval ballots and score ballots are of this kind.
 
@@ -213,26 +226,38 @@ Three limits of this result:
 - **Clones follow what the ballot records.** If candidates that are only adjacent in the order of every ballot counted as clones, as they do for rankings, score voting would not be independent of them. Three voters score a 5 and x 1, two score x 5 and a 0: a wins with 15 to 13. Add x′ next to x on every ballot, with 4 from the first three and 5 from the other two: x′ wins with 22. Under the definition x and x′ are not clones here, since removing one or the other leaves different profiles. A ranking cannot record how far apart adjacent candidates are; a score ballot does, and candidates it sets apart are not interchangeable. *(Computed, part 4; the last sentence interpretation.)*
 - **STAR fails.** STAR voting takes the two candidates with the largest totals and elects the one preferred by more voters. Three voters score a 1 and x 0, two score x 5 and a 0, and a third candidate scores less than both. The runoff is between x and a, and a wins three to two. With x replaced by two clones, the runoff is between the clones. Away from its ties STAR satisfies EC-V, since a ballot and its reverse add K to every total and cancel in every runoff (Wolk, Quinn and Ogren 2023), and it fails 1′. *(Computed, part 5.)*
 
+**BTR-score.** A score ballot can also be read for pairwise preferences: a voter prefers x to y when x has the higher score. BTR-score (Hiveism, *Four levels of voting methods*) puts the candidates in the order of their totals and compares the two lowest pairwise; the loser is eliminated and the winner meets the next candidate up, until one is left. A pairwise tie goes to the candidate higher in the order. Equal totals are ordered as ties are broken for score voting: random voters in turn put tied candidates in the order of their scores, and candidates with the same score on every ballot are ordered at random. A candidate who beats every other pairwise is elected whatever the totals.
+
+**Proposition 11.** BTR-score satisfies 1′. A profile whose outcome does not depend on how equal totals are ordered is settled, and for at most K + 1 candidates the rule satisfies 2′.
+
+*Proof.* *1′.* Clones have the same score on every ballot, so they have the same total and the same margins against every other candidate, and they tie pairwise with each other. No voter separates them, and by the exception no outsider is still tied with them when every ballot has been drawn. So the clones are consecutive in the order, in the place of x. If the candidate coming from below beats x, it beats every clone in turn and passes them as it passed x. Otherwise the lowest clone takes over, each clone above takes over from the one below by the rule for pairwise ties, and the highest clone goes on as x did. A clone wins exactly when x won, and nothing else changes. *Settled.* A ballot and its reverse add K to every total and nothing to any margin, so the order of the totals, its ties and the possible outcomes stay the same. *2′.* Take K + 1 copies of the profile and a ballot that gives the candidates different scores. Totals that differed now differ by more than the ballot can add, and equal totals are separated by it, so no totals are equal. ∎
+
+With more candidates than score levels no single ballot separates all equal totals. In the computed cases, scores 0 to 2 with up to six candidates and among them profiles with all totals equal, one ballot still settled every tie. *(Proposition proved; computed for K = 1, 2, 5, part 6.)*
+
 | Rule | Independent of clones, outside the exception | A ballot and its reverse cancel, away from the rule's own ties | Each of the rule's ties is within a fraction of a vote | EC-VA |
 |---|---|---|---|---|
 | Approval or score voting, ties broken by random voters in turn | yes (Proposition 10) | yes | yes, within one vote | **yes** |
 | Approval or score voting, ties broken by the uniform lottery over the tied winners | no | yes | yes | no |
+| BTR-score, equal totals ordered by random voters in turn | yes (Proposition 11) | yes | yes for at most K + 1 candidates; beyond, in the computed cases | **yes** for at most K + 1 candidates |
 | STAR | no | yes (Wolk, Quinn and Ogren 2023) | not checked | no |
-| Maximal lotteries on rankings with equal ranks, ties broken by random voters in turn and a random order of the candidates (Section 6) | yes in the computed cases; not proved | yes, depends on margins only | yes (Proposition 8) | **yes**, with 1′ computed |
+| Maximal lotteries on rankings with equal ranks, ties broken by random voters in turn and an order drawn along the tree of clone sets (Section 6) | yes in the computed cases; not proved | yes, depends on margins only | yes (Proposition 8) | **yes**, with 1′ computed |
 
 ## 8. Open questions
 
 1. Which tie-breakers keep maximal lotteries independent of clones, beyond the one of Proposition 6, and whether one of them can be characterised by proportionality to the voters.
 2. Whether the undecided set of maximal lotteries is always the join of the outcomes of the neighbouring decided regions, and which odd sets of candidates meet at a surface Pf(G_S) = 0.
 3. The Schulze method with its tie-breaking against independence of clones at ties; further rules for the table.
-4. With equal rankings: a proof that maximal lotteries with the tie-breaker of Section 6 satisfy 1′, and that what the voters leave open is always a division among candidates no ballot distinguishes.
-5. Ranked pairs and the Schulze method with equal rankings; further rules on score ballots.
+4. With equal rankings: a proof that maximal lotteries with the tie-breaker of Section 6, the order drawn along the tree of clone sets, satisfy 1′.
+5. Ranked pairs and the Schulze method with equal rankings. BTR-score with more candidates than score levels: whether a fraction of one vote always settles a tie, and if not, whether 2′ should allow several ballots of small total share.
 6. How EC-VA relates to the Strategic Information thread, where opposite voters cast complementary approval ballots.
 
 ## References
 
+- Berker et al. (2025). From independence of clones to composition consistency: a hierarchy of barriers to strategic nomination. arXiv:2502.16973.
 - Brandl, F., Brandt, F. and Seedig, H. G. (2016). Consistent probabilistic social choice. *Econometrica* 84, 1839–1880.
+- Elkind, E., Faliszewski, P. and Slinko, A. (2012). Clone structures in voters' preferences. *Proceedings of the 13th ACM Conference on Electronic Commerce*, 496–513.
 - Fishburn, P. C. (1984). Probabilistic social choice based on simple voting comparisons. *Review of Economic Studies* 51, 683–692.
+- Hiveism. Four levels of voting methods. https://hiveism.substack.com/p/four-levels-of-voting-methods
 - Laffond, G., Laslier, J.-F. and Le Breton, M. (1997). A theorem on symmetric two-player zero-sum games. *Journal of Economic Theory* 72, 426–431.
 - McGarvey, D. C. (1953). A theorem on the construction of voting paradoxes. *Econometrica* 21, 608–610.
 - Schulze, M. (2011). A new monotonic, clone-independent, reversal symmetric, and Condorcet-consistent single-winner election method. *Social Choice and Welfare* 36, 267–303.
