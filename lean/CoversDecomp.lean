@@ -36,9 +36,14 @@
     walk is a section of the K-fold cover, and the model is a mixture of
     descents of uniform rotation mixtures on that one cover.
 
-  Not formalised here: the corollary's parts 2 and 3, in terms of the levels
-  of obstruction. The walks pass the chosen context at distinct values but
-  need not be simple cycles elsewhere.
+  * `cor_level2`, `cor_level1`: parts 2 and 3 of the corollary. At level 2
+    the K-fold cover has global sections and none fixed by the deck
+    transformation; at level 1 no finite cover has a global section.
+
+  The levels are stated here in the loop encoding of `Covers.lean`, not
+  through the general frame of `Scenarios.lean`: no bridge from loops to
+  `Scenarios.Scenario` is built. The walks pass the chosen context at
+  distinct values but need not be simple cycles elsewhere.
 -/
 
 module
@@ -648,5 +653,30 @@ theorem model_iff_cover (hn : 0 < n) {R : ℕ → V → V → Prop} (hR : ∀ i,
     refine ⟨_, model_of_section hn hR ⟨k, hk, f, hper⟩ fun m => ?_⟩
     have := hrel m
     rwa [Covers.cover_mod] at this
+
+/-- **Corollary, part 2.** A loop at level 2, with an empirical model and no
+    global section, has a K-fold cover with global sections, K = lcm(1, …, |S|),
+    of which none is fixed by the deck transformation: the cover is at level 3
+    relative to ℤ/K. By `prop2_lcm` the loop's models are mixtures of descents
+    of rotation averages of these sections, and by `model_of_section` every
+    such descent is a model. -/
+theorem cor_level2 (hn : 0 < n) {R : ℕ → V → V → Prop} {e : ℕ → V → V → ℝ} (h : Model R n e)
+    (hno : ¬ Loops.Section R n) {j : ℕ} (hj : j < n) (S : Finset V)
+    (hS : ∀ x y, R j x y → x ∈ S) :
+    (∃ f, Covers.IsSection (Covers.Cover R n) ((Icc 1 S.card).lcm id * n) f) ∧
+      ¬ ∃ f, Covers.IsSection (Covers.Cover R n) ((Icc 1 S.card).lcm id * n) f ∧
+        Covers.deck n f = f := by
+  refine ⟨?_, fun hf => hno ((Covers.section_iff_cover R n _).mpr hf)⟩
+  obtain ⟨L, hL, hsum, -⟩ := prop2_lcm hn h hj S hS
+  match L, hL, hsum with
+  | [], _, hsum => simp at hsum
+  | c :: _, hL, _ => exact ⟨c.2.s, (hL c List.mem_cons_self).2.2⟩
+
+/-- **Corollary, part 3.** A loop at level 1, without empirical models, has no
+    global section on any finite cover. -/
+theorem cor_level1 (hn : 0 < n) {R : ℕ → V → V → Prop} (hR : ∀ i, R i = R (i % n))
+    (h : ¬ ∃ e, Model R n e) :
+    ∀ k, 0 < k → ¬ ∃ f, Covers.IsSection (Covers.Cover R n) (k * n) f :=
+  fun k hk hf => h ((model_iff_cover hn hR).mpr ⟨k, hk, hf⟩)
 
 end CoversDecomp

@@ -6,7 +6,8 @@
   neither player admits a rational diagonal (`no_diagonal1`, `no_diagonal2`).
 
   The definitions are those of `NonTight.lean` (best replies, strict
-  preferences as injective utilities, tightness, `RationalDiagonal1`), so this
+  preferences as injective utilities, tightness, `RationalDiagonal1`), with
+  strict Nash strategies and the common veto from `TwoPlayer.lean`, so this
   is the counterpart of Proposition 5 there: on forms that are not tight the
   diagonal always exists, on this tight form it never does.
 
@@ -26,60 +27,13 @@ module
 
 public import Mathlib
 public import NonTight
+public import TwoPlayer
 
 @[expose] public section
 
 namespace TightCounterexample
 
-open NonTight
-
-/-! ### Strict Nash strategies -/
-
-section General
-
-variable {A B X : Type}
-
-/-- Row a is a strict Nash strategy of player 1: a best reply to every best
-    reply of player 2. -/
-def StrictNash1 (g : A → B → X) (u v : X → Nat) (a : A) : Prop :=
-  ∀ b, BR2 g v a b → BR1 g u a b
-
-/-- Player 1 has no rational diagonal exactly when, under every pair of strict
-    preferences, it has a strict Nash strategy. -/
-theorem not_rd1_iff (g : A → B → X) :
-    ¬ RationalDiagonal1 g ↔
-      ∀ u v : X → Nat, Injective u → Injective v → ∃ a, StrictNash1 g u v a := by
-  unfold RationalDiagonal1 StrictNash1
-  constructor
-  · intro h u v hu hv
-    by_contra hc
-    push Not at hc
-    exact h ⟨u, v, hu, hv, hc⟩
-  · rintro h ⟨u, v, hu, hv, hd⟩
-    obtain ⟨a, ha⟩ := h u v hu hv
-    obtain ⟨b, hb2, hb1⟩ := hd a
-    exact hb1 (ha b hb2)
-
-/-- Best replies depend only on the order of the utilities. -/
-theorem br1_congr (g : A → B → X) {u w : X → Nat} (h : ∀ x y, u x ≤ u y ↔ w x ≤ w y)
-    (a : A) (b : B) : BR1 g u a b ↔ BR1 g w a b :=
-  forall_congr' fun _ => h _ _
-
-theorem br2_congr (g : A → B → X) {v w : X → Nat} (h : ∀ x y, v x ≤ v y ↔ w x ≤ w y)
-    (a : A) (b : B) : BR2 g v a b ↔ BR2 g w a b :=
-  forall_congr' fun _ => h _ _
-
-/-- A common veto: an outcome x that player 1 forces with a row and player 2
-    with a column. Every form with a common veto is tight, since every set of
-    outcomes or its complement contains x. -/
-theorem tight_of_common_veto (g : A → B → X) (x : X) (r : A) (hr : ∀ s, g r s = x)
-    (s : B) (hs : ∀ r, g r s = x) : Tight g := by
-  intro S
-  cases h : S x with
-  | true => exact Or.inl ⟨r, fun b => by simp [hr b, h]⟩
-  | false => exact Or.inr ⟨s, fun a => by simp [hs a, h]⟩
-
-end General
+open NonTight TwoPlayer
 
 /-! ### Utilities on three outcomes up to order -/
 
@@ -225,6 +179,7 @@ theorem core_transpose : Core formT := by decide +kernel
 theorem no_diagonal1 : ¬ RationalDiagonal1 form := no_diagonal_of_core form core_form
 
 /-- Proposition 5″, player 2: no rational diagonal. -/
-theorem no_diagonal2 : ¬ RationalDiagonal1 formT := no_diagonal_of_core formT core_transpose
+theorem no_diagonal2 : ¬ RationalDiagonal2 form := fun h =>
+  no_diagonal_of_core formT core_transpose ((rd2_iff form).mp h)
 
 end TightCounterexample

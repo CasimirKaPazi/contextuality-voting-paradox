@@ -78,7 +78,7 @@ By (F1), every row holding any outcome leaves it, since o forces nothing. So the
 
 Now consider (o, (u, t, v), rotation), with i's order (t, v, u). By the working conditions of that note, read for columns, it works exactly when o does not force u, every column holding t reaches u from t, and every column inside {u, v} holding v leaves v. These are the hypothesis, Step 1 and Step 2. ∎
 
-The proof uses neither tightness nor recombination. On a form without a common veto, the three configurations (i, (t, u, v), reverse), (i, (t, v, u), reverse) and (o, (u, t, v), rotation) always contain a working one.
+The proof uses neither tightness nor recombination. On a form without a common veto, the three configurations (i, (t, u, v), reverse), (i, (t, v, u), reverse) and (o, (u, t, v), rotation) always contain a working one. *(Checked in Lean, `lean/ThreeOutcomes.lean`, `thmA`, with all three outcomes occurring.)*
 
 **Theorem B (common veto).** Let a non-dictatorial form with three outcomes have a common veto c, and let a, b be the other outcomes. Read player i's strategies as rows. Call a row a *wall row* if all its c-cells lie in columns that are constant c. Then i has no rational diagonal exactly when all of the following hold, for (x, y) = (a, b) and (b, a):
 - (W) there is a wall row;
@@ -91,9 +91,9 @@ The proof uses neither tightness nor recombination. On a form without a common v
 - *P = (x, y, c), Q with c on top.* Every row has favourite c. A wall row is not refuted. Without a wall row, every row has a c-cell in a column holding x or y, and i works.
 - *P = (x, y, c), Q with x on top.* A row holding x has favourite x and is not refuted. Such a row exists, since x occurs.
 - *P = (x, y, c), Q = (y, x, c).* A row as in (A_x) holds x and not y, so its favourite is x: not refuted.
-- *P = (x, y, c), Q = (y, c, x).* Rows holding y have favourite y and are refuted exactly when some y-cell lies in a column holding x. Rows without y have favourite c and are refuted exactly when they are not wall rows. So i has a strict Nash strategy exactly when (E_xy) holds. ∎
+- *P = (x, y, c), Q = (y, c, x).* Rows holding y have favourite y and are refuted exactly when some y-cell lies in a column holding x. Rows without y have favourite c and are refuted exactly when they are not wall rows. So i has a strict Nash strategy exactly when (E_xy) holds. ∎ *(Checked in Lean, `lean/ThreeOutcomes.lean`, `thmB`, for player 1 and with a and b occurring; player 2 by the transpose.)*
 
-So a form with three outcomes has no rational diagonal exactly when it has a common veto and both players satisfy (W), (A_a), (A_b), (E_ab) and (E_ba). In the example, player 1's rows r0, r1, r4, r2, r3, r5 are the constant row, a wall row, the rows for (A_a) and (A_b), and the rows for (E_ab) and (E_ba).
+So a form with three outcomes has no rational diagonal exactly when it has a common veto and both players satisfy (W), (A_a), (A_b), (E_ab) and (E_ba). *(Checked in Lean: `veto_of_no_diagonal` and `prop5`, for non-dictatorial forms on which all three outcomes occur.)* In the example, player 1's rows r0, r1, r4, r2, r3, r5 are the constant row, a wall row, the rows for (A_a) and (A_b), and the rows for (E_ab) and (E_ba).
 
 *Checks.* The criterion agrees with the brute-force test on all forms with a c-border and an inner part of 3 × 3, 2 × 4 or 3 × 4 (1,095,920 player checks), and on 28,859 random forms with a common veto. Theorem A held on 20,314 random forms without one.
 

@@ -24,7 +24,7 @@ Each line names the main results already checked, by thread of the project roadm
 - **C (cycles and twists).**
   - Propositions 1–5 and remark (d) of *Cycles and Twists* (`ValueSpaces.lean`, `ProbLine.lean`, `CircleTournaments.lean`, `Nerve.lean`).
   - Propositions 1–3 of *Loops of Relations* (`LoopsOfRelations.lean`).
-  - Propositions 1 and 2 of *Covers and Division*, with the bound and the K-fold cover, and part 1 of the corollary (`Covers.lean`, `CoversDecomp.lean`).
+  - Propositions 1 and 2 of *Covers and Division*, with the bound and the K-fold cover, and the corollary (`Covers.lean`, `CoversDecomp.lean`).
 - **D (strategy as a halting problem).**
   - Gibbard (1973), Lemma 2 and Theorem 3 (`Arrow.lean`, `Gibbard73.lean`, `Diagonal.lean`, `Dichotomy.lean`).
   - The corollary of *What Cannot Be Defined from Inside*: composite procedures (`Composition.lean`).
@@ -33,6 +33,7 @@ Each line names the main results already checked, by thread of the project roadm
   - The certificates of Proposition 4 (`RationalDiagonal.lean`).
   - Proposition 5 (`NonTight.lean`).
   - Proposition 5″, the tight form without a rational diagonal (`TightCounterexample.lean`).
+  - Proposition 5‴, the exact criterion for three outcomes (`ThreeOutcomes.lean`), and the common frame for two-player forms (`TwoPlayer.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`).
 - **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`); Proposition 4 as one statement for the walk with memory, with ties (Proposition 7) and without, and the bridge from positions to utilities (`MemoryWalk.lean`).
@@ -42,10 +43,10 @@ Each line names the main results already checked, by thread of the project roadm
 These are definitions and toolkits that several later items need. Doing them first keeps later files from each bringing their own encoding.
 
 1. **One frame for two-player game forms.**
-   - `NonTight.lean` (matrices with utilities in ℕ), `SummaryAutomaton.lean` (Finset-based), `RationalDiagonal.lean` (lists) and `Gibbard73.lean` (n players, relations) each define strategies, best replies and rational diagonals in their own way. `TightCounterexample.lean` reuses the definitions of `NonTight.lean`.
-   - Work: a common definition of tightness, strict Nash strategies and rational diagonals for two players, with bridges from the existing files. `Rankings.lean` did the same for rankings.
-   - Value: Propositions 5‴ and 7 and the assembly of Proposition 5′ (Sections 2 and 3) can then be stated once.
-   - Effort: moderate.
+   - In place: `TwoPlayer.lean`, on the definitions of `NonTight.lean`, with player 2's side through the transpose, strict Nash strategies, and the bridge to `SummaryAutomaton.lean`. `TightCounterexample.lean` uses it.
+   - Not bridged: `RationalDiagonal.lean` (certificates for voting rules on lists of rankings) and `Gibbard73.lean` (n players, relations).
+   - Proposition 5‴, Theorems A and B of *A tight form without a rational diagonal*, is in place in the frame (`ThreeOutcomes.lean`).
+   - Next: Proposition 7; the assembly of Proposition 5′ (thread D).
 2. **Lotteries and joint draws as a toolkit.**
    - In place: Lemma 3 in both directions and the coupling lemma (`Couplings.lean`).
    - In place as well: Strassen's theorem for a chain, on the positions of a ranking (`mono_iff_dom`).
@@ -55,8 +56,7 @@ These are definitions and toolkits that several later items need. Doing them fir
 
 ## 2. Nearly finished: complete these
 
-1. **Covers and division, parts 2–3 of the corollary** (`notes/covers-and-division.md`). Proposition 2 with the bound k ≤ m and the K-fold cover, and part 1 of the corollary, are in place (`CoversDecomp.lean`). Open: parts 2–3 in the language of levels (*Scenarios*): the K-fold cover at level 3 relative to ℤ/K, and level 1 of the loop. Effort: small to moderate.
-2. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
+1. **The call game as one tree** (*CORE and the Formal Results*, Section 3g).
    - Its stages are checked.
    - Open: subgame perfection on the whole tree, and the uniqueness of the values when each proposer's best acceptable lotteries fix the others' values.
 
@@ -85,7 +85,7 @@ These are the results the project's claims stand on, by thread. Details below th
   - take the structure theorem as a hypothesis;
   - check the searches, a large step.
 
-  Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is proved by hand and is a moderate target. Proposition 7, approval with a veto, is small to moderate; it also bears on Section 3g of the CORE note.
+  Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is small to moderate; it also bears on Section 3g of the CORE note.
 - **G. CORE.**
   - The proposition on concave loss (Section 3b): invertibility and positivity of distance matrices. Large.
   - The theorem that on a line the random ballot is the only strategy-proof rule that harms no one (Section 3h). It is moderate with the characterisation of Ehlers, Peters and Storcken as a hypothesis. Without it, it is large.
