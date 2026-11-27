@@ -34,6 +34,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5 (`NonTight.lean`).
   - Proposition 5″, the tight form without a rational diagonal (`TightCounterexample.lean`).
   - Proposition 5‴, the exact criterion for three outcomes (`ThreeOutcomes.lean`), and the common frame for two-player forms (`TwoPlayer.lean`).
+  - Proposition 7, approval with a veto (`ApprovalVeto.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`).
 - **Strategic information.** Propositions 1–3, the Smith set, and the steps of Proposition 4 (`LeaderRule.lean`); Propositions 5 and 6, which derive the best replies from the weights of ties, and the counting of Proposition 4 for an abstract sequence of leaders (`StrategicInformation.lean`); Proposition 4 as one statement for the walk with memory, with ties (Proposition 7) and without, and the bridge from positions to utilities (`MemoryWalk.lean`).
@@ -46,7 +47,8 @@ These are definitions and toolkits that several later items need. Doing them fir
    - In place: `TwoPlayer.lean`, on the definitions of `NonTight.lean`, with player 2's side through the transpose, strict Nash strategies, and the bridge to `SummaryAutomaton.lean`. `TightCounterexample.lean` uses it.
    - Not bridged: `RationalDiagonal.lean` (certificates for voting rules on lists of rankings) and `Gibbard73.lean` (n players, relations).
    - Proposition 5‴, Theorems A and B of *A tight form without a rational diagonal*, is in place in the frame (`ThreeOutcomes.lean`).
-   - Next: Proposition 7; the assembly of Proposition 5′ (thread D).
+   - Proposition 7, approval with a veto, is in place for any number of players (`ApprovalVeto.lean`, with its own n-player notion of a strict Nash strategy).
+   - Next: the assembly of Proposition 5′ (thread D).
 2. **Lotteries and joint draws as a toolkit.**
    - In place: Lemma 3 in both directions and the coupling lemma (`Couplings.lean`).
    - In place as well: Strassen's theorem for a chain, on the positions of a ranking (`mono_iff_dom`).
@@ -85,7 +87,7 @@ These are the results the project's claims stand on, by thread. Details below th
   - take the structure theorem as a hypothesis;
   - check the searches, a large step.
 
-  Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is small to moderate; it also bears on Section 3g of the CORE note.
+  Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is checked (`ApprovalVeto.lean`).
 - **G. CORE.**
   - The proposition on concave loss (Section 3b): invertibility and positivity of distance matrices. Large.
   - The theorem that on a line the random ballot is the only strategy-proof rule that harms no one (Section 3h). It is moderate with the characterisation of Ehlers, Peters and Storcken as a hypothesis. Without it, it is large.

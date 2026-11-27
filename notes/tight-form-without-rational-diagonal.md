@@ -114,7 +114,7 @@ With more than two players, a rational diagonal for i asks, for every strategy b
 *Proof.* Let A be player i's sincere set. Take a profile of the others' sets that is an equilibrium among them given A, and let K be the intersection of their sets.
 - *K meets A in at most one proposal.* Otherwise let k be another player and z k's favourite in K ∩ A. By approving only z, player k gets z instead of a lottery with full support on at least two proposals, which k values strictly less. So the profile was not an equilibrium.
 - *If K ∩ A = {y}*, i gets y. Every other proposal in K lies outside A, so i likes it less than F, and F less than y. Whatever i approves, it gets F or a lottery over K, worth at most y.
-- *If K ∩ A is empty*, i gets F. Every proposal in K lies outside A, so every lottery over K is worse for i than F. ∎
+- *If K ∩ A is empty*, i gets F. Every proposal in K lies outside A, so every lottery over K is worse for i than F. ∎ *(Checked in Lean, `lean/ApprovalVeto.lean`, `sincere_strictNash`: it needs only the other players' utilities injective on the proposals.)*
 
 The lottery on ties is what the proof uses. Two comparisons show that it is needed:
 - *Ties broken deterministically.* With two proposals a, b and ties going to a, each player still works under one pair of strict orders; with ties going to F, under four. With random utilities and two to four proposals and ties broken by a fixed order, between 3 and 8 percent of the players have a rational diagonal.
