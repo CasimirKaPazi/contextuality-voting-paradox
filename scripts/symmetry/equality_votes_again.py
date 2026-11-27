@@ -11,6 +11,8 @@ Checks:
   1. on strict rankings the rule is the third rule of Proposition 15 (first voter only);
   2. on random profiles with equal ranks it gives a maximal lottery and is independent of clones
      whenever no outsider is ranked equal to the cloned candidate on every ballot.
+  3. the lottery at a profile is the average, over the voters, of the lotteries at the profiles in
+     which that voter's weight is raised a little (Proposition 17).
 The six-candidate profile of Section 6, with eight different ballots, is beyond this script.
 Run: python3 equality_votes_again.py   (needs numpy and scipy for the comparisons; a few seconds)
 """
@@ -94,15 +96,16 @@ def ballot_margins(ballot):
 
 
 def perturbed(profile, m, added):
-    """Margins of the profile plus the added ballots, the i-th with weight e_i."""
+    """Margins of the profile (a list of ballots, or a dict ballot -> weight) plus the added ballots, the i-th with weight e_i."""
     M = [[{} for _ in range(m)] for _ in range(m)]
     zero = (0,) * NVARS
-    for r in profile:
+    weighted = profile.items() if isinstance(profile, dict) else [(r, 1) for r in profile]
+    for r, weight in weighted:
         B = ballot_margins(r)
         for x in range(m):
             for y in range(m):
                 if B[x][y]:
-                    M[x][y] = p_add(M[x][y], {zero: B[x][y]})
+                    M[x][y] = p_add(M[x][y], {zero: weight * B[x][y]})
     for i, r in enumerate(added):
         key = tuple(int(j == i) for j in range(NVARS))
         B = ballot_margins(r)
@@ -157,9 +160,10 @@ def tree_orders(profile, m):
 
 def votes_again(profile, m):
     global NVARS
-    types = {}
-    for r in profile:
-        types[r] = types.get(r, 0) + 1
+    types = dict(profile) if isinstance(profile, dict) else {}
+    if not isinstance(profile, dict):
+        for r in profile:
+            types[r] = types.get(r, 0) + 1
     NVARS = len(types) + 1
     orders = None
 
@@ -170,14 +174,14 @@ def votes_again(profile, m):
             return found
         if not left:
             if orders is None:
-                orders = tree_orders(profile, m)
+                orders = tree_orders(list(types), m)
             out = np.zeros(m)
             for order, w in orders.items():
                 strict = tuple(order.index(x) for x in range(m))
                 out += w * exact_lottery(perturbed(profile, m, added + [strict]), m)
             return out
         total = sum(left.values())
-        return sum(count / total * go(added + [t], {u: v for u, v in left.items() if u != t})
+        return sum(float(count / total) * go(added + [t], {u: v for u, v in left.items() if u != t})
                    for t, count in left.items())
 
     return go([], types)
@@ -243,4 +247,21 @@ for m, trials in [(3, 600), (4, 300), (5, 40)]:
         assert np.allclose(merged, L, atol=1e-9), (prof, x, cloned, L, L2)
     print(f"2. {m} candidates with equal ranks, {trials} random profiles ({ties} ties, {same} under the exception):"
           f" independent of clones in the other {trials - same}")
+
+# 3. the average over the voters (Proposition 17): L(p) = sum_r s_r lim L(p + eps r)
+eps = Fraction(1, 10 ** 7)
+for m, trials in [(3, 150), (4, 60)]:
+    W = weak_orders(m)
+    ties = worst = 0
+    for _ in range(trials):
+        prof = [W[i] for i in rng.integers(len(W), size=int(rng.integers(1, 5)))]
+        weights = {}
+        for b in prof:
+            weights[b] = weights.get(b, 0) + Fraction(1)
+        ties += exact_lottery(perturbed(prof, m, []), m) is None
+        average = sum(float(w / len(prof)) * votes_again({**weights, b: w + eps}, m) for b, w in weights.items())
+        worst = max(worst, np.abs(average - votes_again(prof, m)).max())
+    assert worst < 1e-5
+    print(f"3. {m} candidates, {trials} random profiles ({ties} ties): the lottery is the average over the voters"
+          f" of the lotteries with that voter's weight raised by 1e-7, up to {worst:.0e}")
 print("all checks passed")

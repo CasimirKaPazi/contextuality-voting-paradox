@@ -307,8 +307,6 @@ At a wall of Section 5 the third rule has a simple reading. By Proposition 8 (d)
 
 The three rules differ at the tie between two cycles of Section 5. A voter with a > d > b > c takes the end of the segment with the most for a under best first, (0.4, 0, 0.2, 0.4), and the end with nothing for c under worst last, (0.25, 0.25, 0, 0.5). Over the 20 voters best first gives (0.3025, 0.1625, 0.07, 0.465), worst last (0.34, 0.1, 0.12, 0.44), and the voter voting again (0.3175, 0.1375, 0.09, 0.455). Of the 24 possible ballots, the third rule chooses the same end as both others for 16, as best first alone for 5 and as worst last alone for 3. *(Proposition proved; computed, `scripts/symmetry/equality_tie_breakers.py`, parts 2 and 3: all three independent of clones on 500 random profiles.)*
 
-**A condition that separates the three.** For strict rankings the third rule is the only completion of maximal lotteries for which the lottery at every profile is the average, over the voters, of what the rule gives when that voter's weight is raised a little and then brought back: L(p) = Σ_r s_r lim L(p + εr), with s_r the share of the ballot r. Where the maximal lottery is unique this holds by continuity, and at a tie it is the definition of the third rule. Best first and worst last do not satisfy it at the tie above. *(Proved, immediate from Proposition 15.)*
-
 **With equal ranks: the voters vote again in turn.** A ballot with equal ranks need not settle a tie, so one voter is not enough. Draw voters independently until every ballot of the profile has come up. Add the first new ballot to the profile with a small weight, the second with a weight that is small against the first, and so on, and last a strict order of the candidates drawn along the tree of clone sets (Section 6), with the smallest weight. Take the maximal lottery of the profile so enlarged and let the weights go to zero, each infinitely faster than the one before.
 
 **Proposition 16.** This limit exists and is a maximal lottery of the profile. On strict rankings the rule is the third rule of Proposition 15. Maximal lotteries with ties broken in this way satisfy EC-VA for rankings with equal ranks.
@@ -317,11 +315,27 @@ The three rules differ at the tie between two cycles of Section 5. A voter with 
 
 *(Proved. Computed exactly, with polynomials in the weights and the Pfaffians of Proposition 8: the rule gives a maximal lottery and is independent of clones on 846 random profiles with three to five candidates outside the exception, and agrees with Proposition 15 (b) on strict rankings, `scripts/symmetry/equality_votes_again.py`. The six-candidate profile of Section 6 is beyond that script.)*
 
+**Proposition 17 (the average over the voters).** Let the ballots of a profile have any positive weights, and write s_r for the share of the ballot r.
+
+(a) The rule of Proposition 16 satisfies, at every profile p,
+
+    L(p) = Σ_r s_r · lim L(p + εr)   (ε → 0, ε > 0).
+
+The lottery at a profile is the average, over the voters, of what the rule gives when that voter's weight is raised a little and brought back.
+
+(b) A rule that gives the maximal lottery wherever it is unique and satisfies this equation agrees with the rule of Proposition 16 at every profile at which each ballot of the profile, added with a small weight, leaves a unique maximal lottery. All profiles of strict rankings are of this kind. Best first and worst last do not satisfy the equation at the tie above.
+
+*Proof.* (b) The right side contains only unique maximal lotteries, so the equation gives L(p), and Proposition 16 gives the same. (a) Where the maximal lottery is unique it is continuous, and the equation holds. Let p be a tie. For a list A of different ballots of p write G(A) for what Proposition 16 gives once the ballots of A have come up in this order: the limit lottery if p with A added is settled, the average over the tree orders if every ballot is in A, and otherwise the sum of G(A, u) s_u / (1 − s_A) over the ballots u not in A, with s_A the share of A. So L(p) = Σ_r s_r G(r). Fix r and write H(A) for the limit, as δ goes to zero, of the same quantity at the profile p + δr. We show H(A) = G(r, A without r) for every list A, by induction on the number of ballots not in A. The profile p + δr with A added has, for small δ, the margins of p with r and then A without r added, up to a factor at the weight of r that tends to 1; so it is settled in the one case exactly if it is in the other, with the same limit, and the tree of clone sets is the same, since it depends only on which ballots occur. If r is in A, the two sums run over the same ballots u with the same weights. If r is not in A, the sum for H(A) has the term of r, which is H(A, r) = G(r, A) by the case before, with weight s_r / (1 − s_A), and the terms of the other u, which sum to G(r, A) (1 − s_A − s_r) / (1 − s_A). Together H(A) = G(r, A). For the empty list this is lim L(p + δr) = G(r). ∎
+
+*(Proved. Computed: at 210 random profiles with three and four candidates and equal ranks, 70 of them ties, the lottery differs from the average of the lotteries with one weight raised by 10⁻⁷ by less than 10⁻⁷, same script.)*
+
+Proposition 3 says that a rule with EC-V that is continuous is constant, so every rule of interest jumps at the ties. The equation of Proposition 17 is what remains of continuity: at a jump the rule takes the mean of its values on the sides, and the sides are weighted by the voters who point to them. For rankings with equal ranks the equation does not determine the rule by the argument of (b), because a ballot may leave the tie in place; whether it determines the rule up to the choice at profiles that stay ties under every change of the weights is open (Section 9). *(This paragraph interpretation.)*
+
 So independence of clones and proportionality fix the tie value where everything is tied and leave a choice where the tie is partial. Best first and worst last read the ballot of the drawn voter from the top or from the bottom. The third rule needs no such choice. It uses only the operation that the exception of condition 2′ already names, a fraction of one more vote, and the vote is that of a random voter. *(The last two sentences interpretation.)*
 
 ## 9. Open questions
 
-1. The tie-breaker at partial ties (Section 8): whether every proportional tie-breaker that is independent of clones and chooses among the maximal lotteries is a mixture of rules of the three kinds.
+1. The tie-breaker at partial ties (Section 8): whether every proportional tie-breaker that is independent of clones and chooses among the maximal lotteries is a mixture of rules of the three kinds. And whether the equation of Proposition 17 determines the rule of Proposition 16 also for rankings with equal ranks, up to the choice at profiles that stay ties under every change of the weights.
 2. Whether the set of Schulze winners is independent of clones at every tie, beyond the computed cases.
 3. Ranked pairs and the Schulze method with equal rankings.
 4. The side of the alternatives in the Strategic Information thread. Its README, Section 6, gives the Equality Criterion a strategic form (opposite voters cast ballots that cancel in the count); what independence of clones becomes when all voters follow the common rationale is not worked out.
