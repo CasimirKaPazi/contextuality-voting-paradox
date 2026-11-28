@@ -26,15 +26,21 @@
     by the leader's margins and the size, the leader's row of the matrix of
     pairwise counts.
 
+  * `cor5` (Corollary 5): such a count keeps opposite voters equal: with
+    `opp t` a type whose ranking is the reverse of that of t, every row of
+    the count is odd in the sense of `OppositeVoters.lean`, since reversing a
+    ranking reverses every margin (`sgn_rev`).
+
   Not here: that a count of totals has rank at most m − 1 (a matter of the
-  convention, taken as the hypothesis of `prop3_rowspace`), the count
-  2^(m−1) of Proposition 2, and Corollary 5.
+  convention, taken as the hypothesis of `prop3_rowspace` and `cor5`), and
+  the count 2^(m−1) of Proposition 2.
 -/
 
 module
 
 public import Mathlib
 public import Certification
+public import OppositeVoters
 
 @[expose] public section
 
@@ -241,5 +247,43 @@ theorem prop3_rowspace (hρ : Function.Surjective ρ) (M : Matrix ι T ℤ) (a :
   have h2 := Submodule.finrank_mono hle
   rw [Matrix.rank_eq_finrank_span_row] at hr
   omega
+
+/-! ### Corollary 5 -/
+
+/-- Reversing a ranking reverses every margin. -/
+lemma sgn_rev {σ σ' : Equiv.Perm (Fin m)} (h : ∀ y, σ' y = Fin.rev (σ y)) {a x : Fin m}
+    (hax : a ≠ x) : sgn σ' a x = - sgn σ a x := by
+  simp only [sgn, h, Fin.rev_lt_rev]
+  have hne : σ a ≠ σ x := fun e => hax (σ.injective e)
+  rcases lt_or_gt_of_ne hne with h1 | h1
+  · simp [h1, not_lt.mpr h1.le]
+  · simp [h1, not_lt.mpr h1.le]
+
+/-- **Corollary 5.** A count that, with the size, has rank at most m and
+    certifies the leader keeps opposite voters equal: every row is odd. -/
+theorem cor5 (hρ : Function.Surjective ρ) (M : Matrix ι T ℤ) (a : Fin m)
+    (hC : Certifies M (fun (e : {x // x ≠ a}) t => sgn (ρ t) a e))
+    (hr : (qM (withSize M)).rank ≤ m) (opp : T → T)
+    (hopp : ∀ t y, ρ (opp t) y = Fin.rev (ρ t y)) :
+    Submodule.span ℚ (Set.range (qM (withSize M)).row) ≤ OppositeVoters.odd opp ⊤ := by
+  rw [prop3_rowspace ρ hρ M a hC hr, Submodule.span_le]
+  rintro _ ⟨i, rfl⟩
+  refine Submodule.mem_inf.mpr ⟨Submodule.mem_top, ?_⟩
+  rw [Submodule.mem_comap]
+  cases i with
+  | none =>
+    have h1 : leaderRow ρ a none = (1 : T → ℚ) := rfl
+    rw [h1, OppositeVoters.ev_one]
+    exact Submodule.subset_span (Set.mem_singleton _)
+  | some e =>
+    have h0 : OppositeVoters.ev opp (leaderRow ρ a (some e)) = 0 := by
+      funext t
+      rw [OppositeVoters.ev_apply]
+      simp only [leaderRow, Pi.zero_apply]
+      rw [sgn_rev (hopp t) (fun h => e.2 h.symm)]
+      push_cast
+      ring
+    rw [h0]
+    exact Submodule.zero_mem _
 
 end LeaderRank
