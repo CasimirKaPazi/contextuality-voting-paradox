@@ -98,6 +98,7 @@ theorem certainty (w : Bal → X) {i j : X} (hij : i ≠ j) (h : Reveals w i j) 
     split_ifs <;> first | (exfalso; tauto) | norm_num⟩
   have := h u v c hu hv
   simp [u, v, Ne.symm hci, Ne.symm hcj, Ne.symm hij, hij] at this
+  norm_num at this
 
 end Menu
 

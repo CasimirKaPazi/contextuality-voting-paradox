@@ -367,6 +367,7 @@ lemma exists_upper (a : Fin m) (U : Finset (Fin m)) (haU : a ∉ U) :
       rw [this]
       exact iff_of_false hyU (by omega)
 
+omit [DecidableEq ι] in
 /-- **Proposition 2, the count.** A strategic count that certifies the leader
     uses at least 2^(m−1) different columns. -/
 theorem prop2_count (hρ : Function.Surjective ρ) (M : Matrix ι T ℤ) (a : Fin m)
@@ -382,7 +383,7 @@ theorem prop2_count (hρ : Function.Surjective ρ) (M : Matrix ι T ℤ) (a : Fi
     have := Finset.mem_powerset.mp hU h
     simp at this
   let g : Finset (Fin m) → (ι → ℤ) := fun U => if h : a ∉ U then (fun i => M i (t U h)) else 0
-  have g_eq : ∀ U (h : a ∉ U), g U = fun i => M i (t U h) := fun U h => dif_pos h
+  have g_eq : ∀ U (h : a ∉ U), g U = fun i => M i (t U h) := fun U h => dite_eq_left h
   have hP : P.card = 2 ^ (m - 1) := by
     show ((univ.erase a).powerset).card = _
     rw [Finset.card_powerset, Finset.card_erase_of_mem (mem_univ a), card_univ, Fintype.card_fin]
