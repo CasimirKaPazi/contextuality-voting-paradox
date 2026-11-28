@@ -11,6 +11,8 @@
 - *[The Smooth Model across Methods](smooth-model.md): five methods computed under one model of beliefs;*
 - *the pairs: [plurality and approval](approval-plurality.md), [score and approval](score-approval.md), [instant runoff and plurality](irv-plurality.md), [Borda and score](borda-score.md), [instant runoff and BTR-plurality](irv-btr_plurality.md).*
 
+*The argument is assembled as one text in the draft `papers/drafts/strategic-information.md`,* What a Ballot Can Carry*.*
+
 *Statements are marked as cited, proved here, computed on random profiles, or interpretation. References marked † are cited from memory and have not been checked against the original.*
 
 ## 1. The question

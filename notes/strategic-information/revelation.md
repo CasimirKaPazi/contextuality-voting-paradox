@@ -45,7 +45,7 @@ A voter who knows the other ballots has nothing to say but which of the attainab
 
 ## 4. The theorem of Gibbard and Satterthwaite
 
-The theorem says that a rule which chooses one winner from the voters' rankings, can elect at least three candidates, and gives no voter a reason ever to report another ranking than the true one, is a dictatorship (Gibbard 1973, Satterthwaite 1975†). In the terms of this note:
+The theorem says that a rule which chooses one winner from the voters' rankings, can elect at least three candidates, and gives no voter a reason ever to report another ranking than the true one, is a dictatorship (Gibbard 1973; Satterthwaite 1975†). In the terms of this note:
 
 **Proposition 4.** Let a method choose a single winner from the ballots, without chance. Suppose there is a way of filling in the ballot from the ranking alone, the same at every belief, that is a best reply for every voter whatever the other ballots are, and suppose that at least three candidates can win when all ballots are filled in this way. Then, on the ballots filled in this way, the method is a dictatorship.
 
@@ -70,5 +70,5 @@ So the theorem excludes a revealing ballot that is the same at every belief. It 
 
 ## References
 
-- Gibbard, A. (1973). Manipulation of voting schemes: a general result. *Econometrica* 41, 587–601. †
+- Gibbard, A. (1973). Manipulation of voting schemes: a general result. *Econometrica* 41(4), 587–601.
 - Satterthwaite, M. A. (1975). Strategy-proofness and Arrow's conditions. *Journal of Economic Theory* 10, 187–217. †
