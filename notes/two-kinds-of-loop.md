@@ -99,11 +99,11 @@ Prokopenko and co-authors list three ingredients for undecidable dynamics: progr
 
 **Lemma (diagonal).** If voter i with preference P has no P-dominant strategy, then no program is universally correct for i at P.
 
-*Proof.* No ballot is dominant, so for each ballot b there is a profile r(b) of the others' ballots against which b is not a best reply; fix one such choice for every b (a finite table). Given any candidate strategist M, let every other voter k run the program D_k: read all source codes, run M on them, and when M outputs b, output the k-th entry of r(b). If M halts with b, the others play r(b), against which b is not a best reply. If M does not halt, it fails by definition. ∎
+*Proof.* No ballot is dominant, so for each ballot b there is a profile r(b) of the others' ballots against which b is not a best reply; fix one such choice for every b (a finite table). Given any candidate strategist M, let every other voter k run the program D_k: read all source codes, run M on them, and when M outputs b, output the k-th entry of r(b). If M halts with b, the others play r(b), against which b is not a best reply. If M does not halt, it fails by definition. ∎ *(Checked in Lean in an abstract form, `lean/Diagonal.lean`.)*
 
 **Theorem.** Let g be a game form with at least three possible outcomes. Either g is dictatorial, or some voter at some preference has no universally correct strategist.
 
-*Proof.* Gibbard (1973): every straightforward game form — one giving every voter, at every preference, a dominant strategy — with at least three possible outcomes is dictatorial. If g is not dictatorial, it is not straightforward, so some voter at some preference has no dominant strategy. Apply the lemma. ∎
+*Proof.* Gibbard (1973): every straightforward game form — one giving every voter, at every preference, a dominant strategy — with at least three possible outcomes is dictatorial. If g is not dictatorial, it is not straightforward, so some voter at some preference has no dominant strategy. Apply the lemma. ∎ *(Checked in Lean, `lean/Dichotomy.lean`, with Gibbard's theorem formalised from his definitions in `lean/Gibbard73.lean`.)*
 
 This is the dichotomy in exact form: either one fixed point decides everything (the dictator, or a rule with only two outcomes), or there is a participant for whom the result of strategic reasoning cannot be computed in advance. The lemma is the same diagonal argument as Binmore's and Anderlini's. The added observation is that Gibbard's hypothesis, straightforwardness, is exactly the condition under which no participant ever needs to model another, and its failure is exactly where the diagonal applies.
 

@@ -92,7 +92,7 @@ Fix m alternatives. The renamings of the alternatives form the symmetric group S
 
 **Lemma (isotropy).** A neutral rule on anonymous profiles sends each profile p into Y^H, where H is the stabiliser of p. Conversely, on a finite set of profiles closed under renaming, a neutral rule with values in a set A exists as soon as A^H is non-empty for the stabiliser H of every profile.
 
-*Proof.* If σ is in H, neutrality gives f(p) = f(σp) = σf(p). Conversely, choose one profile in each orbit, choose for it an admissible output fixed by its stabiliser, and set f(σp) = σf(p) for every renaming σ. This is well defined because the chosen output is fixed by the stabiliser. ∎
+*Proof.* If σ is in H, neutrality gives f(p) = f(σp) = σf(p). Conversely, choose one profile in each orbit, choose for it an admissible output fixed by its stabiliser, and set f(σp) = σf(p) for every renaming σ. This is well defined because the chosen output is fixed by the stabiliser. ∎ *(Checked in Lean for any group acting on inputs and outputs, with admissible outputs carried along by the action and no finiteness needed, `lean/Isotropy.lean` (`isotropy`).)*
 
 The lemma is the elementary starting point of equivariant topology, and the group-theoretic treatments of anonymous and neutral rules (Doğan and Giritligil; Bubboloni and Gori) rest on the same fact. Applied to a set A of admissible outputs inside a larger set Y of possible outputs, it gives three cases at a profile with stabiliser H. They are the three placements of Section 2 in precise form:
 

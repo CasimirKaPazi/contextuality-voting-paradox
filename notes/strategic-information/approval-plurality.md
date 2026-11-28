@@ -1,6 +1,6 @@
 # Plurality and Approval under a Common Rationale
 
-*Working note, part of [Strategic Information](README.md). It compares plurality and approval voting under the common rationale of [The Common Rationale](rationale.md). Conventions as in the README. The checks are in `scripts/information/strategic_information.py`, `ties.py`, `ballot_mistakes.py` and `lost_marks_walk.py`; Propositions 1 to 3, the statement on the Smith set and the steps of Proposition 4 are checked in Lean in `lean/LeaderRule.lean`, with the best replies as definitions; Propositions 5 and 6 and the counting of Proposition 4 in `lean/StrategicInformation.lean`, and Proposition 4 as one statement with the passage from positions to utilities in `lean/MemoryWalk.lean`.*
+*Working note, part of [Strategic Information](README.md). It compares plurality and approval voting under the common rationale of [The Common Rationale](rationale.md). Conventions as in the README. The checks are in `scripts/information/strategic_information.py`, `ties.py`, `ballot_mistakes.py` and `lost_marks_walk.py`; Propositions 1 to 3, the statement on the Smith set and the steps of Proposition 4 are checked in Lean in `lean/LeaderRule.lean`, with the best replies as definitions; Propositions 5 and 6 and the counting of Proposition 4 in `lean/StrategicInformation.lean`, and Proposition 4 as one statement, part 3 of Proposition 7 (ties) and the passage from positions to utilities in `lean/MemoryWalk.lean`.*
 
 ## 1. Best replies
 

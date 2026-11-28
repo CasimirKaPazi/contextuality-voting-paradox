@@ -82,6 +82,7 @@ These are the results the project's claims stand on, by thread. Details below th
   - two exact searches.
 
   The summary and the update rule are checked. Next:
+  - that games of perfect information have (R): finite two-player trees, their normal forms, and the proof of *The rational diagonal on totally tight game forms*, Section 7. Small to moderate; with `TotallyTight.three_outcomes` it gives the theorem for trees with three outcomes;
   - state the theorem and the reduction in the frame of Item 1.1;
   - take the structure theorem as a hypothesis;
   - check the searches, a large step.
@@ -103,6 +104,10 @@ These are the results the project's claims stand on, by thread. Details below th
   - *Intensities and the Utilitarian Target*, Proposition 1 (best replies do not change under λu + c) and Proposition 4 (certifying the leader leaves no room for intensities, from Proposition 3 of the bounds); *The Honest Axis*, Proposition 2 (scores 0 to k are within n/k of the best). Small each.
 
   Not planned here: Proposition 1 of *The Ballot Polytope* (the linear regime) as an analytic statement about beliefs; the notes use it as the definition of the regime. The computed parts (the smooth model, the tables of vertices) are not candidates.
+- **Equality of voters and alternatives** (note *Equality of Voters and Alternatives*). Nothing is formalised yet.
+  - Small: Propositions 1, 2 and 4 (on balanced profiles, EC-V with neutrality forces the uniform lottery, which clones then contradict; for three or more candidates, a ballot with its reverse is a tie under neutrality and independence of clones), and Proposition 5, which is independence of clones read at two profiles. They need anonymous profiles, renamings and cloning of a candidate, not maximal lotteries.
+  - Moderate: the lemma on clones and maximal lotteries (linear inequalities in the margin matrix) and Proposition 3 (continuity in the shares).
+  - Large: the propositions on particular rules (6 to 20), which need the existence of maximal lotteries (minimax), Pfaffians, limits, or each rule's own definition.
 - **The two theorems taken as hypotheses.**
   - Gibbard (1977), used in `GSCorollary.lean` and `EqualityCriterion.lean`.
   - Gibbard (1978), Corollary 2, used in `Lotteries.lean`.

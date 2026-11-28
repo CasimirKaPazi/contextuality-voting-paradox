@@ -51,7 +51,7 @@ The boundary condition concerns the lotteries only, so the statement holds with 
 
 The move (x, y) is admissible, since x is above y in R and y is above x in R′.
 
-*(b) Any two ballots.* Choose a shortest path R = R₀, R₁, …, R_ℓ = R′ of adjacent swaps; each swap exchanges a pair on which R and R′ disagree, and each such pair is exchanged once. The profiles along the path differ from π only in k's ballot. The rule assigns a lottery to each of them, and SD-strategy-proofness holds between neighbours. Chain the draws of (a), each conditional on the previous outcome. A step moves the outcome from x to y only when x is above y in R and y is above x in R′. So the outcome descends weakly in R and ascends weakly in R′ along the chain. The first and last outcomes form an admissible pair, and the chained draw has the right marginals. ∎
+*(b) Any two ballots.* Choose a shortest path R = R₀, R₁, …, R_ℓ = R′ of adjacent swaps; each swap exchanges a pair on which R and R′ disagree, and each such pair is exchanged once. The profiles along the path differ from π only in k's ballot. The rule assigns a lottery to each of them, and SD-strategy-proofness holds between neighbours. Chain the draws of (a), each conditional on the previous outcome. A step moves the outcome from x to y only when x is above y in R and y is above x in R′. So the outcome descends weakly in R and ascends weakly in R′ along the chain. The first and last outcomes form an admissible pair, and the chained draw has the right marginals. ∎ *(Checked in Lean: for one voter's slice, `lean/JointDraws.lean` (`prop1`), restated for ballots as rankings in `lean/Rankings.lean` (`prop1R`); for whole rules, in the scenario as an instance of the frame of `lean/Scenarios.lean`, `lean/GSScenario.lean` (`gs_prop1`), with weak and full compatibility coinciding because contexts are pairs (`compat_of_pairs`).)*
 
 The argument resembles the pinning in Theorem 5′ of *Four Levels*: in both, a condition on one pair is reached through the intermediate objects of a path.
 
@@ -74,13 +74,13 @@ For three alternatives no such example exists. Up to renaming, two rankings are 
 - A duple component fails at a unanimous profile whose top is outside its pair, which exists for m ≥ 3.
 - A unilateral component of voter i, at any ballot R, gives what it gives at the unanimous profile in which every voter has ballot R. That is R's top.
 
-So every component is a dictatorship. Conversely, a mixture of dictatorships with weights λ is an empirical model. Draw the dictator once, with probability λ_i for voter i, and use the same draw in every context. If the dictator is not the switching voter, the two outcomes are equal. If it is, they are the tops of R and R′, which form an admissible pair. ∎
+So every component is a dictatorship. Conversely, a mixture of dictatorships with weights λ is an empirical model. Draw the dictator once, with probability λ_i for voter i, and use the same draw in every context. If the dictator is not the switching voter, the two outcomes are equal. If it is, they are the tops of R and R′, which form an admissible pair. ∎ *(Checked in Lean, `lean/GSCorollary.lean` (`cor2`, `cor2_models`), with Gibbard's characterisation as an explicit hypothesis (`Gibbard1977`), for finite mixtures.)*
 
 Consequences:
 
 - **No contextual model.** Every empirical model is a mixture of global sections, with the dictator as hidden variable. This is the situation of Theorems 5 and 5′ for Arrow's scenario.
 - **Level 3.** For two or more voters, no dictatorship is fixed by permuting the voters.
-- **Random dictatorship** is the only anonymous empirical model, since an anonymous mixture gives every voter weight 1/|N|. Divided by the voters' permutations, the scenario is at level 2, and random dictatorship is an empirical model with no symmetric global explanation (*Four Levels*, Proposition 1).
+- **Random dictatorship** is the only anonymous empirical model, since an anonymous mixture gives every voter weight 1/|N| (checked in Lean, `anonymous_uniform` in `lean/GSCorollary.lean`). Divided by the voters' permutations, the scenario is at level 2, and random dictatorship is an empirical model with no symmetric global explanation (*Four Levels*, Proposition 1).
 
 Corollary 2 rests on Gibbard's theorem. The linear programs in `gs_scenario.py` check it directly on small cases, without that theorem. Over all empirical models with unanimity, they maximise:
 - the total probability of outcomes that are no voter's top;
@@ -100,9 +100,11 @@ For one voter, a deterministic strategy-proof rule picks the voter's best elemen
 
 Suppose the scheme were a mixture of range rules.
 - A set S missing two alternatives a and b gives an outcome outside the top two on a ballot that starts with a, b. Such a set cannot carry weight.
-- The second choice b under top choice a is drawn only by S = A ∖ {a}. So each of these m sets has weight ½, and the weights sum to m/2 > 1. ∎
+- The second choice b under top choice a is drawn only by S = A ∖ {a}. So each of these m sets has weight ½, and the weights sum to m/2 > 1. ∎ *(Checked in Lean, `lean/GSTopTwo.lean`: the random top two is an empirical model (`topTwo_model`), and no family of context distributions with its marginals is non-contextual (`topTwo_contextual`).)*
 
 Gibbard's unilateral components need not be mixtures of deterministic strategy-proof rules, and the random top two is the simplest such case. That strategy-proof decision schemes reach beyond the mixtures of deterministic ones is not claimed as new. What Proposition 3 adds is the reading: those schemes are the contextual models of this scenario, and unanimity rules them out.
+
+For three alternatives the contextual models are known exactly: an SD-strategy-proof lottery rule admits a non-contextual empirical model exactly when no voter's degree in the sense of *The Global Form*, Section 7, is negative (Proposition 5 there, with Gibbard 1977). The deterministic strategy-proof rules are the global sections of this scenario, and that criterion carries over to it (checked in Lean, `lean/ContextualBridge.lean`: `detSP_iff_global`, `nc_iff_scenario`, `nc_iff_deg_scenario`).
 
 ## 5. Comparison with Arrow's scenario
 
@@ -123,8 +125,8 @@ Both theorems sit at the same place in the hierarchy. The difference is how they
 ## 6. Scope
 
 - **Strict preferences only.** Gibbard (1977) works with strict orderings. Indifferences were not examined.
-- **Corollary 2 cites Gibbard's characterisation** and uses only its "only if" direction. It is not reproved here. The direct checks are the linear programs for small cases in Section 3.
-- **Formalised in Lean: Proposition 1 only** (`lean/JointDraws.lean`, theorem `prop1`), for one voter's slice of the rule; the whole rule follows voter by voter. Corollary 2 and Proposition 3 are not formalised.
+- **Corollary 2 cites Gibbard's characterisation** and uses only its "only if" direction. It is not reproved here, and the Lean proof takes it as a hypothesis. The direct checks are the linear programs for small cases in Section 3.
+- **Formalised in Lean:** Proposition 1 for one voter's slice (`lean/JointDraws.lean`, `prop1`) and for whole rules in the scenario (`lean/GSScenario.lean`, `gs_prop1`); Corollary 2 and the anonymous case with Gibbard (1977) as a hypothesis (`lean/GSCorollary.lean`); Proposition 3 (`lean/GSTopTwo.lean`).
 - **Only the probabilistic models.** Possibilistic models and strong contextuality, such as whether the random top two is strongly contextual, were not examined.
 - **Renaming alternatives** was left out of G. With unanimity it changes nothing. Without unanimity it removes the constant rules as symmetric sections. The resulting placement was not worked out.
 - **Arrow without unanimity**, the empty cell of the table, was not examined.
@@ -136,7 +138,11 @@ Both theorems sit at the same place in the hierarchy. The difference is how they
 | `gs_scenario.py` | Linear programs over empirical models with unanimity (joint draws or SD-strategy-proofness): no probability on outcomes that are nobody's top, and no variation of a voter's weight. m = 3 with two and three voters, m = 4 with two voters |
 | `gs_joint_draws.py` | Isolated pairs: always a joint draw for three alternatives in random samples, not always for four; the example of Section 2, exactly; that it does not extend to a whole scheme; the construction of Proposition 1 run on 33,120 pairs of ballots from 60 vertices of the one-voter polytope (m = 4), marginals and support exact to rounding |
 | `gs_random_top_two.py` | The random top two: SD-strategy-proof (exact) and not a mixture of range rules (linear program), m = 3, 4, 5 |
-| `lean/JointDraws.lean` | Proposition 1, both directions, checked in Lean |
+| `lean/JointDraws.lean`, `lean/Rankings.lean` | Proposition 1, both directions, for one voter's slice |
+| `lean/GSScenario.lean` | The scenario in the frame of `lean/Scenarios.lean`, and Proposition 1 for whole rules (`gs_prop1`) |
+| `lean/GSCorollary.lean` | Corollary 2 and the anonymous case, with Gibbard (1977) as a hypothesis |
+| `lean/GSTopTwo.lean` | Proposition 3 |
+| `lean/ContextualBridge.lean` | For three alternatives, the criterion of *The Global Form*, Proposition 5, in the terms of the scenario |
 
 ## References
 

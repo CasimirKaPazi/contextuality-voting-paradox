@@ -31,17 +31,17 @@ Fix i, P and Q. For each row of i record the pair (y, M):
 - y is the opponent's favourite outcome in the row;
 - M is the best outcome, for i, among the columns in which y occurs.
 
-Each column contains y, so M is at least as good as y, and the row is refuted exactly when M is strictly better. Whether i works depends only on the set of these pairs.
+Each column contains y, so M is at least as good as y, and the row is refuted exactly when M is strictly better. Whether i works depends only on the set of these pairs. *(Checked in Lean, `lean/SummaryAutomaton.lean` (`refuted_iff`, `works_iff`); that working for some pair of strict preferences is the rational diagonal is `rd1_iff_works` in `lean/TwoPlayer.lean`.)*
 
 **Lemma (update rule).** Adding a constant line changes the set of pairs without reference to the rest of the matrix:
 - a new row of i with constant outcome o: every M becomes the better of M and o; the new row contributes (o, best present outcome including o);
 - a new column of the opponent with constant outcome o: every row whose y the opponent ranks below o becomes (o, o); the other rows are unchanged.
 
-*Proof.* A new row of i raises every column's best entry to at least o, and the new row is constant. A new column puts o into every row; it becomes the opponent's favourite exactly where it beats y, and in that column the only outcome is o. ∎
+*Proof.* A new row of i raises every column's best entry to at least o, and the new row is constant. A new column puts o into every row; it becomes the opponent's favourite exactly where it beats y, and in that column the only outcome is o. ∎ *(Checked in Lean, `summary_addRow` and `summary_addCol` in `lean/SummaryAutomaton.lean`.)*
 
 With k outcomes the possible summaries, taken jointly over all choices of i, P and Q, form a finite set. A breadth-first search over the summaries reachable from the starting forms by adding lines therefore covers every form of the class at once, of any size. Validity (non-dictatorial, at least three outcomes) is tracked alongside, through the sets of outcomes each player forces.
 
-**Monotonicity.** The update rule acts on each pair separately, so a summary that contains more pairs stays a superset after any sequence of lines, and a superset makes refutation harder. A pessimistic starting summary therefore covers every form whose summary it contains.
+**Monotonicity.** The update rule acts on each pair separately, so a summary that contains more pairs stays a superset after any sequence of lines, and a superset makes refutation harder. A pessimistic starting summary therefore covers every form whose summary it contains. *(The second half, that a superset makes refutation harder, is `works_mono` in `lean/SummaryAutomaton.lean`; the searches themselves are not checked in Lean.)*
 
 ## 4. Results
 

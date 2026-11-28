@@ -39,7 +39,7 @@ There are $m$ candidates and a large number of voters. A method has a set of *ba
 
 **Proposition 1.** At a poll, the strategic count of method $A$ is a function of that of method $B$ on every profile exactly when every row of $M_A$ is a combination of rows of $M_B$.
 
-*Proof.* If $M_A = L M_B$ for a matrix $L$, the claim is clear. Conversely, a vector $v$ of whole numbers with $M_B v = 0$ is the difference of two histograms with the same count under $B$, hence under $A$, so $M_A v = 0$. The matrices have whole entries, so such $v$ span the kernel of $M_B$, which therefore lies in the kernel of $M_A$. $\square$
+*Proof.* If $M_A = L M_B$ for a matrix $L$, the claim is clear. Conversely, a vector $v$ of whole numbers with $M_B v = 0$ is the difference of two histograms with the same count under $B$, hence under $A$, so $M_A v = 0$. The matrices have whole entries, so such $v$ span the kernel of $M_B$, which therefore lies in the kernel of $M_A$. $\square$ (Checked in Lean, `lean/StrategicCount.lean`.)
 
 The *rank* of $M$, not counting the size of the electorate, is the number of independent numbers about the electorate that the strategic count keeps.
 
@@ -67,11 +67,11 @@ Fix a poll with leader $a$. For another candidate $x$ let $\mu_x$ be the margin 
 
 **Lemma 3.** Suppose every ranking occurs among the types. A method certifies its leader at a poll exactly when every $\mu_x$ is a combination of the rows of $M$ and the size of the electorate.
 
-*Proof.* One direction is clear. For the other, if $\mu_x$ is not such a combination there is a vector $v$ of whole numbers with $Mv = 0$, entries adding to zero, and $\mu_x(v) \neq 0$. Take a profile $h$ in which every type occurs often enough and every ranking has the same number of voters, so that all its margins vanish. Then $h + v$ and $h - v$ have the same strategic count, and $a$ beats $x$ in one and loses in the other. $\square$
+*Proof.* One direction is clear. For the other, if $\mu_x$ is not such a combination there is a vector $v$ of whole numbers with $Mv = 0$, entries adding to zero, and $\mu_x(v) \neq 0$. Take a profile $h$ in which every type occurs often enough and every ranking has the same number of voters, so that all its margins vanish. Then $h + v$ and $h - v$ have the same strategic count, and $a$ beats $x$ in one and loses in the other. $\square$ (Checked in Lean for any family of comparisons, `lean/Certification.lean`.)
 
 **Proposition 4 (the leader's row).** If a method certifies its leader at a poll, then (i) the ballot of a voter determines the set of candidates the voter prefers to the leader, so that at least $2^{m-1}$ different count vectors are in use, and (ii) the strategic count has rank at least $m-1$. If the method counts totals, its strategic count is then exactly the leader's row of margins, up to a change of coordinates.
 
-*Proof.* (i) By the lemma $\mu_x$ is a function of the column of $M$, so two types with the same ballot agree on $x$ against $a$; the sets of candidates preferred to $a$, over all rankings, are all subsets of the others. (ii) The $m-1$ margins are independent functions of the histogram of rankings. A count of totals has $m-1$ numbers, so the two spaces coincide. $\square$
+*Proof.* (i) By the lemma $\mu_x$ is a function of the column of $M$, so two types with the same ballot agree on $x$ against $a$; the sets of candidates preferred to $a$, over all rankings, are all subsets of the others. (ii) The $m-1$ margins are independent functions of the histogram of rankings. A count of totals has $m-1$ numbers, so the two spaces coincide. $\square$ (The first half of (i), that the ballot determines the set of candidates preferred to the leader, is checked in Lean, `lean/Certification.lean`; the count $2^{m-1}$ and (ii) are not.)
 
 The same argument applies to any set of comparisons. Let $G$ be a graph on the candidates. A method that certifies the majority comparison on every edge of $G$ has ballots that reveal the voter's preference on every edge; it uses at least as many count vectors as there are ways of directing the edges of $G$ without a cycle; and its count has rank at least the number of edges. For all pairs this is $m!$ count vectors and rank $m(m-1)/2$.
 
@@ -89,9 +89,9 @@ Three consequences follow without computation.
 
 *Plurality is below the second level.* It has $m$ ballots, fewer than $2^{m-1}$ for three or more candidates, and certifies its leader at no poll, in any electorate and under any beliefs. Cumulative voting, with as many vertices, is in the same position in the linear regime. That plurality has self-confirming polls led by candidates who are not Condorcet winners, one for every pair of which one candidate beats the other in its corner, is what the bound allows.
 
-*The second level is the ceiling for counts of totals, and approval reaches it.* In its corner the best approval ballot approves the leader if preferred to the runner-up and any other candidate if preferred to the leader. The ballot is in one-to-one correspondence with the set of candidates the voter prefers to the leader, the tallies are the leader's row, and the only self-confirming poll has the Condorcet winner as leader (Laslier 2009; checked in Lean in the notes, with the order of the ties as an assumption. Laslier derives that order from a model of ballot mistakes; exact computations in the notes confirm the derivation for the ties of the two front-runners and not for those of the other candidates, so we state the order as an assumption). By Proposition 4 no method that adds up scores holds more about the majority relation at one poll. Borda, in its corner, holds $m-2$ numbers and does not certify its leader.
+*The second level is the ceiling for counts of totals, and approval reaches it.* In its corner the best approval ballot approves the leader if preferred to the runner-up and any other candidate if preferred to the leader. The ballot is in one-to-one correspondence with the set of candidates the voter prefers to the leader, the tallies are the leader's row, and the only self-confirming poll has the Condorcet winner as leader (Laslier 2009; checked in Lean, `lean/LeaderRule.lean` for the counts and the self-confirming polls and `lean/StrategicInformation.lean` for the best ballot in the corner, with the order of the ties as an assumption. Laslier derives that order from a model of ballot mistakes; exact computations in the notes confirm the derivation for the ties of the two front-runners and not for those of the other candidates, so we state the order as an assumption). By Proposition 4 no method that adds up scores holds more about the majority relation at one poll. Borda, in its corner, holds $m-2$ numbers and does not certify its leader.
 
-*The second level depends on the poll.* By Proposition 5 a method on it can confirm a leader who is the Condorcet winner and reject one who is not, but cannot say who the Condorcet winner is. The right leader has to come from the poll, or from a sequence of polls: with approval ballots, a walk of polls in which a leader who has led before is not eligible again reaches the Smith set within $2(m-1)$ rounds (proved and checked in Lean in the notes). Only the third level is free of the poll, and its price is that the strategic ballot reveals the voter's whole ranking.
+*The second level depends on the poll.* By Proposition 5 a method on it can confirm a leader who is the Condorcet winner and reject one who is not, but cannot say who the Condorcet winner is. The right leader has to come from the poll, or from a sequence of polls: with approval ballots, a walk of polls in which a leader who has led before is not eligible again reaches the Smith set within $2(m-1)$ rounds (proved in the notes and checked in Lean, `lean/MemoryWalk.lean`). Only the third level is free of the poll, and its price is that the strategic ballot reveals the voter's whole ranking.
 
 The count of totals is taken as defined in Section 2, up to a number added to all totals, which is what the method's rule can use. An observer of the published totals has one number more, and the statements about counts of totals then hold with $m$ in place of $m-1$.
 
@@ -107,7 +107,7 @@ Both targets depend on the electorate only through functions on which opposite v
 
 **Proposition 7.** Let $d$ be the rank of the strategic count at a poll and $e$ the rank of what pairs of opposite voters add to its rows, beyond a constant. The odd functions in the row space of $M$ have dimension $d - e$.
 
-*Proof.* Rank and nullity of the map that sends a row to what a pair of opposite voters adds to it. $\square$
+*Proof.* Rank and nullity of the map that sends a row to what a pair of opposite voters adds to it. $\square$ (Checked in Lean, `lean/OppositeVoters.lean`.)
 
 Every independent way in which opposite voters fail to cancel uses up one of the numbers the count keeps, on something neither target depends on. What follows depends on the room the count has.
 
@@ -179,7 +179,7 @@ The linear value of a ballot and the notion of a voting equilibrium are Myerson 
 
 ## 10. Status and open problems
 
-The propositions are short and proved by hand; none of those in this paper is yet checked formally, and the targets are listed in the repository's Lean roadmap. The results on approval's corner and on the walk with memory are checked in Lean.
+The propositions are short and proved by hand. Proposition 1, Lemma 3, the first half of Proposition 4 (i) and Proposition 7 are checked in Lean (`lean/StrategicCount.lean`, `lean/Certification.lean`, `lean/OppositeVoters.lean`); the other targets are listed in the repository's Lean roadmap (`lean/roadmap.md`). The results on approval's corner and on the walk with memory are checked in Lean (`lean/LeaderRule.lean`, `lean/StrategicInformation.lean`, `lean/MemoryWalk.lean`).
 
 Open:
 

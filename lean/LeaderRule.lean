@@ -7,7 +7,9 @@
   votes for the preferred of `a1` and `a2`; under approval she follows the
   leader rule (approve `a1` exactly when `a1` is above `a2`, any other
   candidate exactly when it is above `a1`). That these are the best replies
-  under the assumption (T) on ties is not formalised yet.
+  in a finite corner of the weights of ties is Proposition 6 in
+  `StrategicInformation.lean`, and `MemoryWalk.bridge_approval` connects the
+  two encodings.
 
   Proved, for any finite list of voters and any type of candidates:
   * Proposition 1: the counts. Both front-runners have the same tally under
@@ -31,7 +33,8 @@
     eligible candidate falls at the next poll, a leader beating every eligible
     candidate keeps the lead, and a leader outside a dominant set whose
     members are all eligible is beaten by an eligible candidate. The counting
-    that turns these steps into the bound 2(m − 1) is not formalised yet.
+    that turns these steps into the bound 2(m − 1) is in
+    `StrategicInformation.lean`, and the whole walk in `MemoryWalk.lean`.
 
   Uses only core Lean, no Mathlib. A ballot is a function giving each
   candidate a position (smaller is better); preferences are strict.

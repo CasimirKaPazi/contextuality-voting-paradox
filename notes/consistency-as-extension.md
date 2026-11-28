@@ -16,7 +16,7 @@ For each candidate x let R_x be the set of shares at which x is the Condorcet wi
 
 The complement of the regions R_x (apart from ties) is the **cycle region**: the profiles without a Condorcet winner. A Condorcet extension is an extension of the partial assignment across this region. Asking it to be consistent asks for a convex extension: every winning region W_x must contain R_x, be convex, and the W_x must together cover Δ.
 
-**Blocking lemma** (any number of candidates; proved in *A Map of Voting Paradoxes*). Let p be in the cycle region and x any candidate. Since x is not a Condorcet winner at p, some c beats x at p. There is a profile q in R_x, and a mixture of p with q, that lies in R_c. Hence p cannot be assigned to x.
+**Blocking lemma** (any number of candidates; proved in *A Map of Voting Paradoxes*). Let p be in the cycle region and x any candidate. Since x is not a Condorcet winner at p, some c beats x at p. There is a profile q in R_x, and a mixture of p with q, that lies in R_c. Hence p cannot be assigned to x. *(For finite electorates, ballots with ties and any number of candidates, checked in Lean in the form that a consistent Condorcet extension never elects a candidate beaten by majority, `lean/Consistency.lean` (`elects_unbeaten`), with the counter-electorate given explicitly; this is Theorem 2 of* Four Levels*.)*
 
 So the partial assignment has no consistent extension across any point of the cycle region. The structure of the obstruction is simple: an extension would have to choose, at p, a candidate whom no one beats; at a point of the cycle region, choosing for each candidate one that beats it defines a map of the candidates into themselves without a fixed point. The failure to extend is the absence of a fixed point.
 
@@ -68,7 +68,7 @@ So a rule L is consistent ex post exactly when L(t p + (1 − t) q)(a) ≥ L(p)(
 
 **Proposition.** No rule that elects a Condorcet winner with certainty when there is one is consistent ex post, whether deterministic or lottery-valued (vote shares, any number of candidates).
 
-*Proof.* Let p have no Condorcet winner, and let a be a candidate with L(p)(a) > 0. By the blocking lemma (Section 2), some c beats a at p, and there is a profile q in R_a and a mixture of p with q that lies in R_c. Then L(q)(a) = 1 and L(mixture)(a) = 0, and the inequality requires 0 ≥ L(p)(a). So L(p) gives probability zero to every candidate, which is impossible. ∎
+*Proof.* Let p have no Condorcet winner, and let a be a candidate with L(p)(a) > 0. By the blocking lemma (Section 2), some c beats a at p, and there is a profile q in R_a and a mixture of p with q that lies in R_c. Then L(q)(a) = 1 and L(mixture)(a) = 0, and the inequality requires 0 ≥ L(p)(a). So L(p) gives probability zero to every candidate, which is impossible. ∎ *(Checked in Lean for finite electorates, as weighted lists of ballots with ties joined by appending, without anonymity or homogeneity: `lean/JoinLotteries.lean` (`joint_unbeaten`, `no_joint_consistent`), Theorem 4 of* Four Levels*. There the joint draws are the hypothesis, and the inequality comes from the necessary direction of the lemma, `lemma3_nec`.)*
 
 The script `scripts/consistency/ex_post_consistency.py` checks the lemma by linear programming on random cases, checks for maximal lotteries that every candidate in the support of the lottery at a profile with a cycle is blocked in this way, and checks the inequality for random dictatorship.
 

@@ -46,7 +46,7 @@ The threads are theory building and formalisation that can be done here. Each na
 
 *Exists.* Both theorems, checked in Lean or with one assumption from Gibbard.
 
-*Status.* Written up in *What Cannot Be Defined from Inside* (`undefinability.md`): the statement, the distinction between inside and outside, two senses of exploitation, a corollary that revising the rule by another fixed procedure does not escape, the conditions under which the barrier against rational others can vanish, and the limits. Open there: a precedent for the reading in Tarski's sense, a Lean check of the corollary, and whether the rational-opponent barrier survives composition.
+*Status.* Written up in *What Cannot Be Defined from Inside* (`undefinability.md`): the statement, the distinction between inside and outside, two senses of exploitation, a corollary that revising the rule by another fixed procedure does not escape, the conditions under which the barrier against rational others can vanish, and the limits. The corollary is checked in Lean for any finite depth of composition (`lean/Composition.lean`). Open there: a precedent for the reading in Tarski's sense, and whether the rational-opponent barrier survives composition.
 
 ### T2. A classification of conflicts
 
