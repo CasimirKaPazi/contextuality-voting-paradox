@@ -100,7 +100,7 @@ The four configurations alternate between the players and between the two kinds.
 
 **Theorem for three outcomes.** Every non-dictatorial totally tight form with three outcomes has a working configuration, with Q the reverse of P or its rotation.
 
-*Proof.* Some player i does not force some outcome a. If its opponent does not force some outcome c ≠ a, apply the chain lemma. Otherwise the opponent forces both outcomes other than a. Then i forces no outcome, since a constant row would meet two constant columns with different outcomes. The opponent is not a dictator, so it does not force a. Apply the chain lemma to the opponent, a, and any c ≠ a. ∎
+*Proof.* Some player i does not force some outcome a. If its opponent does not force some outcome c ≠ a, apply the chain lemma. Otherwise the opponent forces both outcomes other than a. Then i forces no outcome, since a constant row would meet two constant columns with different outcomes. The opponent is not a dictator, so it does not force a. Apply the chain lemma to the opponent, a, and any c ≠ a. ∎ *(Checked in Lean, `lean/TotallyTight.lean`, with (F1) entering as the hypothesis that the opponent does not force the bottom outcome; the conclusion there is that some player has a rational diagonal, and the kind of configuration is visible in the proof.)*
 
 **The position lemma for three outcomes.** The chain lemma also gives the position lemma of Section 8 for three outcomes. Take a line of j with outcome x, after which the form is still valid. Then j does not force some outcome a ≠ x; let b be the third outcome.
 - If the other player does not force some c ≠ a, the chain with i = j gives a configuration of j with top a, or one of the other player whose Q, (a, e, c) in both kinds, has x among its two lowest outcomes, since x ∈ {c, e}.
@@ -124,7 +124,7 @@ Unlike total tightness, (R) is not inherited by subforms: subforms of a game tre
 
 **Theorem (three outcomes, recombination).** Every non-dictatorial two-player game form with three outcomes and property (R) admits a rational diagonal, with Q the reverse of P or its rotation. In particular, every game of perfect information with three outcomes does.
 
-*Proof.* The chain lemma uses only (F1), (F2) and (F3); the first two hold for every form, and (F3) follows from (R). The theorem for three outcomes then follows as before. ∎
+*Proof.* The chain lemma uses only (F1), (F2) and (F3); the first two hold for every form, and (F3) follows from (R). The theorem for three outcomes then follows as before. ∎ *(Checked in Lean for forms with (R), and that totally tight forms have (R), `lean/TotallyTight.lean`; that games of perfect information have (R) is not checked there.)*
 
 Tightness is not used. The checks agree:
 - on 400 random forms with (R) that are not tight, the chain lemma held in all 3,704 cases;

@@ -36,6 +36,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5 (`NonTight.lean`).
   - Proposition 5″, the tight form without a rational diagonal (`TightCounterexample.lean`).
   - Proposition 5‴, the exact criterion for three outcomes (`ThreeOutcomes.lean`), and the common frame for two-player forms (`TwoPlayer.lean`).
+  - The theorem for three outcomes of *The rational diagonal on totally tight game forms*, for forms with (R) and so for totally tight forms (`TotallyTight.lean`).
   - Proposition 7, approval with a veto (`ApprovalVeto.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`); the call game as one tree, with existence of a subgame-perfect equilibrium in undominated votes, every equilibrium one Raiffa step, and uniqueness of the values (`CallGame.lean`, Markov strategies).
@@ -85,7 +86,7 @@ These are the results the project's claims stand on, by thread. Details below th
   - take the structure theorem as a hypothesis;
   - check the searches, a large step.
 
-  Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is checked (`ApprovalVeto.lean`).
+  The searches are not suited to Lean: they run for minutes in C++ and meet about 970,000 summaries with seven outcomes, far beyond what the kernel can check. The case of three outcomes, which needs no search, is checked for forms with (R), hence for totally tight forms (`TotallyTight.lean`); that games of perfect information have (R) is not. Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is checked (`ApprovalVeto.lean`).
 - **G. CORE.**
   - The proposition on concave loss (Section 3b): invertibility and positivity of distance matrices. Large.
   - The theorem that on a line the random ballot is the only strategy-proof rule that harms no one (Section 3h). It is moderate with the characterisation of Ehlers, Peters and Storcken as a hypothesis. Without it, it is large.
