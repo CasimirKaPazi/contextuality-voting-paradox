@@ -36,7 +36,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Proposition 5 (`NonTight.lean`).
   - Proposition 5″, the tight form without a rational diagonal (`TightCounterexample.lean`).
   - Proposition 5‴, the exact criterion for three outcomes (`ThreeOutcomes.lean`), and the common frame for two-player forms (`TwoPlayer.lean`).
-  - The theorem for three outcomes of *The rational diagonal on totally tight game forms*, for forms with (R) and so for totally tight forms (`TotallyTight.lean`).
+  - The theorem for three outcomes of *The rational diagonal on totally tight game forms*, for forms with (R) and so for totally tight forms (`TotallyTight.lean`), and for games of perfect information, which have (R) (`GameTree.lean`).
   - Proposition 7, approval with a veto (`ApprovalVeto.lean`).
   - The summary and its update rule behind Proposition 5′ (`SummaryAutomaton.lean`).
 - **G (CORE).** The draw, the decomposition of holdings, the theorem for one dimension, the mean of the peaks with the members' value under efficiency, the mean rule, safe agreements (parts 1 and 2), the veto-kept floor and the stages of the call game (`CoreDraw.lean`); the call game as one tree, with existence of a subgame-perfect equilibrium in undominated votes, every equilibrium one Raiffa step, and uniqueness of the values (`CallGame.lean`, Markov strategies).
@@ -81,13 +81,12 @@ These are the results the project's claims stand on, by thread. Details below th
   - a reduction to at most seven outcomes;
   - two exact searches.
 
-  The summary and the update rule are checked. Next:
-  - that games of perfect information have (R): finite two-player trees, their normal forms, and the proof of *The rational diagonal on totally tight game forms*, Section 7. Small to moderate; with `TotallyTight.three_outcomes` it gives the theorem for trees with three outcomes;
+  The summary and the update rule are checked, and so is the case of three outcomes for totally tight forms and for games of perfect information. Next:
   - state the theorem and the reduction in the frame of Item 1.1;
   - take the structure theorem as a hypothesis;
   - check the searches, a large step.
 
-  The searches are not suited to Lean: they run for minutes in C++ and meet about 970,000 summaries with seven outcomes, far beyond what the kernel can check. The case of three outcomes, which needs no search, is checked for forms with (R), hence for totally tight forms (`TotallyTight.lean`); that games of perfect information have (R) is not. Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is checked (`ApprovalVeto.lean`).
+  The searches are not suited to Lean: they run for minutes in C++ and meet about 970,000 summaries with seven outcomes, far beyond what the kernel can check. The case of three outcomes, which needs no search, is checked for forms with (R), hence for totally tight forms (`TotallyTight.lean`), and games of perfect information have (R) (`GameTree.lean`). Proposition 5‴, the exact criterion for three outcomes (Theorems A and B of the note *A tight form without a rational diagonal*), is checked (`ThreeOutcomes.lean`). Proposition 7, approval with a veto, is checked (`ApprovalVeto.lean`).
 - **G. CORE.**
   - The proposition on concave loss (Section 3b): invertibility and positivity of distance matrices. Large.
   - The theorem that on a line the random ballot is the only strategy-proof rule that harms no one (Section 3h). It is moderate with the characterisation of Ehlers, Peters and Storcken as a hypothesis. Without it, it is large.
