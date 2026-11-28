@@ -13,7 +13,7 @@ in lexicographic order.
      winners at the end the one highest in the last ballot is elected (Proposition 20); sharing
      equally is not independent of clones.
   3. condition 2': a tie of ranked pairs is removed by one more ballot, a ranking that ranked pairs
-     gives for the profile; every tie of Schulze found is removed by one ballot added to ten copies.
+     gives for the profile; a tie of Schulze by the ballot of Proposition 20, for each of the tied winners.
 Run: python3 equality_votes_again_rules.py   (needs numpy and scipy; under a minute)
 """
 import itertools
@@ -293,15 +293,42 @@ for m, trials in [(3, 300), (4, 100)]:
     print(f"3. ranked pairs, {m} candidates: each of {ties} ties among {trials} random profiles is removed by one"
           f" more ballot, a ranking that ranked pairs gives for the profile (Proposition 19)")
 
-for m, trials in [(3, 150), (4, 40)]:
+def schulze_ballot(profile, m, a):
+    """The ballot of Proposition 20 for a winner a: a first, the others by the strength of their
+    strongest path to a, largest first, and among equals by their place on the strongest paths from a."""
+    M = [[sum((r[y] > r[x]) - (r[y] < r[x]) for r in profile) for y in range(m)] for x in range(m)]
+    to_a = [0] * m                      # strength of the strongest path to a; 0 if there is none
+    to_a[a] = float("inf")
+    for _ in range(m):
+        for x in range(m):
+            if x != a:
+                to_a[x] = max([to_a[x]] + [min(M[x][y], to_a[y]) for y in range(m) if y != x and M[x][y] > 0])
+    from_a, depth, done = [0] * m, [m] * m, {a}     # strongest paths from a, as a tree
+    from_a[a], depth[a] = float("inf"), 0
+    while True:
+        best = max(((min(from_a[x], M[x][y]), -depth[x], x, y) for x in done for y in range(m)
+                    if y not in done and M[x][y] > 0), default=None)
+        if best is None:
+            break
+        strength, _, x, y = best
+        from_a[y], depth[y] = strength, depth[x] + 1
+        done.add(y)
+    order = sorted(range(m), key=lambda x: (x != a, -to_a[x], depth[x]))
+    return tuple(order.index(x) for x in range(m))
+
+
+for m, trials in [(3, 300), (4, 200), (5, 60)]:
     W = weak_orders(m)
-    ties = 0
+    ties = winners_made = 0
     for _ in range(trials):
-        prof = [W[i] for i in rng.integers(len(W), size=int(rng.integers(1, 6)))]
-        if len(schulze_winners(vectors(prof, m, []), m)) == 1:
+        prof = [W[i] for i in rng.integers(len(W), size=int(rng.integers(1, 8)))]
+        tied = schulze_winners(vectors(prof, m, []), m)
+        if len(tied) == 1:
             continue
         ties += 1
-        assert any(len(schulze_winners(vectors(prof * 10 + [r], m, []), m)) == 1 for r in W), prof
-    print(f"3. Schulze, {m} candidates: each of {ties} ties among {trials} random profiles is removed by one ballot"
-          f" added to ten copies")
+        for a in tied:
+            assert schulze_winners(vectors(prof + [schulze_ballot(prof, m, a)], m, []), m) == {a}, (prof, a)
+            winners_made += 1
+    print(f"3. Schulze, {m} candidates: at each of {ties} ties among {trials} random profiles, each of the winners"
+          f" ({winners_made} in all) is made the single winner by the ballot of Proposition 20")
 print("all checks passed")
