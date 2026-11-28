@@ -1,6 +1,6 @@
 # Bounds from Criteria
 
-*Working note, part of [Strategic Information](README.md), first draft. The pair notes compare methods two at a time, by proof in a corner and by computation outside it. This note asks what can be said without either: which properties of a method put a ceiling on what it can achieve under any rationale in which best replies are vertices of the ballot polytope. Three bounds are proved. The Equality Criterion turns out to be a ceiling for methods that count totals, and a cost without a ceiling for methods that count more. Conventions as in the README; the count, the strategic count M and the ballot polytope as in the README, Section 2, and [The Ballot Polytope](ballot-polytope.md). Nothing here is computed.*
+*Working note, part of [Strategic Information](README.md), first draft. The pair notes compare methods two at a time, by proof in a corner and by computation outside it. This note asks what can be said without either: which properties of a method put a ceiling on what it can achieve under any rationale in which best replies are vertices of the ballot polytope. Three bounds are proved, and a fourth follows from a cited theorem on reinforcement (Section 7). The Equality Criterion turns out to be a ceiling for methods that count totals, and a cost without a ceiling for methods that count more. Conventions as in the README; the count, the strategic count M and the ballot polytope as in the README, Section 2, and [The Ballot Polytope](ballot-polytope.md). Nothing here is computed, except the table of the Ballot Front Finder Lab that Section 7 reports.*
 
 ## 1. Certifying the leader
 
@@ -104,10 +104,44 @@ The first row needs no computation and no model of beliefs beyond the linear reg
 
 *Limits.* Certification is about the majority target. For the utilitarian target the corresponding functions are the differences of total utilities, which take a continuum of values per voter, and no method with finitely many ballots holds them exactly; a bound for that target has to be about approximation. [Intensities and the Utilitarian Target](intensity.md) gives the counterpart for methods that count totals: what such a method holds is a sum of utilities normalised by the shape of its ballot polytope, and the shape that certifies the leader reveals no intensity. The bounds concern the information a method can hold at a poll. They are ceilings: they do not say that a method reaches its ceiling away from a corner, and approval in the smooth model does not (*The Smooth Model across Methods*, Section 4).
 
-## 7. Open questions
+## 7. Criteria of the honest method
+
+The bounds above are about the strategic count. Some classical criteria are about the method as a function of the honest ballots, and one of them fixes the size of the count.
+
+**Reinforcement** (also called consistency; [Consistency as an Extension Problem](../consistency-as-extension.md) treats it at length) asks that two electorates that elect the same candidate elect that candidate when joined: each winner's region in the space of profiles is convex. Smith (1973) and Young (1975) showed for rankings, and Myerson (1995) for ballots of any kind, that a neutral method which satisfies reinforcement and a condition of continuity (a large enough electorate outweighs a small one) is a scoring rule: each ballot gives points to the candidates, and the largest total wins. In the terms of these notes it is a method that counts totals. Without continuity further scorings can break ties, which adds no rank at a generic profile. *(Cited; Myerson from the abstract and the opening pages.)*
+
+**Corollary 9.** A neutral and continuous method that satisfies reinforcement has a count of rank at most m − 1. At a poll it holds at most the leader's row (Proposition 3), it reaches that bound only where it keeps opposite voters equal (Corollary 5), and for three or more candidates it is not on the third level of Section 5. Conversely a method whose count has rank above m − 1, and so every method that the bounds do not exclude from the third level, fails reinforcement or one of the two other conditions.
+
+*Proof.* The cited theorem and Propositions 3 and 7 and Corollary 5; m − 1 is less than m(m − 1)/2 from three candidates on. ∎ *(Follows from the cited theorem.)*
+
+So reinforcement is a second criterion that implies a limitation, and it stands before the Equality Criterion: reinforcement confines a method to counts of totals, and among those the Equality Criterion decides whether the one row can be reached. That methods which elect the Condorcet winner fail reinforcement is known (Young and Levenglick 1978; *Consistency as an Extension Problem*, Section 3); the corollary says that the failure does not depend on the rule, only on the count being large enough to hold more than one row.
+
+The Ballot Front Finder Lab tests reinforcement at the boundaries between winners (*The Ballot Polytope*, Section 6). For three and four candidates the methods that pass are exactly those whose count has rank m − 1: plurality, anti-plurality, approval, score, Borda with and without equal ranks, Dowdall. Every method with a larger count fails, with one exception that is an artefact: Copeland, whose boundaries are mostly ties between several winners, which the test leaves out. *(Computed in the lab, 28 November 2026; 400 boundaries per method, one seed for four candidates. A pass is evidence, a failure is confirmed by a profile.)*
+
+Three other criteria tested there give no bound on the count, and are placed here for that reason.
+
+- *Participation* (a further ballot never ends the win of a candidate it ranks above the one who gains). Methods that count totals satisfy it. Moulin (1988) showed that a method which always elects the Condorcet winner can satisfy it with three candidates and cannot with four or more. The lab finds this again: the methods that read only the margins pass with three candidates and fail with four. This is a cost of using the third level to name the Condorcet winner, from four candidates on, and not a limit on what a count holds: instant runoff has a count large enough for the third level and fails participation with three candidates for another reason.
+- *Later-no-harm and later-no-help* (a further preference on a ballot neither ends the win of a candidate ranked before it nor brings one about). No method that always elects the Condorcet winner satisfies either (Woodall 1997†). In the lab the methods that pass both are instant runoff, its truncated form and the supplementary vote; every method that reads the margins fails both. Again a cost at the third level, paid by those methods that use it.
+- *Monotonicity* is passed and failed on every level (Dowdall with truncation and three candidates fails it on the first; the margin methods pass it on the third), and implies nothing here.
+
+*(Interpretation of the cited theorems and the lab's table.)*
+
+## 8. Open questions
 
 1. The third level of Section 5. [What a Ballot Reveals](revelation.md) shows that no level above the first holds at sharp beliefs, and that the theorem of Gibbard and Satterthwaite excludes a revealing ballot that is the same at every belief. At which polls the strategic counts of instant runoff, BTR-plurality and other ranked methods certify the whole majority relation is still open.
 2. The even part of instant runoff and BTR-plurality: the rank e at their corner polls, and whether the profiles at which they rest on a wrong winner are those where the even part decides.
 3. Approximate certification, in the smooth model: how far the strategic count of approval is from the leader's row as the beliefs widen, as a number that bounds the worst case.
 4. A bound for the utilitarian target: how well the vertices of a ballot polytope can approximate the differences of utilities, and whether central symmetry enters there as it does in Corollary 5.
-5. Other criteria read in the same way: independence of clones as a property of the ballot polytope and the count (*Equality of Voters and Alternatives*), and what it bounds.
+5. Other criteria read in the same way: independence of clones as a property of the ballot polytope and the count (*Equality of Voters and Alternatives*), and what it bounds. Reinforcement is such a criterion (Section 7).
+6. Whether participation or the later-no criteria bound the strategic count, as distinct from the honest rule: the theorems of Section 7 concern methods that elect the Condorcet winner from honest ballots, and the levels of Section 5 concern what a count can hold.
+
+## References
+
+*Entries marked † are cited from memory and have not been checked against the original.*
+
+- Moulin, H. (1988). Condorcet's principle implies the no show paradox. *Journal of Economic Theory* 45(1), 53–64.
+- Myerson, R. B. (1995). Axiomatic derivation of scoring rules without the ordering assumption. *Social Choice and Welfare* 12, 59–74.
+- Smith, J. H. (1973). Aggregation of preferences with variable electorate. *Econometrica* 41, 1027–1041.
+- Woodall, D. R. (1997). Monotonicity of single-seat preferential election rules. *Discrete Applied Mathematics* 77, 81–98. †
+- Young, H. P. (1975). Social choice scoring functions. *SIAM Journal on Applied Mathematics* 28, 824–838.
+- Young, H. P. and Levenglick, A. (1978). A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35, 285–300.

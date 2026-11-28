@@ -117,6 +117,8 @@ Every independent way in which opposite voters fail to cancel uses up one of the
 
 So for methods that count totals the strategic form of the Equality Criterion is a ceiling: one that fails it at a poll is below the level of approval there. It is necessary and not sufficient, since Borda satisfies it. For methods that count more it is a cost without a ceiling. Instant runoff with three candidates counts five numbers where certification takes two; it does not keep opposite voters equal, some of its numbers go to functions that are not odd, and enough remain: in its corner every self-confirming poll elects the Condorcet winner (proved in the notes for three candidates). What failing the criterion leaves such a method is an outcome that can depend on how many pairs of opposite voters there are, which neither target can justify.
 
+A second criterion carries a limit of the same kind. Reinforcement asks that two electorates with the same winner keep that winner when joined. By the theorems of Smith (1973), Young (1975) and, for ballots of any kind, Myerson (1995), a neutral and continuous method that satisfies it is a scoring rule, which is a method that counts totals. Such a method therefore holds at most the leader's row (Proposition 4), and every method whose count has rank above $m - 1$ fails reinforcement. The Equality Criterion then decides, among the methods that reinforcement allows, whether the one row can be reached.
+
 ## 6. What revealing takes
 
 The bounds of Section 4 concern the method. A third requirement concerns the voters' beliefs.
@@ -204,8 +206,11 @@ Open:
 - Lehtinen, A. (2007). The Borda rule is also intended for dishonest men. *Public Choice* 133, 73-90. †
 - Lehtinen, A. (2008). The welfare consequences of strategic behaviour under approval and plurality voting. *European Journal of Political Economy* 24(3), 688-704.
 - Merrill, S. (1979). Approval voting: a "best buy" method for multi-candidate elections? *Mathematics Magazine* 52, 98-102. †
+- Myerson, R. B. (1995). Axiomatic derivation of scoring rules without the ordering assumption. *Social Choice and Welfare* 12, 59-74.
 - Myerson, R. B. and Weber, R. J. (1993). A theory of voting equilibria. *American Political Science Review* 87, 102-114.
 - Núñez, M. and Laslier, J.-F. (2014). Preference intensity representation: strategic overstating in large elections. *Social Choice and Welfare* 42(2), 313-340.
 - Satterthwaite, M. A. (1975). Strategy-proofness and Arrow's conditions. *Journal of Economic Theory* 10, 187-217. †
+- Smith, J. H. (1973). Aggregation of preferences with variable electorate. *Econometrica* 41, 1027-1041.
 - Weber, R. J. (1978). Comparison of voting systems. Cowles Foundation Discussion Paper 498. †
 - Xia, L. and Conitzer, V. (2010). Compilation complexity of common voting rules. *Proceedings of AAAI 2010*, 915-920.
+- Young, H. P. (1975). Social choice scoring functions. *SIAM Journal on Applied Mathematics* 28, 824-838.
