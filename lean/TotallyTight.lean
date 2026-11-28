@@ -27,9 +27,9 @@
     all occurring, admits a rational diagonal for some player;
     `three_outcomes_tt` for totally tight forms.
 
-  Not here: that games of perfect information have (R), which needs their
-  normal forms; the reduction to seven outcomes and the searches for more
-  outcomes (Proposition 5′).
+  That games of perfect information have (R) is in `GameTree.lean`. Not
+  here: the reduction to seven outcomes and the searches for more outcomes
+  (Proposition 5′).
 -/
 
 module

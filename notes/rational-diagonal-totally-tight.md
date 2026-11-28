@@ -118,13 +118,13 @@ Two classes of forms have (R):
   - If N belongs to the row player, let s′ follow s₀ below the branch that x takes at N, and s elsewhere; s₀ and s agree before N. Then (r, s′) plays out as x and (r₀, s′) as y.
   - If N belongs to the column player, build r′ from r and r₀ in the same way.
 
-  Removing repeated lines keeps (R).
+  Removing repeated lines keeps (R). *(Checked in Lean, `lean/GameTree.lean` (`recomb`), for trees with any number of branches and plans that choose at every position, so for the normal form with its repeated lines; that removing them keeps (R) is not checked.)*
 
 Unlike total tightness, (R) is not inherited by subforms: subforms of a game tree's normal form can lose it.
 
 **Theorem (three outcomes, recombination).** Every non-dictatorial two-player game form with three outcomes and property (R) admits a rational diagonal, with Q the reverse of P or its rotation. In particular, every game of perfect information with three outcomes does.
 
-*Proof.* The chain lemma uses only (F1), (F2) and (F3); the first two hold for every form, and (F3) follows from (R). The theorem for three outcomes then follows as before. ∎ *(Checked in Lean for forms with (R), and that totally tight forms have (R), `lean/TotallyTight.lean`; that games of perfect information have (R) is not checked there.)*
+*Proof.* The chain lemma uses only (F1), (F2) and (F3); the first two hold for every form, and (F3) follows from (R). The theorem for three outcomes then follows as before. ∎ *(Checked in Lean for forms with (R), and that totally tight forms have (R), `lean/TotallyTight.lean`; that games of perfect information have (R) in `lean/GameTree.lean`, which gives the theorem for trees, `three_outcomes_tree`, on the normal form with repeated lines.)*
 
 Tightness is not used. The checks agree:
 - on 400 random forms with (R) that are not tight, the chain lemma held in all 3,704 cases;

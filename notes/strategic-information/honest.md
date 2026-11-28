@@ -28,7 +28,7 @@ The target on this axis is the utilitarian one, for a stated normalisation: the 
 
 **Proposition 2 (finite scales).** With scores 0 to k and n honest voters, the winner of score voting has a sum of normalised utilities within n/k of the largest: on average over the voters, within 1/k of the best candidate.
 
-*Proof.* Each honest score differs from k ν(u) by at most one half, so each total, divided by k, differs from the sum of ν(u) by at most n/(2k). The winner has the largest total. ∎ *(Proved.)*
+*Proof.* Each honest score differs from k ν(u) by at most one half, so each total, divided by k, differs from the sum of ν(u) by at most n/(2k). The winner has the largest total. ∎ *(Proved; checked in Lean, `lean/Honest.lean` (`prop2`, with the honest score as k ν rounded, `honest_round`).)*
 
 **Proposition 3 (the honest order).** The honest ballots of plurality, of approval and of the methods on rankings are functions of the honest ballot of score voting with a continuous scale. The honest plurality ballot is a function of the honest ranking. Neither the honest approval ballot nor the honest ranking is a function of the other.
 

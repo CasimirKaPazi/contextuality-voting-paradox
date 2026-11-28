@@ -57,7 +57,7 @@ The *ballot polytope* of a method is the convex hull of the count vectors of its
 
 **Proposition 2.** In the linear regime a unique best reply is a vertex of the ballot polytope, and every vertex is the unique best reply for some gradient. Two methods with the same count, the same rule, and the same vertices up to a factor have the same strategic counts, self-confirming polls and outcomes.
 
-*Proof.* A linear function on a polytope is maximal on a face; a unique maximiser is a vertex, and each vertex is the unique maximiser of some linear function. $\square$
+*Proof.* A linear function on a polytope is maximal on a face; a unique maximiser is a vertex, and each vertex is the unique maximiser of some linear function. $\square$ (That a unique best reply is a vertex is checked in Lean, `lean/BallotPolytope.lean`; that every vertex is the unique best reply for some gradient, and the comparison of two methods, are not.)
 
 For methods that count totals this is the result of Núñez and Laslier (2014), whose extremal ballots are the vertices. Through the count it applies to any method, and it sorts changes of ballot design into those that can matter under strategy and those that cannot. Intermediate scores are averages of approval ballots, so score voting counts as approval does; points spread over several candidates under cumulative voting are averages of ballots for one candidate, so cumulative voting counts as plurality does. Allowing equal ranks changes nothing wherever a ballot with an equal rank is counted as the average of the strict rankings it lies between: under Borda with averaged scores, under every method that reads only the margins, and where candidates ranked equal at the top share one first preference. It can matter where such a ballot counts for more than that average, as when each of the candidates ranked equal at the top receives a whole first preference: the ballot polytope then has 9 vertices instead of 6 for three candidates (computed). Counting a tie as nothing for either side, as under winning votes, is also not counting it as the average, and makes the ballots with equal ranks vertices (computed in the Ballot Front Finder Lab). The number of vertices bounds what a strategic ballot can say, as the number of ballots bounds what an honest one can.
 
@@ -71,7 +71,7 @@ Fix a poll with leader $a$. For another candidate $x$ let $\mu_x$ be the margin 
 
 **Proposition 4 (the leader's row).** If a method certifies its leader at a poll, then (i) the ballot of a voter determines the set of candidates the voter prefers to the leader, so that at least $2^{m-1}$ different count vectors are in use, and (ii) the strategic count has rank at least $m-1$. If the method counts totals, its strategic count is then exactly the leader's row of margins, up to a change of coordinates.
 
-*Proof.* (i) By the lemma $\mu_x$ is a function of the column of $M$, so two types with the same ballot agree on $x$ against $a$; the sets of candidates preferred to $a$, over all rankings, are all subsets of the others. (ii) The $m-1$ margins are independent functions of the histogram of rankings. A count of totals has $m-1$ numbers, so the two spaces coincide. $\square$ (The first half of (i), that the ballot determines the set of candidates preferred to the leader, is checked in Lean, `lean/Certification.lean`; the count $2^{m-1}$ and (ii) are not.)
+*Proof.* (i) By the lemma $\mu_x$ is a function of the column of $M$, so two types with the same ballot agree on $x$ against $a$; the sets of candidates preferred to $a$, over all rankings, are all subsets of the others. (ii) The $m-1$ margins are independent functions of the histogram of rankings. A count of totals has $m-1$ numbers, so the two spaces coincide. $\square$ (Checked in Lean: the first half of (i), that the ballot determines the set of candidates preferred to the leader, in `lean/Certification.lean`; the count $2^{m-1}$ and the independence and row space of (ii) in `lean/LeaderRank.lean`, with the rank $m-1$ of a count of totals as a hypothesis.)
 
 The same argument applies to any set of comparisons. Let $G$ be a graph on the candidates. A method that certifies the majority comparison on every edge of $G$ has ballots that reveal the voter's preference on every edge; it uses at least as many count vectors as there are ways of directing the edges of $G$ without a cycle; and its count has rank at least the number of edges. For all pairs this is $m!$ count vectors and rank $m(m-1)/2$.
 
@@ -101,7 +101,7 @@ The Equality Criterion asks that a ballot together with its reverse never change
 
 **Proposition 6.** In the linear regime a method whose ballot polytope is centrally symmetric keeps opposite voters equal at every poll, and a method that satisfies the Equality Criterion has a centrally symmetric ballot polytope.
 
-*Proof.* Opposite voters have gradients $g$ and $-g$, whose maximisers on a centrally symmetric polytope add up to a constant. If $\tau(b) + \tau(\tilde b)$ is the same for every ballot $b$ with reverse $\tilde b$, the set of count vectors is symmetric. $\square$
+*Proof.* Opposite voters have gradients $g$ and $-g$, whose maximisers on a centrally symmetric polytope add up to a constant. If $\tau(b) + \tau(\tilde b)$ is the same for every ballot $b$ with reverse $\tilde b$, the set of count vectors is symmetric. $\square$ (Checked in Lean for unique best replies, `lean/BallotPolytope.lean`.)
 
 Both targets depend on the electorate only through functions on which opposite voters cancel: a pair of opposite voters changes neither a margin nor a difference of total utilities. Call such functions *odd*.
 
@@ -113,7 +113,7 @@ Every independent way in which opposite voters fail to cancel uses up one of the
 
 **Corollary 8.** A method that counts totals and certifies its leader at a poll keeps opposite voters equal there.
 
-*Proof.* By Proposition 4 its row space is spanned by the margins, which are odd. $\square$
+*Proof.* By Proposition 4 its row space is spanned by the margins, which are odd. $\square$ (Checked in Lean, `lean/LeaderRank.lean`, with the rank of a count of totals as a hypothesis.)
 
 So for methods that count totals the strategic form of the Equality Criterion is a ceiling: one that fails it at a poll is below the level of approval there. It is necessary and not sufficient, since Borda satisfies it. For methods that count more it is a cost without a ceiling. Instant runoff with three candidates counts five numbers where certification takes two; it does not keep opposite voters equal, some of its numbers go to functions that are not odd, and enough remain: in its corner every self-confirming poll elects the Condorcet winner (proved in the notes for three candidates). What failing the criterion leaves such a method is an outcome that can depend on how many pairs of opposite voters there are, which neither target can justify.
 
@@ -133,17 +133,17 @@ A comparison is revealed where its race is kept apart from the others. Where mar
 
 **Proposition 10.** Let the method choose a winner without chance, and let the voter's belief give positive probability to $k$ possibilities for the other ballots. The menu has at most $m^k$ lotteries. Under certainty the voter chooses the best of the candidates who can still win, and reveals the comparison of $i$ and $j$ only if those two are the only such candidates.
 
-*Proof.* A lottery is determined by the winner in each of the $k$ possibilities. Under certainty, if a third candidate can win, the voters with that candidate as favourite are on both sides of $i$ against $j$ and choose alike. $\square$
+*Proof.* A lottery is determined by the winner in each of the $k$ possibilities. Under certainty, if a third candidate can win, the voters with that candidate as favourite are on both sides of $i$ against $j$ and choose alike. $\square$ (Checked in Lean, `lean/Revelation.lean`.)
 
 Revealing the leader's row therefore takes at least $(m-1)/\log_2 m$ possibilities held open, and the whole ranking at least $\log_2 m!\,/\log_2 m$. A voter who knows the other ballots has nothing to say but which attainable winner is best. Everything a method learns beyond one comparison it learns from voters who are unsure of the outcome, whatever the method.
 
-The theorem of Gibbard (1973) and Satterthwaite (1975) enters as follows. If a way of filling in the ballot from the ranking alone were a best reply at every belief, the method composed with it would be a rule on rankings that no voter can manipulate, hence dictatorial if at least three candidates can win. So no method has a revealing ballot that is the same at every belief; and by Proposition 10 none reveals more than one comparison at sharp beliefs. The top of the ladder is reached only at beliefs of a particular shape. Borda is an example: in the linear regime its ballot reveals the whole ranking exactly at the belief in which all pairwise ties are equally likely, where the sincere ranking is the best reply. Its count does not keep what the ballots reveal there, since it adds them up to $m-1$ numbers. The third level asks for both a menu that makes voters reveal their rankings and a count that keeps the margins.
+The theorem of Gibbard (1973) and Satterthwaite (1975) enters as follows. If a way of filling in the ballot from the ranking alone were a best reply at every belief, the method composed with it would be a rule on rankings that no voter can manipulate, hence dictatorial if at least three candidates can win (checked in Lean, `lean/Revelation.lean`, for preferences that may contain ties, as in Gibbard's theorem; for strict rankings only it needs the theorem of Gibbard and Satterthwaite for strict preferences). So no method has a revealing ballot that is the same at every belief; and by Proposition 10 none reveals more than one comparison at sharp beliefs. The top of the ladder is reached only at beliefs of a particular shape. Borda is an example: in the linear regime its ballot reveals the whole ranking exactly at the belief in which all pairwise ties are equally likely, where the sincere ranking is the best reply. Its count does not keep what the ballots reveal there, since it adds them up to $m-1$ numbers. The third level asks for both a menu that makes voters reveal their rankings and a count that keeps the margins.
 
 ## 7. The utilitarian target and the honest axis
 
 **Proposition 11.** Under every method and at every belief, a voter's best replies are unchanged when the utilities are multiplied by a positive number or shifted by a constant.
 
-*Proof.* The value of a ballot is $u \cdot P(b)$, and the order of these values is the same for $\lambda u + c$ with $\lambda > 0$. $\square$
+*Proof.* The value of a ballot is $u \cdot P(b)$, and the order of these values is the same for $\lambda u + c$ with $\lambda > 0$. $\square$ (Checked in Lean, `lean/Intensity.lean`.)
 
 So no method holds the sum of the voters' utilities; what can be held is a sum of utilities brought to a common scale voter by voter. For a method that counts totals the scale is fixed by the ballot polytope $K$. In the linear regime the voter casts the point of $K$ furthest in the direction of the gradient, and at the belief in which all pairwise ties are equally likely the gradient is the utility vector with its mean subtracted.
 
@@ -153,11 +153,11 @@ A polytope with $V$ vertices reveals one of $V$ sets of directions. A ballot rev
 
 **Proposition 13 (a trade-off).** A method that counts totals and certifies its leader at a poll has ballots that depend on the utilities only through the set of candidates preferred to the leader, and reveals no intensity there. A method whose ballots reveal the direction of the gradient does not certify its leader.
 
-*Proof.* By Proposition 4 the strategic count is an invertible linear function of the margins, so what a voter adds to it is determined by the voter's side on each margin. $\square$
+*Proof.* By Proposition 4 the strategic count is an invertible linear function of the margins, so what a voter adds to it is determined by the voter's side on each margin. $\square$ (The first statement is checked in Lean, `lean/Intensity.lean`, with the rank of a count of totals as a hypothesis; the second is its contrapositive.)
 
 Among counts of totals the two targets pull the ballot polytope apart: the majority target wants the corners of the cube, the utilitarian target no corners. Neither end is below the other.
 
-**Honest voting.** Under honesty a ballot is a report, with the same count. Score voting with a fine scale holds the sum of utilities scaled to the range from 0 to 1, the relative utilitarianism of Dhillon and Mertens (1999): with scores $0$ to $k$ the honest winner is within $1/k$ per voter of the best. A ranking, an approval ballot above the mean and a favourite are reductions of that report, so that on the honest axis the order of methods is the order of what their ballots can carry.
+**Honest voting.** Under honesty a ballot is a report, with the same count. Score voting with a fine scale holds the sum of utilities scaled to the range from 0 to 1, the relative utilitarianism of Dhillon and Mertens (1999): with scores $0$ to $k$ the honest winner is within $1/k$ per voter of the best (checked in Lean, `lean/Honest.lean`). A ranking, an approval ballot above the mean and a favourite are reductions of that report, so that on the honest axis the order of methods is the order of what their ballots can carry.
 
 **Proposition 14.** In the linear regime, at the belief in which all pairwise ties are equally likely, the honest ballot is a best reply under plurality, approval (above the mean; Merrill 1979, Weber 1978), Borda and round ballots. An honest score ballot with an intermediate score is the unique best reply at no belief.
 
@@ -181,7 +181,7 @@ The linear value of a ballot and the notion of a voting equilibrium are Myerson 
 
 ## 10. Status and open problems
 
-The propositions are short and proved by hand. Proposition 1, Lemma 3, the first half of Proposition 4 (i) and Proposition 7 are checked in Lean (`lean/StrategicCount.lean`, `lean/Certification.lean`, `lean/OppositeVoters.lean`); the other targets are listed in the repository's Lean roadmap (`lean/roadmap.md`). The results on approval's corner and on the walk with memory are checked in Lean (`lean/LeaderRule.lean`, `lean/StrategicInformation.lean`, `lean/MemoryWalk.lean`).
+The propositions are short and proved by hand. Checked in Lean: Proposition 1, Lemma 3, Proposition 4 with the rank of a count of totals as a hypothesis, Proposition 7, Corollary 8, Proposition 10, Proposition 11, the first statement of Proposition 13, and the bound for honest score voting (`lean/StrategicCount.lean`, `lean/Certification.lean`, `lean/LeaderRank.lean`, `lean/OppositeVoters.lean`, `lean/Revelation.lean`, `lean/Intensity.lean`, `lean/Honest.lean`); Propositions 2 and 6 for unique best replies (`lean/BallotPolytope.lean`); the use of the theorem of Gibbard and Satterthwaite in Section 6 for preferences with ties (`lean/Revelation.lean`). The other targets are listed in the repository's Lean roadmap (`lean/roadmap.md`). The results on approval's corner and on the walk with memory are checked in Lean (`lean/LeaderRule.lean`, `lean/StrategicInformation.lean`, `lean/MemoryWalk.lean`).
 
 Open:
 

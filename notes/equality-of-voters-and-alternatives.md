@@ -8,11 +8,11 @@ A *balanced profile* is one made only of reversal pairs: every ballot b occurs a
 
 **Proposition 1.** A neutral rule that satisfies EC-V gives the uniform lottery over all candidates at every balanced profile.
 
-*Proof.* For balanced profiles P and Q, EC-V gives L(P) = L(P + Q) = L(Q), so all balanced profiles have one lottery. A renaming of the candidates maps {b, b̃} to a balanced profile, so by neutrality the common lottery is fixed by every renaming. ∎
+*Proof.* For balanced profiles P and Q, EC-V gives L(P) = L(P + Q) = L(Q), so all balanced profiles have one lottery. A renaming of the candidates maps {b, b̃} to a balanced profile, so by neutrality the common lottery is fixed by every renaming. ∎ *(Checked in Lean, `lean/EqualityVA.lean` (`prop1`, with `balanced_eq`), for anonymous rules, profiles as multisets of strict rankings.)*
 
 **Proposition 2.** No neutral rule satisfies EC-V and independence of clones (when a candidate is replaced by a group of clones, adjacent on every ballot, the group receives the probability the candidate had and every other candidate keeps its probability).
 
-*Proof.* {ab, ba} is balanced, so a gets ½ by Proposition 1. Cloning a gives {a a′ b, b a′ a}, again balanced, so a, a′ and b get ⅓ each and the group a, a′ gets ⅔. In the same way, from m − 1 to m candidates a cloned group gets 2/m instead of 1/(m − 1). ∎
+*Proof.* {ab, ba} is balanced, so a gets ½ by Proposition 1. Cloning a gives {a a′ b, b a′ a}, again balanced, so a, a′ and b get ⅓ each and the group a, a′ gets ⅔. In the same way, from m − 1 to m candidates a cloned group gets 2/m instead of 1/(m − 1). ∎ *(Checked in Lean, `lean/EqualityVA.lean` (`prop2`, `prop2_sizes`), with independence of clones asked only for a pair of clones, which makes the impossibility stronger; the proof there uses two and three candidates, and the count from m − 1 to m is not checked.)*
 
 So the tie value that EC-V allows counts candidates: at {abc, cba} it gives the compromise b one third, and a tie between a and b gives probability to whoever else is on the ballot. The tie value that respects clones counts voters. Random ballot does: at {a a′ b c, c b a′ a} the tops are a and c, as without the clone. But random ballot at ties fails EC-V. At {bac, cab} all margins are zero and random ballot gives b and c one half each; adding abc and cba keeps all margins at zero and gives a ¼, b ¼, c ½. *(Computed, parts 1 and 2 of the script.)* For two candidates the two tie values agree, which is why majority with a fair coin satisfies EC-V.
 
@@ -51,7 +51,7 @@ The criterion does not include unanimity or any other condition of responsivenes
 
 **Proposition 4.** If L is neutral and independent of clones, then for three or more candidates every profile that consists of a ballot and its reverse is a tie.
 
-*Proof.* Suppose P = {b, b̃} is settled. For a renaming σ, the profile σP is settled too, by neutrality, and both are balanced, so L(P) = L(P + σP) = L(σP) = σL(P). Hence L(P) is uniform, 1/m for each candidate. The two candidates at the top of b are adjacent on both ballots, so P arises by cloning from P₀ = {b₀, b̃₀} with m − 1 candidates, where one candidate x takes the place of the two. By independence of clones L(P₀) gives x the probability 2/m and every other candidate 1/m. The renaming that reverses b₀ maps P₀ to itself, so L(P₀) gives the top and the bottom of b₀ the same probability. The top is x, and with m − 1 ≥ 2 the bottom is another candidate. ∎
+*Proof.* Suppose P = {b, b̃} is settled. For a renaming σ, the profile σP is settled too, by neutrality, and both are balanced, so L(P) = L(P + σP) = L(σP) = σL(P). Hence L(P) is uniform, 1/m for each candidate. The two candidates at the top of b are adjacent on both ballots, so P arises by cloning from P₀ = {b₀, b̃₀} with m − 1 candidates, where one candidate x takes the place of the two. By independence of clones L(P₀) gives x the probability 2/m and every other candidate 1/m. The renaming that reverses b₀ maps P₀ to itself, so L(P₀) gives the top and the bottom of b₀ the same probability. The top is x, and with m − 1 ≥ 2 the bottom is another candidate. ∎ *(Checked in Lean, `lean/EqualityVA.lean` (`prop4`), with clones as a pair. There the lottery of P is shown fixed by every renaming without settling σP: L(P)(σx) = L(P + σP)(σx) = L(σ⁻¹P + P)(x) = L(P)(x).)*
 
 The exception is therefore forced, not a convenience. *(Proved.)*
 
