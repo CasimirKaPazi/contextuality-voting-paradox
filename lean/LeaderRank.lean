@@ -31,9 +31,14 @@
     the count is odd in the sense of `OppositeVoters.lean`, since reversing a
     ranking reverses every margin (`sgn_rev`).
 
+  * `prop2_count` (Proposition 2, the count): a count that certifies the
+    leader uses at least 2^(m−1) different columns. For every set U of other
+    candidates there is a ranking with exactly U above the leader
+    (`exists_upper`: rank the candidates by a key that puts U first), and by
+    `Certification.same_pref` types with the same column have the same set.
+
   Not here: that a count of totals has rank at most m − 1 (a matter of the
-  convention, taken as the hypothesis of `prop3_rowspace` and `cor5`), and
-  the count 2^(m−1) of Proposition 2.
+  convention, taken as the hypothesis of `prop3_rowspace` and `cor5`).
 -/
 
 module
@@ -285,5 +290,123 @@ theorem cor5 (hρ : Function.Surjective ρ) (M : Matrix ι T ℤ) (a : Fin m)
       ring
     rw [h0]
     exact Submodule.zero_mem _
+
+/-! ### Proposition 2: 2^(m−1) columns -/
+
+/-- The rank of `y` under the key `f`: how many candidates have a smaller key. -/
+def rk (f : Fin m → ℕ) (y : Fin m) : ℕ := (univ.filter fun z => f z < f y).card
+
+lemma rk_lt_rk {f : Fin m → ℕ} {y y' : Fin m} (h : f y < f y') : rk f y < rk f y' := by
+  unfold rk
+  have hsub : (univ.filter fun z => f z < f y) ⊆ univ.filter fun z => f z < f y' := by
+    intro z hz
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hz ⊢
+    omega
+  exact Finset.card_lt_card ((Finset.ssubset_iff_of_subset hsub).mpr ⟨y, by simp [h], by simp⟩)
+
+lemma rk_lt_card (f : Fin m → ℕ) (y : Fin m) : rk f y < m := by
+  unfold rk
+  have : (univ.filter fun z => f z < f y).card < (univ : Finset (Fin m)).card := by
+    apply Finset.card_lt_card
+    refine (Finset.ssubset_iff_of_subset (Finset.filter_subset _ _)).mpr ⟨y, mem_univ y, ?_⟩
+    simp
+  simpa using this
+
+/-- Ranking by an injective key. -/
+lemma exists_perm_key {f : Fin m → ℕ} (hf : Function.Injective f) :
+    ∃ σ : Equiv.Perm (Fin m), ∀ y y', σ y < σ y' ↔ f y < f y' := by
+  have hinj : Function.Injective (fun y : Fin m => (⟨rk f y, rk_lt_card f y⟩ : Fin m)) := by
+    intro y y' h
+    have h' : rk f y = rk f y' := congrArg Fin.val h
+    rcases lt_trichotomy (f y) (f y') with hl | he | hl
+    · exact absurd h' (rk_lt_rk hl).ne
+    · exact hf he
+    · exact absurd h' (rk_lt_rk hl).ne'
+  refine ⟨Equiv.ofBijective _ (Finite.injective_iff_bijective.mp hinj), fun y y' => ?_⟩
+  show rk f y < rk f y' ↔ f y < f y'
+  constructor
+  · intro h
+    rcases lt_trichotomy (f y) (f y') with hl | he | hl
+    · exact hl
+    · have := hf he
+      subst this
+      exact absurd h (lt_irrefl _)
+    · exact absurd h (not_lt.mpr (rk_lt_rk hl).le)
+  · exact rk_lt_rk
+
+/-- The key: first the candidates in U, then the leader, then the rest. -/
+def key (a : Fin m) (U : Finset (Fin m)) (y : Fin m) : ℕ :=
+  (if y ∈ U then 0 else if y = a then 1 else 2) * m + y.val
+
+lemma key_inj (a : Fin m) (U : Finset (Fin m)) : Function.Injective (key a U) := by
+  intro y y' h
+  apply Fin.ext
+  have hy := y.isLt
+  have hy' := y'.isLt
+  unfold key at h
+  split_ifs at h <;> omega
+
+/-- **A ranking with exactly U above the leader.** -/
+lemma exists_upper (a : Fin m) (U : Finset (Fin m)) (haU : a ∉ U) :
+    ∃ σ : Equiv.Perm (Fin m), ∀ y, y ∈ U ↔ σ y < σ a := by
+  obtain ⟨σ, hσ⟩ := exists_perm_key (key_inj a U)
+  refine ⟨σ, fun y => ?_⟩
+  rw [hσ]
+  have ha := a.isLt
+  have hy := y.isLt
+  have hka : key a U a = m + a.val := by simp [key, haU]
+  rw [hka]
+  by_cases hyU : y ∈ U
+  · have : key a U y = y.val := by simp [key, hyU]
+    rw [this]
+    exact iff_of_true hyU (by omega)
+  · by_cases hya : y = a
+    · subst hya
+      exact iff_of_false hyU (by omega)
+    · have : key a U y = 2 * m + y.val := by simp [key, hyU, hya]
+      rw [this]
+      exact iff_of_false hyU (by omega)
+
+/-- **Proposition 2, the count.** A strategic count that certifies the leader
+    uses at least 2^(m−1) different columns. -/
+theorem prop2_count (hρ : Function.Surjective ρ) (M : Matrix ι T ℤ) (a : Fin m)
+    (hC : Certifies M (fun (e : {x // x ≠ a}) t => sgn (ρ t) a e)) :
+    2 ^ (m - 1) ≤ (univ.image (fun t => fun i => M i t)).card := by
+  have hσ : ∀ U : Finset (Fin m), a ∉ U → ∃ σ : Equiv.Perm (Fin m), ∀ y, y ∈ U ↔ σ y < σ a :=
+    fun U h => exists_upper a U h
+  choose σ hσ using hσ
+  choose t ht using fun U h => hρ (σ U h)
+  classical
+  let P : Finset (Finset (Fin m)) := (univ.erase a).powerset
+  have hnot : ∀ U ∈ P, a ∉ U := fun U hU h => by
+    have := Finset.mem_powerset.mp hU h
+    simp at this
+  let g : Finset (Fin m) → (ι → ℤ) := fun U => if h : a ∉ U then (fun i => M i (t U h)) else 0
+  have g_eq : ∀ U (h : a ∉ U), g U = fun i => M i (t U h) := fun U h => dif_pos h
+  have hP : P.card = 2 ^ (m - 1) := by
+    show ((univ.erase a).powerset).card = _
+    rw [Finset.card_powerset, Finset.card_erase_of_mem (mem_univ a), card_univ, Fintype.card_fin]
+  -- reading the leader's comparisons off a ranking
+  have hflip : ∀ (τ : Equiv.Perm (Fin m)) y, y ≠ a → (τ y < τ a ↔ ¬ τ a < τ y) := fun τ y hy =>
+    ⟨fun h h' => lt_asymm h h', fun h => lt_of_le_of_ne (not_lt.mp h)
+      (fun e => hy (τ.injective e))⟩
+  rw [← hP]
+  refine Finset.card_le_card_of_injOn g (by
+    intro U hU
+    rw [g_eq U (hnot U hU)]
+    exact Finset.mem_image_of_mem _ (mem_univ _)) ?_
+  intro U hU V hV hUV
+  have hU' := hnot U hU
+  have hV' := hnot V hV
+  rw [g_eq U hU', g_eq V hV'] at hUV
+  have hcol : ∀ i, M i (t U hU') = M i (t V hV') := fun i => congr_fun hUV i
+  ext y
+  by_cases hya : y = a
+  · subst hya
+    exact iff_of_false hU' hV'
+  have hp := same_pref (E := {x // x ≠ a}) ρ hρ (x := fun _ => a) (y := fun e => e.val)
+    (fun e h => e.2 h.symm) hC hcol ⟨y, hya⟩
+  simp only [ht] at hp
+  rw [hσ U hU', hσ V hV', hflip _ y hya, hflip _ y hya, hp]
 
 end LeaderRank

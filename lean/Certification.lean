@@ -27,8 +27,9 @@
     (`balanced`), and Lemma 1 holds for every family of pairs (`lemma1`,
     `same_pref`).
 
-  Not here: the counts 2^(m−1) and a(G) of Propositions 2 and 7, the ranks of
-  Propositions 3 and 7, and Corollary 8.
+  Not here: the count a(G) and the rank of Proposition 7, and Corollary 8.
+  The count 2^(m−1) of Proposition 2 and the rank of Proposition 3 are in
+  `LeaderRank.lean`.
 -/
 
 module
