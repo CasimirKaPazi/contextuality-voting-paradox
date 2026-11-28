@@ -17,7 +17,7 @@
   * `IndepClones`: independence of clones for a pair of clones. A ballot on
     `m + 1` candidates clones candidate `x` of `m` with the new candidate
     `Fin.last m` when the two are adjacent in it (`IsClone`); merging them
-    (`unclone`) gives a ballot on `m` candidates. At a profile of such
+    (`unclone`, removing the new candidate) gives a ballot on `m` candidates. At a profile of such
     ballots, every other candidate keeps its probability and the two clones
     together get the probability of `x`. Asking this only for pairs of clones
     makes the hypothesis weaker than independence of clones, and so the
@@ -33,7 +33,15 @@
     candidates are used (`prop2_sizes`): {ab, ba} gives a one half, its clone
     {a a′ b, b a′ a} gives a, a′ and b one third each.
 
-  Not here: Propositions 3 to 20.
+  * `prop4`: for a neutral lottery rule independent of clones, with three or
+    more candidates, every profile {b, b̃} is a tie (not `Settled`). If it were
+    settled, its lottery would be fixed by every renaming (`settled_fixed`),
+    so uniform; rename b so that its top two are the clones (`exists_perm`,
+    `tgt`), merge them, and the renaming that reverses the merged ballot
+    (`pair_rev_fixed`) gives its top, which carries two shares, the
+    probability of its bottom, which carries one.
+
+  Not here: Proposition 3 and Propositions 5 to 20.
 -/
 
 module
@@ -84,24 +92,19 @@ def Balanced {m : ℕ} (p : Multiset (List (Fin m))) : Prop :=
 def merge {m : ℕ} (x : Fin m) (y : Fin (m + 1)) : Fin m :=
   if h : (y : ℕ) < m then ⟨y, h⟩ else x
 
-/-- Remove adjacent repetitions. -/
-def squash {α : Type} [DecidableEq α] : List α → List α
-  | [] => []
-  | a :: l =>
-    match l with
-    | [] => [a]
-    | b :: _ => if a = b then squash l else a :: squash l
-
-/-- The ballot with the two clones merged into `x`. -/
+/-- The ballot with the two clones merged into `x`: the new candidate is
+    removed, and the others keep their names. -/
 def unclone {m : ℕ} (x : Fin m) (b : List (Fin (m + 1))) : List (Fin m) :=
-  squash (b.map (merge x))
+  (b.filter (fun y => y ≠ Fin.last m)).map (merge x)
 
-/-- In a strict ranking of `m + 1` candidates, `x` and `Fin.last m` are
-    adjacent exactly when merging them leaves `m` entries. -/
-def IsClone {m : ℕ} (x : Fin m) (b : List (Fin (m + 1))) : Prop := (unclone x b).length = m
+/-- `x` and the new candidate `Fin.last m` are adjacent in the ballot. -/
+def IsClone {m : ℕ} (x : Fin m) (b : List (Fin (m + 1))) : Prop :=
+  ∃ l₁ l₂, b = l₁ ++ Fin.castSucc x :: Fin.last m :: l₂ ∨ b = l₁ ++ Fin.last m :: Fin.castSucc x :: l₂
 
-instance {m : ℕ} (x : Fin m) (b : List (Fin (m + 1))) : Decidable (IsClone x b) := by
-  unfold IsClone; infer_instance
+/-- Equality of voters holds from `p` on: adding a balanced profile never
+    changes the lottery. Otherwise `p` is a tie. -/
+def Settled {m : ℕ} (L : Rule m) (p : Multiset (List (Fin m))) : Prop :=
+  ∀ q, Balanced q → L (p + q) = L p
 
 /-- Independence of clones, for a pair of clones `x` and `Fin.last m`. -/
 def IndepClones (L : ∀ m, Rule m) : Prop :=
@@ -178,15 +181,10 @@ lemma balanced_map (τ : Equiv.Perm (Fin m)) {p : Multiset (List (Fin m))} (hp :
   obtain ⟨b, hb, rfl⟩ := List.mem_map.mp hc
   exact validB_map τ (hbs b hb)
 
-/-- **Proposition 1.** A neutral lottery rule satisfying EC-V gives the uniform
-    lottery at every balanced profile. -/
-theorem prop1 {L : Rule m} (hlot : Lottery L) (hn : Neutral L) (hL : ECV L)
-    {p : Multiset (List (Fin m))} (hp : Balanced p) (x : Fin m) : L p x = 1 / m := by
-  have hv := validP_balanced hp
-  -- the lottery is fixed by every renaming
-  have hfix : ∀ (τ : Equiv.Perm (Fin m)) y, L p (τ y) = L p y := fun τ y => by
-    have h := hn τ p hv y
-    rwa [balanced_eq hL (balanced_map τ hp) hp] at h
+/-- A lottery fixed by every renaming is uniform. -/
+lemma uniform_of_fixed {L : Rule m} (hlot : Lottery L) {p : Multiset (List (Fin m))}
+    (hv : ValidP p) (hfix : ∀ (τ : Equiv.Perm (Fin m)) y, L p (τ y) = L p y) (x : Fin m) :
+    L p x = 1 / m := by
   have hconst : ∀ y, L p y = L p x := fun y => by
     have := hfix (Equiv.swap x y) x
     rwa [Equiv.swap_apply_left] at this
@@ -196,6 +194,15 @@ theorem prop1 {L : Rule m} (hlot : Lottery L) (hn : Neutral L) (hL : ECV L)
   have hm : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr x.pos.ne'
   rw [eq_div_iff hm, mul_comm]
   exact hsum
+
+/-- **Proposition 1.** A neutral lottery rule satisfying EC-V gives the uniform
+    lottery at every balanced profile. -/
+theorem prop1 {L : Rule m} (hlot : Lottery L) (hn : Neutral L) (hL : ECV L)
+    {p : Multiset (List (Fin m))} (hp : Balanced p) (x : Fin m) : L p x = 1 / m := by
+  have hv := validP_balanced hp
+  refine uniform_of_fixed hlot hv (fun τ y => ?_) x
+  have h := hn τ p hv y
+  rwa [balanced_eq hL (balanced_map τ hp) hp] at h
 
 /-! ### Proposition 2 -/
 
@@ -212,7 +219,9 @@ lemma balanced_p₃ : Balanced p₃ := ⟨[[0, 2, 1]], by decide, by simp [p₃]
 lemma clone_p₃ : ∀ b ∈ p₃, IsClone (0 : Fin 2) b := by
   intro b hb
   rw [p₃, mem_pair] at hb
-  rcases hb with rfl | rfl <;> decide
+  rcases hb with rfl | rfl
+  · exact ⟨[], [1], Or.inl (by decide)⟩
+  · exact ⟨[1], [], Or.inr (by decide)⟩
 
 lemma unclone_p₃ : p₃.map (unclone (0 : Fin 2)) = p₂ := by decide
 
@@ -230,5 +239,163 @@ theorem prop2 (L : ∀ m, Rule m) (hlot : ∀ m, 0 < m → Lottery (L m)) (hn : 
     (hL : ∀ m, ECV (L m)) (hic : IndepClones L) : False :=
   prop2_sizes (L 2) (L 3) (hlot 2 (by norm_num)) (hlot 3 (by norm_num)) (hn 2) (hn 3) (hL 2) (hL 3)
     (hic 2 0 p₃ (validP_balanced balanced_p₃) clone_p₃).2
+
+/-! ### Proposition 4 -/
+
+lemma balanced_pair {b : List (Fin m)} (hb : ValidB b) : Balanced (pair b) :=
+  ⟨[b], fun c hc => by rw [List.mem_singleton.mp hc]; exact hb, by simp⟩
+
+lemma pair_map (τ : Equiv.Perm (Fin m)) (b : List (Fin m)) :
+    (pair b).map (List.map τ) = pair (b.map τ) := by
+  simp [pair]
+
+lemma finRange_valid (n : ℕ) : ValidB (List.finRange n) := ⟨List.nodup_finRange n, by simp⟩
+
+/-- From a settled balanced profile, the lottery is fixed by every renaming. -/
+lemma settled_fixed {L : Rule m} (hn : Neutral L) {P : Multiset (List (Fin m))}
+    (hP : Balanced P) (hs : Settled L P) (σ : Equiv.Perm (Fin m)) (x : Fin m) :
+    L P (σ x) = L P x := by
+  have hv := validP_balanced hP
+  have h1 : L (P + P.map (List.map σ)) = L P := hs _ (balanced_map σ hP)
+  have h2 : L (P + P.map (List.map σ.symm)) = L P := hs _ (balanced_map σ.symm hP)
+  have e : (P + P.map (List.map σ.symm)).map (List.map σ) = P.map (List.map σ) + P := by
+    rw [Multiset.map_add]
+    congr 1
+    simp [Multiset.map_map, Function.comp_def]
+  have h3 := hn σ (P + P.map (List.map σ.symm))
+    (validP_add hv (validP_balanced (balanced_map σ.symm hP))) x
+  rw [e, add_comm, h1, h2] at h3
+  exact h3
+
+/-- Any two strict rankings differ by a renaming. -/
+lemma exists_perm {n : ℕ} {b t : List (Fin n)} (hb : ValidB b) (ht : ValidB t) :
+    ∃ τ : Equiv.Perm (Fin n), b.map τ = t := by
+  have ib : Function.Injective (fun i : Fin n => b[i.val]'(by rw [hb.2]; exact i.isLt)) :=
+    fun i j h => Fin.ext ((List.Nodup.getElem_inj_iff hb.1).mp h)
+  have it : Function.Injective (fun i : Fin n => t[i.val]'(by rw [ht.2]; exact i.isLt)) :=
+    fun i j h => Fin.ext ((List.Nodup.getElem_inj_iff ht.1).mp h)
+  let eb := Equiv.ofBijective _ (Finite.injective_iff_bijective.mp ib)
+  let et := Equiv.ofBijective _ (Finite.injective_iff_bijective.mp it)
+  refine ⟨eb.symm.trans et, List.ext_getElem (by rw [List.length_map, hb.2, ht.2]) fun i h₁ h₂ => ?_⟩
+  have hi : i < n := by rw [List.length_map, hb.2] at h₁; exact h₁
+  rw [List.getElem_map]
+  have e : b[i]'(by rw [hb.2]; exact hi) = eb ⟨i, hi⟩ := rfl
+  rw [e, Equiv.trans_apply, Equiv.symm_apply_apply]
+  rfl
+
+lemma merge_castSucc (x y : Fin m) : merge x (Fin.castSucc y) = y := by
+  simp [merge]
+
+lemma unclone_reverse (x : Fin m) (b : List (Fin (m + 1))) :
+    unclone x b.reverse = (unclone x b).reverse := by
+  simp [unclone]
+
+/-- The ranking a a′ c₁ … with the clones a = 0 and a′ = `Fin.last` on top. -/
+def tgtRest (k : ℕ) : List (Fin (k + 1 + 1)) :=
+  (List.finRange k).map (fun i => Fin.castSucc i.succ)
+
+def tgt (k : ℕ) : List (Fin (k + 1 + 1)) := Fin.castSucc 0 :: Fin.last (k + 1) :: tgtRest k
+
+lemma tgt_valid (k : ℕ) : ValidB (tgt k) := by
+  refine ⟨?_, by simp [tgt, tgtRest]⟩
+  have hR : (tgtRest k).Nodup :=
+    (List.nodup_finRange k).map (fun i j h => Fin.succ_inj.mp (Fin.castSucc_inj.mp h))
+  refine List.nodup_cons.mpr ⟨?_, List.nodup_cons.mpr ⟨?_, hR⟩⟩
+  · intro h
+    rcases List.mem_cons.mp h with h | h
+    · exact (Fin.castSucc_lt_last _).ne h
+    · obtain ⟨i, -, hi⟩ := List.mem_map.mp h
+      exact Fin.succ_ne_zero i (Fin.castSucc_inj.mp hi)
+  · intro h
+    obtain ⟨i, -, hi⟩ := List.mem_map.mp h
+    exact (Fin.castSucc_lt_last _).ne hi
+
+lemma clone_tgt (k : ℕ) : ∀ c ∈ pair (tgt k), IsClone (0 : Fin (k + 1)) c := by
+  intro c hc
+  rcases mem_pair.mp hc with rfl | rfl
+  · exact ⟨[], tgtRest k, Or.inl rfl⟩
+  · exact ⟨(tgtRest k).reverse, [], Or.inr (by simp [tgt])⟩
+
+lemma unclone_tgt (k : ℕ) : unclone 0 (tgt k) = List.finRange (k + 1) := by
+  have hR : (tgtRest k).filter (fun y => y ≠ Fin.last (k + 1)) = tgtRest k :=
+    List.filter_eq_self.mpr fun a ha => by
+      obtain ⟨i, -, rfl⟩ := List.mem_map.mp ha
+      simp [(Fin.castSucc_lt_last _).ne]
+  unfold unclone tgt
+  simp only [List.filter_cons, hR]
+  rw [List.finRange_succ]
+  simp [tgtRest, Function.comp_def]
+  refine ⟨Fin.ext (by simp [merge]), fun a => Fin.ext (by simp [merge])⟩
+
+lemma unclone_pair_tgt (k : ℕ) :
+    (pair (tgt k)).map (unclone 0) = pair (List.finRange (k + 1)) := by
+  rw [pair, Multiset.map_coe, List.map_cons, List.map_cons, List.map_nil, unclone_reverse,
+    unclone_tgt]
+  rfl
+
+lemma map_rev_finRange (n : ℕ) : (List.finRange n).map Fin.rev = (List.finRange n).reverse := by
+  apply List.ext_getElem (by simp)
+  intro i h₁ h₂
+  simp only [List.length_map, List.length_reverse, List.length_finRange] at h₁ h₂
+  simp only [List.getElem_map, List.getElem_reverse, List.getElem_finRange]
+  ext
+  simp [Fin.val_rev]
+  omega
+
+lemma map_rev_finRange_reverse (n : ℕ) :
+    (List.finRange n).reverse.map Fin.rev = List.finRange n := by
+  apply List.ext_getElem (by simp)
+  intro i h₁ h₂
+  simp only [List.length_map, List.length_reverse, List.length_finRange] at h₁ h₂
+  simp only [List.getElem_map, List.getElem_reverse, List.getElem_finRange]
+  ext
+  simp [Fin.val_rev]
+  omega
+
+/-- Reversing the names fixes {b, b̃} for b = 0 1 … n−1. -/
+lemma pair_rev_fixed (n : ℕ) :
+    (pair (List.finRange n)).map (List.map ⇑(Fin.revPerm : Equiv.Perm (Fin n))) =
+      pair (List.finRange n) := by
+  have hf : (⇑(Fin.revPerm : Equiv.Perm (Fin n))) = Fin.rev := funext fun i => Fin.revPerm_apply i
+  rw [hf, pair, Multiset.map_coe, List.map_cons, List.map_cons, List.map_nil, map_rev_finRange,
+    map_rev_finRange_reverse]
+  exact Multiset.coe_eq_coe.mpr (List.Perm.swap _ _ _)
+
+/-- **Proposition 4.** For a neutral lottery rule independent of clones, with
+    three or more candidates, every profile of a ballot and its reverse is a
+    tie: some balanced profile changes its lottery. -/
+theorem prop4 (L : ∀ m, Rule m) (hlot : ∀ m, 0 < m → Lottery (L m)) (hn : ∀ m, Neutral (L m))
+    (hic : IndepClones L) {k : ℕ} (hk : 1 ≤ k) {b : List (Fin (k + 1 + 1))} (hb : ValidB b) :
+    ¬ Settled (L (k + 1 + 1)) (pair b) := by
+  intro hs
+  have hP := balanced_pair hb
+  -- the lottery at {b, b̃} is uniform
+  have hu : ∀ y, L (k + 1 + 1) (pair b) y = 1 / ((k + 1 + 1 : ℕ) : ℝ) :=
+    uniform_of_fixed (hlot _ (by omega)) (validP_balanced hP) (settled_fixed (hn _) hP hs)
+  -- rename b so that its top two are the clones 0 and `Fin.last`
+  obtain ⟨τ, hτ⟩ := exists_perm hb (tgt_valid k)
+  have hP' : (pair b).map (List.map τ) = pair (tgt k) := by rw [pair_map, hτ]
+  have hu' : ∀ z, L (k + 1 + 1) (pair (tgt k)) z = 1 / ((k + 1 + 1 : ℕ) : ℝ) := fun z => by
+    have := hn _ τ (pair b) (validP_balanced hP) (τ.symm z)
+    rw [hP', Equiv.apply_symm_apply, hu] at this
+    exact this
+  -- merge the clones
+  obtain ⟨hother, hgroup⟩ :=
+    hic (k + 1) 0 (pair (tgt k)) (validP_balanced (balanced_pair (tgt_valid k))) (clone_tgt k)
+  rw [unclone_pair_tgt, hu', hu'] at hgroup
+  have h0 : Fin.rev (0 : Fin (k + 1)) ≠ 0 := by
+    intro h
+    have := congrArg Fin.val h
+    simp at this
+    omega
+  have hy := hother (Fin.rev 0) h0
+  rw [unclone_pair_tgt, hu'] at hy
+  -- reversing the names fixes the merged profile and exchanges top and bottom
+  have hρ := hn (k + 1) Fin.revPerm (pair (List.finRange (k + 1)))
+    (validP_balanced (balanced_pair (finRange_valid _))) 0
+  rw [pair_rev_fixed, Fin.revPerm_apply] at hρ
+  rw [hρ, ← hgroup] at hy
+  have hpos : (0 : ℝ) < 1 / ((k + 1 + 1 : ℕ) : ℝ) := by positivity
+  linarith
 
 end EqualityVA

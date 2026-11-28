@@ -103,8 +103,8 @@ These are the results the project's claims stand on, by thread. Details below th
   - *Intensities and the Utilitarian Target*, Proposition 1 (best replies do not change under λu + c) and Proposition 4 (certifying the leader leaves no room for intensities, from Proposition 3 of the bounds); *The Honest Axis*, Proposition 2 (scores 0 to k are within n/k of the best). Small each.
 
   Not planned here: Proposition 1 of *The Ballot Polytope* (the linear regime) as an analytic statement about beliefs; the notes use it as the definition of the regime. The computed parts (the smooth model, the tables of vertices) are not candidates.
-- **Equality of voters and alternatives** (note *Equality of Voters and Alternatives*). Propositions 1 and 2 are in place (`EqualityVA.lean`).
-  - Small to moderate: Proposition 4 (for three or more candidates, a ballot with its reverse is a tie under neutrality and independence of clones), on the frame of `EqualityVA.lean`; it needs the renaming that reverses a given ballot and the cloning of its top two candidates. Proposition 5 is independence of clones read at two profiles.
+- **Equality of voters and alternatives** (note *Equality of Voters and Alternatives*). Propositions 1, 2 and 4 are in place (`EqualityVA.lean`).
+  - Small: Proposition 5, which is independence of clones read at two profiles.
   - Moderate: the lemma on clones and maximal lotteries (linear inequalities in the margin matrix) and Proposition 3 (continuity in the shares).
   - Large: the propositions on particular rules (6 to 20), which need the existence of maximal lotteries (minimax), Pfaffians, limits, or each rule's own definition.
 - **The two theorems taken as hypotheses.**
