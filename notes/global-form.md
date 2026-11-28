@@ -1,6 +1,6 @@
 # The Global Form: Arrow's Theorem as a Degree
 
-*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where the negative parts of the real degrees measure contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`, `scripts/strategy/degree_tower.py`, `scripts/topology/candidate_simplex.py`. *Lemmas 1–6 and Propositions 1 and 3 are checked in Lean:* `lean/GlobalForm.lean`, `lean/GlobalFormSP.lean`.
+*Working note for thread B of the roadmap. It writes Arrow's theorem as an obstruction along loops: every voter gets a degree, the winding of the social ranking while that voter's ranking goes once around the circle of rankings. Unanimity makes the degrees sum to one. Independence of irrelevant alternatives makes them integers in {−1, 0, 1} and rigid. For lotteries the degree becomes a real number, and the uniform weights 1/n that anonymity demands exist only there. The integer part is in substance Baryshnikov's homological proof, written here with a hexagon instead of a nerve; the real degrees, their failure for rules with only pairwise independence, the place of reversal, and the same construction for strategy-proof rules, where the negative parts of the real degrees measure contextuality, are added. Proved statements, computed checks and interpretation are marked. Checks:* `scripts/topology/voter_degrees.py`, `scripts/strategy/gs_degrees.py`, `scripts/strategy/degree_tower.py`, `scripts/topology/candidate_simplex.py`. *Lemmas 1–6 and Propositions 1–5 are checked in Lean for three alternatives, Proposition 5 with Gibbard (1977) as a hypothesis, and Proposition 6 for IIA rules; the files are named at each statement and in Section 12.*
 
 ## 1. Voter loops
 
@@ -181,7 +181,7 @@ By Gibbard's decomposition (Proposition 5), every SD-SP rule for any number of v
 
 *(Proved; the signs are checked by enumeration.)*
 
-**Proposition 6.** For three alternatives, the only one of anonymity, neutrality and (for rules into rankings) reversal symmetry that constrains the degrees of an IIA rule into rankings, or of an SP rule into outcomes, is anonymity. With unanimity it requires n · d = 1, which has no integer solution for n ≥ 2. *(Proved, from Sections 2, 4 and 7.)*
+**Proposition 6.** For three alternatives, the only one of anonymity, neutrality and (for rules into rankings) reversal symmetry that constrains the degrees of an IIA rule into rankings, or of an SP rule into outcomes, is anonymity. With unanimity it requires n · d = 1, which has no integer solution for n ≥ 2. *(Proved, from Sections 2, 4 and 7. Checked in Lean for IIA rules into rankings, `lean/LocalPareto.lean` (`prop6_iia`, `prop6_anonymous`), with the symmetries of the alternatives and reversal taken as the twelve symmetries of the hexagon; not for SP rules into outcomes.)*
 
 The three placements are the three ways out of this equation.
 - **(ii) Leave the diagonal.** Drop anonymity and keep integer degrees. The solution is a unit vector, one voter with degree 1: Arrow's and Gibbard–Satterthwaite's dictator.
@@ -228,10 +228,14 @@ Sections 1–3, and the deterministic part of Section 7, are therefore not new i
 
 ## 12. What the global form still needs
 
-- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, along the stack of degrees of Section 8. The direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977), is given for three alternatives in *Equivariant Obstructions*, Proposition 4.
+- **Strategy-proof lotteries.** Propositions 4 and 5 for more than three alternatives, along the stack of degrees of Section 8. The direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977), is given for three alternatives in *Equivariant Obstructions*, Proposition 4, and checked in Lean (`lean/SPDegree.lean`).
 - **The equivariant statement.** Section 9 gives the three placements as three ways out of n · d = 1 for three alternatives. For more alternatives the symmetries act with equal signs on both sides, so the conclusion is the same. The obstruction theory with the isotropy condition and the degree as successive obstructions is in *Equivariant Obstructions* for three alternatives, and for the top stage with more. Still open: the lower stages for more alternatives.
 - **The electorate direction.** Section 10 finds Young–Levenglick pointwise: the Condorcet regions wind around the cycle region, but every point of it is blocked separately. Still open: the same for the no-show theorem, and for more candidates, where the cycle region has more components.
-- Lemmas 1–6 and Propositions 1 and 3 are checked in Lean for any finite set of voters (`lean/GlobalForm.lean`, `lean/GlobalFormSP.lean`). The squares become finite statements about tables of social comparisons, for IIA, and about the permitted moves of the swap lemma, for strategy-proofness. Propositions 2, 4 and 5, on real degrees and lotteries, are not checked there.
+- **Lean.** For three alternatives and any finite set of voters:
+  - Lemmas 1–6 and Propositions 1 and 3 (`lean/GlobalForm.lean`, `lean/GlobalFormSP.lean`). The squares become finite statements about tables of social comparisons, for IIA, and about the permitted moves of the swap lemma, for strategy-proofness.
+  - The real degree and Proposition 2 (`lean/GlobalFormReal.lean`, `lean/RealDegreeWinding.lean`, `lean/RealDegreeBridge.lean`).
+  - Propositions 4 and 5 (`lean/GlobalFormLottery.lean`, `lean/ContextualFraction.lean`, `lean/ContextualBridge.lean`), Proposition 5 with Gibbard (1977) as a hypothesis. That the real degree of an SD-SP rule is a class is checked without it (`lean/SPDegree.lean`); that the degrees sum to 1 under unanimity is not.
+  - Proposition 6 for IIA rules into rankings (`lean/LocalPareto.lean`); not for SP rules into outcomes.
 
 ## References
 

@@ -33,7 +33,11 @@
     the orbit sizes is 1;
   * `prop3` (Proposition 3): a local Pareto rule symmetric under a set K of
     symmetries exists exactly when the voter permutations of K fix a common
-    voter.
+    voter;
+  * `prop6_iia`, `prop6_anonymous` (Proposition 6 of *The Global Form*, for IIA
+    rules into rankings): every IIA rule is local (`local_of_iia`), so the
+    symmetries of the hexagon act on the degrees only through the voters they
+    permute, and a unanimous anonymous IIA rule exists only for one voter.
 
   The symmetries of the hexagon are written as the twelve maps k ↦ t + k and
   k ↦ t − k (`hact`). The renamings of the alternatives and reversal act on
@@ -741,5 +745,37 @@ theorem prop3 (K : Set (Equiv.Perm ι × Bool × Fin 6)) :
         nth_rewrite 1 [← hi k hk]
         simp
       rw [hs]
+
+/-! ### Proposition 6 of *The Global Form*, for IIA rules -/
+
+omit [Fintype ι] in
+/-- Every IIA rule is local. -/
+theorem local_of_iia (hF : GlobalForm.IIA F) : Local F := by
+  intro π i
+  have h := GlobalForm.steps_adjacent hF {i} π (π i)
+  rwa [setS_self, setS_succ, setS_self] at h
+
+/-- **Proposition 6 of *The Global Form*, for IIA rules into rankings.** The
+    symmetries of the alternatives and reversal act on the degrees only
+    through the voters they permute. -/
+theorem prop6_iia (hF : GlobalForm.IIA F) {σ : Equiv.Perm ι} {s : Bool} {t : Fin 6}
+    (hE : Equivariant F σ s t) (i : ι) (c : ι → Fin 6) : deg F (σ i) c = deg F i c :=
+  deg_perm (local_of_iia hF) hE i c
+
+/-- **Anonymity is the whole constraint.** A unanimous IIA rule symmetric under
+    every permutation of the voters, each with any symmetry of the hexagon, has
+    n · d = 1 for the common degree d, so n = 1. -/
+theorem prop6_anonymous (hF : GlobalForm.IIA F) (hU : GlobalForm.Unanimous F)
+    (hA : ∀ σ : Equiv.Perm ι, ∃ s t, Equivariant F σ s t) : Fintype.card ι = 1 := by
+  let c : ι → Fin 6 := fun _ => 0
+  have hsum := GlobalForm.degree_sum hF hU c
+  rcases isEmpty_or_nonempty ι with hι | ⟨⟨i0⟩⟩
+  · simp at hsum
+  · have hall : ∀ v, deg F v c = deg F i0 c := fun v => by
+      obtain ⟨s, t, hE⟩ := hA (Equiv.swap i0 v)
+      have h := prop6_iia hF hE i0 c
+      rwa [Equiv.swap_apply_left] at h
+    rw [sum_congr rfl fun v _ => hall v, sum_const, card_univ, nsmul_eq_mul] at hsum
+    exact_mod_cast Int.eq_one_of_mul_eq_one_right (by positivity) hsum
 
 end LocalPareto
