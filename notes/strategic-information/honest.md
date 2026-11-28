@@ -38,7 +38,7 @@ So on the honest axis the order is the order of stage 1: what the ballot can car
 
 ## 3. From honest to strategic
 
-**Proposition 4.** In the linear regime, at the belief in which all pairwise ties are equally likely, the honest ballot is a best reply under plurality, approval, Borda and round ballots. Under score voting with three or more score levels, an honest ballot with an intermediate score is the unique best reply at no belief.
+**Proposition 4.** In the linear regime, at the belief in which all pairwise ties are equally likely, the honest ballot is a best reply under plurality, approval, Borda and round ballots. Under score voting with three or more score levels, still in the linear regime, an honest ballot with an intermediate score is the unique best reply at no belief.
 
 *Proof.* At that belief the best ballot is the point of the ballot polytope furthest in the direction of the utilities with their mean subtracted (*Intensities and the Utilitarian Target*, Proposition 2), and for the four methods this is the honest ballot of the table. A score ballot with an intermediate score is not a vertex of the cube (*The Ballot Polytope*, Proposition 2). ∎ *(Proved.)*
 
@@ -98,7 +98,7 @@ The table shows the two axes in one place. Down the Condorcet column the methods
 | BTR-plurality | 0.71 | 0.69, 0.84 | 0.99 | 0.99, 1.00 |
 | Score, continuous, and round ballots (honest only) | 0.94 | | 0.99 | |
 
-Under impartial culture every one of the five methods does at least as well at rest as with honest voters, by total utility, and Borda and instant runoff do much better. Only the honest ballots that are linear in the utilities, score with a fine scale and round ballots, reach the level of the best strategic outcomes. So the honest end is the ideal for a method whose ballot can carry the utilities. For a method with a coarse ballot the honest ballot is a reduction of the utilities, and the strategic ballot puts some of what was reduced away back in: a voter who decides by a belief decides by intensities (*Plurality and Approval*, Section 11; *Instant Runoff and Plurality*, Section 7). Strategy costs utility where the ballot could have said more honestly, as for score voting, and gains it where the ballot could not. *(Computed; the reading is interpretation. Forty profiles, and the runs at rest are a chosen set of starting polls, not a sample, so the comparison shows a direction and not a size.)*
+Under impartial culture every one of the five methods does at least as well at rest as with honest voters, by total utility, and Borda and instant runoff do much better. Only the honest ballots that are linear in the utilities, score with a fine scale and round ballots, reach the level of the best strategic outcomes. This agrees with the simulations of Lehtinen (2007, 2008), who finds that strategic voting raises utilitarian efficiency under the Borda rule and under plurality, and that approval voting is high on it under either behaviour, and gives the same reason: a strategic vote depends on intensities (cited). So the honest end is the ideal for a method whose ballot can carry the utilities. For a method with a coarse ballot the honest ballot is a reduction of the utilities, and the strategic ballot puts some of what was reduced away back in: a voter who decides by a belief decides by intensities (*Plurality and Approval*, Section 11; *Instant Runoff and Plurality*, Section 7). Strategy costs utility where the ballot could have said more honestly, as for score voting, and gains it where the ballot could not. *(Computed; the reading is interpretation. Forty profiles, and the runs at rest are a chosen set of starting polls, not a sample, so the comparison shows a direction and not a size.)*
 
 ## 6. Open questions
 
@@ -110,4 +110,6 @@ Under impartial culture every one of the five methods does at least as well at r
 
 ## References
 
+- Lehtinen, A. (2007). The Borda rule is also intended for dishonest men. *Public Choice* 133, 73–90. † (Title and pages from memory; the abstract was checked.)
+- Lehtinen, A. (2008). The welfare consequences of strategic behaviour under approval and plurality voting. *European Journal of Political Economy* 24(3), 688–704.
 - Procaccia, A. D. and Rosenschein, J. S. (2006). The distortion of cardinal preferences in voting. *Cooperative Information Agents X*, Lecture Notes in Computer Science 4149, 317–331. †

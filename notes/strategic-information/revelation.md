@@ -29,7 +29,7 @@ Revealing the comparisons of a graph G on the candidates takes at least a(G) ver
 
 ## 3. Certainty reveals least
 
-**Proposition 3.** Let the voter's belief give positive probability to k possibilities for the other ballots. Then the menu has at most m^k different lotteries. Under certainty (k = 1) the lotteries are sure winners, the voter chooses the best candidate among those the ballot can still make win, and the ballot reveals the comparison of i and j only if these two are the only candidates that the voter can make win.
+**Proposition 3.** Let the method choose a single winner from the ballots, without chance, and let the voter's belief give positive probability to k possibilities for the other ballots. Then the menu has at most m^k different lotteries. Under certainty (k = 1) the lotteries are sure winners, the voter chooses the best candidate among those the ballot can still make win, and the ballot reveals the comparison of i and j only if these two are the only candidates that the voter can make win.
 
 *Proof.* In each of the k possibilities a ballot makes one of m candidates win, and the lottery is determined by these k winners. Under certainty the menu polytope is spanned by sure winners, and a voter's best is the favourite among them. If a third candidate c is among them, voters with c as favourite stand on both sides of i against j and choose the same lottery. ∎ *(Proved.)*
 
@@ -47,7 +47,7 @@ A voter who knows the other ballots has nothing to say but which of the attainab
 
 The theorem says that a rule which chooses one winner from the voters' rankings, can elect at least three candidates, and gives no voter a reason ever to report another ranking than the true one, is a dictatorship (Gibbard 1973, Satterthwaite 1975†). In the terms of this note:
 
-**Proposition 4.** Let a method choose a single winner from the ballots and be able to elect at least three candidates. Suppose there is a way of filling in the ballot from the ranking alone, the same at every belief, that is a best reply for every voter whatever the other ballots are. Then, on the ballots filled in this way, the method is a dictatorship.
+**Proposition 4.** Let a method choose a single winner from the ballots, without chance. Suppose there is a way of filling in the ballot from the ranking alone, the same at every belief, that is a best reply for every voter whatever the other ballots are, and suppose that at least three candidates can win when all ballots are filled in this way. Then, on the ballots filled in this way, the method is a dictatorship.
 
 *Proof.* Compose the method with the way of filling in the ballot. The result chooses a winner from the voters' rankings, and reporting the true ranking is best whatever the others report. By the theorem it is a dictatorship or elects at most two candidates. ∎ *(Proved, from the cited theorem; this is the argument known as the revelation principle.)*
 

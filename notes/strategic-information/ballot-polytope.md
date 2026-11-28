@@ -22,7 +22,7 @@ The regime fails where one ballot is not small against the uncertainty: in small
 
 ## 2. Best replies are vertices
 
-The *ballot polytope* of a method is the convex hull of the count vectors of its ballots (the smallest convex set that contains them). Its *vertices* are the count vectors that are not averages of others. *(Term introduced here. For Borda the polytope is the permutohedron; for approval and score it is a cube seen along its diagonal.)*
+The *ballot polytope* of a method is the convex hull of the count vectors of its ballots (the smallest convex set that contains them). Its *vertices* are the count vectors that are not averages of others. *(For methods that count totals, the vertices are the extremal ballots of Núñez and Laslier (2014). The term ballot polytope is introduced here, for any count. For Borda the polytope is the permutohedron; for approval and score it is a cube seen along its diagonal.)*
 
 **Proposition 2.** In the linear regime:
 
@@ -53,7 +53,7 @@ So under the common rationale a method offers its voters, in effect, only the ve
 
 ## 3. Which changes of design matter
 
-**Proposition 3.** Let two methods have the same count and the same rule from the count to the outcome, and let their ballot polytopes have the same vertices. Then in the linear regime, at every belief about the count, every voter with a unique best reply adds the same count vector under both. The strategic counts, the self-confirming beliefs and the outcomes are the same. *(Proved, from Proposition 2; the polls of the two methods are matched as beliefs about the count.)*
+**Proposition 3.** Let two methods have the same count and the same rule from the count to the outcome, a rule that does not change when the whole count is multiplied by a positive number, and let their ballot polytopes have the same vertices up to such a factor. Then in the linear regime, at every belief about the shares of the count, every voter with a unique best reply adds the same count vector under both, up to the factor. If the voters without a unique best reply have no weight, the strategic counts, the self-confirming beliefs and the outcomes are the same. *(Proved, from Proposition 2; the polls of the two methods are matched as beliefs about the count. For methods that count totals this is the sufficient condition of Núñez and Laslier (2014), who call the vertices extremal ballots and show that for positional rules the condition is also necessary; see the README, Section 8. Stated through the count it applies to every method.)*
 
 A change of the ballot that adds ballots without adding vertices therefore changes nothing at stage 2, however much it adds at stage 1:
 
@@ -75,7 +75,7 @@ So equal rankings matter under the common rationale exactly when a ballot with a
 
 A polytope is *centrally symmetric* if with every vertex v it has the vertex c − v, for one fixed vector c.
 
-**Proposition 4.** In the linear regime a method keeps opposite voters equal (README, Section 6) at every belief and for all voters with unique best replies exactly when its ballot polytope is centrally symmetric. If a ballot and its reverse together have the count of the empty profile, as the Equality Criterion asks, the polytope is centrally symmetric.
+**Proposition 4.** In the linear regime, a method whose ballot polytope is centrally symmetric keeps opposite voters equal (README, Section 6) at every belief, for all voters with unique best replies. Conversely, if the best ballots for g and for −g add up to the same vector for every gradient g, the polytope is centrally symmetric. If a ballot and its reverse together have the count of the empty profile, as the Equality Criterion asks, the polytope is centrally symmetric.
 
 *Proof.* Opposite voters have gradients g and −g (Proposition 1). On a centrally symmetric polytope the maximiser of −g is c − v when the maximiser of g is v, so the two ballots add c together. Conversely, if the two maximisers add up to the same c for every g, then every vertex v, being the maximiser of some g, has c − v as a vertex. For the last statement, τ(b) + τ(b̃) is the same vector for every ballot b, so the set of count vectors is symmetric and its hull is. ∎ *(Proved. As in Proposition 2, the converse speaks of all gradients, not only of those that arise from polls.)*
 
@@ -100,4 +100,5 @@ At stage 2 a method enters only through the vertices of its ballot polytope and 
 
 ## References
 
+- Núñez, M. and Laslier, J.-F. (2014). Preference intensity representation: strategic overstating in large elections. *Social Choice and Welfare* 42, 313–340.
 - Myerson, R. B. and Weber, R. J. (1993). A theory of voting equilibria. *American Political Science Review* 87, 102–114.

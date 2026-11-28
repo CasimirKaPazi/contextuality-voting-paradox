@@ -16,7 +16,7 @@ Let a method count totals, and let K be its ballot polytope, in the space of sco
 
 **Proposition 2.** In the linear regime the totals are the sum of the vectors N_K(c) over the voters. At the belief in which all pairwise ties are equally likely, c is the voter's utility vector with its mean subtracted, and the method elects the candidate with the largest sum of *normalised utilities* N_K(u):
 
-- for approval and score, N_K(u) marks the candidates above the voter's mean utility;
+- for approval and score, N_K(u) marks the candidates above the voter's mean utility (the best ballot of a voter without information, known since Merrill 1979 and Weber 1978†);
 - for Borda, N_K(u) is the voter's ranking, as points m − 1, …, 0;
 - for plurality and cumulative voting, N_K(u) marks the voter's favourite;
 - if K is a ball (score vectors with a fixed sum of squared deviations from their mean), N_K(u) is the utility vector with mean zero and variance one.
@@ -29,7 +29,7 @@ So the methods that count totals are all sums of utilities, and differ in how ea
 
 What a voter reveals by casting N_K(c) is the set of all directions c for which that ballot is the furthest point of K.
 
-**Proposition 3.** If K is a polytope with V vertices, the ballot reveals one of V sets of directions, at most log₂ V bits. A ballot reveals the direction of c itself, which at the symmetric belief is the whole utility vector up to Proposition 1, exactly when no two directions have the same furthest point: when the boundary of K has no corners. No method with finitely many ballots does this, and adding ballots between the vertices of K, such as intermediate scores, changes nothing (*The Ballot Polytope*, Proposition 3).
+**Proposition 3.** If K is a polytope with V vertices, the ballot reveals one of V sets of directions, at most log₂ V bits. A ballot reveals the direction of c itself, which at the symmetric belief is the whole utility vector up to Proposition 1, exactly when no two directions have the same furthest point: when the boundary of K has no corners (and no flat pieces, so that the furthest point is always one point). No method with finitely many ballots does this, and adding ballots between the vertices of K, such as intermediate scores, changes nothing (*The Ballot Polytope*, Proposition 3).
 
 *Proof.* The directions with a given furthest point form its normal cone; at a vertex of a polytope the cone has an inside, and at a point where the boundary is smooth it is a single direction. ∎ *(Proved.)*
 
@@ -51,6 +51,12 @@ It matches what the smooth model shows for three candidates (*The Smooth Model a
 ## 5. Open questions
 
 1. Round ballots under the common rationale: self-confirming polls, and how close the outcome is to the normalised utilitarian winner away from the symmetric belief, where the voters reveal c and not u.
-2. Which normalisation the utilitarian target should use. Proposition 1 leaves it open, and every shape of K is an answer to it; mean and variance (the ball) and range (the cube, if voters used its inside) are the usual candidates.
+2. Which normalisation the utilitarian target should use. Proposition 1 leaves it open, and every shape of K is an answer to it; mean and variance (the ball) and range (the cube, if voters used its inside) are the usual candidates; the sum of utilities scaled to the range from 0 to 1 is the relative utilitarianism of Dhillon and Mertens (1999).
 3. How well a polytope with V vertices approximates the ball, as a bound on what a method with finitely many ballots can hold of the normalised sum.
 4. Methods that count more than totals: what a ranked ballot reveals of intensities at beliefs away from its corner. In the smooth model both the plurality ballot and the ranked ballots depend on intensities (*Instant Runoff and Plurality*, Section 7).
+
+## References
+
+- Dhillon, A. and Mertens, J.-F. (1999). Relative utilitarianism. *Econometrica* 67(3), 471–498.
+- Merrill, S. (1979). Approval voting: a "best buy" method for multi-candidate elections? *Mathematics Magazine* 52, 98–102. †
+- Weber, R. J. (1978). Comparison of voting systems. Cowles Foundation Discussion Paper 498. †

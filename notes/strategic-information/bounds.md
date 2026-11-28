@@ -10,7 +10,7 @@ A method *certifies its leader* at the poll if the strategic count determines, f
 
 **Lemma 1.** Suppose every ranking occurs among the types. A method certifies its leader at a poll exactly when every margin μ_x, as a function of the histogram of types, is a combination of the rows of M and the size of the electorate.
 
-*Proof.* If μ_x is such a combination, the strategic count determines it. Conversely, if it is not, there is a vector v of whole numbers with Mv = 0, with entries adding up to zero, and μ_x(v) ≠ 0 (README, Section 2, proof of the Proposition). Let h be the profile with c voters of every type, where c is at least the largest entry of v. All its margins are zero. Then h + v and h − v are profiles with the same strategic count, and a beats x in one and loses to x in the other. ∎ *(Proved.)*
+*Proof.* If μ_x is such a combination, the strategic count determines it. Conversely, if it is not, there is a vector v of whole numbers with Mv = 0, with entries adding up to zero, and μ_x(v) ≠ 0 (README, Section 2, proof of the Proposition). Let h be a profile in which every type occurs, every ranking has the same number of voters, and every type has at least as many voters as the largest entry of v. (A ranking may be divided among several types; give each ranking the same total and divide it among its types.) All margins of h are zero. Then h + v and h − v are profiles with the same strategic count, and a beats x in one and loses to x in the other. ∎ *(Proved. The types are the classes of the README, Section 2, on which the ranking is constant, so that the margins are functions of the histogram of types.)*
 
 Certification is what the majority target asks of the information: the best case of the README, Section 3, can single out the Condorcet winner at a poll only if the leader is certified there. It is necessary for the guarantee "every self-confirming poll elects the Condorcet winner", by the remark before the lemma, as far as the profiles at which the poll confirms itself include close contests.
 
@@ -20,9 +20,9 @@ Certification is what the majority target asks of the information: the best case
 
 *Proof.* By Lemma 1, μ_x is a combination of rows of M, and the column of M for a type is the count vector of that type's ballot. Two types with the same ballot have the same column and therefore the same value of μ_x, for every x: they agree on whether they prefer x to a. The sets of candidates preferred to a, over all rankings, are all subsets of the other m − 1 candidates. ∎ *(Proved.)*
 
-In the linear regime the count vectors in use are vertices of the ballot polytope (*The Ballot Polytope*, Proposition 2). So a method with fewer than 2^{m−1} vertices certifies its leader at no poll, under any model of beliefs:
+A method with fewer than 2^{m−1} ballots certifies its leader at no poll, in any electorate and under any model of beliefs; this is the case of plurality for three or more candidates. In the linear regime the count vectors in use by voters with a unique best reply are vertices of the ballot polytope (*The Ballot Polytope*, Proposition 2), and the same holds for a method with fewer than 2^{m−1} vertices:
 
-- plurality and cumulative voting, with m vertices, for three or more candidates;
+- cumulative voting, with as many vertices as plurality has ballots, m, for three or more candidates;
 - voting for exactly two of four candidates, with 6 vertices where 8 are needed, and in general voting for exactly k candidates wherever the number of such ballots is below 2^{m−1}.
 
 Approval has 2^m − 2 vertices, and the leader rule of its corner uses exactly 2^{m−1} of them, one for each set of candidates preferred to the leader (*Plurality and Approval*, Section 11). The bound is met with nothing to spare. That plurality has self-confirming polls led by candidates who are not Condorcet winners (*Plurality and Approval*, Proposition 2) and keeps them in the smooth model at nearly every profile (*The Smooth Model across Methods*, Section 2) is then no accident of a model: its ballot cannot carry what certification takes.
@@ -32,6 +32,8 @@ Approval has 2^m − 2 vertices, and the leader rule of its corner uses exactly 
 **Proposition 3.** Certifying the leader takes a strategic count of rank at least m − 1, not counting the size of the electorate. A method that counts totals has rank at most m − 1. If such a method certifies its leader at a poll, the row space of its strategic count is exactly the span of the margins μ_x, the row of the leader in the matrix of pairwise counts.
 
 *Proof.* The m − 1 margins μ_x are independent as functions of the histogram of rankings, and by Lemma 1 all lie in the row space of M together with the size of the electorate. Totals up to a number added to all of them are m − 1 numbers. With equality of dimensions the two spaces coincide. ∎ *(Proved.)*
+
+*On the convention.* The proposition uses the count as the README, Section 2, defines it: for a method that elects the candidate with the largest total, the totals up to a number added to all of them, which is all that its rule and its polls depend on. An observer who reads the m totals themselves has one number more. Voters could then cast the ballots of approval's leader rule for all candidates but the leader and mark the leader by any other feature of their type; the totals of the other candidates still give the leader's row, and the leader's own total is a further number that need not be odd. For such an observer the statements below hold with m in place of m − 1 and with one even direction allowed in Corollary 5. They hold as stated for what the method itself can use.
 
 Two consequences for every method that counts totals (plurality, approval, score, Borda, cumulative voting, and any other scoring of ballots):
 
@@ -46,7 +48,7 @@ A row of M gives every type a value r(t), what a voter of that type adds. Write 
 
 A method keeps opposite voters equal at the poll (README, Section 6) exactly when all its rows are odd.
 
-**Proposition 4.** Let d be the rank of the strategic count at a poll, and e the rank of the even parts of its rows, both not counting constants (the size of the electorate). The odd functions in the row space of M form a space of dimension d − e. In particular a method that does not keep opposite voters equal at a poll has fewer than d independent numbers that bear on either target.
+**Proposition 4.** Let d be the rank of the strategic count at a poll, and e the rank of the even parts of its rows, both not counting constants (the size of the electorate). The odd functions in the row space of M form a space of dimension d − e. In particular a method that does not keep opposite voters equal at a poll has fewer than d independent numbers that are functions of what the two targets depend on.
 
 *Proof.* Taking the even part, up to constants, is a linear map on the row space. Its kernel is the odd functions in the row space, and its image has dimension e. ∎ *(Proved.)*
 
@@ -70,7 +72,7 @@ Lemma 1 and Propositions 2 and 3 are the case of one candidate compared with all
 
 **Proposition 7.** If a method certifies G at a poll at which every ranking occurs among the types, then the strategic ballot of a voter determines the voter's preference on every edge of G; at least a(G) different count vectors are in use, where a(G) is the number of ways of directing the edges of G without a cycle; and the strategic count has rank at least the number of edges of G.
 
-*Proof.* As for Lemma 1 and Proposition 2, with the margins of the edges in place of the μ_x. The preferences of a ranking on the edges of G direct them without a cycle, and every such direction comes from a ranking. The margins of different pairs are independent as functions of the histogram of rankings. ∎ *(Proved. The number a(G) is 2^k for a tree with k edges, 2^{m−1} for the star of Proposition 2, and m! for the complete graph.)*
+*Proof.* As for Lemma 1 and Proposition 2, with the margins of the edges in place of the μ_x and the same profile h, in which every margin is zero. The preferences of a ranking on the edges of G direct them without a cycle, and every such direction comes from a ranking. The margins of different pairs are independent as functions of the histogram of rankings. ∎ *(Proved. The number a(G) is 2^k for a tree with k edges, 2^{m−1} for the star of Proposition 2, and m! for the complete graph.)*
 
 This gives three levels, each with its price in vertices and in rank:
 
