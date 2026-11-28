@@ -10,6 +10,7 @@ Each line names the main results already checked, by thread of the project roadm
   - Theorem 2 (`Consistency.lean`).
   - Theorem 4 with the necessary direction of Lemma 3 (`JoinLotteries.lean`), and Lemma 3 in both directions with the coupling lemma behind it (`Couplings.lean`).
   - The reduction proposition of *Consistency as an Extension Problem*, Section 3c (`ConsistencyScenario.lean`).
+  - The certificates of Section 3d: no deterministic rule from 8 voters, no lottery rule with the join inequality from 9, for anonymous rules (`ConsistencyCertificates.lean`).
   - The frame of scenarios and the four levels, with Proposition 1, division (`Scenarios.lean`).
 - **B (where the symmetry goes).**
   - The isotropy lemma for any group action (`Isotropy.lean`).
@@ -70,7 +71,7 @@ These are the results the project's claims stand on, by thread. Details below th
   - no lottery rule drawn jointly from 9;
   - models without a global section at 8.
 
-  The impossibility side is a certificate: three joins around the doubled Condorcet profile for lotteries, and a case split on ten profiles for deterministic rules. Checking these in Lean on top of `JoinLotteries.lean` is moderate. The existence side needs the models found by search as data, which is heavier.
+  The impossibility side is in place for anonymous rules (`ConsistencyCertificates.lean`): three joins around the doubled Condorcet profile for lotteries, and a case split on ten profiles for deterministic rules. Open: the existence side, that rules exist below the thresholds and that the models at 8 extend to empirical models. It needs the solutions found by search as data, which is heavier.
 - **B. Arrow's theorem as a degree, and the stages of the symmetry problem for three alternatives** (*The Global Form*, Propositions 1–3; *Equivariant Obstructions*, Propositions 1–4).
   - These are discrete and rest on Lemmas 1–3 of *The Global Form*, now in `GlobalForm.lean`. Lemmas 1–6 and Propositions 1 and 3 are there (`GlobalForm.lean`, `GlobalFormSP.lean`). Proposition 2 is there, for mixtures and, through Theorem 5′, for every empirical model of Arrow's scenario with three alternatives (`GlobalFormReal.lean`, `RealDegreeBridge.lean`). The real degree is the expected winding of every compatible joint draw (`RealDegreeWinding.lean`). Propositions 4 and 5 are in place (`GlobalFormLottery.lean`, `ContextualFraction.lean`, the latter with Gibbard 1977 as a hypothesis), with the bridge to the scenario of `GSScenario.lean` (`ContextualBridge.lean`). Of *Equivariant Obstructions*, Lemma 2 and Propositions 1 and 3 are in place for local Pareto rules (`LocalPareto.lean`). Proposition 4 is in place without Gibbard 1977, together with the independence of the degree from the context for every SD-SP lottery rule (`SPDegree.lean`). Not planned for now: stages 0 and 1 (the table of Section 2 and the midpoints). Effort: moderate.
   - For four alternatives, Theorem 10 (local rules have at most one voter of non-zero degree) and Proposition 14 rest on computations of the permutohedron's fillings. A certificate check would be large.
