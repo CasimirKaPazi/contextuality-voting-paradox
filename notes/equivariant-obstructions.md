@@ -89,7 +89,7 @@ This is stronger than Proposition 1. For blocks of two and three voters g = 1, s
 
 For strategy-proof lotteries the same context gives the open item of *The Global Form*, Section 12: a direct proof that unanimity makes the real degrees non-negative, without Gibbard (1977).
 
-**Proposition 4.** Let a lottery rule for three alternatives be SD-strategy-proof and give the common top at identical ballots. Then every real degree lies in [0, 1]. *(Proved.)*
+**Proposition 4.** Let a lottery rule for three alternatives be SD-strategy-proof and give the common top at identical ballots. Then every real degree lies in [0, 1]. *(Proved. Checked in Lean, `lean/SPDegree.lean`, without Gibbard's theorem, together with the fact used in the proof that the degree is the same at every context.)*
 
 *Proof.* Let every other voter hold abc and voter i walk as in Lemma 2. Let α₁, …, α₆ ≥ 0 be the probabilities moved at the six steps, each in its permitted direction (the swap lemma of *The Global Form*, Section 7). Conservation of probability at a and at b gives
 
