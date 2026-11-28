@@ -53,7 +53,7 @@ lemma le_on_hull (g : E →ₗ[ℝ] ℝ) (S : Finset E) {M : ℝ} (hM : ∀ t �
 /-- s with the points of smaller value is convex. -/
 lemma convex_below (g : E →ₗ[ℝ] ℝ) (s : E) : Convex ℝ {x : E | x = s ∨ g x < g s} := by
   intro x hx y hy a b ha hb hab
-  simp only [Set.mem_setOf_eq] at hx hy ⊢
+  simp only [Set.mem_ofPred_eq] at hx hy ⊢
   have hgs : a * g s + b * g s = g s := by rw [← add_mul, hab, one_mul]
   have hval : g (a • x + b • y) = a * g x + b * g y := by
     rw [map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
@@ -115,13 +115,13 @@ theorem prop2_unique {g : E →ₗ[ℝ] ℝ} {S : Finset E} {s : E} (h : IsUniqu
   have hgs : a * g s + b * g s = g s := by rw [← add_mul, hab, one_mul]
   have hx' : g s ≤ g x := by
     by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have h1 : a * g x < a * g s := mul_lt_mul_of_pos_left hlt ha
     have h2 : b * g y ≤ b * g s := mul_le_mul_of_nonneg_left hgy hb.le
     linarith
   have hy' : g s ≤ g y := by
     by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have h1 : b * g y < b * g s := mul_lt_mul_of_pos_left hlt hb
     have h2 : a * g x ≤ a * g s := mul_le_mul_of_nonneg_left hgx ha.le
     linarith
@@ -138,6 +138,7 @@ theorem prop2_not_vertex {S : Finset E} {s : E}
 /-- The count vectors are symmetric about c/2. -/
 def Sym (S : Finset E) (c : E) : Prop := ∀ v ∈ S, c - v ∈ S
 
+omit [Module ℝ E] in
 /-- If a ballot and its reverse always add c, the count vectors are
     symmetric. -/
 theorem sym_of_reverse {Bal : Type*} [DecidableEq E] (τ : Bal → E) (rev : Bal → Bal)
