@@ -50,7 +50,7 @@ A method keeps opposite voters equal at the poll (README, Section 6) exactly whe
 
 **Proposition 4.** Let d be the rank of the strategic count at a poll, and e the rank of the even parts of its rows, both not counting constants (the size of the electorate). The odd functions in the row space of M form a space of dimension d − e. In particular a method that does not keep opposite voters equal at a poll has fewer than d independent numbers that are functions of what the two targets depend on.
 
-*Proof.* Taking the even part, up to constants, is a linear map on the row space. Its kernel is the odd functions in the row space, and its image has dimension e. ∎ *(Proved.)*
+*Proof.* Taking the even part, up to constants, is a linear map on the row space. Its kernel is the odd functions in the row space, and its image has dimension e. ∎ *(Proved; checked in Lean, `lean/OppositeVoters.lean`, for any row space that contains the constants.)*
 
 Each independent way in which opposite voters fail to cancel uses up one of the numbers that the count keeps, on something that neither target depends on. What follows depends on how much room the count has.
 
