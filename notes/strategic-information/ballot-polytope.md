@@ -47,7 +47,7 @@ So under the common rationale a method offers its voters, in effect, only the ve
 | Margins only, equal ranks | 13, 75 | 6, 24 | yes |
 | First preferences and margins (BTR-plurality), strict rankings | 6, 24 | 6, 24 | no |
 | The same, candidates ranked equal at the top share one first preference | 13, 75 | 6, 24 | no |
-| The same, each gets a whole first preference | 13, 75 | 10, 41 | no |
+| The same, each gets a whole first preference | 13, 75 | 9, 40 | no |
 
 *(Computed by linear programming, part 1 of the script. The vertices of approval are the 2^m − 2 ballots that approve some and not all candidates; those of Borda and of the margins are the m! strict rankings.)*
 
@@ -63,11 +63,11 @@ A change of the ballot that adds ballots without adding vertices therefore chang
 
 A change that adds vertices can matter:
 
-- **Whole first preferences.** If each of the candidates ranked equal at the top gets a whole first preference, the ballots with equal tops are new vertices (10 against 6 for three candidates, 41 against 24 for four).
+- **Whole first preferences.** If each of the candidates ranked equal at the top gets a whole first preference, the ballots with equal tops are new vertices (9 against 6 for three candidates, 40 against 24 for four; an earlier version of this note gave 10 and 41, counting the ballot that ranks all candidates equal, which changes no order and has the count of no ballot).
 - **Truncated Borda.** If unranked candidates get no points and the ranked ones get m − 1, m − 2 and so on, a ballot that names one candidate is a new vertex: it sets that candidate further apart from the rest than any full ranking can.
 - **Approval after plurality**, with 2^m − 2 vertices in place of m, and **score in place of Borda**, where the vertices are different sets.
 
-So equal rankings matter under the common rationale exactly when a ballot with an equal rank counts for more than the average of the strict ballots it lies between. *(From Proposition 3 and the table; large electorates.)*
+So equal rankings can matter under the common rationale only when a ballot with an equal rank is not counted as the average of the strict ballots it lies between, and they do matter when it is then a vertex. *(From Proposition 3 and the table; large electorates.)*
 
 *Check in the smooth model.* Three candidates, Dirichlet beliefs around the sincere shares, rankings with equal ranks allowed, 1600 voters (*computed*, part 3). With shared first preferences under BTR-plurality, and under a rule that reads the margins only, the voters whose best reply has an equal rank fall from 72 and 67 to 17 and 29 as the number of samples grows from 10 000 to 160 000, and their gain in expected utility falls to less than 0.005 per cent of what is at stake for them between strict ballots: sampling noise among ballots that are equally good. With whole first preferences 210 to 260 of the 1600 voters (13 to 16 per cent) have a best reply with an equal rank at every number of samples, and gain about 0.3 per cent of what is at stake: a small gain, but one that does not go away.
 
@@ -91,7 +91,33 @@ At stage 2 a method enters only through the vertices of its ballot polytope and 
 
 *(Interpretation.)*
 
-## 6. Open questions
+## 6. The methods of the Ballot Front Finder Lab
+
+The Ballot Front Finder Lab (https://github.com/CasimirKaPazi/Ballot-Front-Finder-Lab) computes the quantities of this note for every method it defines, from the method's definition alone: its tool `tools/information.py` finds the count by locating the boundaries between outcomes in large random profiles and measuring their normals, then the count vectors of the ballots, the vertices, the rank and the central symmetry. The count it finds is evidence and not proof, since a boundary that random profiles rarely approach can be missed. *(Computed in the lab, 28 November 2026, three and four candidates, scores 0 to 5; a selection. The lab's results hold the full tables, for some eighty methods.)*
+
+| Method | Ballots (m = 3, 4) | Vertices | Rank | Centrally symmetric |
+|---|---|---|---|---|
+| Plurality | 3, 4 | 3, 4 | 2, 3 | no |
+| Approval | 6, 14 | 6, 14 | 2, 3 | yes |
+| Score, 0 to 5 | 216, 1296 | 6, 14 | 2, 3 | yes |
+| Borda, truncated ballots allowed | 9, 40 | 9, 40 | 2, 3 | no |
+| Minimax, Schulze, ranked pairs, Copeland, Kemeny–Young (margins) | 9, 40 | 6, 24 | 3, 6 | yes |
+| Minimax by winning votes or by pairwise opposition, equal ranks allowed | 27, 256 | 12, 74 | 5, 11 | no |
+| Instant runoff, BTR-IRV | 9, 40 | 6, 24 | 5, 17 | no |
+| Instant runoff, equal tops with whole first preferences | 27, 256 | 9, 52 | 5, 17 | no |
+| Supplementary vote | 9, 40 | 6, 12 | 5, 9 | no |
+| STAR, BTR-score, Smith//Score | 216, 1296 | 30, 232 | 5, 9 | yes |
+
+The figures agree with those of Section 2 wherever both exist, and with the statements of Section 3: the score ballots have the vertices of approval; the methods that read only the margins have the m! strict rankings as vertices whether or not truncated or equal ranks are allowed; instant runoff and BTR-IRV have the same count for three candidates. Four things are added.
+
+- *Counting ties as nothing is not counting them as the average.* Minimax by winning votes and by pairwise opposition count, for each pair, the voters who rank one above the other, and a tie adds to neither side. A ballot with an equal rank is then not the average of the strict rankings around it, which would add one half to each side, and every ballot with equal ranks except the full tie is a vertex. The same holds for Borda when tied candidates get no points, which also fails the Equality Criterion. The statement of Section 3 is about the average, not about how much the ballot counts for.
+- *Truncation can remove vertices.* Under Dowdall's rule (1, 1/2, 1/3, … points) with truncated ballots allowed, a ballot that names one candidate gives the largest lead a ballot can give, and for three candidates the full rankings are inside the triangle of the three such ballots: under the common rationale the method is plurality.
+- *The margins are exactly enough for the third level.* The methods that read only the margins have m! vertices and rank m(m − 1)/2, which is what certifying the whole majority relation takes (*Bounds from Criteria*, Proposition 7), with nothing to spare, as approval has exactly what the second level takes.
+- *The supplementary vote is below the third level for four candidates.* It has 12 vertices where 24 are needed. No computation of best replies is involved.
+
+Two cautions for reading the lab's table against this note. Borda in the lab allows truncated ballots, and its polytope is then not centrally symmetric; the Borda of these notes has full rankings, with the permutohedron as its polytope. And the lab reports the Equality Criterion as satisfied for formats in which only some ballots have a reverse (truncated rankings), testing the ballots that do; Proposition 4 needs a reverse for every ballot, so a method can show the criterion as satisfied there without a symmetric polytope.
+
+## 7. Open questions
 
 1. Which vertices are used. Proposition 2 bounds the strategic ballots by the vertices; the gradients that arise from polls and utilities may reach only some of them, as in the corner of approval, where only the ballots of the leader rule occur. A description of the reachable vertices per method would give the strategic ballot space exactly.
 2. Small electorates. Outside the linear regime interior ballots can be best (the windows of score voting). How fast does the share of such voters fall with the size of the electorate, for score and for rankings with equal ranks?

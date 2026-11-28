@@ -51,6 +51,12 @@ def firsts(lv, whole):
     return [(1 if whole else 1 / len(top)) if x in top else 0 for x in range(len(lv))]
 
 
+def fp(lv, whole):
+    """First preferences up to a number added to all of them (a ballot that gives every candidate a
+    first preference changes no order and counts as none)."""
+    return list(centred(firsts(lv, whole)))
+
+
 def borda_average(lv):
     m = len(lv)
     return centred([sum((lv[y] > lv[x]) + 0.5 * (lv[y] == lv[x]) for y in range(m) if y != x) for x in range(m)])
@@ -82,9 +88,9 @@ def methods(m):
         ("Borda, truncated ballots", borda_truncated(m)),
         ("margins, strict rankings", [margins(lv) for lv in S]),
         ("margins, equal ranks", [margins(lv) for lv in W]),
-        ("first preferences and margins, strict", [firsts(lv, True) + margins(lv) for lv in S]),
-        ("the same, equal tops share one first preference", [firsts(lv, False) + margins(lv) for lv in W]),
-        ("the same, equal tops get a whole one each", [firsts(lv, True) + margins(lv) for lv in W]),
+        ("first preferences and margins, strict", [fp(lv, True) + margins(lv) for lv in S]),
+        ("the same, equal tops share one first preference", [fp(lv, False) + margins(lv) for lv in W]),
+        ("the same, equal tops get a whole one each", [fp(lv, True) + margins(lv) for lv in W]),
     ]
 
 
